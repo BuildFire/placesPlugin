@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+	<!-- CSS -->
+	<link href="../../../../styles/helper.css" rel="stylesheet">
+	<link href="../../../../styles/siteIcons.css" rel="stylesheet">
+
+		
+	<!-- JS -->
+	<script src="../../../../scripts/buildfire.js"></script>
+   
+ 	<!--
+    <script src="../../../../scripts/angular/angular.min.js"></script>
+    <script src="../../../../scripts/angular/ui-bootstrap.min.js"></script>
+
+    <script src="../../../../scripts/jquery/jquery-1.11.2.min.js"></script>
+    -->
+</head>
+<body>
+    <div class="item clearfix row">
+		<div class="labels col-md-3 padding-right-zero pull-left">
+			<span>Bulk Actions</span>
+		</div>
+		<div class="main col-md-9 pull-right">
+			<a class="btn btn-primary">Import CSV</a>
+			<a class="btn btn-primary margin-left-ten">Export CSV</a>
+			<a class="btn btn-primary margin-left-ten">Get Template</a>
+		</div>
+	</div>
+	<hr class="none">
+	<div class="item clearfix row">
+		<div class="labels col-md-3 padding-right-zero pull-left">
+			<span>Section</span>
+		</div>
+		<div class="main pull-right col-md-9 padding-left-zero row">
+			<div class="dropdown pull-left col-md-8 padding-zero" dropdown>
+				<button class="btn btn-default text-left dropdown-toggle" data-toggle="dropdown" dropdown-toggle aria-expanded="true">
+					<img src="http://www.placehold.it/80x50" class="pull-left" style="max-width:32px; max-height:20px;">
+					<span class="pull-left">All Items</span>
+			  		<span class="chevron icon-chevron-down pull-right"></span>
+				</button>					
+				<ul class="dropdown-menu extended" role="menu">
+                    <li>
+						<a tabindex="-1" class="transition-third">
+							<img src="http://www.placehold.it/80x50" class="pull-left" style="max-width:32px; max-height:20px;">
+							Section Name
+						</a>
+					</li>
+					<li>
+						<a tabindex="-1" class="transition-third">
+							<img src="http://www.placehold.it/80x50" class="pull-left" style="max-width:32px; max-height:20px;">
+							Section Name
+						</a>
+					</li>
+					<li>
+						<a tabindex="-1" class="transition-third">
+							<img src="http://www.placehold.it/80x50" class="pull-left" style="max-width:32px; max-height:20px;">
+							Section Name
+						</a>
+					</li>
+                </ul>
+			</div>
+			<div class="col-md-4 pull-right">
+				<a class="btn btn-primary pull-right stretch">Edit Sections</a>
+			</div>
+		</div>
+	</div>
+	<hr class="none">
+	<div class="item clearfix row">
+		<div class="labels col-md-3 padding-right-zero pull-left">
+			<span>Items</span>
+		</div>
+		<div class="main col-md-9 pull-right">
+			<div class="col-md-4 pull-left padding-left-zero">
+				<a class="btn btn-success stretch">Add New Item</a>
+			</div>
+			<div class="col-md-8 pull-right padding-zero">
+				<div class="col-md-4 pull-left padding-left-zero text-right">
+					<p class="margin-top-five margin-bottom-zero">Sort Items</p>
+				</div>
+				<div class="col-md-8 pull-right padding-zero">
+					<div class="dropdown pull-left col-md-12 padding-zero" dropdown>
+						<button class="btn btn-default text-left dropdown-toggle" data-toggle="dropdown" dropdown-toggle aria-expanded="true">
+							<span class="pull-left">Manually</span>
+					  		<span class="chevron icon-chevron-down pull-right"></span>
+						</button>					
+						<ul class="dropdown-menu extended" role="menu">
+	                        <li>
+								<a tabindex="-1" class="transition-third">Option</a>
+							</li>
+							<li>
+								<a tabindex="-1" class="transition-third">Option</a>
+							</li>
+							<li>
+								<a tabindex="-1" class="transition-third">Option</a>
+							</li>
+	                    </ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<div class="item clearfix row">
+		<div class="main col-md-9 pull-right padding-left-zero row">
+			<div class="pull-left inner-main col-md-8 padding-zero">
+				<input type="text" class="form-control" placeholder="Search Item Name">
+			</div>
+			<div class="col-md-4 pull-right">
+				<a class="btn btn-primary pull-right stretch">Search</a>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<div class="item clearfix">
+		<div class="draggable-list-view wide-list has-btn links-list">
+			<div class="d-item double-line square-icon clearfix">
+				<span class="icon icon-menu pull-left"></span>
+				<div class="media-holder pull-left">
+					<img src="http://www.placehold.it/50x50">
+				</div>
+				<div class="copy pull-right">
+					<div class="col-md-4 padding-zero pull-left">
+						<a class="text-primary"><span class="title ellipsis pull-left">Item Name</span></a>
+						<span class="title ellipsis pull-left">Item Summary</span>
+					</div>
+					<div class="col-md-7 padding-right-zero pull-left">
+						<a class="text-primary"><span class="content ellipsis text-primary">3 Sections</span></a>
+					</div>
+					<div class="pull-right">
+						<span class="btn-icon btn-link-icon btn-primary margin-left-zero"></span>
+						<span class="btn-icon btn-delete-icon btn-danger margin-left-five"></span>
+					</div>
+				</div>
+			</div>
+			<div class="d-item double-line square-icon clearfix">
+				<span class="icon icon-menu pull-left"></span>
+				<div class="media-holder pull-left">
+					<img src="http://www.placehold.it/50x50">
+				</div>
+				<div class="copy pull-right">
+					<div class="col-md-4 padding-zero pull-left">
+						<a class="text-primary"><span class="title ellipsis pull-left">Item Name</span></a>
+						<span class="title ellipsis pull-left">Item Summary</span>
+					</div>
+					<div class="col-md-7 padding-right-zero pull-left">
+						<a class="text-primary"><span class="content ellipsis text-primary">3 Sections</span></a>
+					</div>
+					<div class="pull-right">
+						<span class="btn-icon btn-link-icon btn-primary margin-left-zero"></span>
+						<span class="btn-icon btn-delete-icon btn-danger margin-left-five"></span>
+					</div>
+				</div>
+			</div>
+			<div class="d-item double-line square-icon clearfix">
+				<span class="icon icon-menu pull-left"></span>
+				<div class="media-holder pull-left">
+					<img src="http://www.placehold.it/50x50">
+				</div>
+				<div class="copy pull-right">
+					<div class="col-md-4 padding-zero pull-left">
+						<a class="text-primary"><span class="title ellipsis pull-left">Item Name</span></a>
+						<span class="title ellipsis pull-left">Item Summary</span>
+					</div>
+					<div class="col-md-7 padding-right-zero pull-left">
+						<a class="text-primary"><span class="content ellipsis text-primary">3 Sections</span></a>
+					</div>
+					<div class="pull-right">
+						<span class="btn-icon btn-link-icon btn-primary margin-left-zero"></span>
+						<span class="btn-icon btn-delete-icon btn-danger margin-left-five"></span>
+					</div>
+				</div>
+			</div>
+			<div class="d-item double-line square-icon clearfix">
+				<span class="icon icon-menu pull-left"></span>
+				<div class="media-holder pull-left">
+					<img src="http://www.placehold.it/50x50">
+				</div>
+				<div class="copy pull-right">
+					<div class="col-md-4 padding-zero pull-left">
+						<a class="text-primary"><span class="title ellipsis pull-left">Item Name</span></a>
+						<span class="title ellipsis pull-left">Item Summary</span>
+					</div>
+					<div class="col-md-7 padding-right-zero pull-left">
+						<a class="text-primary"><span class="content ellipsis text-primary">3 Sections</span></a>
+					</div>
+					<div class="pull-right">
+						<span class="btn-icon btn-link-icon btn-primary margin-left-zero"></span>
+						<span class="btn-icon btn-delete-icon btn-danger margin-left-five"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br><br><br>
+		<div class="item clearfix row">
+			<div class="main col-md-12 pull-left padding-right-zero">
+				<div class="pull-left inner-main col-md-4 padding-zero">
+					<a class="btn btn-success stretch">Add New Section</a>
+				</div>
+				<div class="col-md-8 pull-right">
+					<div class="col-md-4 pull-left padding-right-zero text-right">
+						<p class="margin-top-five margin-bottom-zero">Sort Sections</p>
+					</div>
+					<div class="col-md-8 pull-right padding-right-zero">
+						<div class="dropdown pull-left col-md-12 padding-zero" dropdown>
+							<button class="btn btn-default text-left dropdown-toggle" data-toggle="dropdown" dropdown-toggle aria-expanded="true">
+								<span class="pull-left">Manually</span>
+						  		<span class="chevron icon-chevron-down pull-right"></span>
+							</button>					
+							<ul class="dropdown-menu extended" role="menu">
+		                        <li>
+									<a tabindex="-1" class="transition-third">Option</a>
+								</li>
+								<li>
+									<a tabindex="-1" class="transition-third">Option</a>
+								</li>
+								<li>
+									<a tabindex="-1" class="transition-third">Option</a>
+								</li>
+		                    </ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<div class="item clearfix">
+			<div class="main col-md-9 pull-right padding-left-zero row">
+				<div class="pull-left inner-main col-md-8 padding-zero">
+					<input type="text" class="form-control" placeholder="Search Item Name">
+				</div>
+				<div class="col-md-4 pull-right">
+					<a class="btn btn-primary pull-right stretch">Search</a>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<div class="draggable-list-view wide-list has-btn has-checkbox links-list">
+			<div class="d-item double-line square-icon clearfix">
+				<span class="icon icon-menu pull-left"></span>
+				<div class="media-holder pull-left">
+					<img src="http://www.placehold.it/50x50">
+				</div>
+				<div class="copy pull-right">
+					<div class="col-md-4 padding-zero pull-left">
+						<a class="text-primary"><span class="title ellipsis pull-left">Item Name</span></a>
+						<span class="title ellipsis pull-left">Item Summary</span>
+					</div>
+					<div class="col-md-7 padding-right-zero">
+						<span class="content ellipsis pull-left">Show</span>
+						<div class="checkbox pull-left checkbox-success margin-left-ten no-label">
+							<input type="checkbox" id="show1">
+							<label for="show1"></label>
+						</div>
+					</div>
+					<div class="pull-right">
+						<span class="btn-icon btn-link-icon btn-primary margin-left-zero"></span>
+						<span class="btn-icon btn-delete-icon btn-danger margin-left-five"></span>
+					</div>
+				</div>
+			</div>
+			<div class="d-item double-line square-icon clearfix">
+				<span class="icon icon-menu pull-left"></span>
+				<div class="media-holder pull-left">
+					<img src="http://www.placehold.it/50x50">
+				</div>
+				<div class="copy pull-right">
+					<div class="col-md-4 padding-zero pull-left">
+						<a class="text-primary"><span class="title ellipsis pull-left">Item Name</span></a>
+						<span class="title ellipsis pull-left">Item Summary</span>
+					</div>
+					<div class="col-md-7 padding-right-zero">
+						<span class="content ellipsis pull-left">Show</span>
+						<div class="checkbox pull-left checkbox-success margin-left-ten no-label">
+							<input type="checkbox" id="show2">
+							<label for="show2"></label>
+						</div>
+					</div>
+					<div class="pull-right">
+						<span class="btn-icon btn-link-icon btn-primary margin-left-zero"></span>
+						<span class="btn-icon btn-delete-icon btn-danger margin-left-five"></span>
+					</div>
+				</div>
+			</div>
+			<div class="d-item double-line square-icon clearfix">
+				<span class="icon icon-menu pull-left"></span>
+				<div class="media-holder pull-left">
+					<img src="http://www.placehold.it/50x50">
+				</div>
+				<div class="copy pull-right">
+					<div class="col-md-4 padding-zero pull-left">
+						<a class="text-primary"><span class="title ellipsis pull-left">Item Name</span></a>
+						<span class="title ellipsis pull-left">Item Summary</span>
+					</div>
+					<div class="col-md-7 padding-right-zero">
+						<span class="content ellipsis pull-left">Show</span>
+						<div class="checkbox pull-left checkbox-success margin-left-ten no-label">
+							<input type="checkbox" id="show3">
+							<label for="show3"></label>
+						</div>
+					</div>
+					<div class="pull-right">
+						<span class="btn-icon btn-link-icon btn-primary margin-left-zero"></span>
+						<span class="btn-icon btn-delete-icon btn-danger margin-left-five"></span>
+					</div>
+				</div>
+			</div>
+			<div class="d-item double-line square-icon clearfix">
+				<span class="icon icon-menu pull-left"></span>
+				<div class="media-holder pull-left">
+					<img src="http://www.placehold.it/50x50">
+				</div>
+				<div class="copy pull-right">
+					<div class="col-md-4 padding-zero pull-left">
+						<a class="text-primary"><span class="title ellipsis pull-left">Item Name</span></a>
+						<span class="title ellipsis pull-left">Item Summary</span>
+					</div>
+					<div class="col-md-7 padding-right-zero">
+						<span class="content ellipsis pull-left">Show</span>
+						<div class="checkbox pull-left checkbox-success margin-left-ten no-label">
+							<input type="checkbox" id="show4">
+							<label for="show4"></label>
+						</div>
+					</div>
+					<div class="pull-right">
+						<span class="btn-icon btn-link-icon btn-primary margin-left-zero"></span>
+						<span class="btn-icon btn-delete-icon btn-danger margin-left-five"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br><br><br>
+	<h4>Places Item Content</h4>
+	<div class="item clearfix row margin-top-thirty">
+		<div class="labels col-md-3 padding-right-zero pull-left">
+			<span>Image Carousel</span>
+		</div>
+		<div class="main col-md-9 pull-right">
+			<div class="clearfix">
+				<a class="btn btn-success pull-left" onclick="alert('Open Media Library');">Add Image</a>
+			</div>
+			<div class="carousel-items draggable-list-view margin-top-twenty border-radius-four border-grey">
+				<div class="d-item">
+					<span class="icon icon-menu pull-left"></span>
+					<div class="media-holder pull-left">
+						<img src="http://www.placehold.it/80x50">
+					</div>
+					<div class="copy pull-right">
+						<span class="title ellipsis">Image Title</span>
+						<div class="pull-right">
+							<a class="text-primary text">Add Action</a>											
+							<span class="btn-icon btn-delete-icon btn-danger transition-third"><span>
+						</div>
+					</div>
+				</div>
+				<div class="d-item">
+					<span class="icon icon-menu pull-left"></span>
+					<div class="media-holder pull-left">
+						<img src="http://www.placehold.it/80x50">
+					</div>
+					<div class="copy pull-right">
+						<span class="title ellipsis">Image Title</span>
+						<div class="pull-right">
+							<a class="text-primary text">Add Action</a>											
+							<span class="btn-icon btn-delete-icon btn-danger transition-third"><span>
+						</div>
+					</div>
+				</div>
+				<div class="d-item">
+					<span class="icon icon-menu pull-left"></span>
+					<div class="media-holder pull-left">
+						<img src="http://www.placehold.it/80x50">
+					</div>
+					<div class="copy pull-right">
+						<span class="title ellipsis">Image Title</span>
+						<div class="pull-right">
+							<a class="text-primary text">Add Action</a>											
+							<span class="btn-icon btn-delete-icon btn-danger transition-third"><span>
+						</div>
+					</div>
+				</div>
+				<div class="d-item">
+					<span class="icon icon-menu pull-left"></span>
+					<div class="media-holder pull-left">
+						<img src="http://www.placehold.it/80x50">
+					</div>
+					<div class="copy pull-right">
+						<span class="title ellipsis">Image Title</span>
+						<div class="pull-right">
+							<a class="text-primary text">Add Action</a>											
+							<span class="btn-icon btn-delete-icon btn-danger transition-third"><span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr class="none">
+	<div class="item clearfix row">
+		<div class="labels col-md-3 padding-right-zero pull-left">
+			<span>Summary</span>
+		</div>
+		<div class="main col-md-9 pull-right">
+			<textarea placeholder="Summary" class="form-control"></textarea>
+		</div>
+	</div>
+	<hr class="none">
+	<div class="item clearfix row">
+		<div class="labels col-md-3 padding-right-zero pull-left">
+			<span>Body Content</span>
+		</div>
+		<div class="main col-md-9 pull-right">
+			<textarea placeholder="WYSIWYG" class="form-control"></textarea>
+		</div>
+	</div>
+	<hr class="none">
+	<div class="item clearfix row">
+		<div class="labels col-md-3 padding-right-zero pull-left">
+			<span>Address Title</span>
+		</div>
+		<div class="main col-md-9 pull-right">
+			<input type="text" class="form-control" placeholder="Address Title">
+		</div>
+	</div>
+	<hr class="none">
+	<div class="item clearfix row">
+		<div class="labels col-md-3 padding-right-zero pull-left">
+			<span>Address</span>
+		</div>
+		<div class="main col-md-9 pull-right">
+			<input type="text" class="form-control" placeholder="Enter Street Address or Lat/Long Coordinates">
+		</div>
+	</div>
+	<hr class="none">
+	<div class="item clearfix row">
+		<div class="main col-md-9 pull-right">
+			<textarea placeholder="Map Goes Here" class="form-control"></textarea>
+		</div>
+	</div>
+	<hr class="none">
+	<div class="item clearfix row">
+		<div class="labels col-md-3 padding-right-zero pull-left">
+			<span>Links</span>
+		</div>
+		<div class="main col-md-9 pull-right">
+			<div class="col-md-4 row">
+				<a class="btn btn-success stretch">Add Link</a>
+			</div>
+		</div>
+	</div>
+	<hr class="none">
+	<div class="item clearfix">
+		<div class="draggable-list-view wide-list has-btn links-list">
+			<div class="d-item double-line square-icon clearfix">
+				<span class="icon icon-menu pull-left"></span>
+				<div class="media-holder pull-left">
+					<img src="http://www.placehold.it/50x50">
+				</div>
+				<div class="copy pull-right">
+					<div class="col-md-4 padding-zero pull-left">
+						<a class="text-primary"><span class="title ellipsis pull-left">Item Name Item Name Item Name</span></a>
+						<span class="title ellipsis pull-left">Item Summary Item Summary Item Summary</span>
+					</div>
+					<div class="col-md-7 padding-right-zero pull-left">
+						<span class="content ellipsis">http://www.thelinkgoeshereandifitslongitwillwraparound</span>
+					</div>
+					<div class="pull-right">
+						<span class="btn-icon btn-delete-icon btn-danger transition-third" onclick="window.openDialog('remove.html', null, 'sm', null)"></span>
+					</div>
+				</div>
+			</div>
+			<div class="d-item double-line square-icon clearfix">
+				<span class="icon icon-menu pull-left"></span>
+				<div class="media-holder pull-left">
+					<img src="http://www.placehold.it/50x50">
+				</div>
+				<div class="copy pull-right">
+					<div class="col-md-4 padding-zero pull-left">
+						<a class="text-primary"><span class="title ellipsis pull-left">Item Name Item Name Item Name</span></a>
+						<span class="title ellipsis pull-left">Item Summary Item Summary Item Summary</span>
+					</div>
+					<div class="col-md-7 padding-right-zero pull-left">
+						<span class="content ellipsis">http://www.thelinkgoeshereandifitslongitwillwraparound</span>
+					</div>
+					<div class="pull-right">
+						<span class="btn-icon btn-delete-icon btn-danger transition-third" onclick="window.openDialog('remove.html', null, 'sm', null)"></span>
+					</div>
+				</div>
+			</div>
+			<div class="d-item double-line square-icon clearfix">
+				<span class="icon icon-menu pull-left"></span>
+				<div class="media-holder pull-left">
+					<img src="http://www.placehold.it/50x50">
+				</div>
+				<div class="copy pull-right">
+					<div class="col-md-4 padding-zero pull-left">
+						<a class="text-primary"><span class="title ellipsis pull-left">Item Name Item Name Item Name</span></a>
+						<span class="title ellipsis pull-left">Item Summary Item Summary Item Summary</span>
+					</div>
+					<div class="col-md-7 padding-right-zero pull-left">
+						<span class="content ellipsis">http://www.thelinkgoeshereandifitslongitwillwraparound</span>
+					</div>
+					<div class="pull-right">
+						<span class="btn-icon btn-delete-icon btn-danger transition-third" onclick="window.openDialog('remove.html', null, 'sm', null)"></span>
+					</div>
+				</div>
+			</div>
+			<div class="d-item double-line square-icon clearfix">
+				<span class="icon icon-menu pull-left"></span>
+				<div class="media-holder pull-left">
+					<img src="http://www.placehold.it/50x50">
+				</div>
+				<div class="copy pull-right">
+					<div class="col-md-4 padding-zero pull-left">
+						<a class="text-primary"><span class="title ellipsis pull-left">Item Name Item Name Item Name</span></a>
+						<span class="title ellipsis pull-left">Item Summary Item Summary Item Summary</span>
+					</div>
+					<div class="col-md-7 padding-right-zero pull-left">
+						<span class="content ellipsis">http://www.thelinkgoeshereandifitslongitwillwraparound</span>
+					</div>
+					<div class="pull-right">
+						<span class="btn-icon btn-delete-icon btn-danger transition-third" onclick="window.openDialog('remove.html', null, 'sm', null)"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br><br><br>
+	<h4>Places Item Design</h4>
+	<div class="item clearfix row margin-top-thirty">
+		<div class="labels col-md-3 padding-right-zero pull-left">
+			<span>Background Image</span>
+		</div>
+		<div class="main col-md-9 pull-right">
+			<div class="screens clearfix">
+				<div class="screen text-center layouticon pull-left">
+					<a class="border-grey border-radius-three default-background-hover">
+						<span class="add-icon">+</span>
+					</a>
+					<span class="icon btn-icon btn-delete-icon btn-danger"></span>
+					<label class="secondary">750x1334</label>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
