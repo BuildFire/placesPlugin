@@ -2,12 +2,12 @@
     "use strict";
     //created mediaCenterContent module
     angular
-        .module('placeContent',
+        .module('placesContent',
         [
-            'placeEnums',
-            'placeServices',
-            'placeFilters',
-            'placeModals',
+            'placesEnums',
+            'placesServices',
+            'placesFilters',
+            'placesModals',
             'ngAnimate',
             'ngRoute',
             'ui.bootstrap',

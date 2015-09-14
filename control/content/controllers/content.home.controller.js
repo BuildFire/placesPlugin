@@ -1,7 +1,7 @@
 (function (angular) {
     'use strict';
     angular
-        .module('placeContent')
+        .module('placesContent')
         .controller('ContentHomeCtrl', ['$scope', 'MediaCenterInfo', 'Modals', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire',
             function ($scope, MediaCenterInfo, Modals, DB, $timeout, COLLECTIONS, Orders, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire) {
                 var ContentHome = this;

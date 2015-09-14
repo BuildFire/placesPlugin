@@ -1,5 +1,5 @@
 (function (angular, buildfire, location) {
-    'use strict';
+'use strict';
     //created mediaCenterWidget module
     var settings, appId;
     var Settings = {
@@ -17,7 +17,7 @@
         }
     };
     angular
-        .module('placesServices', ['placesEnums'])
+        .module('placesWidgetServices', ['placesEnums'])
         .provider('Buildfire', [function () {
             this.$get = function () {
                 return buildfire;
@@ -245,3 +245,6 @@
             };
         }]);
 })(window.angular, window.buildfire, window.location);
+/*$rootScope.currentBackgroundImage ={
+ "background-color": "black"
+ };*/

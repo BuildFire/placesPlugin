@@ -1,36 +1,32 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    	
+<html ng-app="placesSettings">
+<head lang="en">
 	<!-- CSS -->
 	<link href="../../../../styles/helper.css" rel="stylesheet">
-	
-	<!-- JS -->
-	<script src="../../../../scripts/buildfire.js"></script>
-   
- 	<!--
-    <script src="../../../../scripts/angular/angular.min.js"></script>
-    <script src="../../../../scripts/angular/ui-bootstrap.min.js"></script>
+	<link href="../../../../styles/siteIcons.css" rel="stylesheet">
 
-    <script src="../../../../scripts/jquery/jquery-1.11.2.min.js"></script>
-    -->
+	<!--SDK js-->
+	<script src="../../../../scripts/buildfire.js"></script>
+	<script src="../../../../scripts/jquery/jquery-1.11.2.min.js"></script>
+	<script src="../../../../scripts/angular/angular.min.js"></script>
+	<script src="../../../../scripts/angular/angular-route.min.js"></script>
+	<script src="../../../../scripts/angular/angular-animate.min.js"></script>
+
+	<!-- JS -->
+	<script src="assets/js/jquery-ui.min.js"></script>
+	<script src="app.js"></script>
+	<script src="enums.js"></script>
+	<script src="services.js"></script>
+	<script src="filters.js"></script>
+	<!-- Controllers -->
+	<script src="controllers/settings.home.controller.js"></script>
+	<meta charset="UTF-8">
 </head>
 <body>
-    <div class="item row clearfix">
-		<div class="labels col-md-3 padding-right-zero pull-left">
-			<span>Default View</span>
-		</div>
-		<div class="main col-md-9 pull-right">
-			<div class="radio radio-primary radio-inline">
-				<input id="listview" type="radio" name="defaultview" checked="">
-				<label for="listview">List</label>
-			</div>
-			<div class="radio radio-primary radio-inline">
-				<input id="mapview" type="radio" name="defaultview">
-				<label for="mapview">Map</label>
-			</div>
-		</div>
-	</div>
+<div class="main_view">
+	<div class="content" ng-view=""></div>
+</div>
 </body>
 </html>
+
+

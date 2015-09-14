@@ -17,7 +17,7 @@
         }
     };
     angular
-        .module('placesServices', ['placesEnums'])
+        .module('placesDesignServices', ['placesEnums'])
         .provider('Buildfire', [function () {
             this.$get = function () {
                 return buildfire;
