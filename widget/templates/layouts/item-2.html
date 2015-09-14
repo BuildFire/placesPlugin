@@ -1,0 +1,35 @@
+<div class="holder padding-zero">
+    <div class="media-center-plugin layout2">
+        <div class="people-banner border-bottom-grey">
+            <div class="people-bg padding-top-fifteen padding-bottom-fifteen clearfix">
+                <div class="people-holder clearfix">
+                    <div class="people-media text-center">
+                       <img data-ng-hide="WidgetMedia.item.data.videoUrl || !WidgetMedia.item.data.topImage"
+                             ng-src="{{WidgetMedia.item.data.topImage | resizeImage : 250 : 400}}">
+
+                        <div ng-include="'templates/layouts/videoPlayer.html'"></div>
+                    </div>
+                    <div class="people-info text-center col-md-12">
+                        <h5 class="ellipsis margin-top-fifteen">{{WidgetMedia.item.data.title}}</h5>
+                        <h5 class="margin-bottom-zero">{{WidgetMedia.item.data.summary}}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="padded">
+            <div class="link-list">
+                <a class="text-primary" ng-if="WidgetMedia.item.data.audioUrl"
+                   href="#/nowplaying/{{WidgetMedia.item.id}}">Listen</a>
+                <a class="text-primary" ng-if="WidgetMedia.item.data.videoUrl" ng-click="WidgetMedia.API.play()">Watch</a>
+                <a class="text-primary" ng-if="WidgetMedia.item.data.srcUrl" href="{{WidgetMedia.item.data.srcUrl}}" target="_blank">View Source</a>
+                <a class="text-primary" ng-if="WidgetMedia.item.data.links.length">Share</a>
+            </div>
+            <hr class="small">
+            <p ng-if="WidgetMedia.item.data.body" ng-bind-html="WidgetMedia.item.data.body | safeHtml"></p>
+
+            <div class="dynamic-links">
+                <a class="d-link" ng-repeat="link in WidgetMedia.item.data.links">{{link.title}}</a>
+            </div>
+        </div>
+    </div>
+</div>
