@@ -4,7 +4,7 @@
 (function (angular, tinymce) {
     'use strict';
     angular
-        .module('placeContent')
+        .module('placesContent')
     /**
      * Inject dependency
      */

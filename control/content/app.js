@@ -2,11 +2,12 @@
     "use strict";
     //created mediaCenterContent module
     angular
-        .module('placeContent',
+        .module('placesContent',
         [
-            'placeEnums',
-            'placeServices',
-            'placeFilters',
+            'placesEnums',
+            'placesServices',
+            'placesFilters',
+            'placesModals',
             'ngAnimate',
             'ngRoute',
             'ui.bootstrap',
@@ -27,7 +28,6 @@
                     controller: 'ContentHomeCtrl',
                     resolve: {
                         MediaCenterInfo: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', function ($q, DB, COLLECTIONS, Orders, Location) {
-                            console.log('method callled');
                             var deferred = $q.defer();
                             var MediaCenter = new DB(COLLECTIONS.MediaCenter);
                             var _bootstrap = function () {

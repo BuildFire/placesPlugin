@@ -2,7 +2,7 @@
     "use strict";
     //created mediaCenterWidget module
     angular
-        .module('placesFilters', [])
+        .module('placesDesignFilters', [])
         .filter('resizeImage', [function () {
             return function (url, width, height, type) {
                 return buildfire.imageLib.resizeImage(url, {
@@ -26,8 +26,12 @@
                 }
                 else {
                     return "";
-                }
+            }
             };
         }])
-        ;
+        .filter("jsDate", function () {
+            return function (x) {
+                return new Date(x);
+            };
+        });
 })(window.angular, window.buildfire, window.location);
