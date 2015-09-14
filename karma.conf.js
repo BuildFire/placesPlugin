@@ -31,6 +31,7 @@ module.exports = function (config) {
             './test/assets/buildfire.js',
             './control/design/**/*.js',
             './control/content/**/*.js',
+            './control/content/app.js',
             './widget/**/*.js',
             './test/**/*.js',
             //'http://localhost:63342/sdk/scripts/buildfire.js',
