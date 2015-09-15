@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="buildfire" >
+<head>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../../../styles/siteIcons.css">
+    <link rel="stylesheet" href="../../../../styles/helper.css">
+    
+    <!-- jQuery & Owl Carousel -->
+	<script src="../scripts/jquery/jquery-1.11.2.min.js"></script>    
+	<script src="../scripts/owlCarousel.js"></script>
+    <link rel="stylesheet" href="../styles/owlCarousel.css">
+
+    <!-- Meta -->
+	<meta charset="utf-8">
+</head>
+<script type="text/javascript" charset="utf-8">
+	$(function(){
+		var slides = $('.plugin-slider .plugin-slide').length;
+		
+		// Slider needs at least 2 slides or you'll get an error.
+		if(slides > 1){
+			$('.plugin-slider').owlCarousel({
+				loop:true,
+				nav:false,
+				items:1
+			});	
+		}
+	})
+</script>
+<div class="holder padding-zero has-bottom">
+	<div class="places-plugin">
+		<div class="plugin-banner clearfix border-bottom-grey">
+			<div class="plugin-slider text-center">
+				<div class="plugin-slide">
+					<img src="http://www.placehold.it/1280x720.jpg">
+				</div>
+				<div class="plugin-slide">
+					<img src="http://www.placehold.it/1280x720.jpg">
+				</div>
+				<div class="plugin-slide">
+					<img src="http://www.placehold.it/1280x720.jpg">
+				</div>
+			</div>
+		</div>
+		<div class="padded text-left">
+			<p class="margin-bottom-zero">WYSIWYG Editor.</p>
+		</div>
+		<div class="plugin-banner clearfix border-bottom-grey">
+			<div class="plugin-slide text-center">
+				<img src="http://www.placehold.it/1280x720.jpg">
+			</div>
+		</div>
+		<div class="padded text-left">
+			<a class="text-primary">Section Title Goes Here</a>
+			<p class="margin-zero">This is where a summary would go</p>
+		</div>
+		<div class="plugin-banner clearfix border-bottom-grey">
+			<div class="plugin-slide text-center">
+				<img src="http://www.placehold.it/1280x720.jpg">
+			</div>
+		</div>
+		<div class="padded text-left">
+			<a class="text-primary">Section Title Goes Here</a>
+			<p class="margin-zero">This is where a summary would go</p>
+		</div>
+		<div class="plugin-banner clearfix border-bottom-grey">
+			<div class="plugin-slide text-center">
+				<img src="http://www.placehold.it/1280x720.jpg">
+			</div>
+		</div>
+		<div class="padded text-left">
+			<a class="text-primary">Section Title Goes Here</a>
+			<p class="margin-zero">This is where a summary would go</p>
+		</div>
+		<div class="bottom fixed-bottom clearfix transition-third" style="background:#09a3ee;">
+			<div class="col-xs-12 pull-left text-center transition-third">
+				<a style="color:#fff;">Filter</a>
+			</div>
+			<div class="col-xs-12 pull-left hidden-content">
+				<div class="tabs clearfix">
+					<div class="tab tab-category col-xs-6 padding-zero text-center border-bottom-grey active">
+						<a>Category</a>
+					</div>
+					<div class="tab tab-sorting col-xs-6 border-left-grey padding-zero border-bottom-grey text-center">
+						<a>Sorting</a>
+					</div>
+				</div>
+				<div class="tab-content clearfix">
+					<div class="category-tab tab active">
+						<a class="list-item">All Locations</a>
+						<a class="list-item active">Uptown</a>
+						<a class="list-item">Downtown</a>
+						<a class="list-item">Time Square</a>
+						<a class="list-item active">Greenwich Village</a>
+						<a class="list-item">Sight Seeing</a>
+						<a class="list-item">All Locations</a>
+						<a class="list-item active">Uptown</a>
+						<a class="list-item">Downtown</a>
+						<a class="list-item">Time Square</a>
+						<a class="list-item active">Greenwich Village</a>
+						<a class="list-item">Sight Seeing</a>
+					</div>
+					<div class="sorting-tab tab padded">
+						<div class="distance">
+							<p class="text-primary">Distance</p>
+							<p>50 to 200 miles</p>
+							<span>range slider placeholder</span>
+						</div>
+						<div class="sort-items margin-top-twenty">
+							<p class="text-primary">Sort Items</p>
+							<div class="toggle-btns border-radius-four overflow-hidden">
+								<div class="col-xs-6 padding-zero text-center primaryBackgroundTheme" style="background:#09a3ee;">
+									<a class="active">Default</a>
+								</div>
+								<div class="col-xs-6 padding-zero text-center">
+									<a>Closest to Me</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</html>
