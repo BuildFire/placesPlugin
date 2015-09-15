@@ -7,7 +7,6 @@
             'placesEnums',
             'placesServices',
             'placesFilters',
-            'placesModals',
             'ngAnimate',
             'ngRoute',
             'ui.bootstrap',
@@ -20,37 +19,41 @@
         //injected ngRoute for routing
         //injected ui.bootstrap for angular bootstrap component
         //injected ui.sortable for manual ordering of list
-        .config(['$routeProvider', 'ngClipProvider', function ($routeProvider) {
+        .config(['$routeProvider', function ($routeProvider) {
             $routeProvider
                 .when('/', {
-                    templateUrl: 'templates/home.html',
-                    controllerAs: 'ContentHome',
-                    controller: 'ContentHomeCtrl',
+                    templateUrl: 'templates/sections.html',
+                    controllerAs: 'ContentSections',
+                    controller: 'ContentSectionsCtrl',
                     resolve: {
-                        MediaCenterInfo: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', function ($q, DB, COLLECTIONS, Orders, Location) {
+                        PlaceInfo: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', function ($q, DB, COLLECTIONS, Orders, Location) {
                             var deferred = $q.defer();
-                            var MediaCenter = new DB(COLLECTIONS.MediaCenter);
+                            var PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
                             var _bootstrap = function () {
-                                MediaCenter.save({
+                                PlaceInfo.save({
                                     content: {
-                                        images: [],
-                                        descriptionHTML: '',
-                                        description: '',
-                                        sortBy: Orders.ordersMap.Newest,
-                                        rankOfLastItem: 0
+                                        sortBy: '',
+                                        rankOfLastItem: ''
                                     },
                                     design: {
-                                        listLayout: "list-1",
-                                        itemLayout: "item-1",
-                                        backgroundImage: ""
+                                        secListLayout: "",
+                                        mapLayout: "",
+                                        itemListLayout: "",
+                                        itemDetailsLayout: "",
+                                        secListBGImage: ""
+                                    },
+                                    settings: {
+                                        defaultView: "",
+                                        showDistanceIn: ""
                                     }
+
                                 }).then(function success() {
                                     Location.goToHome();
                                 }, function fail() {
                                     _bootstrap();
                                 });
                             };
-                            MediaCenter.get().then(function success(result) {
+                            PlaceInfo.get().then(function success(result) {
                                     if (result && result.id && result.data) {
                                         deferred.resolve(result);
                                     }
@@ -67,44 +70,20 @@
                         }]
                     }
                 })
-                .when('/media', {
-                    templateUrl: 'templates/media.html',
-                    controllerAs: 'ContentMedia',
-                    controller: 'ContentMediaCtrl',
-                    resolve: {
-                        media: function () {
-                            return null;
-                        }
-                    }
+                .when('/item', {
+                    templateUrl: 'templates/items.html',
+                    controllerAs: 'ContentItem',
+                    controller: 'ContentItemCtrl'
                 })
-                .when('/media/:itemId', {
-                    templateUrl: 'templates/media.html',
-                    controllerAs: 'ContentMedia',
-                    controller: 'ContentMediaCtrl',
-                    resolve: {
-                        media: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', '$route', function ($q, DB, COLLECTIONS, Orders, Location, $route) {
-                            var deferred = $q.defer();
-                            var MediaContent = new DB(COLLECTIONS.MediaContent);
-                            if ($route.current.params.itemId) {
-                                MediaContent.getById($route.current.params.itemId).then(function success(result) {
-                                        if (result && result.data) {
-                                            deferred.resolve(result);
-                                        }
-                                        else {
-                                            Location.goToHome();
-                                        }
-                                    },
-                                    function fail() {
-                                        Location.goToHome();
-                                    }
-                                );
-                            }
-                            else {
-                                Location.goToHome();
-                            }
-                            return deferred.promise;
-                        }]
-                    }
+                .when('/items', {
+                    templateUrl: 'templates/item.html',
+                    controllerAs: 'ContentItems',
+                    controller: 'ContentItemsCtrl'
+                })
+                .when('/sections', {
+                    templateUrl: 'templates/section.html',
+                    controllerAs: 'ContentSection',
+                    controller: 'ContentSectionCtrl'
                 })
                 .otherwise('/');
         }]);
