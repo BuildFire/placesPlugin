@@ -4,17 +4,17 @@
         .module('placesContent')
         .controller('ContentSectionsCtrl', ['$scope', 'PlaceInfo', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire',
             function ($scope, PlaceInfo, DB, $timeout, COLLECTIONS, Orders, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire) {
-                var ContentSection = this;
+                var ContentSections = this;
 
                 Buildfire.deeplink.createLink('section:7');
                 Buildfire.deeplink.getData(function (data) {
                     console.log('DeepLInk calleed', data);
                     if (data) alert('deep link data: ' + data);
                 });
-                ContentSection.info = PlaceInfo;
+                ContentSections.info = PlaceInfo;
                 AppConfig.setSettings(PlaceInfo.data);
                 AppConfig.setAppId(PlaceInfo.id);
-                //updateMasterInfo(ContentSection.info);
+                //updateMasterInfo(ContentSections.info);
 
                 var header = {
                     mainImage: 'Section Image',
@@ -24,6 +24,14 @@
                 };
                 var headerRow = ["mainImage", "secTitle", "secSummary", "itemListBGImage"];
                 var tmrDelayForMedia = null;
+                var _skip = 0,
+                    _limit = 5,
+                    _maxLimit = 19,
+                    searchOptions = {
+                        filter: {"$json.secTitle": {"$regex": '/*'}},
+                        skip: _skip,
+                        limit: _limit + 1 // the plus one is to check if there are any more
+                    };
 
                 /**
                  * Create instance of PlaceInfo,Sections and Items db collection
@@ -35,9 +43,9 @@
 
 
                 /**
-                 * ContentSection.getTemplate() used to download csv template
+                 * ContentSections.getTemplate() used to download csv template
                  */
-                ContentSection.getTemplate = function () {
+                ContentSections.getTemplate = function () {
                     var templateData = [{
                         mainImage: '',
                         secTitle: '',
@@ -49,6 +57,25 @@
                     });
                     $csv.download(csv, "Template.csv");
                 };
+
+
+                /*
+                 * Fetch data from datastore
+                 */
+                var init = function () {
+                    var success = function (result) {
+                            ContentSections.sections = result;
+                            console.log('>>>>>>>>>>>>>',result);
+                        }
+                        , error = function (err) {
+                            console.error('Error while getting data', err);
+                        };
+                    Sections.find(searchOptions).then(success, error);
+                };
+
+                init();
+
+
 
 
             }]);

@@ -5,7 +5,7 @@
 	<div class="main col-md-9 pull-right">
 		<a class="btn btn-primary">Import CSV</a>
 		<a class="btn btn-primary margin-left-ten">Export CSV</a>
-		<a class="btn btn-primary margin-left-ten" ng-click="ContentSection.getTemplate()">Get Template</a>
+		<a class="btn btn-primary margin-left-ten" ng-click="ContentSections.getTemplate()">Get Template</a>
 	</div>
 </div>
 <hr class="none">
@@ -58,18 +58,15 @@
 <hr>
 <div class="item clearfix">
 	<div class="draggable-list-view wide-list has-btn links-list">
-		<div class="d-item double-line square-icon clearfix">
+		<div ng-repeat="section in ContentSections.sections" class="d-item double-line square-icon clearfix">
 			<span class="icon icon-menu pull-left"></span>
-			<div class="media-holder pull-left">
-				<img src="http://www.placehold.it/50x50">
+			<div ng-show="section.data.mainImage" class="media-holder pull-left">
+				<img ng-src="{{section.data.mainImage}}">
 			</div>
 			<div class="copy pull-right">
 				<div class="col-md-4 padding-zero pull-left">
-					<a href="#/item" class="text-primary"><span class="title ellipsis pull-left">Item Name</span></a>
-					<span class="title ellipsis pull-left">Item Summary</span>
-				</div>
-				<div class="col-md-7 padding-right-zero pull-left">
-					<a class="text-primary"><span class="content ellipsis text-primary">3 Sections</span></a>
+					<a href="#/item" class="text-primary"><span class="title ellipsis pull-left">{{section.data.secTitle}}</span></a>
+					<span class="title ellipsis pull-left">{{section.data.secSummary}}</span>
 				</div>
 				<div class="pull-right">
 					<span class="btn-icon btn-link-icon btn-primary margin-left-zero"></span>
@@ -77,63 +74,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="d-item double-line square-icon clearfix">
-			<span class="icon icon-menu pull-left"></span>
-			<div class="media-holder pull-left">
-				<img src="http://www.placehold.it/50x50">
-			</div>
-			<div class="copy pull-right">
-				<div class="col-md-4 padding-zero pull-left">
-					<a class="text-primary"><span class="title ellipsis pull-left">Item Name</span></a>
-					<span class="title ellipsis pull-left">Item Summary</span>
-				</div>
-				<div class="col-md-7 padding-right-zero pull-left">
-					<a class="text-primary"><span class="content ellipsis text-primary">3 Sections</span></a>
-				</div>
-				<div class="pull-right">
-					<span class="btn-icon btn-link-icon btn-primary margin-left-zero"></span>
-					<span class="btn-icon btn-delete-icon btn-danger margin-left-five"></span>
-				</div>
-			</div>
-		</div>
-		<div class="d-item double-line square-icon clearfix">
-			<span class="icon icon-menu pull-left"></span>
-			<div class="media-holder pull-left">
-				<img src="http://www.placehold.it/50x50">
-			</div>
-			<div class="copy pull-right">
-				<div class="col-md-4 padding-zero pull-left">
-					<a class="text-primary"><span class="title ellipsis pull-left">Item Name</span></a>
-					<span class="title ellipsis pull-left">Item Summary</span>
-				</div>
-				<div class="col-md-7 padding-right-zero pull-left">
-					<a class="text-primary"><span class="content ellipsis text-primary">3 Sections</span></a>
-				</div>
-				<div class="pull-right">
-					<span class="btn-icon btn-link-icon btn-primary margin-left-zero"></span>
-					<span class="btn-icon btn-delete-icon btn-danger margin-left-five"></span>
-				</div>
-			</div>
-		</div>
-		<div class="d-item double-line square-icon clearfix">
-			<span class="icon icon-menu pull-left"></span>
-			<div class="media-holder pull-left">
-				<img src="http://www.placehold.it/50x50">
-			</div>
-			<div class="copy pull-right">
-				<div class="col-md-4 padding-zero pull-left">
-					<a class="text-primary"><span class="title ellipsis pull-left">Item Name</span></a>
-					<span class="title ellipsis pull-left">Item Summary</span>
-				</div>
-				<div class="col-md-7 padding-right-zero pull-left">
-					<a class="text-primary"><span class="content ellipsis text-primary">3 Sections</span></a>
-				</div>
-				<div class="pull-right">
-					<span class="btn-icon btn-link-icon btn-primary margin-left-zero"></span>
-					<span class="btn-icon btn-delete-icon btn-danger margin-left-five"></span>
-				</div>
-			</div>
-		</div>
+
 	</div>
 	<br><br><br>
 
