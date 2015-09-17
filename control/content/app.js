@@ -32,21 +32,23 @@
                             var _bootstrap = function () {
                                 PlaceInfo.save({
                                     content: {
-                                        sortBy: '',
+                                        images: [],
+                                        descriptionHTML: '',
+                                        description: '',
+                                        sortBy: Orders.ordersMap.Newest,
                                         rankOfLastItem: ''
                                     },
                                     design: {
-                                        secListLayout: "",
-                                        mapLayout: "",
-                                        itemListLayout: "",
-                                        itemDetailsLayout: "",
+                                        secListLayout: "sec-list-1-1",
+                                        mapLayout: "map-1",
+                                        itemListLayout: "item-list-1",
+                                        itemDetailsLayout: "item-details-1",
                                         secListBGImage: ""
                                     },
                                     settings: {
-                                        defaultView: "",
-                                        showDistanceIn: ""
+                                        defaultView: "list",
+                                        showDistanceIn: "miles"
                                     }
-
                                 }).then(function success() {
                                     Location.goToHome();
                                 }, function fail() {
