@@ -1,10 +1,10 @@
-describe('mediaCenterWidget: Services', function () {
+describe('placeContent: Enums', function () {
     var COLLECTIONS,
         CODES,
         MESSAGES,
         EVENTS,
         PATHS;
-    beforeEach(module('placeContent'));
+    beforeEach(module('placesContentEnums'));
     beforeEach(inject(function ($injector) {
         COLLECTIONS = $injector.get('COLLECTIONS');
         CODES = $injector.get('CODES');
