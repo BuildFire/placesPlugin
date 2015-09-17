@@ -6,7 +6,6 @@
         [
             'placesEnums',
             'placesSettingsServices',
-            'placesSettingsFilters',
             'ngAnimate',
             'ngRoute'
         ])
