@@ -6,13 +6,12 @@
         <div class="screens clearfix">
             <div class="screen layouticon pull-left">
                 <a class="border-radius-three default-background-hover text-center">
-                    <span class="add-icon hidden">+</span>
-                    <img src="http://www.placehold.it/31x33">
+                    <img ng-src="assets/images/{{DesignHome.placeInfo.data.design.secListLayout}}.png"/>
                 </a>
             </div>
             <div class="screen layoutgrid pull-right margin-left-zero border-grey border-radius-three">
-                <a ng-repeat="layout in DesignHome.layouts.secListLayouts" class="layouticon border-radius-three default-background-hover text-center">
-                    <span class="add-icon hidden">+</span>
+                <a ng-repeat="layout in DesignHome.layouts.secListLayouts"
+                   class="layouticon border-radius-three default-background-hover text-center" ng-click="DesignHome.changeLayout(layout.name,'secList')">
                     <img ng-src="assets/images/{{layout.name}}.png">
                 </a>
             </div>
@@ -28,13 +27,12 @@
         <div class="screens clearfix">
             <div class="screen layouticon pull-left">
                 <a class="border-radius-three default-background-hover text-center">
-                    <span class="add-icon hidden">+</span>
-                    <img src="http://www.placehold.it/31x33">
+                    <img ng-src="assets/images/{{DesignHome.placeInfo.data.design.mapLayout}}.png"/>
                 </a>
             </div>
             <div class="screen layoutgrid pull-right margin-left-zero border-grey border-radius-three">
-                <a ng-repeat="layout in DesignHome.layouts.mapLayouts" class="layouticon border-radius-three default-background-hover text-center">
-                    <span class="add-icon hidden">+</span>
+                <a ng-repeat="layout in DesignHome.layouts.mapLayouts"
+                   class="layouticon border-radius-three default-background-hover text-center" ng-click="DesignHome.changeLayout(layout.name,'map')">
                     <img ng-src="assets/images/{{layout.name}}.png">
                 </a>
             </div>
@@ -50,13 +48,12 @@
         <div class="screens clearfix">
             <div class="screen layouticon pull-left">
                 <a class="border-radius-three default-background-hover text-center">
-                    <span class="add-icon hidden">+</span>
-                    <img src="http://www.placehold.it/31x33">
+                    <img ng-src="assets/images/{{DesignHome.placeInfo.data.design.itemListLayout}}.png"/>
                 </a>
             </div>
             <div class="screen layoutgrid pull-right margin-left-zero border-grey border-radius-three">
-                <a ng-repeat="layout in DesignHome.layouts.itemListLayouts" class="layouticon border-radius-three default-background-hover text-center">
-                    <span class="add-icon hidden">+</span>
+                <a ng-repeat="layout in DesignHome.layouts.itemListLayouts"
+                   class="layouticon border-radius-three default-background-hover text-center" ng-click="DesignHome.changeLayout(layout.name,'itemList')">
                     <img ng-src="assets/images/{{layout.name}}.png">
                 </a>
             </div>
@@ -72,13 +69,12 @@
         <div class="screens clearfix">
             <div class="screen layouticon pull-left">
                 <a class="border-radius-three default-background-hover text-center">
-                    <span class="add-icon hidden">+</span>
-                    <img src="http://www.placehold.it/31x33">
+                    <img ng-src="assets/images/{{DesignHome.placeInfo.data.design.itemDetailsLayout}}.png"/>
                 </a>
             </div>
             <div class="screen layoutgrid pull-right margin-left-zero border-grey border-radius-three">
-                <a ng-repeat="layout in DesignHome.layouts.itemLayouts" class="layouticon border-radius-three default-background-hover text-center">
-                    <span class="add-icon hidden">+</span>
+                <a ng-repeat="layout in DesignHome.layouts.itemLayouts"
+                   class="layouticon border-radius-three default-background-hover text-center" ng-click="DesignHome.changeLayout(layout.name,'itemDetails')">
                     <img ng-src="assets/images/{{layout.name}}.png">
                 </a>
             </div>
@@ -112,9 +108,11 @@
             <div class="screen text-center layouticon pull-left">
                 <a class="border-radius-three default-background-hover" ng-click="DesignHome.addListBgImage()">
                     <span ng-hide="DesignHome.placeInfo.data.design.secListBGImage" class="add-icon">+</span>
-                    <img ng-show="DesignHome.placeInfo.data.design.secListBGImage" ng-src="{{DesignHome.placeInfo.data.design.secListBGImage | resizeImage : 80 : 106}}">
+                    <img ng-show="DesignHome.placeInfo.data.design.secListBGImage"
+                         ng-src="{{DesignHome.placeInfo.data.design.secListBGImage | resizeImage : 80 : 106}}">
                 </a>
-                <span ng-show="DesignHome.placeInfo.data.design.secListBGImage" class="icon btn-icon btn-delete-icon btn-danger" ng-click="DesignHome.removeListBgImage()"></span>
+                <span ng-show="DesignHome.placeInfo.data.design.secListBGImage"
+                      class="icon btn-icon btn-delete-icon btn-danger" ng-click="DesignHome.removeListBgImage()"></span>
                 <!--<label class="secondary">750x1334</label>-->
             </div>
         </div>
