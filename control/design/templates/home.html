@@ -85,7 +85,7 @@
         </div>
     </div>
 </div>
-<hr>
+<!--<hr>
 <div class="item row clearfix margin-top-thirty">
     <div class="labels col-md-3 padding-right-zero pull-left">
         <span>Placeholder Image</span>
@@ -101,7 +101,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 <hr>
 <div class="item row clearfix margin-top-thirty">
     <div class="labels col-md-3 padding-right-zero pull-left">
@@ -110,11 +110,12 @@
     <div class="main col-md-9 pull-right">
         <div class="screens clearfix">
             <div class="screen text-center layouticon pull-left">
-                <a class="border-radius-three default-background-hover">
-                    <span class="add-icon">+</span>
+                <a class="border-radius-three default-background-hover" ng-click="DesignHome.addListBgImage()">
+                    <span ng-hide="DesignHome.placeInfo.data.design.secListBGImage" class="add-icon">+</span>
+                    <img ng-show="DesignHome.placeInfo.data.design.secListBGImage" ng-src="{{DesignHome.placeInfo.data.design.secListBGImage | resizeImage : 80 : 106}}">
                 </a>
-                <span class="icon btn-icon btn-delete-icon btn-danger"></span>
-                <label class="secondary">750x1334</label>
+                <span ng-show="DesignHome.placeInfo.data.design.secListBGImage" class="icon btn-icon btn-delete-icon btn-danger" ng-click="DesignHome.removeListBgImage()"></span>
+                <!--<label class="secondary">750x1334</label>-->
             </div>
         </div>
     </div>
