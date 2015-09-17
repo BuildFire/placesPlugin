@@ -27,7 +27,7 @@ module.exports = function (config) {
             './test/assets/buildfire.js',
             './control/design/**/*.js',
             './control/content/**/*.js',
-            './control/content/app.js',
+            './control/settings/**/*.js',
             './widget/**/*.js',
             './test/**/*.js',
             //'http://localhost:63342/sdk/scripts/buildfire.js',
@@ -49,7 +49,9 @@ module.exports = function (config) {
             'control/design/**/!(js)/*.js': ['coverage'],
             'control/design/*.js': ['coverage'],
             'control/content/**/!(js)/*.js': ['coverage'],
-            'control/content/*.js': ['coverage']
+            'control/content/*.js': ['coverage'],
+            'control/settings/**/!(js)/*.js': ['coverage'],
+            'control/settings/*.js': ['coverage']
         },
 
         plugins: [
