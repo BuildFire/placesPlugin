@@ -1,6 +1,6 @@
 (function (angular, buildfire) {
     "use strict";
-    //created mediaCenterContent module
+    //created placesPluginContent module
     angular
         .module('placesContent',
         [

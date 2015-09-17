@@ -1,7 +1,7 @@
 (function (angular) {
     "use strict";
     angular
-        .module('placesEnums', [])
+        .module('placesContentEnums', [])
         .constant('CODES', {
             NOT_FOUND: 'NOTFOUND',
             SUCCESS: 'SUCCESS'
