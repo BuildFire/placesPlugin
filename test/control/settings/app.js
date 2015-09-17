@@ -1,5 +1,5 @@
-describe('placesContent: App', function () {
-    beforeEach(module('placesContent'));
+describe('placesSettings: App', function () {
+    beforeEach(module('placesSettings'));
     var location, route, rootScope;
     beforeEach(inject(
         function( _$location_, _$route_, _$rootScope_ ) {
@@ -10,7 +10,7 @@ describe('placesContent: App', function () {
     describe('Home route', function() {
         beforeEach(inject(
             function($httpBackend) {
-                $httpBackend.expectGET('templates/sections.html')
+                $httpBackend.expectGET('templates/home.html')
                     .respond(200);
                 $httpBackend.expectGET('/')
                     .respond(200);
@@ -19,7 +19,7 @@ describe('placesContent: App', function () {
         it('should load the home page on successful load of /', function() {
             location.path('/');
             rootScope.$digest();
-            expect(route.current.controller).toBe('ContentSectionsCtrl')
+            expect(route.current.controller).toBe('SettingsHomeCtrl')
         });
     });
 });

@@ -24,14 +24,10 @@ module.exports = function (config) {
             './bower_components/angular-ui-tinymce/src/tinymce.js',
             './bower_components/tinymce-dist/tinymce.min.js',
             './bower_components/angular-sanitize/angular-sanitize.min.js',
-            './bower_components/videogular/videogular.min.js',
-            './bower_components/videogular-controls/vg-controls.min.js',
-            './bower_components/videogular-overlay-play/vg-overlay-play.min.js',
-            './bower_components/ng-videosharing-embed/build/ng-videosharing-embed.min.js',
             './test/assets/buildfire.js',
             './control/design/**/*.js',
             './control/content/**/*.js',
-            './control/content/app.js',
+            './control/settings/**/*.js',
             './widget/**/*.js',
             './test/**/*.js',
             //'http://localhost:63342/sdk/scripts/buildfire.js',
@@ -53,7 +49,9 @@ module.exports = function (config) {
             'control/design/**/!(js)/*.js': ['coverage'],
             'control/design/*.js': ['coverage'],
             'control/content/**/!(js)/*.js': ['coverage'],
-            'control/content/*.js': ['coverage']
+            'control/content/*.js': ['coverage'],
+            'control/settings/**/!(js)/*.js': ['coverage'],
+            'control/settings/*.js': ['coverage']
         },
 
         plugins: [

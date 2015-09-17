@@ -30,19 +30,18 @@
                 if (error) {
                     console.error('Error:', error);
                 } else {
-                    DesignHome.placeInfo.data.design.backgroundImage = result.selectedFiles && result.selectedFiles[0] || null;
+                    DesignHome.placeInfo.data.design.secListBGImage = result.selectedFiles && result.selectedFiles[0] || null;
                     $scope.$digest();
                 }
             };
 
             DesignHome._callback = callback;
-
             var options = {showIcons: false, multiSelection: false};
-            DesignHome.addBackgroundImage = function () {
+            DesignHome.addListBgImage = function () {
                 Buildfire.imageLib.showDialog(options, callback);
             };
-            DesignHome.removeBackgroundImage = function () {
-                DesignHome.placeInfo.data.design.backgroundImage = null;
+            DesignHome.removeListBgImage = function () {
+                DesignHome.placeInfo.data.design.secListBGImage = null;
             };
 
             $scope.$watch(function () {
