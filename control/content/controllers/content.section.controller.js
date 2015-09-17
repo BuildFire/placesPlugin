@@ -8,8 +8,8 @@
     /**
      * Inject dependency
      */
-        .controller('ContentSectionCtrl', ['$scope', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire',
-            function ($scope, DB, $timeout, COLLECTIONS, Orders, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire) {
+        .controller('ContentSectionCtrl', ['$scope', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Location', 'section',
+            function ($scope, DB, $timeout, COLLECTIONS, Orders, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Location, section) {
 
                 var ContentSection = this;
                 var tmrDelayForMedia = null;
@@ -23,33 +23,12 @@
                  * Get the Place initialized settings
                  */
                 var PlaceSettings = AppConfig.getSettings();
-                console.log(PlaceSettings);
                 /**
                  * Get the MediaCenter master collection data object id
                  */
                 var appId = AppConfig.getAppId();
-                console.log(appId);
 
-                ContentSection.section = {
-                    data: {
-                        mainImage: '',
-                        secTitle: '',
-                        secSummary: '',
-                        itemListBGImage: '',
-                        sortBy: '',
-                        rankOfLastItem: ''
-                    }
-                };
-                ContentSection.masterSection = { data: {
-                    mainImage: '',
-                    secTitle: '',
-                    secSummary: '',
-                    itemListBGImage: '',
-                    sortBy: '',
-                    rankOfLastItem: ''
-                }};
                 var selectImageOptions = {showIcons: false, multiSelection: false};
-
 
                 /**
                  * This updatemasterSection will update the ContentSection.section with passed item
@@ -58,6 +37,30 @@
                 function updateMasterSection(item) {
                     ContentSection.section = angular.copy(item);
                 }
+
+                function init() {
+                    var blankData = {
+                        data: {
+                            mainImage: '',
+                            secTitle: '',
+                            secSummary: '',
+                            itemListBGImage: '',
+                            sortBy: '',
+                            rankOfLastItem: ''
+                        }
+                    };
+
+                    updateMasterSection(blankData);
+
+                    if (section) {
+                        ContentSection.section = section;
+                    }
+                    else {
+                        ContentSection.section = blankData;
+                    }
+                }
+
+                init();
 
                 /**
                  * This resetItem will reset the ContentSection.section with ContentSection.masterSection
@@ -111,7 +114,6 @@
                         console.error('---------------Error while inserting data------------', err);
                     });
                 }
-
 
                 /**
                  * updateItemsWithDelay called when ever there is some change in current section
@@ -190,7 +192,6 @@
                  * will delete the current item from MediaContent collection
                  */
                 ContentSection.delete = function () {
-                    console.log(ContentSection.item);
                     if (ContentSection.section.id) {
                         Sections.delete(ContentSection.section.id).then(function (data) {
                             Location.goToHome();

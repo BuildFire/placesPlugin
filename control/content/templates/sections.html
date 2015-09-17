@@ -3,8 +3,8 @@
 		<span>Bulk Actions</span>
 	</div>
 	<div class="main col-md-9 pull-right">
-		<a class="btn btn-primary">Import CSV</a>
-		<a class="btn btn-primary margin-left-ten">Export CSV</a>
+		<a class="btn btn-primary" ng-click="ContentSections.openImportCSVDialog()">Import CSV</a>
+		<a class="btn btn-primary margin-left-ten" ng-click="ContentSections.exportCSV()">Export CSV</a>
 		<a class="btn btn-primary margin-left-ten" ng-click="ContentSections.getTemplate()">Get Template</a>
 	</div>
 </div>
@@ -16,7 +16,7 @@
 	</div>
 	<div class="main col-md-9 pull-right">
 		<div class="col-md-4 pull-left padding-left-zero">
-			<a href="#/sections" class="btn btn-success stretch">Add New Section</a>
+			<a href="#/section" class="btn btn-success stretch">Add New Section</a>
 		</div>
 		<div class="col-md-8 pull-right padding-zero">
 			<div class="col-md-4 pull-left padding-left-zero text-right">
@@ -24,19 +24,13 @@
 			</div>
 			<div class="col-md-8 pull-right padding-zero">
 				<div class="dropdown pull-left col-md-12 padding-zero" dropdown>
-					<button class="btn btn-default text-left dropdown-toggle" data-toggle="dropdown" dropdown-toggle aria-expanded="true">
-						<span class="pull-left">Manually</span>
+					<button ng-disabled="disabled" class="btn btn-default text-left dropdown-toggle" data-toggle="dropdown" dropdown-toggle aria-expanded="true">
+						<span class="pull-left">{{ContentSections.info.data.content.sortByValue || 'Newest'}}</span>
 						<span class="chevron icon-chevron-down pull-right"></span>
 					</button>
 					<ul class="dropdown-menu extended" role="menu">
-						<li>
-							<a tabindex="-1" class="transition-third">Option</a>
-						</li>
-						<li>
-							<a tabindex="-1" class="transition-third">Option</a>
-						</li>
-						<li>
-							<a tabindex="-1" class="transition-third">Option</a>
+						<li ng-repeat="option in ContentSections.sortOptions" ng-click="ContentSections.toggleSortOrder(option.name)">
+							<a tabindex="-1" class="transition-third">{{option.value}}</a>
 						</li>
 					</ul>
 				</div>
@@ -48,34 +42,48 @@
 <div class="item clearfix row">
 	<div class="main col-md-9 pull-right padding-left-zero row">
 		<div class="pull-left inner-main col-md-8 padding-zero">
-			<input type="text" class="form-control" placeholder="Search Item Name">
+			<input ng-model="search" type="text" class="form-control" placeholder="Search Section Name">
 		</div>
 		<div class="col-md-4 pull-right">
-			<a class="btn btn-primary pull-right stretch">Search</a>
+			<a ng-click="ContentSections.searchListSection(search)" class="btn btn-primary pull-right stretch">Search</a>
 		</div>
 	</div>
 </div>
 <hr>
 <div class="item clearfix">
-	<div class="draggable-list-view wide-list has-btn links-list">
-		<div ng-repeat="section in ContentSections.sections" class="d-item double-line square-icon clearfix">
-			<span class="icon icon-menu pull-left"></span>
-			<div ng-show="section.data.mainImage" class="media-holder pull-left">
-				<img ng-src="{{section.data.mainImage}}">
-			</div>
-			<div class="copy pull-right">
-				<div class="col-md-4 padding-zero pull-left">
-					<a href="#/item" class="text-primary"><span class="title ellipsis pull-left">{{section.data.secTitle}}</span></a>
-					<span class="title ellipsis pull-left">{{section.data.secSummary}}</span>
+	<div id="scroll-infinite"
+		 class="tab-order draggable-list-view wide-list has-btn-link border-grey border-radius-four">
+		<div infinite-scroll-distance="0"
+			 infinite-scroll="ContentSections.getMore()"
+			 infinite-scroll-disabled="ContentSections.noMore"
+			 infinite-scroll-container="'#scroll-infinite'">
+			<div ui-sortable="ContentSections.itemSortableOptions" ng-model="ContentSections.sections">
+				<div class="well text-center margin-bottom-zero border-none" ng-if="ContentSections.sections.length <1">
+					<p class="margin-zero">No items found.</p>
 				</div>
-				<div class="pull-right">
-					<span class="btn-icon btn-link-icon btn-primary margin-left-zero"></span>
-					<span class="btn-icon btn-delete-icon btn-danger margin-left-five"></span>
+				<div class="d-item double-line square-icon clearfix" ng-if="ContentSections.sections.length"
+					 ng-repeat="item in ContentSections.sections">
+					<span class="icon icon-menu pull-left cursor-grab"  ng-class="{ 'disabled': ContentSections.itemSortableOptions.disabled }"></span>
+
+					<div class="media-holder pull-left">
+						<img ng-src="{{item.data.mainImage | resizeImage : 50:50}}" ng-if="item.data.mainImage">
+					</div>
+					<div class="copy pull-right">
+						<a class="text-primary" href="#/items/{{item.id}}"><span
+								class="title ellipsis pull-left">{{item.data.secTitle}}</span></a>
+						<span class="title ellipsis pull-left">{{item.data.secSummary}}</span>
+						<div class="col-md-7 padding-right-zero pull-left">
+							<a href="#/section/{{item.id}}" class="text-primary"><span class="content ellipsis text-primary">Edit</span></a>
+						</div>
+						<div class="pull-right">
+                    <span class="btn-icon btn-link-icon btn-primary transition-third"
+						  onclick="window.openDialog('deepLink.html', null, 'sm', null)"></span>
+                    <span class="btn-icon btn-delete-icon btn-danger transition-third"
+						  ng-click="ContentSections.removeListSection($index)"></span>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-
 	</div>
-	<br><br><br>
-
 </div>
