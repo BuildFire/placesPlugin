@@ -4,7 +4,7 @@
     angular
         .module('placesContent',
         [
-            'placesEnums',
+            'placesContentEnums',
             'placesServices',
             'placesFilters',
             'ngAnimate',
