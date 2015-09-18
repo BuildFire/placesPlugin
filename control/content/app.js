@@ -73,10 +73,43 @@
                         }]
                     }
                 })
-                .when('/item', {
+                .when('/item/:sectionId', {
                     templateUrl: 'templates/item.html',
                     controllerAs: 'ContentItem',
-                    controller: 'ContentItemCtrl'
+                    controller: 'ContentItemCtrl',
+                    resolve: {
+                        item: function () {
+                            return null;
+                        }
+                    }
+                })
+                .when('/item/:sectionId/:itemId',
+                {
+                    templateUrl: 'templates/item.html',
+                    controllerAs: 'ContentItem',
+                    controller: 'ContentItemCtrl',
+                    resolve: {
+                        item: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', '$route', function ($q, DB, COLLECTIONS, Orders, Location, $route) {
+                            var deferred = $q.defer();
+                            var Items = new DB(COLLECTIONS.Items);
+                            var itemId = $route.current.params.itemId;
+                            if (itemId) {
+                                Items.getById(itemId).then(function success(result) {
+                                        if (result && result.data) {
+                                            deferred.resolve(result);
+                                        }
+                                        else {
+                                            Location.goToHome();
+                                        }
+                                    },
+                                    function fail() {
+                                        Location.goToHome();
+                                    }
+                                );
+                            }
+                            return deferred.promise;
+                        }]
+                    }
                 })
                 .when('/items/:sectionId', {
                     templateUrl: 'templates/items.html',

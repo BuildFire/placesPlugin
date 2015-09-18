@@ -12,6 +12,7 @@
             function ($scope, DB, $timeout, COLLECTIONS, Orders, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Location, section) {
 
                 var ContentSection = this;
+                console.log(section);
                 var tmrDelayForMedia = null;
                 /**
                  * Create instance of Sections db collection
