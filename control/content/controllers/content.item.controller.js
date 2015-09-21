@@ -18,6 +18,13 @@
                 else{
                     ContentItem.item={};
                 }
+                //option for wysiwyg
+                ContentItem.bodyWYSIWYGOptions = {
+                    plugins: 'advlist autolink link image lists charmap print preview',
+                    skin: 'lightgray',
+                    trusted: true,
+                    theme: 'modern'
+                };
                 // create a new instance of the buildfire carousel editor
                 var editor = new Buildfire.components.carousel.editor("#carousel");
                 // this method will be called when a new item added to the list
@@ -128,7 +135,6 @@
                     return ContentItem.item;
                 }, function () {
                     if (ContentItem.item.id) {
-                        alert(2);
                         Buildfire.datastore.update(ContentItem.item.id, ContentItem.item.data, 'items', function (err, result) {
 
                             if(err){
@@ -153,7 +159,6 @@
                          /!* revert to previous value in case of error*!/
                          ContentItem.mediaInfo = angular.copy(ContentItem._lastSaved);
                          });*/
-                        alert(1);
                         Buildfire.datastore.insert(ContentItem.item, 'items', false, function (err, result) {
                             if (!err) {
 
