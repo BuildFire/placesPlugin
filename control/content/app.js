@@ -74,7 +74,7 @@
                     }
                 })
                 .when('/item/:sectionId', {
-                    templateUrl: 'templates/item.html',
+                    templateUrl: 'templates/item-content.html',
                     controllerAs: 'ContentItem',
                     controller: 'ContentItemCtrl',
                     resolve: {

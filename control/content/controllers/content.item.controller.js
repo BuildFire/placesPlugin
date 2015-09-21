@@ -44,6 +44,32 @@
                     ContentItem.item.images[newIndex] = temp;
                     $scope.$digest();
                 };
+                // create a new instance of the buildfire action Items
+                var linkEditor = new Buildfire.components.actionItems.sortableList("#actionItems");
+                // this method will be called when a new item added to the list
+                linkEditor.onAddItems = function (items) {
+                    if (!ContentItem.item.links)
+                        ContentItem.item.links = [];
+                    ContentItem.item.links.push.apply(ContentItem.item.links, items);
+                    $scope.$digest();
+                };
+                // this method will be called when an item deleted from the list
+                linkEditor.onDeleteItem = function (item, index) {
+                    ContentItem.item.links.splice(index, 1);
+                    $scope.$digest();
+                };
+                // this method will be called when you edit item details
+                linkEditor.onItemChange = function (item, index) {
+                    ContentItem.item.links.splice(index, 1, item);
+                    $scope.$digest();
+                };
+                // this method will be called when you change the order of items
+                linkEditor.onOrderChange = function (item, oldIndex, newIndex) {
+                    var temp = ContentItem.item.links[oldIndex];
+                    ContentItem.item.links[oldIndex] = ContentItem.item.links[newIndex];
+                    ContentItem.item.links[newIndex] = temp;
+                    $scope.$digest();
+                };
                 /**
                  * Create instance of Items db collection
                  * @type {DB}
