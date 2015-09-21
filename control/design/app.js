@@ -34,15 +34,19 @@
                                         rankOfLastItem: ''
                                     },
                                     design: {
-                                        secListLayout:"",
-                                        mapLayout:"",
-                                        itemListLayout:"",
-                                        itemDetailsLayout: "list-1",
-                                        secListBGImage: "item-1"
+                                        secListLayout: "sec-list-1-1",
+                                        mapLayout: "map-1",
+                                        itemListLayout: "item-list-1",
+                                        itemDetailsLayout: "item-details-1",
+                                        secListBGImage: ""
+                                    },
+                                    settings: {
+                                        defaultView: "list",
+                                        showDistanceIn: "miles"
                                     }
-                                }).then(function success() {
+                                }).then(function success(data) {
                                     Location.go("/");
-                                }, function fail() {
+                                }, function fail(err) {
                                     _bootstrap();
                                 });
                             };
@@ -55,7 +59,7 @@
                                         _bootstrap(); //bootstrap again  _bootstrap();
                                     }
                                 },
-                                function fail() {
+                                function fail(err) {
                                     Location.goToHome();
                                 }
                             );

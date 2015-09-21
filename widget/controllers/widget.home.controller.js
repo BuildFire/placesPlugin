@@ -6,6 +6,6 @@
 
                 var WidgetHome = this;
 
-                WidgetHome.data = {design:{secListLayout :'list-1'}};
+                WidgetHome.data = {design:{secListLayout :'sectionlist1'}};
             }]);
 })(window.angular, undefined);

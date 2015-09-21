@@ -1,7 +1,7 @@
 (function (angular) {
     "use strict";
     angular
-        .module('placesEnums', [])
+        .module('placesContentEnums', [])
         .constant('CODES', {
             NOT_FOUND: 'NOTFOUND',
             SUCCESS: 'SUCCESS'
@@ -21,8 +21,9 @@
             DESIGN_BGIMAGE_CHANGE: "DESIGN_BGIMAGE_CHANGE"
         })
         .constant('COLLECTIONS', {
-            MediaContent: "MediaContent",
-            MediaCenter: "MediaCenter"
+            PlaceInfo: "placeInfo",
+            Sections: "sections",
+            Items: "items"
         })
         .constant('PATHS', {
             MEDIA: "MEDIA",

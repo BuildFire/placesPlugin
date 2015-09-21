@@ -4,12 +4,27 @@
     </div>
     <div class="main col-md-9 pull-right">
         <div class="radio radio-primary radio-inline">
-            <input id="listview" type="radio" name="defaultview" checked="">
+            <input id="listview" type="radio" name="defaultview" ng-model="SettingsHome.placeInfo.data.settings.defaultView" value="list" ng-change="SettingsHome.change()">
             <label for="listview">List</label>
         </div>
         <div class="radio radio-primary radio-inline">
-            <input id="mapview" type="radio" name="defaultview">
+            <input id="mapview" type="radio" name="defaultview" ng-model="SettingsHome.placeInfo.data.settings.defaultView" value="map" ng-change="SettingsHome.change()">
             <label for="mapview">Map</label>
+        </div>
+    </div>
+</div>
+<div class="item row clearfix">
+    <div class="labels col-md-3 padding-right-zero pull-left">
+        <span>Show Distance In</span>
+    </div>
+    <div class="main col-md-9 pull-right">
+        <div class="radio radio-primary radio-inline">
+            <input id="miles" type="radio" name="distance" ng-model="SettingsHome.placeInfo.data.settings.showDistanceIn" value="miles" ng-change="SettingsHome.change()">
+            <label for="miles">Miles</label>
+        </div>
+        <div class="radio radio-primary radio-inline">
+            <input id="km" type="radio" name="distance" ng-model="SettingsHome.placeInfo.data.settings.showDistanceIn" value="kilometers" ng-change="SettingsHome.change()">
+            <label for="km">Kilometers</label>
         </div>
     </div>
 </div>

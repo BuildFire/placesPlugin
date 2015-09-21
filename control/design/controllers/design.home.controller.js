@@ -15,8 +15,10 @@
             var PlaceCenter = DesignHome._placeCenter;
 
             DesignHome.layouts = {
-                listLayouts: [{name: "list-1"}, {name: "list-2"}, {name: "list-3"}, {name: "list-4"}],
-                itemLayouts: [{name: "item-1"}, {name: "item-2"}]
+                itemListLayouts: [{name: "item-list-1"}, {name: "item-list-2"}],
+                itemLayouts: [{name: "item-details-1"}, {name: "item-details-2"}, {name: "item-details-3"}],
+                secListLayouts:[{name:"sec-list-1-1"},{name:"sec-list-1-2"},{name:"sec-list-2-1"},{name:"sec-list-2-2"},{name:"sec-list-3-1"},{name:"sec-list-3-2"}],
+                mapLayouts:[{name:"map-1"},{name:"map-2"}]
             };
             DesignHome.changeLayout = function (layoutName, type) {
                 if (layoutName && DesignHome.placeInfo.data.design) {
@@ -28,19 +30,18 @@
                 if (error) {
                     console.error('Error:', error);
                 } else {
-                    DesignHome.placeInfo.data.design.backgroundImage = result.selectedFiles && result.selectedFiles[0] || null;
+                    DesignHome.placeInfo.data.design.secListBGImage = result.selectedFiles && result.selectedFiles[0] || null;
                     $scope.$digest();
                 }
             };
 
             DesignHome._callback = callback;
-
             var options = {showIcons: false, multiSelection: false};
-            DesignHome.addBackgroundImage = function () {
+            DesignHome.addListBgImage = function () {
                 Buildfire.imageLib.showDialog(options, callback);
             };
-            DesignHome.removeBackgroundImage = function () {
-                DesignHome.placeInfo.data.design.backgroundImage = null;
+            DesignHome.removeListBgImage = function () {
+                DesignHome.placeInfo.data.design.secListBGImage = null;
             };
 
             $scope.$watch(function () {

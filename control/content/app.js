@@ -1,10 +1,10 @@
 (function (angular, buildfire) {
     "use strict";
-    //created mediaCenterContent module
+    //created placesPluginContent module
     angular
         .module('placesContent',
         [
-            'placesEnums',
+            'placesContentEnums',
             'placesServices',
             'placesFilters',
             'placesModals',
@@ -23,26 +23,32 @@
         .config(['$routeProvider', function ($routeProvider) {
             $routeProvider
                 .when('/', {
-                    templateUrl: 'templates/home.html',
-                    controllerAs: 'ContentHome',
-                    controller: 'ContentHomeCtrl',
+                    templateUrl: 'templates/sections.html',
+                    controllerAs: 'ContentSections',
+                    controller: 'ContentSectionsCtrl',
                     resolve: {
-                        MediaCenterInfo: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', function ($q, DB, COLLECTIONS, Orders, Location) {
+                        PlaceInfo: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', function ($q, DB, COLLECTIONS, Orders, Location) {
                             var deferred = $q.defer();
-                            var MediaCenter = new DB(COLLECTIONS.MediaCenter);
+                            var PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
                             var _bootstrap = function () {
-                                MediaCenter.save({
+                                PlaceInfo.save({
                                     content: {
                                         images: [],
                                         descriptionHTML: '',
                                         description: '',
                                         sortBy: Orders.ordersMap.Newest,
-                                        rankOfLastItem: 0
+                                        rankOfLastItem: ''
                                     },
                                     design: {
-                                        listLayout: "list-1",
-                                        itemLayout: "item-1",
-                                        backgroundImage: ""
+                                        secListLayout: "sec-list-1-1",
+                                        mapLayout: "map-1",
+                                        itemListLayout: "item-list-1",
+                                        itemDetailsLayout: "item-details-1",
+                                        secListBGImage: ""
+                                    },
+                                    settings: {
+                                        defaultView: "list",
+                                        showDistanceIn: "miles"
                                     }
                                 }).then(function success() {
                                     Location.goToHome();
@@ -50,7 +56,7 @@
                                     _bootstrap();
                                 });
                             };
-                            MediaCenter.get().then(function success(result) {
+                            PlaceInfo.get().then(function success(result) {
                                     if (result && result.id && result.data) {
                                         deferred.resolve(result);
                                     }
@@ -67,26 +73,28 @@
                         }]
                     }
                 })
-                .when('/media', {
-                    templateUrl: 'templates/media.html',
-                    controllerAs: 'ContentMedia',
-                    controller: 'ContentMediaCtrl',
+                .when('/item/:sectionId', {
+                    templateUrl: 'templates/item-content.html',
+                    controllerAs: 'ContentItem',
+                    controller: 'ContentItemCtrl',
                     resolve: {
-                        media: function () {
+                        item: function () {
                             return null;
                         }
                     }
                 })
-                .when('/media/:itemId', {
-                    templateUrl: 'templates/media.html',
-                    controllerAs: 'ContentMedia',
-                    controller: 'ContentMediaCtrl',
+                .when('/item/:sectionId/:itemId',
+                {
+                    templateUrl: 'templates/item.html',
+                    controllerAs: 'ContentItem',
+                    controller: 'ContentItemCtrl',
                     resolve: {
-                        media: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', '$route', function ($q, DB, COLLECTIONS, Orders, Location, $route) {
+                        item: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', '$route', function ($q, DB, COLLECTIONS, Orders, Location, $route) {
                             var deferred = $q.defer();
-                            var MediaContent = new DB(COLLECTIONS.MediaContent);
-                            if ($route.current.params.itemId) {
-                                MediaContent.getById($route.current.params.itemId).then(function success(result) {
+                            var Items = new DB(COLLECTIONS.Items);
+                            var itemId = $route.current.params.itemId;
+                            if (itemId) {
+                                Items.getById(itemId).then(function success(result) {
                                         if (result && result.data) {
                                             deferred.resolve(result);
                                         }
@@ -99,8 +107,47 @@
                                     }
                                 );
                             }
-                            else {
-                                Location.goToHome();
+                            return deferred.promise;
+                        }]
+                    }
+                })
+                .when('/items/:sectionId', {
+                    templateUrl: 'templates/items.html',
+                    controllerAs: 'ContentItems',
+                    controller: 'ContentItemsCtrl'
+                })
+                .when('/section', {
+                    templateUrl: 'templates/section.html',
+                    controllerAs: 'ContentSection',
+                    controller: 'ContentSectionCtrl',
+                    resolve: {
+                        section: function () {
+                            return null;
+                        }
+                    }
+                })
+                .when('/section/:sectionId', {
+                    templateUrl: 'templates/section.html',
+                    controllerAs: 'ContentSection',
+                    controller: 'ContentSectionCtrl',
+                    resolve: {
+                        section: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', '$route', function ($q, DB, COLLECTIONS, Orders, Location, $route) {
+                            var deferred = $q.defer();
+                            var Sections = new DB(COLLECTIONS.Sections);
+                            var sectionId = $route.current.params.sectionId;
+                            if (sectionId) {
+                                Sections.getById(sectionId).then(function success(result) {
+                                        if (result && result.data) {
+                                            deferred.resolve(result);
+                                        }
+                                        else {
+                                            Location.goToHome();
+                                        }
+                                    },
+                                    function fail() {
+                                        Location.goToHome();
+                                    }
+                                );
                             }
                             return deferred.promise;
                         }]
