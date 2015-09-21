@@ -1,5 +1,5 @@
 /**
- * Create self executing funton to avoid global scope creation
+ * Create self executing function to avoid global scope creation
  */
 (function (angular, tinymce) {
     'use strict';
@@ -11,11 +11,39 @@
         .controller('ContentItemCtrl', ['$scope', 'item', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams',
             function ($scope, item, Buildfire, DB, COLLECTIONS, $routeParams) {
                 $scope.itemShow = 'Content';
-
-
                 var ContentItem = this;
-                var options = {showIcons: false, multiSelection: false};
-
+                if(item){
+                    ContentItem.item=item;
+                }
+                else{
+                    ContentItem.item={};
+                }
+                // create a new instance of the buildfire carousel editor
+                var editor = new Buildfire.components.carousel.editor("#carousel");
+                // this method will be called when a new item added to the list
+                editor.onAddItems = function (items) {
+                    if (!ContentItem.item.images)
+                        ContentItem.item.images = [];
+                    ContentItem.item.images.push.apply(ContentItem.item.images, items);
+                    $scope.$digest();
+                };
+                // this method will be called when an item deleted from the list
+                editor.onDeleteItem = function (item, index) {
+                    ContentItem.item.images.splice(index, 1);
+                    $scope.$digest();
+                };
+                // this method will be called when you edit item details
+                editor.onItemChange = function (item, index) {
+                    ContentItem.item.images.splice(index, 1, item);
+                    $scope.$digest();
+                };
+                // this method will be called when you change the order of items
+                editor.onOrderChange = function (item, oldIndex, newIndex) {
+                    var temp = ContentItem.item.images[oldIndex];
+                    ContentItem.item.images[oldIndex] = ContentItem.item.images[newIndex];
+                    ContentItem.item.images[newIndex] = temp;
+                    $scope.$digest();
+                };
                 /**
                  * Create instance of Items db collection
                  * @type {DB}
@@ -70,7 +98,6 @@
                 ContentItem.removeBackgroundImage = function () {
                     ContentItem.item.backgroundImage = null;
                 };
-
                 $scope.$watch(function () {
                     return ContentItem.item;
                 }, function () {
