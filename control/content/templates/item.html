@@ -1,20 +1,19 @@
 <hr class="none">
 <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
-        <span>Top Image</span>
+        <span>List Image</span>
     </div>
     <div class="main col-md-9 pull-right">
         <div class="screens clearfix">
             <div class="screen carouselicon pull-left text-center">
                 <a class="border-grey border-radius-three default-background-hover"
-                   ng-click="ContentMedia.selectTopImage()">
-                    <span class="add-icon hidden">+</span>
-                    <img ng-show="ContentMedia.item.data.topImage"
-                         ng-src="{{ContentMedia.item.data.topImage | resizeImage : 82:110}}">
+                   ng-click="ContentItem.addListImage()">
+                    <span ng-if="!ContentItem.item.data.listImage" class="add-icon hidden">+</span>
+                    <img ng-if="ContentItem.item.data.listImage"
+                         ng-src="{{ContentItem.item.data.listImage | resizeImage : 82:110}}">
                 </a>
-                <span class="icon btn-delete-icon btn-danger transition-third"
-                      ng-click="ContentMedia.removeTopImage()"></span>
-                <label class="secondary">1024x1024</label>
+                <span ng-if="ContentItem.item.data.listImage" class="icon btn-delete-icon btn-danger transition-third"
+                      ng-click="ContentItem.removeListImage()"></span>
             </div>
         </div>
     </div>
@@ -25,7 +24,8 @@
         <span>Item Title</span>
     </div>
     <div class="main col-md-9 pull-right">
-        <textarea placeholder="Summary" class="form-control" ng-model="ContentItem.item.summary"></textarea>
+        <input type="text" class="form-control" placeholder="Item Title"
+               ng-model="ContentItem.item.data.itemTitle">
     </div>
 </div>
 <hr class="none">
@@ -52,6 +52,7 @@
     </div>
 </div>
 <div ng-show="itemShow=='Content'">
+    <h4>Places Item Content</h4>
     <div id="carousel"></div>
     <hr class="none">
     <div class="item clearfix row">
@@ -59,7 +60,7 @@
             <span>Summary</span>
         </div>
         <div class="main col-md-9 pull-right">
-            <textarea placeholder="Summary" class="form-control" ng-model="ContentItem.item.summary"></textarea>
+            <textarea placeholder="Summary" class="form-control" ng-model="ContentItem.item.data.summary"></textarea>
         </div>
     </div>
     <hr class="none">
@@ -69,7 +70,7 @@
         </div>
         <div class="main col-md-9 pull-right">
         <textarea placeholder="WYSIWYG" class="form-control" ui-tinymce="ContentItem.bodyWYSIWYGOptions"
-                  ng-model="ContentItem.item.bodyContent"></textarea>
+                  ng-model="ContentItem.item.data.bodyContent"></textarea>
         </div>
     </div>
     <hr class="none">
@@ -79,7 +80,7 @@
         </div>
         <div class="main col-md-9 pull-right">
             <input type="text" class="form-control" placeholder="Address Title"
-                   ng-model="ContentItem.item.addressTitle">
+                   ng-model="ContentItem.item.data.addressTitle">
         </div>
     </div>
     <hr class="none">
@@ -113,15 +114,23 @@
                 <div class="screen text-center layouticon pull-left">
                     <a class="border-grey border-radius-three default-background-hover"
                        ng-click="ContentItem.addBackgroundImage()">
-                        <span class="add-icon hidden">+</span>
-                        <img ng-show="ContentItem.item.backgroundImage"
-                             ng-src="{{ContentItem.item.backgroundImage | resizeImage : 82:110}}">
+                        <span ng-show="!ContentItem.item.data.backgroundImage" class="add-icon hidden">+</span>
+                        <img ng-show="ContentItem.item.data.backgroundImage"
+                             ng-src="{{ContentItem.item.data.backgroundImage | resizeImage : 82:110}}">
                     </a>
-                <span class="icon btn-delete-icon btn-danger transition-third"
+                <span ng-show="ContentItem.item.data.backgroundImage" class="icon btn-delete-icon btn-danger transition-third"
                       ng-click="ContentItem.removeBackgroundImage()"></span>
-                    <label class="secondary">750x1334</label>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+<hr class="none">
+<div class="item clearfix row">
+    <div class="main col-md-9 pull-right">
+        <div class="col-md-6 pull-right padding-right-zero padding-left-ten">
+            <a class="btn btn-primary pull-right stretch" ng-click="ContentItem.done()"
+               href="javaScript:void(0);">Done</a>
         </div>
     </div>
 </div>
