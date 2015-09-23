@@ -11,15 +11,10 @@
                     var removePopupDeferred = $q.defer();
                     var removePopupModal = $modal
                         .open({
-                            templateUrl: 'templates/modals/rm-image-link-modal.html',
+                            templateUrl: 'templates/modals/rm-section-modal.html',
                             controller: 'RemovePopupCtrl',
                             controllerAs: 'RemovePopup',
-                            size: 'sm',
-                            resolve: {
-                                Info: function () {
-                                    return info;
-                                }
-                            }
+                            size: 'sm'
                         });
                     removePopupModal.result.then(function (imageInfo) {
                         removePopupDeferred.resolve(imageInfo);
@@ -31,12 +26,8 @@
                 }
             };
         }])
-        .controller('RemovePopupCtrl', ['$scope', '$modalInstance', 'Info', function ($scope, $modalInstance, Info) {
+        .controller('RemovePopupCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
             var RemovePopup = this;
-            RemovePopup.info = {};
-            if (Info) {
-                RemovePopup.info = Info;
-            }
             RemovePopup.ok = function () {
                 $modalInstance.close('yes');
             };
