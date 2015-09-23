@@ -44,6 +44,32 @@
                 }
             };
         }])
+        .factory('OrdersItems', [function () {
+            var ordersMap = {
+                Manually: "Manually",
+                Default: "Manually",
+                Newest: "Newest",
+                Oldest: "Oldest",
+                SectionAZ: "Section A-Z",
+                SectionZA: "Section Z-A"
+            };
+            var orders = [
+                {id: 1, name: "Manually", value: "Manually", key: "rank", order: 1},
+                {id: 1, name: "Newest", value: "Newest", key: "dateCreated", order: -1},
+                {id: 1, name: "Oldest", value: "Oldest", key: "dateCreated", order: 1},
+                {id: 1, name: "SectionA-Z", value: "Section A-Z", key: "title", order: 1},
+                {id: 1, name: "SectionZ-A", value: "Section Z-A", key: "title", order: -1}
+            ];
+            return {
+                ordersMap: ordersMap,
+                options: orders,
+                getOrder: function (name) {
+                    return orders.filter(function (order) {
+                        return order.name === name;
+                    })[0];
+                }
+            };
+        }])
         .factory('Orders', [function () {
             var ordersMap = {
                 Manually: "Manually",

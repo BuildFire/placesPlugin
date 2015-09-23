@@ -1,70 +1,24 @@
-
-<script type="text/javascript" charset="utf-8">
-	$(function(){
-		var slides = $('.plugin-slider .plugin-slide').length;
-		
-		// Slider needs at least 2 slides or you'll get an error.
-		if(slides > 1){
-			$('.plugin-slider').owlCarousel({
-				loop:true,
-				nav:false,
-				items:1
-			});	
-		}
-	})
-</script>
 <div class="holder padding-zero has-bottom">
 	<div class="places-plugin item-list1">
 		<div class="plugin-banner clearfix border-bottom-grey">
-			<div class="plugin-slider text-center">
-				<div class="plugin-slide">
-					<img src="http://www.placehold.it/1280x720.jpg">
-				</div>
-				<div class="plugin-slide">
-					<img src="http://www.placehold.it/1280x720.jpg">
-				</div>
-				<div class="plugin-slide">
-					<img src="http://www.placehold.it/1280x720.jpg">
-				</div>
-			</div>
+			<buildfire-carousel images="WidgetSections.info.data.design.secListLayout"></buildfire-carousel>
 		</div>
-		<div class="padded text-left">
+		<div class="text-left padded padding-bottom-zero clearfix">
 			<p class="margin-bottom-zero">WYSIWYG Editor.</p>
 		</div>
-		<div class="plugin-banner has-info-bar clearfix">
+		<div class="padded padding-top-zero">
+		<div ng-repeat="item in WidgetSections.sections" class="plugin-banner has-info-bar clearfix">
 			<div class="plugin-slide text-center">
-				<img src="http://www.placehold.it/1280x720.jpg">
+				<img ng-src="{{item.data.mainImage}}">
 			</div>
 			<div class="info-bar">
 				<div class="col-xs-12 text-left pull-left">
-					<p class="margin-bottom-zero ellipsis">8018 Camino De Arriba</p>
-					<p class="margin-bottom-zero ellipsis">This is a summary would go</p>
+					<p class="margin-bottom-zero ellipsis">{{item.data.secTitle}}</p>
+					<p class="margin-bottom-zero ellipsis">{{item.data.secSummary}}</p>
 				</div>
 			</div>
-		</div>
-		<div class="plugin-banner has-info-bar clearfix">
-			<div class="plugin-slide text-center">
-				<img src="http://www.placehold.it/1280x720.jpg">
-			</div>
-			<div class="info-bar">
-				<div class="col-xs-12 text-left pull-left">
-					<p class="margin-bottom-zero ellipsis">8018 Camino De Arriba</p>
-					<p class="margin-bottom-zero ellipsis">This is a summary would go</p>
-				</div>
-			</div>
-		</div>
-		<div class="plugin-banner has-info-bar clearfix">
-			<div class="plugin-slide text-center">
-				<img src="http://www.placehold.it/1280x720.jpg">
-			</div>
-			<div class="info-bar">
-				<div class="col-xs-12 text-left pull-left">
-					<p class="margin-bottom-zero ellipsis">8018 Camino De Arriba</p>
-					<p class="margin-bottom-zero ellipsis">This is a summary would go</p>
-				</div>
-			</div>
-		</div>
-		<div class="bottom fixed-bottom clearfix transition-third" style="background:#09a3ee;">
+		</div></div>
+		<div class="bottom fixed-bottom clearfix transition-third">
 			<div class="col-xs-12 pull-left text-center transition-third">
 				<a style="color:#fff;">Filter</a>
 			</div>
@@ -79,19 +33,9 @@
 				</div>
 				<div class="tab-content clearfix">
 					<div class="category-tab tab active">
-						<a class="list-item">All Locations</a>
-						<a class="list-item active">Uptown</a>
-						<a class="list-item">Downtown</a>
-						<a class="list-item">Time Square</a>
-						<a class="list-item active">Greenwich Village</a>
-						<a class="list-item">Sight Seeing</a>
-						<a class="list-item">All Locations</a>
-						<a class="list-item active">Uptown</a>
-						<a class="list-item">Downtown</a>
-						<a class="list-item">Time Square</a>
-						<a class="list-item active">Greenwich Village</a>
-						<a class="list-item">Sight Seeing</a>
+						<a ng-repeat="item in WidgetSections.sections" class="list-item">{{item.data.secTitle}}</a>
 					</div>
+
 					<div class="sorting-tab tab padded">
 						<div class="distance">
 							<p class="text-primary">Distance</p>
@@ -110,24 +54,9 @@
 							</div>
 						</div>
 					</div>
-					</div>
 				</div>
 			</div>
+		</div>
+
 	</div>
 </div>
-<!--
-<!DOCTYPE html>
-<html lang="en" ng-app="buildfire" >
-<head>
-
-	&lt;!&ndash; CSS &ndash;&gt;
-	<link rel="stylesheet" href="../../../../styles/helper.css">
-
-	&lt;!&ndash; jQuery & Owl Carousel &ndash;&gt;
-	<script src="../scripts/jquery/jquery-1.11.2.min.js"></script>
-	<script src="../scripts/owlCarousel.js"></script>
-	<link rel="stylesheet" href="../styles/owlCarousel.css">
-
-	&lt;!&ndash; Meta &ndash;&gt;
-	<meta charset="utf-8">
-</head></html>-->

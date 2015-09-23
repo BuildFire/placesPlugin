@@ -14,7 +14,8 @@
             'ui.sortable',
             'infinite-scroll',
             'bngCsv',
-            'ui.tinymce'
+            'ui.tinymce',
+            'uiSwitch'
 
         ])
         //injected ngRoute for routing
@@ -96,6 +97,7 @@
                             if (itemId) {
                                 Items.getById(itemId).then(function success(result) {
                                         if (result && result.data) {
+                                            console.log(';;;;;;;;;;;',result.data);
                                             deferred.resolve(result);
                                         }
                                         else {
@@ -152,6 +154,11 @@
                             return deferred.promise;
                         }]
                     }
+                })
+                .when('/test', {
+                    templateUrl: 'templates/modals/section.html',
+                    controllerAs: 'ContentSectionPopup',
+                    controller: 'ContentSectionPopupCtrl'
                 })
                 .otherwise('/');
         }]);

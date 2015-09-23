@@ -8,8 +8,8 @@
     /**
      * Inject dependency
      */
-        .controller('ContentItemsCtrl', ['$scope','$routeParams','DB','COLLECTIONS','Modals',
-            function ($scope,$routeParams,DB,COLLECTIONS,Modals) {
+        .controller('ContentItemsCtrl', ['$scope','$routeParams','DB','COLLECTIONS','Modals','OrdersItems',
+            function ($scope,$routeParams,DB,COLLECTIONS,Modals,OrdersItems) {
 
                 var ContentItems = this;
 
@@ -27,6 +27,7 @@
                 /* tells if data is being fetched*/
                 ContentItems.items = [];
 
+                ContentItems.sortOptions = OrdersItems.options;
 
                 var _skip = 0,
                     _limit = 5,
@@ -37,7 +38,28 @@
                         limit: _limit + 1 // the plus one is to check if there are any more
                     };
 
+                /**
+                 * ContentItems.toggleSortOrder() to change the sort by
+                 */
+                ContentItems.toggleSortOrder = function (name) {
+                    if (!name) {
+                        console.info('There was a problem sorting your data');
+                    } else {
+                        ContentItems.items = [];
 
+                        /* reset Search options */
+                        ContentItems.noMore = false;
+                        searchOptions.skip = 0;
+                        /* Reset skip to ensure search begins from scratch*/
+
+                        ContentItems.isBusy = false;
+                        var sortOrder = OrdersItems.getOrder(name || OrdersItems.ordersMap.Default);
+                        ContentItems.info.data.content.sortBy = name;
+                        ContentItems.info.data.content.sortByValue = sortOrder.value;
+                        ContentItems.getMore();
+                        ContentItems.itemSortableOptions.disabled = !(ContentItems.info.data.content.sortBy === Orders.ordersMap.Manually);
+                    }
+                };
 
 
                 /**

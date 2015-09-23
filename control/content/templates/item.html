@@ -245,8 +245,8 @@
                                 <a class="border-grey border-radius-three default-background-hover"
                                    ng-click="ContentItem.addBackgroundImage()">
                                     <span class="add-icon hidden">+</span>
-                                    <img ng-show="ContentItem.item.backgroundImage"
-                                         ng-src="{{ContentItem.item.backgroundImage | resizeImage : 82:110}}">
+                                    <img ng-show="ContentItem.item.data.backgroundImage"
+                                         ng-src="{{ContentItem.item.data.backgroundImage | resizeImage : 82:110}}">
                                 </a>
                 <span class="icon btn-delete-icon btn-danger transition-third"
                       ng-click="ContentItem.removeBackgroundImage()"></span>

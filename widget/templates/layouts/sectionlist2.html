@@ -1,33 +1,3 @@
-<!DOCTYPE html>
-<html lang="en" ng-app="buildfire" >
-<head>
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="../../../../styles/siteIcons.css">
-    <link rel="stylesheet" href="../../../../styles/helper.css">
-    
-    <!-- jQuery & Owl Carousel -->
-	<script src="../scripts/jquery/jquery-1.11.2.min.js"></script>    
-	<script src="../scripts/owlCarousel.js"></script>
-    <link rel="stylesheet" href="../styles/owlCarousel.css">
-
-    <!-- Meta -->
-	<meta charset="utf-8">
-</head>
-<script type="text/javascript" charset="utf-8">
-	$(function(){
-		var slides = $('.plugin-slider .plugin-slide').length;
-		
-		// Slider needs at least 2 slides or you'll get an error.
-		if(slides > 1){
-			$('.plugin-slider').owlCarousel({
-				loop:true,
-				nav:false,
-				items:1
-			});	
-		}
-	})
-</script>
 <div class="holder padding-zero has-bottom">
 	<div class="places-plugin">
 		<div class="plugin-banner clearfix border-bottom-grey">
@@ -46,32 +16,16 @@
 		<div class="padded text-left">
 			<p class="margin-bottom-zero">WYSIWYG Editor.</p>
 		</div>
+		<div ng-repeat="item in WidgetSections.sections">
 		<div class="plugin-banner clearfix border-bottom-grey">
 			<div class="plugin-slide text-center">
-				<img src="http://www.placehold.it/1280x720.jpg">
+				<img ng-src="{{item.data.mainImage}}">
 			</div>
 		</div>
 		<div class="padded text-left">
-			<a class="text-primary">Section Title Goes Here</a>
-			<p class="margin-zero">This is where a summary would go</p>
+			<a class="text-primary">{{item.data.secTitle}}</a>
+			<p class="margin-zero">{{item.data.secSummary}}</p>
 		</div>
-		<div class="plugin-banner clearfix border-bottom-grey">
-			<div class="plugin-slide text-center">
-				<img src="http://www.placehold.it/1280x720.jpg">
-			</div>
-		</div>
-		<div class="padded text-left">
-			<a class="text-primary">Section Title Goes Here</a>
-			<p class="margin-zero">This is where a summary would go</p>
-		</div>
-		<div class="plugin-banner clearfix border-bottom-grey">
-			<div class="plugin-slide text-center">
-				<img src="http://www.placehold.it/1280x720.jpg">
-			</div>
-		</div>
-		<div class="padded text-left">
-			<a class="text-primary">Section Title Goes Here</a>
-			<p class="margin-zero">This is where a summary would go</p>
 		</div>
 		<div class="bottom fixed-bottom clearfix transition-third" style="background:#09a3ee;">
 			<div class="col-xs-12 pull-left text-center transition-third">
@@ -87,19 +41,14 @@
 					</div>
 				</div>
 				<div class="tab-content clearfix">
-					<div class="category-tab tab active">
-						<a class="list-item">All Locations</a>
-						<a class="list-item active">Uptown</a>
-						<a class="list-item">Downtown</a>
-						<a class="list-item">Time Square</a>
-						<a class="list-item active">Greenwich Village</a>
-						<a class="list-item">Sight Seeing</a>
-						<a class="list-item">All Locations</a>
-						<a class="list-item active">Uptown</a>
-						<a class="list-item">Downtown</a>
-						<a class="list-item">Time Square</a>
-						<a class="list-item active">Greenwich Village</a>
-						<a class="list-item">Sight Seeing</a>
+					<div class="category-tab tab active"
+						 infinite-scroll-distance="0"
+						 infinite-scroll="WidgetSections.loadMore()"
+						 infinite-scroll-container='"#scroll-infinite"'
+						 infinit-scroll-disabled="WidgetSections.noMore"
+							>
+						<a ng-repeat="item in WidgetSections.sections" class="list-item">{{item.data.secTitle}}</a>
+
 					</div>
 					<div class="sorting-tab tab padded">
 						<div class="distance">
@@ -125,4 +74,3 @@
 		</div>
 	</div>
 </div>
-</html>

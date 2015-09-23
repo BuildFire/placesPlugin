@@ -26,7 +26,7 @@
                     if (error) {
                         console.error('Error:', error);
                     } else {
-                        ContentItem.item.backgroundImage = result.selectedFiles && result.selectedFiles[0] || null;
+                        ContentItem.item.data.backgroundImage = result.selectedFiles && result.selectedFiles[0] || null;
                         $scope.$digest();
                     }
                 };
@@ -38,24 +38,27 @@
                 function init() {
                     if (item) {
                         ContentItem.item = item;
+                        //ContentItem.item.id = item.id;
                     }
                     else
                         ContentItem.item = {
-                            listImage: '',
-                            itemTitle: 'Untitled',
-                            images: [],
-                            summary: '',
-                            bodyContent: '',
-                            bodyContentHTML: '',
-                            addressTitle: '',
-                            sections: [$routeParams.sectionId],
-                            address: {
-                                lat: '',
-                                lng: '',
-                                aName: ''
-                            },
-                            links: [],
-                            backgroundImage: ''
+                            data: {
+                                listImage: '',
+                                itemTitle: 'Untitled',
+                                images: [],
+                                summary: '',
+                                bodyContent: '',
+                                bodyContentHTML: '',
+                                addressTitle: '',
+                                sections: [$routeParams.sectionId],
+                                address: {
+                                    lat: '',
+                                    lng: '',
+                                    aName: ''
+                                },
+                                links: [],
+                                backgroundImage: ''
+                            }
                         };
 
                     updateLastSaved();
@@ -68,20 +71,20 @@
                     Buildfire.imageLib.showDialog(options, callback);
                 };
                 ContentItem.removeBackgroundImage = function () {
-                    ContentItem.item.backgroundImage = null;
+                    ContentItem.item.data.backgroundImage = null;
                 };
 
                 $scope.$watch(function () {
                     return ContentItem.item;
                 }, function () {
                     if (ContentItem.item.id) {
-                        alert(2);
+
                         Buildfire.datastore.update(ContentItem.item.id, ContentItem.item.data, 'items', function (err, result) {
 
-                            if(err){
+                            if (err) {
                                 ContentItem.item = angular.copy(ContentItem._lastSaved);
                             }
-                            else{
+                            else {
                                 updateLastSaved();
                             }
 
@@ -100,7 +103,7 @@
                          /!* revert to previous value in case of error*!/
                          ContentItem.mediaInfo = angular.copy(ContentItem._lastSaved);
                          });*/
-                        alert(1);
+
                         Buildfire.datastore.insert(ContentItem.item, 'items', false, function (err, result) {
                             if (!err) {
 

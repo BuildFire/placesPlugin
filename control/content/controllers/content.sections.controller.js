@@ -271,9 +271,7 @@
                     if (!name) {
                         console.info('There was a problem sorting your data');
                     } else {
-                        ContentSections.items = [];
-
-                        /* reset Search options */
+                                                /* reset Search options */
                         ContentSections.noMore = false;
                         searchOptions.skip = 0;
                         /* Reset skip to ensure search begins from scratch*/
