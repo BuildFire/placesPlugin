@@ -35,20 +35,22 @@
                                 var _bootstrap = function () {
                                     PlaceInfo.save({
                                         content: {
-                                            sortBy: '',
-                                            rankOfLastItem: '',
-                                            showAllItems:true
+                                            images: [],
+                                            descriptionHTML: '',
+                                            description: '',
+                                            sortBy: Orders.ordersMap.Newest,
+                                            rankOfLastItem: ''
                                         },
                                         design: {
-                                            secListLayout: 'sectionlist3',
-                                            mapLayout: 'maplayout1',
-                                            itemListLayout: 'itemlist1',
-                                            itemDetailsLayout: 'itemdetails1',
-                                            secListBGImage: ''
+                                            secListLayout: "sec-list-1-1",
+                                            mapLayout: "map-1",
+                                            itemListLayout: "item-list-1",
+                                            itemDetailsLayout: "item-details-1",
+                                            secListBGImage: ""
                                         },
                                         settings: {
-                                            defaultView: '',
-                                            showDistanceIn: ''
+                                            defaultView: "list",
+                                            showDistanceIn: "miles"
                                         }
                                     }).then(function success() {
                                         Location.goToHome();
