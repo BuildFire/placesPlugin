@@ -57,7 +57,7 @@
                                     }, function fail(error) {
                                         throw (error);
                                     })
-                                }
+                                };
                                 PlaceInfo.get().then(function success(result) {
                                         if (result && result.data && result.id) {
                                             deferred.resolve(result);
