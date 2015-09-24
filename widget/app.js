@@ -36,7 +36,8 @@
                                     PlaceInfo.save({
                                         content: {
                                             sortBy: '',
-                                            rankOfLastItem: ''
+                                            rankOfLastItem: '',
+                                            showAllItems:true
                                         },
                                         design: {
                                             secListLayout: "sec-list-1-1",

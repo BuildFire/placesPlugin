@@ -11,7 +11,7 @@
                     var removePopupDeferred = $q.defer();
                     var removePopupModal = $modal
                         .open({
-                            templateUrl: 'templates/modals/rm-image-link-modal.html',
+                            templateUrl: 'templates/modals/rm-section-modal.html',
                             controller: 'RemovePopupCtrl',
                             controllerAs: 'RemovePopup',
                             size: 'sm',
@@ -28,19 +28,69 @@
                         removePopupDeferred.reject(err);
                     });
                     return removePopupDeferred.promise;
+                },
+                editSectionModal: function (sections,info) {
+                    var editSectionDeferred = $q.defer();
+                    var editSectionPopupModal = $modal
+                        .open({
+                            templateUrl: 'templates/modals/edit-section-modal.html',
+                            controller: 'ContentSectionPopupCtrl',
+                            controllerAs: 'ContentSectionPopup',
+                            size: 'sm',
+                            resolve: {
+                                Info: function () {
+                                    return info;
+                                },
+                                Sections: function () {
+                                    return sections;
+                                }
+                            }
+                        });
+                    editSectionPopupModal.result.then(function (imageInfo) {
+                        editSectionDeferred.resolve(imageInfo);
+                    }, function (err) {
+                        //do something on cancel
+                        editSectionDeferred.reject(err);
+                    });
+                    return editSectionDeferred.promise;
                 }
             };
         }])
         .controller('RemovePopupCtrl', ['$scope', '$modalInstance', 'Info', function ($scope, $modalInstance, Info) {
-            var RemovePopup = this;
+           /* var RemovePopup = this;
             RemovePopup.info = {};
             if (Info) {
                 RemovePopup.info = Info;
-            }
-            RemovePopup.ok = function () {
+            }*/
+            $scope.ok = function () {
                 $modalInstance.close('yes');
             };
-            RemovePopup.cancel = function () {
+            $scope.cancel = function () {
+                $modalInstance.dismiss('no');
+            };
+        }])
+        .controller('ContentSectionPopupCtrl', ['$scope', '$modalInstance', 'Info','Sections', function ($scope, $modalInstance, Info,Sections) {
+
+
+            if (Info) {
+                $scope.info = Info;
+            }
+            if (Sections) {
+                $scope.sections = Sections;
+
+                angular.forEach($scope.sections,function(value){
+                    value.data.selected = ($scope.info.data.sections.indexOf(value.id) >= 0);
+                });
+            }
+            $scope.ok = function () {
+                $scope.info.data.sections = [];
+                angular.forEach($scope.sections,function(value){
+                    if(value.data.selected)
+                        $scope.info.data.sections.push(value.id);
+                });
+                $modalInstance.close($scope.info);
+            };
+            $scope.cancel = function () {
                 $modalInstance.dismiss('no');
             };
         }]);

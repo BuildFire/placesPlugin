@@ -64,7 +64,7 @@
                                 class="title ellipsis pull-left">{{item.data.itemTitle}}</span></a>
                         <span class="title ellipsis pull-left">{{item.data.summary}}</span>
                         <div class="col-md-7 padding-right-zero pull-left">
-                            <a class="text-primary"><span class="content ellipsis text-primary">{{item.data.sections.length}} section(s)</span></a>
+                            <a ng-click="ContentItems.editSections($index)" class="text-primary"><span ng-show="item.data.sections.length == 0" class="content ellipsis text-primary">No section</span><span ng-show="item.data.sections.length > 0" class="content ellipsis text-primary">{{item.data.sections.length}} section(s)</span></a>
                         </div>
                         <div class="pull-right">
                     <span class="btn-icon btn-link-icon btn-primary transition-third"

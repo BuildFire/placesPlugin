@@ -8,20 +8,19 @@
     /**
      * Inject dependency
      */
-        .controller('ContentItemsCtrl', ['$scope','$routeParams','DB','COLLECTIONS','Modals','OrdersItems',
-            function ($scope,$routeParams,DB,COLLECTIONS,Modals,OrdersItems) {
+        .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'DB', 'COLLECTIONS', 'Modals', 'OrdersItems',
+            function ($scope, $routeParams, DB, COLLECTIONS, Modals, OrdersItems) {
 
                 var ContentItems = this;
 
                 /**
-                 * Create instance of PlaceInfo,Sections and Items db collection
+                 * Create instance of Sections and Items db collection
                  * @type {DB}
                  */
-                var PlaceInfo = new DB(COLLECTIONS.PlaceInfo),
-                    Sections = new DB(COLLECTIONS.Sections),
+                var Sections = new DB(COLLECTIONS.Sections),
                     Items = new DB(COLLECTIONS.Items);
 
-                ContentItems.section  = $routeParams.sectionId;
+                ContentItems.section = $routeParams.sectionId;
                 console.log(ContentItems.section);
                 ContentItems.isBusy = false;
                 /* tells if data is being fetched*/
@@ -33,7 +32,7 @@
                     _limit = 5,
                     _maxLimit = 19,
                     searchOptions = {
-                        filter: {'$and':[{"$json.itemTitle": {"$regex": '/*'}},{"$json.sections": { "$all": [ContentItems.section]}}]},
+                        filter: {'$and': [{"$json.itemTitle": {"$regex": '/*'}}, {"$json.sections": {"$all": [ContentItems.section]}}]},
                         skip: _skip,
                         limit: _limit + 1 // the plus one is to check if there are any more
                     };
@@ -77,7 +76,7 @@
                     //updateSearchOptions();
                     ContentItems.isBusy = true;
                     Items.find(searchOptions).then(function success(result) {
-                        console.log('???????????',result);
+                        console.log('???????????', result);
                         if (result.length <= _limit) {// to indicate there are more
                             ContentItems.noMore = true;
                         }
@@ -129,7 +128,8 @@
                  * @param value to be search.
                  */
                 ContentItems.searchListItem = function (value) {
-                    searchOptions.skip = 0; /*reset the skip value*/
+                    searchOptions.skip = 0;
+                    /*reset the skip value*/
 
                     ContentItems.isBusy = false;
                     ContentItems.items = [];
@@ -137,8 +137,29 @@
                     if (!value) {
                         value = '/*';
                     }
-                    searchOptions.filter = {'$and':[{"$json.itemTitle": {"$regex": value}},{"$json.sections": { "$all": [ContentItems.section]}}]};// {"$json.secTitle": {"$regex": value}};
+                    searchOptions.filter = {'$and': [{"$json.itemTitle": {"$regex": value}}, {"$json.sections": {"$all": [ContentItems.section]}}]};// {"$json.secTitle": {"$regex": value}};
                     ContentItems.getMore();
+                };
+
+                ContentItems.editSections = function (ind) {
+                    Sections.find({}).then(function (data) {
+                        Modals.editSectionModal(data, ContentItems.items[ind]).then(function (result) {
+                           console.log(result);
+
+                            Items.update(result.id,result.data).then(function(){
+                                ContentItems.items[ind].data.sections = result.data.sections;
+                            },function()
+                            {
+                                console.error('err happened');
+                            });
+
+
+                        }, function (cancelData) {
+                            //do something on cancel
+                        });
+                    }, function (err) {
+                    });
+
                 };
 
             }]);

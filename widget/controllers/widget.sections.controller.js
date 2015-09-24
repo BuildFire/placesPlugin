@@ -6,7 +6,7 @@
 
                 var WidgetSections = this;
                 WidgetSections.info = PlaceInfo;//{data:{design:{secListLayout :'sectionlist2'},content:{}}} ;
-
+console.log(WidgetSections.info);
 
                 var _skip = 0,
                     _limit = 5,
