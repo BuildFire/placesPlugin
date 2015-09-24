@@ -53,6 +53,7 @@
 </div>
 <div ng-show="itemShow=='Content'">
     <h4>Places Item Content</h4>
+
     <div id="carousel"></div>
     <hr class="none">
     <div class="item clearfix row">
@@ -69,8 +70,8 @@
             <span>Body Content</span>
         </div>
         <div class="main col-md-9 pull-right">
-        <textarea placeholder="WYSIWYG" class="form-control" ui-tinymce="ContentItem.bodyWYSIWYGOptions"
-                  ng-model="ContentItem.item.data.bodyContent"></textarea>
+            <textarea placeholder="WYSIWYG" class="form-control" ui-tinymce="ContentItem.bodyWYSIWYGOptions"
+                      ng-model="ContentItem.item.data.bodyContent"></textarea>
         </div>
     </div>
     <hr class="none">
@@ -90,13 +91,24 @@
         </div>
         <div class="main col-md-9 pull-right">
             <input type="text" class="form-control"
-                   placeholder="Enter Street Address or Lat/Long Coordinates">
+                   placeholder="Enter Street Address or Lat/Long Coordinates"
+                   google-location-search callback-fn="ContentItem.setLocation(data)"
+                   ng-model="ContentItem.currentAddress"
+                   ng-enter="ContentItem.setCoordinates()"
+                   ng-change="ContentItem.clearData()">
+            <br/>
+
+            <div class="alert alert-danger alert-sm text-center"
+                 ng-show="ContentItem.validCoordinatesFailure">Please enter valid
+                coordinates
+            </div>
         </div>
     </div>
-    <hr class="none">
-    <div class="item clearfix row">
-        <div class="main col-md-9 pull-right">
-            <textarea placeholder="Map Goes Here" class="form-control"></textarea>
+    <div class="item clearfix row" ng-if="ContentItem.currentCoordinates">
+        <div class="col-md-9 pull-right">
+            <div google-map dragged-fn="ContentItem.setDraggedLocation(data)"
+                 coordinates="ContentItem.currentCoordinates"
+                 style="height: 200px; position: relative;"></div>
         </div>
     </div>
     <hr class="none">
@@ -118,7 +130,8 @@
                         <img ng-show="ContentItem.item.data.backgroundImage"
                              ng-src="{{ContentItem.item.data.backgroundImage | resizeImage : 82:110}}">
                     </a>
-                <span ng-show="ContentItem.item.data.backgroundImage" class="icon btn-delete-icon btn-danger transition-third"
+                <span ng-show="ContentItem.item.data.backgroundImage"
+                      class="icon btn-delete-icon btn-danger transition-third"
                       ng-click="ContentItem.removeBackgroundImage()"></span>
                 </div>
             </div>

@@ -83,8 +83,8 @@
                 {id: 1, name: "Manually", value: "Manually", key: "rank", order: 1},
                 {id: 1, name: "Newest", value: "Newest", key: "dateCreated", order: -1},
                 {id: 1, name: "Oldest", value: "Oldest", key: "dateCreated", order: 1},
-                {id: 1, name: "Section Name A-Z", value: "Section Name A-Z", key: "title", order: 1},
-                {id: 1, name: "Section Name Z-A", value: "Section Name Z-A", key: "title", order: -1}
+                {id: 1, name: "Section Name A-Z", value: "Section Name A-Z", key: "secTitle", order: 1},
+                {id: 1, name: "Section Name Z-A", value: "Section Name Z-A", key: "secTitle", order: -1}
             ];
             return {
                 ordersMap: ordersMap,
@@ -269,5 +269,41 @@
                     }
                 }
             };
+        }])
+        .factory("Utils", ['$http', 'GOOGLE_KEYS', '$q', function ($http, GOOGLE_KEYS, $q) {
+            function inRange(min, number, max) {
+                return ( !isNaN(number) && (number >= min) && (number <= max) );
+            }
+
+            return {
+                validLongLats: function (longLats) {
+                    var deferred = $q.defer()
+                        , longitude = longLats.split(",")[0]
+                        , latitude = longLats.split(",")[1]
+                        , valid = (inRange(-90, latitude, 90) && inRange(-180, longitude, 180));
+
+                    if (valid) {
+                        $http.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude + "," + longitude + "&key=" + GOOGLE_KEYS.API_KEY)
+                            .then(function (response) {
+                                // this callback will be called asynchronously
+                                // when the response is available
+                                if (response.data && response.data.results && response.data.results.length) {
+                                    deferred.resolve(response);
+                                } else {
+                                    deferred.resolve(true);
+                                }
+                            }, function (error) {
+                                // called asynchronously if an error occurs
+                                // or server returns response with an error status.
+                                deferred.reject(error);
+                            });
+                    }
+                    else {
+                        deferred.resolve(null);
+                    }
+                    return deferred.promise;
+                }
+            }
         }]);
+
 })(window.angular, window.buildfire, window.location);
