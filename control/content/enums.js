@@ -28,5 +28,13 @@
         .constant('PATHS', {
             MEDIA: "MEDIA",
             HOME: "HOME"
+        })
+        .constant('ADDRESS_TYPE', {
+            LOCATION: 'Location',
+            COORDINATES: "Coordinates"
+        })
+        .constant('GOOGLE_KEYS', {
+            API_KEY: 'AIzaSyB0xpJ-AseoeusvT2PPWd5MOak58CR_B0c'
         });
+
 })(window.angular, undefined);

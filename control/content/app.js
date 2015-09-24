@@ -5,6 +5,7 @@
         .module('placesContent',
         [
             'placesContentEnums',
+            'placesContentDirectives',
             'placesServices',
             'placesFilters',
             'placesModals',
@@ -97,7 +98,7 @@
                             if (itemId) {
                                 Items.getById(itemId).then(function success(result) {
                                         if (result && result.data) {
-                                            console.log(';;;;;;;;;;;',result.data);
+                                            console.log(';;;;;;;;;;;', result.data);
                                             deferred.resolve(result);
                                         }
                                         else {

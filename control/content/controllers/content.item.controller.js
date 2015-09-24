@@ -8,13 +8,17 @@
     /**
      * Inject dependency
      */
-        .controller('ContentItemCtrl', ['$scope', 'item', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location',
-            function ($scope, item, Buildfire, DB, COLLECTIONS, $routeParams, Location) {
+        .controller('ContentItemCtrl', ['$scope', 'item', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'ADDRESS_TYPE', 'Utils', '$timeout',
+            function ($scope, item, Buildfire, DB, COLLECTIONS, $routeParams, Location, ADDRESS_TYPE, Utils, $timeout) {
                 $scope.itemShow = 'Content';
                 var ContentItem = this;
                 var tmrDelayForItem = null;
                 var editor = null;
-                var linkEditor = null
+                var linkEditor = null;
+
+                ContentItem.currentAddress = null;
+                ContentItem.validCoordinatesFailure = false;
+                ContentItem.currentCoordinates = null;
 
                 function init() {
                     var data = {
@@ -243,6 +247,68 @@
                 }
 
                 init();
+
+
+                ContentItem.setLocation = function (data) {
+                    console.log('************location data*************', data);
+                    /*ContentItem.item.data.address = {
+                     type: ADDRESS_TYPE.LOCATION,
+                     location: data.location,
+                     location_coordinates: data.coordinates
+                     };
+                     ContentItem.currentAddress =ContentItem.item.data.address.location;
+                     ContentItem.currentCoordinates =ContentItem.item.data.address.location_coordinates;*/
+                    ContentItem.currentAddress = data.location;
+                    ContentItem.currentCoordinates = data.coordinates;
+
+                    $scope.$digest();
+                };
+                ContentItem.setDraggedLocation = function (data) {
+                    console.log('************setDraggedLocation data*************', data);
+                    /*ContentItem.data.address = {
+                     type: ADDRESS_TYPE.LOCATION,
+                     location: data.location,
+                     location_coordinates: data.coordinates
+                     };
+                     ContentItem.currentAddress =ContentItem.item.data.address.location;
+                     ContentItem.currentCoordinates =ContentItem.item.data.address.location_coordinates;
+                     */
+                    ContentItem.currentAddress = data.location;
+                    ContentItem.currentCoordinates = data.coordinates;
+                    $scope.$digest();
+                };
+                ContentItem.setCoordinates = function () {
+                    function successCallback(resp) {
+                        console.log('************setCoordinates successCallback data*************', resp);
+                        if (resp) {
+                            /*ContentItem.item.data.address = {
+                             type: ADDRESS_TYPE.COORDINATES,
+                             location: ContentItem.currentAddress,
+                             location_coordinates: [ContentItem.currentAddress.split(",")[0].trim(), ContentItem.currentAddress.split(",")[1].trim()]
+                             };
+                             ContentItem.currentAddress =ContentItem.item.data.address.location;
+                             ContentItem.currentCoordinates =ContentItem.item.data.address.location_coordinates;*/
+                            ContentItem.currentCoordinates = [ContentItem.currentAddress.split(",")[0].trim(), ContentItem.currentAddress.split(",")[1].trim()];
+                        } else {
+                            errorCallback();
+                        }
+                    }
+
+                    function errorCallback(err) {
+                        ContentItem.validCoordinatesFailure = true;
+                        $timeout(function () {
+                            ContentItem.validCoordinatesFailure = false;
+                        }, 5000);
+                    }
+
+                    Utils.validLongLats(ContentItem.currentAddress).then(successCallback, errorCallback);
+                };
+                ContentItem.clearData = function () {
+                    if (!ContentItem.currentAddress) {
+                        ContentItem.item.data.address = null;
+                        ContentItem.currentCoordinates = null;
+                    }
+                };
 
                 $scope.$watch(function () {
                     return ContentItem.item;
