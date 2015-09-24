@@ -74,8 +74,11 @@
                                 return deferred.promise;
                             }]
                     }
+                }).when('/items/:sectionId', {
+                    templateUrl: 'templates/section.html',
+                    controllerAs: 'WidgetSection',
+                    controller: 'WidgetSectionCtrl'
                 })
-
                 .otherwise('/');
         }])
 
