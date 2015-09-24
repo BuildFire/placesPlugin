@@ -5,8 +5,8 @@
             function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders,PlaceInfo) {
 
                 var WidgetSections = this;
-                WidgetSections.info = PlaceInfo;//{data:{design:{secListLayout :'sectionlist2'},content:{}}} ;
-console.log(WidgetSections.info);
+                WidgetSections.info = PlaceInfo;
+                console.log(WidgetSections.info);
 
                 var _skip = 0,
                     _limit = 5,
@@ -76,27 +76,6 @@ console.log(WidgetSections.info);
                 });*/
 
                 /**
-                 * Buildfire.datastore.onUpdate method calls when Data is changed.
-                 */
-                Buildfire.datastore.onUpdate(function (event) {
-                    if (event.tag == "placeInfo") {
-                        if (event.data) {
-                            WidgetSections.info =event;
-                            WidgetSections.sections = [];
-                            WidgetSections.noMore = false;
-                            WidgetSections.loadMore();
-                            $scope.$apply();
-                        }
-                    }
-                    else {
-                    /*    WidgetHome.items = [];
-                        WidgetHome.noMore = false;
-                        WidgetHome.loadMore();*/
-                    }
-                });
-
-
-                /**
                  * Create instance of Sections db collection
                  * @type {DB}
                  */
@@ -159,7 +138,32 @@ console.log(WidgetSections.info);
                         console.error('error');
                     });
                 };
-
                 WidgetSections.loadMore();
+
+                function refreshSections()
+                {
+                    WidgetSections.sections = [];
+                    WidgetSections.noMore = false;
+                    WidgetSections.loadMore();
+                    $scope.$apply();
+                }
+
+                /**
+                 * Buildfire.datastore.onUpdate method calls when Data is changed.
+                 */
+                Buildfire.datastore.onUpdate(function (event) {
+                    console.log(1,event);
+                    if (event.tag == "placeInfo") {
+                        console.log(2);
+                        if (event.data) {
+                            WidgetSections.info =event;
+                            refreshSections();
+                        }
+                    }
+                    else {console.log(3);
+                        refreshSections();
+                    }
+                });
+
             }]);
 })(window.angular, undefined);
