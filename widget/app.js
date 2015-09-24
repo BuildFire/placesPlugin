@@ -39,11 +39,11 @@
                                             rankOfLastItem: ''
                                         },
                                         design: {
-                                            secListLayout: 'sectionlist1',
-                                            mapLayout: 'maplayout1',
-                                            itemListLayout: 'itemlist1',
-                                            itemDetailsLayout: 'itemdetails1',
-                                            secListBGImage: ''
+                                            secListLayout: "sec-list-1-1",
+                                            mapLayout: "map-1",
+                                            itemListLayout: "item-list-1",
+                                            itemDetailsLayout: "item-details-1",
+                                            secListBGImage: ""
                                         },
                                         settings: {
                                             defaultView: '',
@@ -54,7 +54,7 @@
                                     }, function fail(error) {
                                         throw (error);
                                     })
-                                }
+                                };
                                 PlaceInfo.get().then(function success(result) {
                                         if (result && result.data && result.id) {
                                             deferred.resolve(result);
