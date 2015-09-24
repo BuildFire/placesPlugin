@@ -74,9 +74,17 @@
                     ContentItem.item.data.backgroundImage = null;
                 };
 
+                var initializing = true;
                 $scope.$watch(function () {
                     return ContentItem.item;
                 }, function () {
+
+                    if(initializing)
+                    {
+                        initializing = false;
+                        return;
+                    }
+
                     if (ContentItem.item.id) {
 
                         Buildfire.datastore.update(ContentItem.item.id, ContentItem.item.data, 'items', function (err, result) {
