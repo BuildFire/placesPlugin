@@ -16,6 +16,18 @@
                         skip: _skip,
                         limit: _limit + 1 // the plus one is to check if there are any more
                     };
+
+                if (WidgetSections.info && WidgetSections.info.data && WidgetSections.info.data.settings && WidgetSections.info.data.settings.defaultView) {
+                    switch (WidgetSections.info.data.settings.defaultView) {
+                        case DEFAULT_VIEWS.LIST:
+                            currentLayout = WidgetSections.info.data.design.secListLayout;
+                            break;
+                        case DEFAULT_VIEWS.MAP:
+                            currentLayout = WidgetSections.info.data.design.mapLayout;
+                            break;
+                    }
+                }
+
                 /**
                  * WidgetSections.isBusy is used for infinite scroll.
                  * @type {boolean}
@@ -60,7 +72,6 @@
                  * loadMore method loads the items in list page.
                  */
                 WidgetSections.loadMore = function () {
-
                     if (WidgetSections.isBusy && !WidgetSections.noMore) {
                         return;
                     }
@@ -85,7 +96,6 @@
                         console.error('error');
                     });
                 };
-                WidgetSections.loadMore();
 
                 function refreshSections() {
                     WidgetSections.sections = [];
@@ -97,24 +107,43 @@
                 /**
                  * Buildfire.datastore.onUpdate method calls when Data is changed.
                  */
+                var initCarousel = function (_defaultView) {
+                    function resetCarousel(_layout) {
+                        if (currentLayout != _layout && view && WidgetSections.info.data.content.images) {
+                            if (WidgetSections.info.data.content.images.length)
+                                view._destroySlider();
+                            view = null;
+                        }
+                        else {
+                            if (view) {
+                                view.loadItems(WidgetSections.info.data.content.images);
+                            }
+                        }
+                    }
+
+                    switch (_defaultView) {
+                        case DEFAULT_VIEWS.LIST:
+                            resetCarousel(WidgetSections.info.data.design.secListLayout);
+                            break;
+                        case DEFAULT_VIEWS.MAP:
+                            resetCarousel(WidgetSections.info.data.design.mapLayout);
+                            break;
+                    }
+                };
+
+                initCarousel(WidgetSections.info.data.settings.defaultView);
+
                 Buildfire.datastore.onUpdate(function (event) {
                     if (event.tag == "placeInfo") {
                         if (event.data) {
                             WidgetSections.info = event;
-                            if (currentLayout != WidgetFeed.data.design.itemListLayout && view && WidgetFeed.data.content.carouselImages) {
-                                if (WidgetFeed.data.content.carouselImages.length)
-                                    view._destroySlider();
-                                view = null;
-                            }
-                            else {
-                                if (view) {
-                                    view.loadItems(WidgetFeed.data.content.carouselImages);
-                                }
-                            }
+                            initCarousel(WidgetSections.info.data.settings.defaultView);
                             refreshSections();
                         }
                     }
                     else {
+                        view = null;
+                        currentLayout = '';
                         refreshSections();
                     }
                 });
