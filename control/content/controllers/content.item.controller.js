@@ -13,9 +13,6 @@
                 $scope.itemShow = 'Content';
                 var ContentItem = this;
                 var tmrDelayForItem = null;
-                var editor = null;
-                var linkEditor = null;
-
                 ContentItem.currentAddress = null;
                 ContentItem.validCoordinatesFailure = false;
                 ContentItem.currentCoordinates = null;
@@ -62,52 +59,52 @@
                     theme: 'modern'
                 };
                 // create a new instance of the buildfire carousel editor
-                editor = new Buildfire.components.carousel.editor("#carousel");
+                ContentItem.editor = new Buildfire.components.carousel.editor("#carousel");
                 // this method will be called when a new item added to the list
-                editor.onAddItems = function (items) {
+                ContentItem.editor.onAddItems = function (items) {
                     if (!ContentItem.item.data.images)
                         ContentItem.item.data.images = [];
                     ContentItem.item.data.images.push.apply(ContentItem.item.data.images, items);
                     $scope.$digest();
                 };
                 // this method will be called when an item deleted from the list
-                editor.onDeleteItem = function (item, index) {
+                ContentItem.editor.onDeleteItem = function (item, index) {
                     ContentItem.item.data.images.splice(index, 1);
                     $scope.$digest();
                 };
                 // this method will be called when you edit item details
-                editor.onItemChange = function (item, index) {
+                ContentItem.editor.onItemChange = function (item, index) {
                     ContentItem.item.data.images.splice(index, 1, item);
                     $scope.$digest();
                 };
                 // this method will be called when you change the order of items
-                editor.onOrderChange = function (item, oldIndex, newIndex) {
+                ContentItem.editor.onOrderChange = function (item, oldIndex, newIndex) {
                     var temp = ContentItem.item.data.images[oldIndex];
                     ContentItem.item.data.images[oldIndex] = ContentItem.item.data.images[newIndex];
                     ContentItem.item.data.images[newIndex] = temp;
                     $scope.$digest();
                 };
                 // create a new instance of the buildfire action Items
-                linkEditor = new Buildfire.components.actionItems.sortableList("#actionItems");
+                ContentItem.linkEditor = new Buildfire.components.actionItems.sortableList("#actionItems");
                 // this method will be called when a new item added to the list
-                linkEditor.onAddItems = function (items) {
+                ContentItem.linkEditor.onAddItems = function (items) {
                     if (!ContentItem.item.data.links)
                         ContentItem.item.data.links = [];
                     ContentItem.item.data.links.push.apply(ContentItem.item.data.links, items);
                     $scope.$digest();
                 };
                 // this method will be called when an item deleted from the list
-                linkEditor.onDeleteItem = function (item, index) {
+                ContentItem.linkEditor.onDeleteItem = function (item, index) {
                     ContentItem.item.data.links.splice(index, 1);
                     $scope.$digest();
                 };
                 // this method will be called when you edit item details
-                linkEditor.onItemChange = function (item, index) {
+                ContentItem.linkEditor.onItemChange = function (item, index) {
                     ContentItem.item.data.links.splice(index, 1, item);
                     $scope.$digest();
                 };
                 // this method will be called when you change the order of items
-                linkEditor.onOrderChange = function (item, oldIndex, newIndex) {
+                ContentItem.linkEditor.onOrderChange = function (item, oldIndex, newIndex) {
                     var temp = ContentItem.item.data.links[oldIndex];
                     ContentItem.item.data.links[oldIndex] = ContentItem.item.data.links[newIndex];
                     ContentItem.item.data.links[newIndex] = temp;
@@ -116,17 +113,17 @@
 
                 // initialize carousel data
                 if (ContentItem.item && ContentItem.item.data) {
-                    editor = new Buildfire.components.carousel.editor("#carousel");
-                    linkEditor = new Buildfire.components.actionItems.sortableList("#actionItems");
+                    ContentItem.editor = new Buildfire.components.carousel.editor("#carousel");
+                    ContentItem.linkEditor = new Buildfire.components.actionItems.sortableList("#actionItems");
                     if (ContentItem.item.data.images) {
-                        editor.loadItems(ContentItem.item.data.images);
+                        ContentItem.editor.loadItems(ContentItem.item.data.images);
                     }
                     else
-                        editor.loadItems([]);
+                        ContentItem.editor.loadItems([]);
                     if (ContentItem.item.data.links)
-                        linkEditor.loadItems(ContentItem.item.data.links);
+                        ContentItem.linkEditor.loadItems(ContentItem.item.data.links);
                     else
-                        linkEditor.loadItems([]);
+                        ContentItem.linkEditor.loadItems([]);
                 }
 
                 /**
