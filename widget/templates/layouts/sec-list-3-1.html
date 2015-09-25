@@ -1,7 +1,7 @@
 <div class="holder padding-zero">
 	<div class="places-plugin layout3">
 		<div class="media-center-banner clearfix border-bottom-grey">
-			<div id="carouselWidget" build-fire-carousel=""></div>
+			<div id="carousel" build-fire-carousel=""></div>
 		</div>
 		<div class="text-left padded padding-bottom-zero clearfix">
 			<p ng-if="WidgetSections.info.data.content.descriptionHTML"
@@ -16,7 +16,7 @@
 							<img ng-src="{{item.data.mainImage}}">
 						</div>
 						<div class="list-item-copy text-left padding-left-ten padding-right-ten">
-							<p class="ellipsis margin-zero text-primary margin-top-five"><a class="text-primary" href="#/items/{{item.id}}">{{item.data.secTitle}}</a></p>
+							<p class="ellipsis margin-zero text-primary margin-top-five"><a class="text-primary" ng-href="#/items/{{item.id}}">{{item.data.secTitle}}</a></p>
 							<p class="ellipsis margin-zero">{{item.data.secSummary}}</p>
 						</div>
 					</div>

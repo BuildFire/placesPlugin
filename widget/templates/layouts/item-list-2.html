@@ -1,12 +1,15 @@
-<div class="holder padding-zero has-bottom has-bottom-viewing">
-    <div class="places-plugin item-list2">
+<div class="holder padding-zero has-bottom has-bottom-viewing" id="scroll-infinite">
+    <div class="places-plugin item-list2" infinite-scroll-distance="0"
+         infinite-scroll="WidgetSection.getMore()"
+         infinite-scroll-container='"#scroll-infinite"'
+         infinit-scroll-disabled="WidgetSection.noMore">
         <div class="plugin-banner has-info-bar clearfix" ng-repeat="item in WidgetSection.items">
             <div class="plugin-slide text-center">
                 <img ng-if="item.data.listImage" ng-src="{{item.data.listImage}}">
             </div>
             <div class="plugin-copy border-bottom-grey clearfix">
                 <div class="col-xs-8 text-left pull-left">
-                    <p class="margin-bottom-zero ellipsis">{{item.data.itemTitle}}</p>
+                    <p class="margin-bottom-zero ellipsis"><a ng-href="#/item/{{item.id}}">{{item.data.itemTitle}}</a></p>
 
                     <p class="margin-bottom-zero ellipsis">{{item.data.summary}}</p>
                 </div>
