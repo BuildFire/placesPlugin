@@ -29,28 +29,25 @@
              * ContentItems.getMore is used to load the items
              */
             WidgetSection.getMore = function () {
-                if (WidgetSection.isBusy && !WidgetSection.noMore) {
+                if (WidgetSection.isBusy && WidgetSection.noMore) {
                     return;
                 }
                 //updateSearchOptions();
                 WidgetSection.isBusy = true;
                 Items.find(searchOptions).then(function success(result) {
-                    console.log('???????????', result);
                     if (result.length <= _limit) {// to indicate there are more
                         WidgetSection.noMore = true;
                     }
                     else {
+                        WidgetSection.isBusy = false;
                         result.pop();
                         searchOptions.skip = searchOptions.skip + _limit;
                         WidgetSection.noMore = false;
                     }
                     WidgetSection.items = WidgetSection.items ? WidgetSection.items.concat(result) : result;
-                    WidgetSection.isBusy = false;
                 }, function fail() {
                     WidgetSection.isBusy = false;
                 });
             };
-            WidgetSection.getMore();
-
         }]);
 })(window.angular, window);

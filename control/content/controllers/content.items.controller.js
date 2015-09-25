@@ -146,10 +146,9 @@
                         Modals.editSectionModal(data, ContentItems.items[ind]).then(function (result) {
                            console.log(result);
 
-                            Items.update(result.id,result.data).then(function(){
+                            Items.update(result.id, result.data).then(function () {
                                 ContentItems.items[ind].data.sections = result.data.sections;
-                            },function()
-                            {
+                            }, function () {
                                 console.error('err happened');
                             });
 
