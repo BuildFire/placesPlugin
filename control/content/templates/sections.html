@@ -95,9 +95,11 @@
 						<img ng-src="{{item.data.mainImage | resizeImage : 50:50}}" ng-if="item.data.mainImage">
 					</div>
 					<div class="copy pull-right">
+						<div class="col-md-4 padding-zero pull-left">
 						<a class="text-primary" href="#/items/{{item.id}}"><span
 								class="title ellipsis pull-left">{{item.data.secTitle}}</span></a>
 						<span class="title ellipsis pull-left">{{item.data.secSummary}}</span>
+							</div>
 						<div class="col-md-7 padding-right-zero pull-left">
 							<a href="#/section/{{item.id}}" class="text-primary"><span class="content ellipsis text-primary">Edit</span></a>
 						</div>
