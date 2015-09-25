@@ -166,7 +166,6 @@
 
 
                 $rootScope.$on("Carousel:LOADED", function () {
-                    alert('came here');
                     if (WidgetSections.info.data.content && WidgetSections.info.data.content.images) {
                         view = new Buildfire.components.carousel.view("#carousel", []);
                         view.loadItems(WidgetSections.info.data.content.images,false);
