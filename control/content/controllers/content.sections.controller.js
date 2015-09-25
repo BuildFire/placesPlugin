@@ -2,8 +2,8 @@
     'use strict';
     angular
         .module('placesContent')
-        .controller('ContentSectionsCtrl', ['$scope', 'PlaceInfo', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire','Modals',
-            function ($scope, PlaceInfo, DB, $timeout, COLLECTIONS, Orders, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire,Modals) {
+        .controller('ContentSectionsCtrl', ['$scope', 'PlaceInfo', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Modals',
+            function ($scope, PlaceInfo, DB, $timeout, COLLECTIONS, Orders, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals) {
                 var ContentSections = this;
                 ContentSections.isBusy = false;
                 /* tells if data is being fetched*/
@@ -45,7 +45,7 @@
                  */
                 var PlaceInfo = new DB(COLLECTIONS.PlaceInfo),
                     Sections = new DB(COLLECTIONS.Sections);
-                    //,Items = new DB(COLLECTIONS.Items);
+                //,Items = new DB(COLLECTIONS.Items);
 
                 var updateSearchOptions = function () {
                     var order;
@@ -294,7 +294,8 @@
                  * @param value to be search.
                  */
                 ContentSections.searchListSection = function (value) {
-                    searchOptions.skip = 0; /*reset the skip value*/
+                    searchOptions.skip = 0;
+                    /*reset the skip value*/
 
                     ContentSections.isBusy = false;
                     ContentSections.sections = [];
@@ -313,7 +314,7 @@
                     if (!name) {
                         console.info('There was a problem sorting your data');
                     } else {
-                                                /* reset Search options */
+                        /* reset Search options */
                         ContentSections.noMore = false;
                         searchOptions.skip = 0;
                         /* Reset skip to ensure search begins from scratch*/
@@ -336,7 +337,6 @@
                         var endIndex = ui.item.sortable.dropindex,
                             maxRank = 0,
                             draggedItem = ContentSections.items[endIndex];
-                        console.log(ui.item.sortable.dropindex)
                         if (draggedItem) {
                             var prev = ContentSections.items[endIndex - 1],
                                 next = ContentSections.items[endIndex + 1];
@@ -405,20 +405,5 @@
                     return ContentSections.info;
                 }, saveDataWithDelay, true);
 
-                /*
-                 * Fetch data from datastore
-                 */
-               /* var init = function () {
-                    var success = function (result) {
-                            ContentSections.sections = result;
-                            console.log('>>>>>>>>>>>>>',result);
-                        }
-                        , error = function (err) {
-                            console.error('Error while getting data', err);
-                        };
-                    Sections.find(searchOptions).then(success, error);
-                };
-
-                init();*/
             }]);
 })(window.angular, undefined);

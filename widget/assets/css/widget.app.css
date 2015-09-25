@@ -11,11 +11,3 @@
     overflow-y: auto;
     max-height: 580px;
 }*/
-
-.holder .places-plugin .bottom {
-    bottom: -200px !important;
-}
-
-.sectionSelected{
-    color:black;
-}

@@ -1,67 +1,45 @@
 (function (angular) {
     angular
         .module('placesWidget')
-        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'PlaceInfo',
-            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, PlaceInfo) {
+        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'PlaceInfo','DEFAULT_VIEWS',
+            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, PlaceInfo,DEFAULT_VIEWS) {
 
                 var WidgetSections = this;
                 WidgetSections.showMenu = false;
                 WidgetSections.menuTab = 'Category';
                 WidgetSections.selectedSections = [];
-                var view = null;
+
                 WidgetSections.info = PlaceInfo;
                 WidgetSections.info.currentView = WidgetSections.info.data.settings.defaultView;
                 console.log('Widget Section Ctrl Loaded', WidgetSections.info);
 
                 var _skip = 0,
+                    view = null,
+                    currentLayout = '',
+                    _skip = 0,
                     _limit = 5,
                     searchOptions = {
                         //filter: {"$json.secTitle": {"$regex": '/*'}},
                         skip: _skip,
                         limit: _limit + 1 // the plus one is to check if there are any more
                     };
+
+                if (WidgetSections.info && WidgetSections.info.data && WidgetSections.info.data.settings && WidgetSections.info.data.settings.defaultView) {
+                    switch (WidgetSections.info.data.settings.defaultView) {
+                        case DEFAULT_VIEWS.LIST:
+                            currentLayout = WidgetSections.info.data.design.secListLayout;
+                            break;
+                        case DEFAULT_VIEWS.MAP:
+                            currentLayout = WidgetSections.info.data.design.mapLayout;
+                            break;
+                    }
+                }
+
                 /**
                  * WidgetSections.isBusy is used for infinite scroll.
                  * @type {boolean}
                  */
                 WidgetSections.isBusy = false;
-                /**
-                 * AppConfig.setSettings() set the Settings.
-                 */
-                //AppConfig.setSettings(MediaCenterInfo.data);
-                /**
-                 * AppConfig.changeBackgroundTheme() change the background image.
-                 */
-                //AppConfig.changeBackgroundTheme(WidgetSections.media.data.design.backgroundImage);
-                /**
-                 * Messaging.onReceivedMessage is called when any event is fire from Content/design section.
-                 * @param event
-                 */
-                /*Messaging.onReceivedMessage = function (event) {
-                 if (event) {
-                 switch (event.name) {
-                 case EVENTS.ROUTE_CHANGE:
-                 var path = event.message.path,
-                 id = event.message.id;
-                 var url = "#/";
-                 switch (path) {
-                 case PATHS.MEDIA:
-                 url = url + "media/";
-                 if (id) {
-                 url = url + id + "/";
-                 }
-                 break;
-                 default :
-
-                 break
-                 }
-                 Location.go(url);
-                 break;
-                 }
-                 }
-                 };
-
-                 */
 
                 /**
                  * Create instance of Sections db collection
@@ -101,7 +79,6 @@
                  * loadMore method loads the items in list page.
                  */
                 WidgetSections.loadMore = function () {
-
                     if (WidgetSections.isBusy && !WidgetSections.noMore) {
                         return;
                     }
@@ -132,18 +109,19 @@
                     var id = WidgetSections.sections[ind].id;
                     if (WidgetSections.selectedSections.indexOf(id) < 0) {
                         WidgetSections.selectedSections.push(id);
-                        $(event.target).addClass('sectionSelected');
+                        $(event.target).addClass('active');
                     }
                     else {
                         WidgetSections.selectedSections.splice(WidgetSections.selectedSections.indexOf(id), 1);
-                        $(event.target).removeClass('sectionSelected');
+                        $(event.target).removeClass('active');
                     }
                 };
 
                 WidgetSections.resetSectionFilter = function () {
                     WidgetSections.selectedSections = [];
-                    $('.sectionSelected').removeClass('sectionSelected');
+                    $('.active.section-filter').removeClass('active');
                 };
+
 
                 function refreshSections() {
                     WidgetSections.sections = [];
@@ -152,34 +130,61 @@
                     $scope.$apply();
                 }
 
+
+                var initCarousel = function (_defaultView) {
+                    function resetCarousel(_layout) {
+                        if (currentLayout != _layout && view && WidgetSections.info.data.content.images) {
+                            if (WidgetSections.info.data.content.images.length)
+                                view._destroySlider();
+                            view = null;
+                        }
+                        else {
+                            if (view) {
+                                view.loadItems(WidgetSections.info.data.content.images);
+                            }
+                        }
+                    }
+
+                    switch (_defaultView) {
+                        case DEFAULT_VIEWS.LIST:
+                            resetCarousel(WidgetSections.info.data.design.secListLayout);
+                            break;
+                        case DEFAULT_VIEWS.MAP:
+                            resetCarousel(WidgetSections.info.data.design.mapLayout);
+                            break;
+                    }
+                };
+
+                initCarousel(WidgetSections.info.data.settings.defaultView);
+
                 /**
                  * Buildfire.datastore.onUpdate method calls when Data is changed.
                  */
                 Buildfire.datastore.onUpdate(function (event) {
                     if (event.tag == "placeInfo") {
                         if (event.data) {
-                            WidgetSections.info = event;
-                            refreshSections();
 
-                            if (view)
-                                if (event.data.content && event.data.content.images)
-                                    view.loadItems(event.data.content.images);
-                                else
-                                    view.loadItems([]);
+                            WidgetSections.info = event;
+                            WidgetSections.info.currentView = WidgetSections.info.data.settings.defaultView;
+
+                            initCarousel(WidgetSections.info.data.settings.defaultView);
+                            refreshSections();
                         }
                     }
                     else {
+                        view = null;
+                        currentLayout = '';
                         refreshSections();
                     }
                 });
 
 
                 $rootScope.$on("Carousel:LOADED", function () {
-                    console.log('fsdfads', WidgetSections.info.data.content.images);
-
-                    if (WidgetSections.info.data.content && WidgetSections.info.data.content.images) {
+                    if (!view) {
                         view = new Buildfire.components.carousel.view("#carouselWidget", []);
-                        view.loadItems(WidgetSections.info.data.content.images, false);
+                    }
+                    if (WidgetSections.info.data.content && WidgetSections.info.data.content.images) {
+                        view.loadItems(WidgetSections.info.data.content.images);
                     } else {
                         view.loadItems([]);
                     }

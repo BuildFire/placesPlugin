@@ -1,35 +1,8 @@
-<!DOCTYPE html>
-<html lang="en" ng-app="buildfire" >
-<head>
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="../../../../styles/siteIcons.css">
-    <link rel="stylesheet" href="../../../../styles/helper.css">
-    
-    <!-- jQuery & Owl Carousel -->
-	<script src="../scripts/jquery/jquery-1.11.2.min.js"></script>    
-	<script src="../scripts/owlCarousel.js"></script>
-    <link rel="stylesheet" href="../styles/owlCarousel.css">
-
-    <!-- Meta -->
-	<meta charset="utf-8">
-</head>
-<script type="text/javascript" charset="utf-8">
-	$(function(){
-		var slides = $('.plugin-slider .plugin-slide').length;
-		
-		// Slider needs at least 2 slides or you'll get an error.
-		if(slides > 1){
-			$('.plugin-slider').owlCarousel({
-				loop:true,
-				nav:false,
-				items:1
-			});	
-		}
-	})
-</script>
 <div class="holder padding-zero has-bottom has-bottom-viewing map-layout1">
 	<div class="places-plugin">
+        <div class="plugin-slide">
+            <div id="carousel" build-fire-carousel=""></div>
+        </div>
 		<div class="item-info clearfix" style="background:#fff;">
 			<div class="col-xs-9 pull-left padding-left-zero">
 				<div class="pull-left">
@@ -112,5 +85,3 @@
 			</div>
 		</div>
 	</div>
-</div>
-</html>
