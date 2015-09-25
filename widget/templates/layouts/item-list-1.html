@@ -1,9 +1,9 @@
 <div class="holder padding-zero has-bottom has-bottom-viewing">
-    <h1>Item List Layout-1</h1>
     <div class="places-plugin item-list1">
         <div class="plugin-banner has-info-bar clearfix" ng-repeat="item in WidgetSection.items">
             <div class="plugin-slide text-center">
-                <img ng-src="{{item.data.listImage}}">
+                <img ng-if="item.data.listImage" ng-src="{{item.data.listImage}}">
+                <img ng-if="!item.data.listImage" src="assets/images/now-playing.png">
             </div>
             <div class="info-bar">
                 <div class="col-xs-8 text-left pull-left">

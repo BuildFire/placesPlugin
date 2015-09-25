@@ -1,6 +1,6 @@
 <div class="holder padding-zero has-bottom has-bottom-viewing">
     <div class="places-plugin item-list2">
-        <div class="plugin-banner has-info-bar clearfix" style="margin-top: 30px;">
+        <div class="plugin-banner has-info-bar clearfix" ng-repeat="item in WidgetSection.items">
             <div class="plugin-slide text-center">
                 <img ng-if="item.data.listImage" ng-src="{{item.data.listImage}}">
             </div>
