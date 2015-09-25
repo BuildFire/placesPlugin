@@ -1,80 +1,38 @@
 (function (angular) {
     angular
         .module('placesWidget')
-        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders','PlaceInfo',
-            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders,PlaceInfo) {
+        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', 'DEFAULT_VIEWS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'PlaceInfo',
+            function ($scope, $window, DB, COLLECTIONS, DEFAULT_VIEWS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, PlaceInfo) {
 
                 var WidgetSections = this;
                 WidgetSections.info = PlaceInfo;
 
-                console.log('Widget Section Ctrl Loaded',WidgetSections.info);
-
-                var _skip = 0,
+                var view = null,
+                    currentLayout = '',
+                    _skip = 0,
                     _limit = 5,
                     searchOptions = {
                         //filter: {"$json.secTitle": {"$regex": '/*'}},
                         skip: _skip,
                         limit: _limit + 1 // the plus one is to check if there are any more
                     };
+
+                if (WidgetSections.info && WidgetSections.info.data && WidgetSections.info.data.settings && WidgetSections.info.data.settings.defaultView) {
+                    switch (WidgetSections.info.data.settings.defaultView) {
+                        case DEFAULT_VIEWS.LIST:
+                            currentLayout = WidgetSections.info.data.design.secListLayout;
+                            break;
+                        case DEFAULT_VIEWS.MAP:
+                            currentLayout = WidgetSections.info.data.design.mapLayout;
+                            break;
+                    }
+                }
+
                 /**
                  * WidgetSections.isBusy is used for infinite scroll.
                  * @type {boolean}
                  */
                 WidgetSections.isBusy = false;
-                /**
-                 * AppConfig.setSettings() set the Settings.
-                 */
-                //AppConfig.setSettings(MediaCenterInfo.data);
-                /**
-                 * AppConfig.changeBackgroundTheme() change the background image.
-                 */
-                //AppConfig.changeBackgroundTheme(WidgetSections.media.data.design.backgroundImage);
-                /**
-                 * Messaging.onReceivedMessage is called when any event is fire from Content/design section.
-                 * @param event
-                 */
-                /*Messaging.onReceivedMessage = function (event) {
-                    if (event) {
-                        switch (event.name) {
-                            case EVENTS.ROUTE_CHANGE:
-                                var path = event.message.path,
-                                    id = event.message.id;
-                                var url = "#/";
-                                switch (path) {
-                                    case PATHS.MEDIA:
-                                        url = url + "media/";
-                                        if (id) {
-                                            url = url + id + "/";
-                                        }
-                                        break;
-                                    default :
-
-                                        break
-                                }
-                                Location.go(url);
-                                break;
-                        }
-                    }
-                };
-
-                /!**
-                 * Buildfire.datastore.onUpdate method calls when Data is changed.
-                 *!/
-                Buildfire.datastore.onUpdate(function (event) {
-                    if (event.tag == "MediaCenter") {
-                        if (event.data) {
-                            WidgetSections.media.data = event.data;
-                            console.log(WidgetSections.media);
-                            AppConfig.changeBackgroundTheme(WidgetSections.media.data.design.backgroundImage);
-                            $scope.$apply();
-                        }
-                    }
-                    else {
-                        WidgetSections.items = [];
-                        WidgetSections.noMore = false;
-                        WidgetSections.loadMore();
-                    }
-                });*/
 
                 /**
                  * Create instance of Sections db collection
@@ -114,7 +72,6 @@
                  * loadMore method loads the items in list page.
                  */
                 WidgetSections.loadMore = function () {
-
                     if (WidgetSections.isBusy && !WidgetSections.noMore) {
                         return;
                     }
@@ -139,10 +96,8 @@
                         console.error('error');
                     });
                 };
-                WidgetSections.loadMore();
 
-                function refreshSections()
-                {
+                function refreshSections() {
                     WidgetSections.sections = [];
                     WidgetSections.noMore = false;
                     WidgetSections.loadMore();
@@ -152,23 +107,53 @@
                 /**
                  * Buildfire.datastore.onUpdate method calls when Data is changed.
                  */
+                var initCarousel = function (_defaultView) {
+                    function resetCarousel(_layout) {
+                        if (currentLayout != _layout && view && WidgetSections.info.data.content.images) {
+                            if (WidgetSections.info.data.content.images.length)
+                                view._destroySlider();
+                            view = null;
+                        }
+                        else {
+                            if (view) {
+                                view.loadItems(WidgetSections.info.data.content.images);
+                            }
+                        }
+                    }
+
+                    switch (_defaultView) {
+                        case DEFAULT_VIEWS.LIST:
+                            resetCarousel(WidgetSections.info.data.design.secListLayout);
+                            break;
+                        case DEFAULT_VIEWS.MAP:
+                            resetCarousel(WidgetSections.info.data.design.mapLayout);
+                            break;
+                    }
+                };
+
+                initCarousel(WidgetSections.info.data.settings.defaultView);
+
                 Buildfire.datastore.onUpdate(function (event) {
                     if (event.tag == "placeInfo") {
                         if (event.data) {
-                            WidgetSections.info =event;
+                            WidgetSections.info = event;
+                            initCarousel(WidgetSections.info.data.settings.defaultView);
                             refreshSections();
                         }
                     }
                     else {
+                        view = null;
+                        currentLayout = '';
                         refreshSections();
                     }
                 });
 
-
                 $rootScope.$on("Carousel:LOADED", function () {
-                    if (WidgetSections.info.data.content && WidgetSections.info.data.content.images) {
+                    if (!view) {
                         view = new Buildfire.components.carousel.view("#carousel", []);
-                        view.loadItems(WidgetSections.info.data.content.images,false);
+                    }
+                    if (WidgetSections.info.data.content && WidgetSections.info.data.content.images) {
+                        view.loadItems(WidgetSections.info.data.content.images);
                     } else {
                         view.loadItems([]);
                     }

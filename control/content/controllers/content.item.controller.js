@@ -307,6 +307,5 @@
                 $scope.$watch(function () {
                     return ContentItem.item;
                 }, updateItemsWithDelay, true);
-                /*Default BootStrapping and auto save block end*/
             }]);
 })(window.angular, window.tinymce);
