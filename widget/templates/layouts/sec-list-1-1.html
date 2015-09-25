@@ -24,7 +24,7 @@
 							</div>
 						</div>
 						<div class="list-item-copy text-left">
-							<p class="ellipsis margin-zero"><a class="text-primary">{{item.data.secTitle}}</a></p>
+							<p class="ellipsis margin-zero"><a class="text-primary" href="#/items/{{item.id}}">{{item.data.secTitle}}</a></p>
 
 							<p class="summary ellipsis margin-zero">{{item.data.secSummary}}</p>
 							<span class="list-item-date" data-ng-if="item.data.dateCreated">{{item.data.dateCreated  | jsDate | date:"MMMM dd, yyyy"}}</span>
