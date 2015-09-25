@@ -1,13 +1,20 @@
 (function (angular) {
     angular
         .module('placesWidget')
-        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', 'DEFAULT_VIEWS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'PlaceInfo',
-            function ($scope, $window, DB, COLLECTIONS, DEFAULT_VIEWS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, PlaceInfo) {
+        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'PlaceInfo','DEFAULT_VIEWS',
+            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, PlaceInfo,DEFAULT_VIEWS) {
 
                 var WidgetSections = this;
-                WidgetSections.info = PlaceInfo;
+                WidgetSections.showMenu = false;
+                WidgetSections.menuTab = 'Category';
+                WidgetSections.selectedSections = [];
 
-                var view = null,
+                WidgetSections.info = PlaceInfo;
+                WidgetSections.info.currentView = WidgetSections.info.data.settings.defaultView;
+                console.log('Widget Section Ctrl Loaded', WidgetSections.info);
+
+                var _skip = 0,
+                    view = null,
                     currentLayout = '',
                     _skip = 0,
                     _limit = 5,
@@ -96,6 +103,25 @@
                         console.error('error');
                     });
                 };
+                WidgetSections.loadMore();
+
+                WidgetSections.toggleSectionSelection = function (ind, event) {
+                    var id = WidgetSections.sections[ind].id;
+                    if (WidgetSections.selectedSections.indexOf(id) < 0) {
+                        WidgetSections.selectedSections.push(id);
+                        $(event.target).addClass('active');
+                    }
+                    else {
+                        WidgetSections.selectedSections.splice(WidgetSections.selectedSections.indexOf(id), 1);
+                        $(event.target).removeClass('active');
+                    }
+                };
+
+                WidgetSections.resetSectionFilter = function () {
+                    WidgetSections.selectedSections = [];
+                    $('.active.section-filter').removeClass('active');
+                };
+
 
                 function refreshSections() {
                     WidgetSections.sections = [];
@@ -104,9 +130,7 @@
                     $scope.$apply();
                 }
 
-                /**
-                 * Buildfire.datastore.onUpdate method calls when Data is changed.
-                 */
+
                 var initCarousel = function (_defaultView) {
                     function resetCarousel(_layout) {
                         if (currentLayout != _layout && view && WidgetSections.info.data.content.images) {
@@ -133,10 +157,16 @@
 
                 initCarousel(WidgetSections.info.data.settings.defaultView);
 
+                /**
+                 * Buildfire.datastore.onUpdate method calls when Data is changed.
+                 */
                 Buildfire.datastore.onUpdate(function (event) {
                     if (event.tag == "placeInfo") {
                         if (event.data) {
+
                             WidgetSections.info = event;
+                            WidgetSections.info.currentView = WidgetSections.info.data.settings.defaultView;
+
                             initCarousel(WidgetSections.info.data.settings.defaultView);
                             refreshSections();
                         }
@@ -148,9 +178,10 @@
                     }
                 });
 
+
                 $rootScope.$on("Carousel:LOADED", function () {
                     if (!view) {
-                        view = new Buildfire.components.carousel.view("#carousel", []);
+                        view = new Buildfire.components.carousel.view("#carouselWidget", []);
                     }
                     if (WidgetSections.info.data.content && WidgetSections.info.data.content.images) {
                         view.loadItems(WidgetSections.info.data.content.images);

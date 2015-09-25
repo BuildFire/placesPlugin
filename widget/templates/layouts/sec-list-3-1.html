@@ -1,7 +1,7 @@
 <div class="holder padding-zero">
 	<div class="places-plugin layout3">
 		<div class="media-center-banner clearfix border-bottom-grey">
-			<div id="carousel" build-fire-carousel="WidgetSections.info.data.content.images"></div>
+			<div id="carouselWidget" build-fire-carousel=""></div>
 		</div>
 		<div class="text-left padded padding-bottom-zero clearfix">
 			<p ng-if="WidgetSections.info.data.content.descriptionHTML"
@@ -23,5 +23,6 @@
 				</div>
 			</div>
 		</div>
+		<div ng-include="'templates/layouts/bottom-menu.html'"></div>
 	</div>
 </div>
