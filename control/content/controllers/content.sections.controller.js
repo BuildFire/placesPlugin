@@ -21,6 +21,7 @@
                 AppConfig.setAppId(PlaceInfo.id);
                 updateMasterInfo(ContentSections.info);
 
+
                 var header = {
                     mainImage: 'Section Image',
                     secTitle: 'Section Title',
@@ -82,6 +83,47 @@
                  * @type {Array}
                  */
                 var records = [];
+
+                //option for wysiwyg
+                ContentSections.bodyWYSIWYGOptions = {
+                    plugins: 'advlist autolink link image lists charmap print preview',
+                    skin: 'lightgray',
+                    trusted: true,
+                    theme: 'modern'
+                };
+
+                // create a new instance of the buildfire carousel editor
+                var editor = new Buildfire.components.carousel.editor("#carousel");
+                // this method will be called when a new item added to the list
+                editor.onAddItems = function (items) {
+                    if (!ContentSections.info.data.content.images)
+                        ContentSections.info.data.content.images = [];
+                    ContentSections.info.data.content.images.push.apply(ContentSections.info.data.content.images, items);
+                    $scope.$digest();
+                };
+                // this method will be called when an item deleted from the list
+                editor.onDeleteItem = function (item, index) {
+                    ContentSections.info.data.content.images.splice(index, 1);
+                    $scope.$digest();
+                };
+                // this method will be called when you edit item details
+                editor.onItemChange = function (item, index) {
+                    ContentSections.info.data.content.images.splice(index, 1, item);
+                    $scope.$digest();
+                };
+                // this method will be called when you change the order of items
+                editor.onOrderChange = function (item, oldIndex, newIndex) {
+                    var temp = ContentSections.info.data.content.images[oldIndex];
+                    ContentSections.info.data.content.images[oldIndex] = ContentSections.info.data.content.images[newIndex];
+                    ContentSections.info.data.content.images[newIndex] = temp;
+                    $scope.$digest();
+                };
+
+                // initialize carousel data
+                if (!ContentSections.info.data.content.images)
+                    editor.loadItems([]);
+                else
+                    editor.loadItems(ContentSections.info.data.content.images);
 
                 /**
                  * getRecords function get the  all items from DB

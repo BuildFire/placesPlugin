@@ -6,7 +6,8 @@
 
                 var WidgetSections = this;
                 WidgetSections.info = PlaceInfo;
-                console.log(WidgetSections.info);
+
+                console.log('Widget Section Ctrl Loaded',WidgetSections.info);
 
                 var _skip = 0,
                     _limit = 5,
@@ -152,16 +153,25 @@
                  * Buildfire.datastore.onUpdate method calls when Data is changed.
                  */
                 Buildfire.datastore.onUpdate(function (event) {
-                    console.log(1,event);
                     if (event.tag == "placeInfo") {
-                        console.log(2);
                         if (event.data) {
                             WidgetSections.info =event;
                             refreshSections();
                         }
                     }
-                    else {console.log(3);
+                    else {
                         refreshSections();
+                    }
+                });
+
+
+                $rootScope.$on("Carousel:LOADED", function () {
+                    alert('came here');
+                    if (WidgetSections.info.data.content && WidgetSections.info.data.content.images) {
+                        view = new Buildfire.components.carousel.view("#carousel", []);
+                        view.loadItems(WidgetSections.info.data.content.images,false);
+                    } else {
+                        view.loadItems([]);
                     }
                 });
 
