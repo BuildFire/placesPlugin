@@ -16,7 +16,6 @@
                 var _skip = 0,
                     view = null,
                     currentLayout = '',
-                    _skip = 0,
                     _limit = 5,
                     searchOptions = {
                         //filter: {"$json.secTitle": {"$regex": '/*'}},
@@ -132,8 +131,9 @@
 
 
                 var initCarousel = function (_defaultView) {
-                    function resetCarousel(_layout) {
-                        if (currentLayout != _layout && view && WidgetSections.info.data.content.images) {
+                    var resetCarousel = function (_layout) {
+                        if (currentLayout !== _layout && view && WidgetSections.info.data.content.images) {
+                            currentLayout = _layout;
                             if (WidgetSections.info.data.content.images.length)
                                 view._destroySlider();
                             view = null;
@@ -143,7 +143,7 @@
                                 view.loadItems(WidgetSections.info.data.content.images);
                             }
                         }
-                    }
+                    };
 
                     switch (_defaultView) {
                         case DEFAULT_VIEWS.LIST:
@@ -155,7 +155,7 @@
                     }
                 };
 
-                initCarousel(WidgetSections.info.data.settings.defaultView);
+                // initCarousel(WidgetSections.info.data.settings.defaultView);
 
                 /**
                  * Buildfire.datastore.onUpdate method calls when Data is changed.
@@ -178,10 +178,9 @@
                     }
                 });
 
-
                 $rootScope.$on("Carousel:LOADED", function () {
                     if (!view) {
-                        view = new Buildfire.components.carousel.view("#carouselWidget", []);
+                        view = new Buildfire.components.carousel.view("#carousel", []);
                     }
                     if (WidgetSections.info.data.content && WidgetSections.info.data.content.images) {
                         view.loadItems(WidgetSections.info.data.content.images);
@@ -189,6 +188,5 @@
                         view.loadItems([]);
                     }
                 });
-
             }]);
 })(window.angular, undefined);
