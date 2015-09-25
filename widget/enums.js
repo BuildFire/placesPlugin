@@ -28,5 +28,9 @@
         .constant('PATHS', {
             MEDIA: "MEDIA",
             HOME: "HOME"
+        })
+        .constant('DEFAULT_VIEWS', {
+            MAP: "map",
+            LIST: "list"
         });
 })(window.angular, undefined);

@@ -1,15 +1,15 @@
 (function (angular) {
     angular
         .module('placesWidget')
-        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders','PlaceInfo',
-            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders,PlaceInfo) {
+        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', 'DEFAULT_VIEWS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'PlaceInfo',
+            function ($scope, $window, DB, COLLECTIONS, DEFAULT_VIEWS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, PlaceInfo) {
 
                 var WidgetSections = this;
                 WidgetSections.info = PlaceInfo;
 
-                console.log('Widget Section Ctrl Loaded',WidgetSections.info);
-
-                var _skip = 0,
+                var view = null,
+                    currentLayout = '',
+                    _skip = 0,
                     _limit = 5,
                     searchOptions = {
                         //filter: {"$json.secTitle": {"$regex": '/*'}},
@@ -21,60 +21,6 @@
                  * @type {boolean}
                  */
                 WidgetSections.isBusy = false;
-                /**
-                 * AppConfig.setSettings() set the Settings.
-                 */
-                //AppConfig.setSettings(MediaCenterInfo.data);
-                /**
-                 * AppConfig.changeBackgroundTheme() change the background image.
-                 */
-                //AppConfig.changeBackgroundTheme(WidgetSections.media.data.design.backgroundImage);
-                /**
-                 * Messaging.onReceivedMessage is called when any event is fire from Content/design section.
-                 * @param event
-                 */
-                /*Messaging.onReceivedMessage = function (event) {
-                    if (event) {
-                        switch (event.name) {
-                            case EVENTS.ROUTE_CHANGE:
-                                var path = event.message.path,
-                                    id = event.message.id;
-                                var url = "#/";
-                                switch (path) {
-                                    case PATHS.MEDIA:
-                                        url = url + "media/";
-                                        if (id) {
-                                            url = url + id + "/";
-                                        }
-                                        break;
-                                    default :
-
-                                        break
-                                }
-                                Location.go(url);
-                                break;
-                        }
-                    }
-                };
-
-                /!**
-                 * Buildfire.datastore.onUpdate method calls when Data is changed.
-                 *!/
-                Buildfire.datastore.onUpdate(function (event) {
-                    if (event.tag == "MediaCenter") {
-                        if (event.data) {
-                            WidgetSections.media.data = event.data;
-                            console.log(WidgetSections.media);
-                            AppConfig.changeBackgroundTheme(WidgetSections.media.data.design.backgroundImage);
-                            $scope.$apply();
-                        }
-                    }
-                    else {
-                        WidgetSections.items = [];
-                        WidgetSections.noMore = false;
-                        WidgetSections.loadMore();
-                    }
-                });*/
 
                 /**
                  * Create instance of Sections db collection
@@ -141,8 +87,7 @@
                 };
                 WidgetSections.loadMore();
 
-                function refreshSections()
-                {
+                function refreshSections() {
                     WidgetSections.sections = [];
                     WidgetSections.noMore = false;
                     WidgetSections.loadMore();
@@ -155,7 +100,17 @@
                 Buildfire.datastore.onUpdate(function (event) {
                     if (event.tag == "placeInfo") {
                         if (event.data) {
-                            WidgetSections.info =event;
+                            WidgetSections.info = event;
+                            if (currentLayout != WidgetFeed.data.design.itemListLayout && view && WidgetFeed.data.content.carouselImages) {
+                                if (WidgetFeed.data.content.carouselImages.length)
+                                    view._destroySlider();
+                                view = null;
+                            }
+                            else {
+                                if (view) {
+                                    view.loadItems(WidgetFeed.data.content.carouselImages);
+                                }
+                            }
                             refreshSections();
                         }
                     }
@@ -164,11 +119,12 @@
                     }
                 });
 
-
                 $rootScope.$on("Carousel:LOADED", function () {
-                    if (WidgetSections.info.data.content && WidgetSections.info.data.content.images) {
+                    if (!view) {
                         view = new Buildfire.components.carousel.view("#carousel", []);
-                        view.loadItems(WidgetSections.info.data.content.images,false);
+                    }
+                    if (WidgetSections.info.data.content && WidgetSections.info.data.content.images) {
+                        view.loadItems(WidgetSections.info.data.content.images);
                     } else {
                         view.loadItems([]);
                     }
