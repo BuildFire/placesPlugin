@@ -108,8 +108,9 @@
                  * Buildfire.datastore.onUpdate method calls when Data is changed.
                  */
                 var initCarousel = function (_defaultView) {
-                    function resetCarousel(_layout) {
-                        if (currentLayout != _layout && view && WidgetSections.info.data.content.images) {
+                    var resetCarousel = function (_layout) {
+                        if (currentLayout !== _layout && view && WidgetSections.info.data.content.images) {
+                            currentLayout = _layout;
                             if (WidgetSections.info.data.content.images.length)
                                 view._destroySlider();
                             view = null;
@@ -119,7 +120,7 @@
                                 view.loadItems(WidgetSections.info.data.content.images);
                             }
                         }
-                    }
+                    };
 
                     switch (_defaultView) {
                         case DEFAULT_VIEWS.LIST:
@@ -131,7 +132,7 @@
                     }
                 };
 
-                initCarousel(WidgetSections.info.data.settings.defaultView);
+                // initCarousel(WidgetSections.info.data.settings.defaultView);
 
                 Buildfire.datastore.onUpdate(function (event) {
                     if (event.tag == "placeInfo") {
