@@ -1,13 +1,14 @@
 (function (angular, window) {
     angular
         .module('placesWidget')
-        .controller('WidgetSectionCtrl', ['$scope', '$window', 'AppConfig', 'Messaging', 'Buildfire', 'COLLECTIONS', 'EVENTS', '$timeout', function ($scope, $window, AppConfig, Messaging, Buildfire, COLLECTIONS, EVENTS, $timeout) {
+        .controller('WidgetSectionCtrl', ['$scope', '$window', 'AppConfig', 'Messaging', 'Buildfire', 'COLLECTIONS', 'EVENTS', '$timeout', 'DB', '$routeParams','PlaceInfo', function ($scope, $window, AppConfig, Messaging, Buildfire, COLLECTIONS, EVENTS, $timeout, DB, $routeParams,PlaceInfo) {
             var WidgetSection = this;
+            WidgetSection.placeInfo=PlaceInfo;
+            console.log('Section Controller called');
             var Sections = new DB(COLLECTIONS.Sections),
                 Items = new DB(COLLECTIONS.Items);
 
             WidgetSection.section = $routeParams.sectionId;
-            console.log(ContentItems.section);
             WidgetSection.isBusy = false;
             /* tells if data is being fetched*/
             WidgetSection.items = [];
@@ -19,5 +20,37 @@
                     skip: _skip,
                     limit: _limit + 1 // the plus one is to check if there are any more
                 };
+            /**
+             * ContentItems.noMore tells if all data has been loaded
+             */
+            WidgetSection.noMore = false;
+
+            /**
+             * ContentItems.getMore is used to load the items
+             */
+            WidgetSection.getMore = function () {
+                if (WidgetSection.isBusy && !WidgetSection.noMore) {
+                    return;
+                }
+                //updateSearchOptions();
+                WidgetSection.isBusy = true;
+                Items.find(searchOptions).then(function success(result) {
+                    console.log('???????????', result);
+                    if (result.length <= _limit) {// to indicate there are more
+                        WidgetSection.noMore = true;
+                    }
+                    else {
+                        result.pop();
+                        searchOptions.skip = searchOptions.skip + _limit;
+                        WidgetSection.noMore = false;
+                    }
+                    WidgetSection.items = WidgetSection.items ? WidgetSection.items.concat(result) : result;
+                    WidgetSection.isBusy = false;
+                }, function fail() {
+                    WidgetSection.isBusy = false;
+                });
+            };
+            WidgetSection.getMore();
+
         }]);
 })(window.angular, window);

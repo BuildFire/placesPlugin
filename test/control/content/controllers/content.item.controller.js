@@ -1,30 +1,30 @@
 describe('Unit : placesContent content.item.controller.js', function () {
-    var ContentItem, scope, $rootScope, $controller, q, $timeout, $httpBackend,DB, Buildfire,COLLECTIONS,Location,$routeParams,Utils,ADDRESS_TYPE;
+    var ContentItem, scope, $rootScope, $controller, q, $timeout, $httpBackend, DB, Buildfire, COLLECTIONS, Location, $routeParams, Utils, ADDRESS_TYPE;
     beforeEach(module('placesContent'));
 
-    beforeEach(inject(function (_$rootScope_, _$q_, _$controller_,_DB_, _$httpBackend_, _$timeout_, _Buildfire_,_COLLECTIONS_,_Location_,_ADDRESS_TYPE_,_Utils_,_$routeParams_) {
+    beforeEach(inject(function (_$rootScope_, _$q_, _$controller_, _DB_, _$httpBackend_, _$timeout_, _Buildfire_, _COLLECTIONS_, _Location_, _ADDRESS_TYPE_, _Utils_, _$routeParams_) {
         $rootScope = _$rootScope_;
         q = _$q_;
         scope = $rootScope.$new();
         $controller = _$controller_;
         $timeout = _$timeout_;
         $httpBackend = _$httpBackend_;
-        ADDRESS_TYPE=_ADDRESS_TYPE_;
-        Utils=_Utils_;
+        ADDRESS_TYPE = _ADDRESS_TYPE_;
+        Utils = _Utils_;
         Buildfire = {
             components: {
                 carousel: {
                     editor: {}
                 },
-                actionItems:{
-                    sortableList:{}
+                actionItems: {
+                    sortableList: {}
                 }
             }
         };
-        Location=_Location_;
-        COLLECTIONS=_COLLECTIONS_;
-        $rootScope=_$rootScope_;
-        DB=_DB_;
+        Location = _Location_;
+        COLLECTIONS = _COLLECTIONS_;
+        $rootScope = _$rootScope_;
+        DB = _DB_;
         Buildfire.components.carousel = jasmine.createSpyObj('Buildfire.components.carousel', ['editor', '', '']);
         Buildfire.components.actionItems = jasmine.createSpyObj('Buildfire.components.actionItems', ['sortableList', '', '']);
         Buildfire.components.carousel.editor.and.callFake(function () {
@@ -47,16 +47,34 @@ describe('Unit : placesContent content.item.controller.js', function () {
             ContentItem = $controller('ContentItemCtrl', {
                 $scope: scope,
                 Buildfire: Buildfire,
-                item:null,
-                DB:DB,
-                COLLECTIONS:COLLECTIONS,
-                $routeScope:$rootScope,
-                $timeout:$timeout,
-                ADDRESS_TYPE:ADDRESS_TYPE,
-                $routeParams:{
-                    sectionId:'123456'
+                item: {
+                    data: {
+                        listImage: '',
+                        itemTitle: '',
+                        images: [],
+                        summary: '',
+                        bodyContent: '',
+                        bodyContentHTML: '',
+                        addressTitle: '',
+                        sections: ['123124234'],
+                        address: {
+                            lat: '',
+                            lng: '',
+                            aName: ''
+                        },
+                        links: [],
+                        backgroundImage: ''
+                    }
                 },
-                Utils:Utils
+                DB: DB,
+                COLLECTIONS: COLLECTIONS,
+                $routeScope: $rootScope,
+                $timeout: $timeout,
+                ADDRESS_TYPE: ADDRESS_TYPE,
+                $routeParams: {
+                    sectionId: '123456'
+                },
+                Utils: Utils
             });
         });
 
