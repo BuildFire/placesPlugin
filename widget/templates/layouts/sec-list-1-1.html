@@ -1,14 +1,32 @@
-<div class="holder padding-zero">
-	<div id="scroll-infinite" class="media-center-plugin layout1">
-		<div class="plugin-banner clearfix border-bottom-grey">
-			<div id="carousel" build-fire-carousel=""></div>
-		</div>
-		<div class="text-left padded padding-bottom-zero clearfix">
-			<p class="margin-bottom-zero" ng-if="WidgetSections.info.data.content.descriptionHTML"
-			   ng-bind-html="WidgetSections.info.data.content.descriptionHTML | safeHtml">
-				{{WidgetSections.info.data.content.descriptionHTML}}</p>
-		</div>
-		<div class="padded padding-top-zero">
+<div class="holder padding-zero has-bottom">
+    <div id="scroll-infinite" class="places-plugin layout1">
+        <div class="plugin-banner clearfix border-bottom-grey">
+            <div id="carouselWidget" build-fire-carousel=""></div>
+        </div>
+        <div class="text-left padded padding-bottom-zero clearfix">
+            <p class="margin-bottom-zero" ng-if="WidgetSections.info.data.content.descriptionHTML"
+               ng-bind-html="WidgetSections.info.data.content.descriptionHTML | safeHtml">
+                {{WidgetSections.info.data.content.descriptionHTML}}</p>
+        </div>
+
+        <div class="padded padding-top-zero">
+            <div ng-repeat="item in WidgetSections.sections" class="plugin-banner has-info-bar clearfix">
+                <div class="plugin-slide text-center">
+                    <img ng-src="{{item.data.mainImage}}">
+                </div>
+                <div class="info-bar">
+                    <div class="col-xs-12 text-left pull-left">
+                        <p class="margin-bottom-zero ellipsis"><a>{{item.data.secTitle}}</a></p>
+
+                        <p class="margin-bottom-zero ellipsis">{{item.data.secSummary}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-include="'templates/layouts/bottom-menu.html'"></div>
+    </div>
+</div>
+<!--<div class="padded padding-top-zero">
 			<div class="list-layout">
 				<div class="row"
 					 infinite-scroll-distance="0"
@@ -32,10 +50,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-</div>
-
+		</div>-->
 <!--
 <div class="holder padding-zero has-bottom">
 	<div class="places-plugin item-list1">

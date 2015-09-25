@@ -1,13 +1,17 @@
 (function (angular) {
     angular
         .module('placesWidget')
-        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders','PlaceInfo',
-            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders,PlaceInfo) {
+        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'PlaceInfo',
+            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, PlaceInfo) {
 
                 var WidgetSections = this;
+                WidgetSections.showMenu = false;
+                WidgetSections.menuTab = 'Category';
+                WidgetSections.selectedSections = [];
+                var view = null;
                 WidgetSections.info = PlaceInfo;
-
-                console.log('Widget Section Ctrl Loaded',WidgetSections.info);
+                WidgetSections.info.currentView = WidgetSections.info.data.settings.defaultView;
+                console.log('Widget Section Ctrl Loaded', WidgetSections.info);
 
                 var _skip = 0,
                     _limit = 5,
@@ -34,47 +38,30 @@
                  * @param event
                  */
                 /*Messaging.onReceivedMessage = function (event) {
-                    if (event) {
-                        switch (event.name) {
-                            case EVENTS.ROUTE_CHANGE:
-                                var path = event.message.path,
-                                    id = event.message.id;
-                                var url = "#/";
-                                switch (path) {
-                                    case PATHS.MEDIA:
-                                        url = url + "media/";
-                                        if (id) {
-                                            url = url + id + "/";
-                                        }
-                                        break;
-                                    default :
+                 if (event) {
+                 switch (event.name) {
+                 case EVENTS.ROUTE_CHANGE:
+                 var path = event.message.path,
+                 id = event.message.id;
+                 var url = "#/";
+                 switch (path) {
+                 case PATHS.MEDIA:
+                 url = url + "media/";
+                 if (id) {
+                 url = url + id + "/";
+                 }
+                 break;
+                 default :
 
-                                        break
-                                }
-                                Location.go(url);
-                                break;
-                        }
-                    }
-                };
+                 break
+                 }
+                 Location.go(url);
+                 break;
+                 }
+                 }
+                 };
 
-                /!**
-                 * Buildfire.datastore.onUpdate method calls when Data is changed.
-                 *!/
-                Buildfire.datastore.onUpdate(function (event) {
-                    if (event.tag == "MediaCenter") {
-                        if (event.data) {
-                            WidgetSections.media.data = event.data;
-                            console.log(WidgetSections.media);
-                            AppConfig.changeBackgroundTheme(WidgetSections.media.data.design.backgroundImage);
-                            $scope.$apply();
-                        }
-                    }
-                    else {
-                        WidgetSections.items = [];
-                        WidgetSections.noMore = false;
-                        WidgetSections.loadMore();
-                    }
-                });*/
+                 */
 
                 /**
                  * Create instance of Sections db collection
@@ -141,8 +128,24 @@
                 };
                 WidgetSections.loadMore();
 
-                function refreshSections()
-                {
+                WidgetSections.toggleSectionSelection = function (ind, event) {
+                    var id = WidgetSections.sections[ind].id;
+                    if (WidgetSections.selectedSections.indexOf(id) < 0) {
+                        WidgetSections.selectedSections.push(id);
+                        $(event.target).addClass('sectionSelected');
+                    }
+                    else {
+                        WidgetSections.selectedSections.splice(WidgetSections.selectedSections.indexOf(id), 1);
+                        $(event.target).removeClass('sectionSelected');
+                    }
+                };
+
+                WidgetSections.resetSectionFilter = function () {
+                    WidgetSections.selectedSections = [];
+                    $('.sectionSelected').removeClass('sectionSelected');
+                };
+
+                function refreshSections() {
                     WidgetSections.sections = [];
                     WidgetSections.noMore = false;
                     WidgetSections.loadMore();
@@ -155,8 +158,14 @@
                 Buildfire.datastore.onUpdate(function (event) {
                     if (event.tag == "placeInfo") {
                         if (event.data) {
-                            WidgetSections.info =event;
+                            WidgetSections.info = event;
                             refreshSections();
+
+                            if (view)
+                                if (event.data.content && event.data.content.images)
+                                    view.loadItems(event.data.content.images);
+                                else
+                                    view.loadItems([]);
                         }
                     }
                     else {
@@ -166,9 +175,11 @@
 
 
                 $rootScope.$on("Carousel:LOADED", function () {
+                    console.log('fsdfads', WidgetSections.info.data.content.images);
+
                     if (WidgetSections.info.data.content && WidgetSections.info.data.content.images) {
-                        view = new Buildfire.components.carousel.view("#carousel", []);
-                        view.loadItems(WidgetSections.info.data.content.images,false);
+                        view = new Buildfire.components.carousel.view("#carouselWidget", []);
+                        view.loadItems(WidgetSections.info.data.content.images, false);
                     } else {
                         view.loadItems([]);
                     }
