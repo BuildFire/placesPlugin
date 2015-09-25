@@ -1,10 +1,51 @@
+<div class="holder padding-zero">
+	<div id="scroll-infinite" class="media-center-plugin layout1">
+		<div class="plugin-banner clearfix border-bottom-grey">
+			<div id="carousel" build-fire-carousel=""></div>
+		</div>
+		<div class="text-left padded padding-bottom-zero clearfix">
+			<p class="margin-bottom-zero" ng-if="WidgetSections.info.data.content.descriptionHTML"
+			   ng-bind-html="WidgetSections.info.data.content.descriptionHTML | safeHtml">
+				{{WidgetSections.info.data.content.descriptionHTML}}</p>
+		</div>
+		<div class="padded padding-top-zero">
+			<div class="list-layout">
+				<div class="row"
+					 infinite-scroll-distance="0"
+					 infinite-scroll="WidgetSections.loadMore()"
+					 infinite-scroll-container='"#scroll-infinite"'
+					 infinit-scroll-disabled="WidgetSections.noMore"
+						>
+					<div class="col-xs-6 pull-left" ng-repeat="item in WidgetSections.sections" ng-class-odd="list-item-odd" ng-class-even="list-item-even" >
+						<div class="list-item-media text-center border-radius-three overflow-hidden">
+							<div class="list-media-holder"
+								 ng-if="item.data.mainImage">
+								<img ng-src="{{item.data.mainImage | cropImage:153:86}}">
+							</div>
+						</div>
+						<div class="list-item-copy text-left">
+							<p class="ellipsis margin-zero"><a class="text-primary">{{item.data.secTitle}}</a></p>
+
+							<p class="summary ellipsis margin-zero">{{item.data.secSummary}}</p>
+							<span class="list-item-date" data-ng-if="item.data.dateCreated">{{item.data.dateCreated  | jsDate | date:"MMMM dd, yyyy"}}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--
 <div class="holder padding-zero has-bottom">
 	<div class="places-plugin item-list1">
 		<div class="plugin-banner clearfix border-bottom-grey">
-			<buildfire-carousel images="WidgetSections.info.data.design.secListLayout"></buildfire-carousel>
+			<div id="carousel" build-fire-carousel="WidgetSections.info.data.content.images"></div>
 		</div>
 		<div class="text-left padded padding-bottom-zero clearfix">
-			<p class="margin-bottom-zero">WYSIWYG Editor.</p>
+			<p class="margin-bottom-zero" ng-if="WidgetSections.info.data.content.descriptionHTML"
+			   ng-bind-html="WidgetSections.info.data.content.descriptionHTML | safeHtml">
+				{{WidgetSections.info.data.content.descriptionHTML}}</p>
 		</div>
 		<div class="padded padding-top-zero">
 		<div ng-repeat="item in WidgetSections.sections" class="plugin-banner has-info-bar clearfix">
@@ -59,4 +100,4 @@
 		</div>
 
 	</div>
-</div>
+</div>-->

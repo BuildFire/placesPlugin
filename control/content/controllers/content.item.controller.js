@@ -8,8 +8,8 @@
     /**
      * Inject dependency
      */
-        .controller('ContentItemCtrl', ['$scope', 'item', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'ADDRESS_TYPE', 'Utils', '$timeout',
-            function ($scope, item, Buildfire, DB, COLLECTIONS, $routeParams, Location, ADDRESS_TYPE, Utils, $timeout) {
+        .controller('ContentItemCtrl', ['$scope', 'item', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout',
+            function ($scope, item, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout) {
                 $scope.itemShow = 'Content';
                 var ContentItem = this;
                 var tmrDelayForItem = null;
@@ -38,6 +38,10 @@
                     if (item) {
                         updateMasterItem(item);
                         ContentItem.item = item;
+                        if (item.data && item.data.address && item.data.address.aName) {
+                            ContentItem.currentAddress = item.data.address.aName;
+                            ContentItem.currentCoordinates = [item.data.address.lng, item.data.address.lat];
+                        }
                     }
                     else {
                         updateMasterItem({data: data});
@@ -247,44 +251,33 @@
 
 
                 ContentItem.setLocation = function (data) {
-                    console.log('************location data*************', data);
-                    /*ContentItem.item.data.address = {
-                     type: ADDRESS_TYPE.LOCATION,
-                     location: data.location,
-                     location_coordinates: data.coordinates
-                     };
-                     ContentItem.currentAddress =ContentItem.item.data.address.location;
-                     ContentItem.currentCoordinates =ContentItem.item.data.address.location_coordinates;*/
+                    ContentItem.item.data.address = {
+                        lng: data.coordinates[0],
+                        lat: data.coordinates[1],
+                        aName: data.location
+                    };
                     ContentItem.currentAddress = data.location;
                     ContentItem.currentCoordinates = data.coordinates;
-
                     $scope.$digest();
                 };
                 ContentItem.setDraggedLocation = function (data) {
-                    console.log('************setDraggedLocation data*************', data);
-                    /*ContentItem.data.address = {
-                     type: ADDRESS_TYPE.LOCATION,
-                     location: data.location,
-                     location_coordinates: data.coordinates
-                     };
-                     ContentItem.currentAddress =ContentItem.item.data.address.location;
-                     ContentItem.currentCoordinates =ContentItem.item.data.address.location_coordinates;
-                     */
+                    ContentItem.item.data.address = {
+                        lng: data.coordinates[0],
+                        lat: data.coordinates[1],
+                        aName: data.location
+                    };
                     ContentItem.currentAddress = data.location;
                     ContentItem.currentCoordinates = data.coordinates;
                     $scope.$digest();
                 };
                 ContentItem.setCoordinates = function () {
                     function successCallback(resp) {
-                        console.log('************setCoordinates successCallback data*************', resp);
                         if (resp) {
-                            /*ContentItem.item.data.address = {
-                             type: ADDRESS_TYPE.COORDINATES,
-                             location: ContentItem.currentAddress,
-                             location_coordinates: [ContentItem.currentAddress.split(",")[0].trim(), ContentItem.currentAddress.split(",")[1].trim()]
-                             };
-                             ContentItem.currentAddress =ContentItem.item.data.address.location;
-                             ContentItem.currentCoordinates =ContentItem.item.data.address.location_coordinates;*/
+                            ContentItem.item.data.address = {
+                                lng: ContentItem.currentAddress.split(",")[0].trim(),
+                                lat: ContentItem.currentAddress.split(",")[1].trim(),
+                                aName: ContentItem.currentAddress
+                            };
                             ContentItem.currentCoordinates = [ContentItem.currentAddress.split(",")[0].trim(), ContentItem.currentAddress.split(",")[1].trim()];
                         } else {
                             errorCallback();
@@ -302,7 +295,11 @@
                 };
                 ContentItem.clearData = function () {
                     if (!ContentItem.currentAddress) {
-                        ContentItem.item.data.address = null;
+                        ContentItem.item.data.address = {
+                            lng: '',
+                            lat: '',
+                            aName: ''
+                        };
                         ContentItem.currentCoordinates = null;
                     }
                 };

@@ -118,7 +118,7 @@
 
                 /**
                  * updateItemsWithDelay called when ever there is some change in current section
-                 * @param item
+                 * @param section
                  */
                 function updateItemsWithDelay(section) {
                     if (tmrDelayForMedia) {
