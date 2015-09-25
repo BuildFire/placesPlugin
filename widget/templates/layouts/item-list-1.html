@@ -1,14 +1,15 @@
 <div class="holder padding-zero has-bottom has-bottom-viewing">
+    <h1>Item List Layout-1</h1>
     <div class="places-plugin item-list1">
-        <div class="plugin-banner has-info-bar clearfix">
+        <div class="plugin-banner has-info-bar clearfix" ng-repeat="item in WidgetSection.items">
             <div class="plugin-slide text-center">
-                <img src="http://www.placehold.it/1280x720.jpg">
+                <img ng-src="{{item.data.listImage}}">
             </div>
             <div class="info-bar">
                 <div class="col-xs-8 text-left pull-left">
-                    <p class="margin-bottom-zero ellipsis">8018 Camino De Arriba</p>
+                    <p class="margin-bottom-zero ellipsis">{{item.data.itemTitle}}</p>
 
-                    <p class="margin-bottom-zero ellipsis">This is a summary would go</p>
+                    <p class="margin-bottom-zero ellipsis">{{item.data.summary}}</p>
                 </div>
                 <div class="col-xs-4 text-right pull-right padding-left-zero">
                     <span class="icon icon-map-marker icon-sm" style="color:#fff;"></span>

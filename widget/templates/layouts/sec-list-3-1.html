@@ -1,27 +1,27 @@
 <div class="holder padding-zero">
-    <div class="places-plugin layout3">
-        <div class="media-center-banner clearfix border-bottom-grey">
-            <div id="carousel" build-fire-carousel=""></div>
-        </div>
-        <div class="text-left padded padding-bottom-zero clearfix">
-            <p ng-if="WidgetSections.info.data.content.descriptionHTML"
-               ng-bind-html="WidgetSections.info.data.content.descriptionHTML | safeHtml">
-                {{WidgetSections.info.data.content.descriptionHTML}}</p>
-        </div>
-        <div class="">
-            <div class="list-layout">
-                <div class="list-item" ng-repeat="item in WidgetSections.sections">
-                    <div class="list-item-media text-left overflow-hidden">
-                        <div class="list-media-holder pull-left">
-                            <img ng-src="{{item.data.mainImage}}">
-                        </div>
-                        <div class="list-item-copy text-left padding-left-ten padding-right-ten">
-                            <p class="ellipsis margin-zero text-primary margin-top-five"><a class="text-primary">{{item.data.secTitle}}</a></p>
-                            <p class="ellipsis margin-zero">{{item.data.secSummary}}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="places-plugin layout3">
+		<div class="media-center-banner clearfix border-bottom-grey">
+			<div id="carousel" build-fire-carousel="WidgetSections.info.data.content.images"></div>
+		</div>
+		<div class="text-left padded padding-bottom-zero clearfix">
+			<p ng-if="WidgetSections.info.data.content.descriptionHTML"
+			   ng-bind-html="WidgetSections.info.data.content.descriptionHTML | safeHtml">
+				{{WidgetSections.info.data.content.descriptionHTML}}</p>
+		</div>
+		<div class="">
+			<div class="list-layout">
+				<div class="list-item" ng-repeat="item in WidgetSections.sections">
+					<div class="list-item-media text-left overflow-hidden">
+						<div class="list-media-holder pull-left">
+							<img ng-src="{{item.data.mainImage}}">
+						</div>
+						<div class="list-item-copy text-left padding-left-ten padding-right-ten">
+							<p class="ellipsis margin-zero text-primary margin-top-five"><a class="text-primary" href="#/items/{{item.id}}">{{item.data.secTitle}}</a></p>
+							<p class="ellipsis margin-zero">{{item.data.secSummary}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
