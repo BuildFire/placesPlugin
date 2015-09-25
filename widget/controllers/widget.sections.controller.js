@@ -16,7 +16,6 @@
                 var _skip = 0,
                     view = null,
                     currentLayout = '',
-                    _skip = 0,
                     _limit = 5,
                     searchOptions = {
                         //filter: {"$json.secTitle": {"$regex": '/*'}},
@@ -179,10 +178,9 @@
                     }
                 });
 
-
                 $rootScope.$on("Carousel:LOADED", function () {
                     if (!view) {
-                        view = new Buildfire.components.carousel.view("#carouselWidget", []);
+                        view = new Buildfire.components.carousel.view("#carousel", []);
                     }
                     if (WidgetSections.info.data.content && WidgetSections.info.data.content.images) {
                         view.loadItems(WidgetSections.info.data.content.images);
@@ -190,6 +188,5 @@
                         view.loadItems([]);
                     }
                 });
-
             }]);
 })(window.angular, undefined);
