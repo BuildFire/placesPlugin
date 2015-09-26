@@ -1,14 +1,14 @@
 (function (angular) {
     angular
         .module('placesWidget')
-        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'PlaceInfo','DEFAULT_VIEWS',
-            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, PlaceInfo,DEFAULT_VIEWS) {
+        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'PlaceInfo', 'DEFAULT_VIEWS',
+            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, PlaceInfo, DEFAULT_VIEWS) {
 
                 var WidgetSections = this;
                 WidgetSections.showMenu = false;
                 WidgetSections.menuTab = 'Category';
                 WidgetSections.selectedSections = [];
-
+                WidgetSections.currentCoordinates = [77, 28];
                 WidgetSections.info = PlaceInfo;
                 WidgetSections.info.currentView = WidgetSections.info.data.settings.defaultView;
                 console.log('Widget Section Ctrl Loaded', WidgetSections.info);

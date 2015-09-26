@@ -7,7 +7,12 @@
     background-attachment: fixed;
     background-color: #010101;
 }
-/*#scroll-infinite {
-    overflow-y: auto;
-    max-height: 580px;
-}*/
+
+.map-layout2 .places-plugin .location-map .map-holder{
+    padding: 0 !important;
+    top: -100px;
+}
+.map-layout1 .places-plugin .location-map .map-holder{
+    padding: 0 !important;
+    top: -40px;
+}
