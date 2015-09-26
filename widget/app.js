@@ -26,54 +26,7 @@
                 .when('/', {
                     templateUrl: 'templates/home.html',
                     controllerAs: 'WidgetSections',
-                    controller: 'WidgetSectionsCtrl',
-                    resolve: {
-                        PlaceInfo: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location',
-                            function ($q, DB, COLLECTIONS, Orders, Location) {
-                                var deferred = $q.defer();
-                                var PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
-                                var _bootstrap = function () {
-                                    PlaceInfo.save({
-                                        content: {
-                                            images: [],
-                                            descriptionHTML: '',
-                                            description: '',
-                                            sortBy: Orders.ordersMap.Newest,
-                                            rankOfLastItem: ''
-                                        },
-                                        design: {
-                                            secListLayout: "sec-list-1-1",
-                                            mapLayout: "map-1",
-                                            itemListLayout: "item-list-1",
-                                            itemDetailsLayout: "item-details-1",
-                                            secListBGImage: ""
-                                        },
-                                        settings: {
-                                            defaultView: "list",
-                                            showDistanceIn: "miles"
-                                        }
-                                    }).then(function success() {
-                                        Location.goToHome();
-                                    }, function fail(error) {
-                                        throw (error);
-                                    })
-                                };
-                                PlaceInfo.get().then(function success(result) {
-                                        if (result && result.data && result.id) {
-                                            deferred.resolve(result);
-                                        }
-                                        else {
-                                            //error in bootstrapping
-                                            _bootstrap(); //bootstrap again  _bootstrap();
-                                        }
-                                    },
-                                    function fail(error) {
-                                        throw (error);
-                                    }
-                                );
-                                return deferred.promise;
-                            }]
-                    }
+                    controller: 'WidgetSectionsCtrl'
                 })
                 .when('/items/:sectionId', {
                     templateUrl: 'templates/section.html',

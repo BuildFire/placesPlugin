@@ -1,16 +1,16 @@
 (function (angular) {
     angular
         .module('placesWidget')
-        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'PlaceInfo', 'DEFAULT_VIEWS',
-            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, PlaceInfo, DEFAULT_VIEWS) {
+        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS',
+            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS) {
 
                 var WidgetSections = this;
                 WidgetSections.showMenu = false;
                 WidgetSections.menuTab = 'Category';
                 WidgetSections.selectedSections = [];
                 WidgetSections.currentCoordinates = [77, 28];
-                WidgetSections.info = PlaceInfo;
-                WidgetSections.info.currentView = WidgetSections.info.data.settings.defaultView;
+                WidgetSections.info = null;
+                WidgetSections.currentView = null;
                 console.log('Widget Section Ctrl Loaded', WidgetSections.info);
 
                 var _skip = 0,
@@ -23,17 +23,6 @@
                         limit: _limit + 1 // the plus one is to check if there are any more
                     };
 
-                if (WidgetSections.info && WidgetSections.info.data && WidgetSections.info.data.settings && WidgetSections.info.data.settings.defaultView) {
-                    switch (WidgetSections.info.data.settings.defaultView) {
-                        case DEFAULT_VIEWS.LIST:
-                            currentLayout = WidgetSections.info.data.design.secListLayout;
-                            break;
-                        case DEFAULT_VIEWS.MAP:
-                            currentLayout = WidgetSections.info.data.design.mapLayout;
-                            break;
-                    }
-                }
-
                 /**
                  * WidgetSections.isBusy is used for infinite scroll.
                  * @type {boolean}
@@ -45,14 +34,17 @@
                  * @type {DB}
                  */
                 var Sections = new DB(COLLECTIONS.Sections),
-                    Items = new DB(COLLECTIONS.Items);
+                    Items = new DB(COLLECTIONS.Items),
+                    PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
+
 
                 /**
                  * updateGetOptions method checks whether sort options changed or not.
                  * @returns {boolean}
                  */
                 var updateGetOptions = function () {
-                    var order = Orders.getOrder(WidgetSections.info.data.content.sortBy || Orders.ordersMap.Default);
+                    var _sortBy = (WidgetSections.info && WidgetSections.info.data) ? WidgetSections.info.data.content.sortBy : Orders.ordersMap.Default;
+                    var order = Orders.getOrder(_sortBy);
                     if (order) {
                         var sort = {};
                         sort[order.key] = order.order;
@@ -156,12 +148,10 @@
                     }
                 };
 
-                // initCarousel(WidgetSections.info.data.settings.defaultView);
-
                 $scope.$watch(function () {
                     return WidgetSections.selectedSections;
                 }, function () {
-                    console.log('filter changed',WidgetSections.selectedSections);
+                    console.log('filter changed', WidgetSections.selectedSections);
                     if (WidgetSections.selectedSections.length) {
                         var itemFilter = {
                             'filter': {'$json.sections': {'$in': WidgetSections.selectedSections}}
@@ -185,7 +175,7 @@
                         if (event.data) {
 
                             WidgetSections.info = event;
-                            WidgetSections.info.currentView = WidgetSections.info.data.settings.defaultView;
+                            WidgetSections.currentView = WidgetSections.info.data.settings.defaultView;
 
                             initCarousel(WidgetSections.info.data.settings.defaultView);
                             refreshSections();
@@ -202,11 +192,44 @@
                     if (!view) {
                         view = new Buildfire.components.carousel.view("#carousel", []);
                     }
-                    if (WidgetSections.info.data.content && WidgetSections.info.data.content.images) {
+                    if (WidgetSections.info && WidgetSections.info.data.content && WidgetSections.info.data.content.images) {
                         view.loadItems(WidgetSections.info.data.content.images);
                     } else {
                         view.loadItems([]);
                     }
                 });
+
+
+                /**
+                 * init() private function
+                 * It is used to fetch previously saved user's data
+                 */
+                var init = function () {
+                    var success = function (result) {
+                            if (result && result.data && result.id) {
+                                WidgetSections.info = result;
+                            }
+                            WidgetSections.currentView = WidgetSections.info ? WidgetSections.info.data.settings.defaultView : null;
+                            if (WidgetSections.currentView) {
+                                switch (WidgetSections.currentView) {
+                                    case DEFAULT_VIEWS.LIST:
+                                        currentLayout = WidgetSections.info.data.design.secListLayout;
+                                        break;
+                                    case DEFAULT_VIEWS.MAP:
+                                        currentLayout = WidgetSections.info.data.design.mapLayout;
+                                        break;
+                                }
+                            }
+                        }
+                        , error = function (err) {
+                            console.error('Error while getting data', err);
+                        };
+                    PlaceInfo.get().then(success, error);
+                };
+
+                /**
+                 * init() function invocation to fetch previously saved user's data from datastore.
+                 */
+                init();
             }]);
 })(window.angular, undefined);

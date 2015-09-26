@@ -1,6 +1,6 @@
 <div>
     <!--WidgetSections.info.data.settings.defaultView-->
-    <div ng-switch="WidgetSections.info.currentView">
+    <div ng-switch="WidgetSections.currentView">
         <div ng-switch-when="list">
             <div ng-if="WidgetSections.info.data.design.secListLayout"
                  ng-include="'templates/layouts/' + WidgetSections.info.data.design.secListLayout+ '.html'">
