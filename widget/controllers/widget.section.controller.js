@@ -1,12 +1,13 @@
 (function (angular, window) {
     angular
         .module('placesWidget')
-        .controller('WidgetSectionCtrl', ['$scope', '$window', 'AppConfig', 'Messaging', 'Buildfire', 'COLLECTIONS', 'EVENTS', '$timeout', 'DB', '$routeParams','PlaceInfo', function ($scope, $window, AppConfig, Messaging, Buildfire, COLLECTIONS, EVENTS, $timeout, DB, $routeParams,PlaceInfo) {
+        .controller('WidgetSectionCtrl', ['$scope', '$window', 'AppConfig', 'Messaging', 'Buildfire', 'COLLECTIONS', 'EVENTS', '$timeout', 'DB', '$routeParams', function ($scope, $window, AppConfig, Messaging, Buildfire, COLLECTIONS, EVENTS, $timeout, DB, $routeParams) {
             var WidgetSection = this;
-            WidgetSection.placeInfo=PlaceInfo;
+            WidgetSection.placeInfo = null;
             console.log('Section Controller called');
             var Sections = new DB(COLLECTIONS.Sections),
-                Items = new DB(COLLECTIONS.Items);
+                Items = new DB(COLLECTIONS.Items),
+                PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
 
             WidgetSection.section = $routeParams.sectionId;
             WidgetSection.isBusy = false;
@@ -49,5 +50,27 @@
                     WidgetSection.isBusy = false;
                 });
             };
+
+
+            /**
+             * init() private function
+             * It is used to fetch previously saved user's data
+             */
+            var init = function () {
+                var success = function (result) {
+                        if (result && result.data && result.id) {
+                            WidgetSection.placeInfo = result;
+                        }
+                    }
+                    , error = function (err) {
+                        console.error('Error while getting data', err);
+                    };
+                PlaceInfo.get().then(success, error);
+            };
+
+            /**
+             * init() function invocation to fetch previously saved user's data from datastore.
+             */
+            init();
         }]);
 })(window.angular, window);
