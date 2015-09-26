@@ -36,27 +36,7 @@
                 .when('/item/:itemId', {
                     templateUrl: 'templates/item.html',
                     controllerAs: 'WidgetItem',
-                    controller: 'WidgetItemCtrl',
-                    resolve: {
-                        PlaceInfo: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location',
-                            function ($q, DB, COLLECTIONS, Orders, Location) {
-                                var deferred = $q.defer();
-                                var PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
-                                PlaceInfo.get().then(function success(result) {
-                                        if (result && result.data && result.id) {
-                                            deferred.resolve(result);
-                                        }
-                                        else {
-                                            Location.goToHome();
-                                        }
-                                    },
-                                    function fail(error) {
-                                        throw (error);
-                                    }
-                                );
-                                return deferred.promise;
-                            }]
-                    }
+                    controller: 'WidgetItemCtrl'
                 })
                 .otherwise('/');
         }])
