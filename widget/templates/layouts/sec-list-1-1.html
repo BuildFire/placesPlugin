@@ -10,109 +10,27 @@
         </div>
 
         <div class="padded padding-top-zero">
-            <div ng-repeat="item in WidgetSections.sections" class="plugin-banner has-info-bar clearfix">
-                <div class="plugin-slide text-center">
-                    <img ng-src="{{item.data.mainImage}}">
-                </div>
-                <div class="info-bar">
-                    <div class="col-xs-12 text-left pull-left">
-                        <p class="margin-bottom-zero ellipsis"><a>{{item.data.secTitle}}</a></p>
+            <div ng-hide="WidgetSections.selectedSections.length">
+                <div ng-repeat="item in WidgetSections.sections" class="plugin-banner has-info-bar clearfix">
+                    <div class="plugin-slide text-center">
+                        <img ng-src="{{item.data.mainImage}}">
+                    </div>
+                    <div class="info-bar">
+                        <div class="col-xs-12 text-left pull-left">
+                            <p class="margin-bottom-zero ellipsis"><a>{{item.data.secTitle}}</a></p>
 
-                        <p class="margin-bottom-zero ellipsis">{{item.data.secSummary}}</p>
+                            <p class="margin-bottom-zero ellipsis">{{item.data.secSummary}}</p>
+                        </div>
                     </div>
                 </div>
+            </div>
+            <div ng-show="WidgetSections.selectedSections.length">
+                <div ng-repeat="item in WidgetSections.items">
+                    <a>{{item.data.itemTitle}}</a>
+                </div>
+
             </div>
         </div>
         <div ng-include="'templates/layouts/bottom-menu.html'"></div>
     </div>
 </div>
-<!--<div class="padded padding-top-zero">
-			<div class="list-layout">
-				<div class="row"
-					 infinite-scroll-distance="0"
-					 infinite-scroll="WidgetSections.loadMore()"
-					 infinite-scroll-container='"#scroll-infinite"'
-					 infinit-scroll-disabled="WidgetSections.noMore"
-						>
-					<div class="col-xs-6 pull-left" ng-repeat="item in WidgetSections.sections" ng-class-odd="list-item-odd" ng-class-even="list-item-even" >
-						<div class="list-item-media text-center border-radius-three overflow-hidden">
-							<div class="list-media-holder"
-								 ng-if="item.data.mainImage">
-								<img ng-src="{{item.data.mainImage | cropImage:153:86}}">
-							</div>
-						</div>
-						<div class="list-item-copy text-left">
-							<p class="ellipsis margin-zero"><a class="text-primary">{{item.data.secTitle}}</a></p>
-
-							<p class="summary ellipsis margin-zero">{{item.data.secSummary}}</p>
-							<span class="list-item-date" data-ng-if="item.data.dateCreated">{{item.data.dateCreated  | jsDate | date:"MMMM dd, yyyy"}}</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>-->
-<!--
-<div class="holder padding-zero has-bottom">
-	<div class="places-plugin item-list1">
-		<div class="plugin-banner clearfix border-bottom-grey">
-			<div id="carousel" build-fire-carousel="WidgetSections.info.data.content.images"></div>
-		</div>
-		<div class="text-left padded padding-bottom-zero clearfix">
-			<p class="margin-bottom-zero" ng-if="WidgetSections.info.data.content.descriptionHTML"
-			   ng-bind-html="WidgetSections.info.data.content.descriptionHTML | safeHtml">
-				{{WidgetSections.info.data.content.descriptionHTML}}</p>
-		</div>
-		<div class="padded padding-top-zero">
-		<div ng-repeat="item in WidgetSections.sections" class="plugin-banner has-info-bar clearfix">
-			<div class="plugin-slide text-center">
-				<img ng-src="{{item.data.mainImage}}">
-			</div>
-			<div class="info-bar">
-				<div class="col-xs-12 text-left pull-left">
-					<p class="margin-bottom-zero ellipsis"><a>{{item.data.secTitle}}</a></p>
-					<p class="margin-bottom-zero ellipsis">{{item.data.secSummary}}</p>
-				</div>
-			</div>
-		</div></div>
-		<div class="bottom fixed-bottom clearfix transition-third">
-			<div class="col-xs-12 pull-left text-center transition-third">
-				<a style="color:#fff;">Filter</a>
-			</div>
-			<div class="col-xs-12 pull-left hidden-content">
-				<div class="tabs clearfix">
-					<div class="tab tab-category col-xs-6 padding-zero text-center border-bottom-grey active">
-						<a>Category</a>
-					</div>
-					<div class="tab tab-sorting col-xs-6 border-left-grey padding-zero border-bottom-grey text-center">
-						<a>Sorting</a>
-					</div>
-				</div>
-				<div class="tab-content clearfix">
-					<div class="category-tab tab active">
-						<a ng-repeat="item in WidgetSections.sections" class="list-item">{{item.data.secTitle}}</a>
-					</div>
-
-					<div class="sorting-tab tab padded">
-						<div class="distance">
-							<p class="text-primary">Distance</p>
-							<p>50 to 200 miles</p>
-							<span>range slider placeholder</span>
-						</div>
-						<div class="sort-items margin-top-twenty">
-							<p class="text-primary">Sort Items</p>
-							<div class="toggle-btns border-radius-four overflow-hidden">
-								<div class="col-xs-6 padding-zero text-center primaryBackgroundTheme" style="background:#09a3ee;">
-									<a class="active">Default</a>
-								</div>
-								<div class="col-xs-6 padding-zero text-center">
-									<a>Closest to Me</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-	</div>
-</div>-->

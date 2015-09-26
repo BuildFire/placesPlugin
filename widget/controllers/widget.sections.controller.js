@@ -41,10 +41,11 @@
                 WidgetSections.isBusy = false;
 
                 /**
-                 * Create instance of Sections db collection
+                 * Create instance of Sections and Items db collection
                  * @type {DB}
                  */
-                var Sections = new DB(COLLECTIONS.Sections);
+                var Sections = new DB(COLLECTIONS.Sections),
+                    Items = new DB(COLLECTIONS.Items);
 
                 /**
                  * updateGetOptions method checks whether sort options changed or not.
@@ -156,6 +157,25 @@
                 };
 
                 // initCarousel(WidgetSections.info.data.settings.defaultView);
+
+                $scope.$watch(function () {
+                    return WidgetSections.selectedSections;
+                }, function () {
+                    console.log('filter changed',WidgetSections.selectedSections);
+                    if (WidgetSections.selectedSections.length) {
+                        var itemFilter = {
+                            'filter': {'$json.sections': {'$in': WidgetSections.selectedSections}}
+                        };
+
+                        Items.find(itemFilter).then(function (res) {
+                            WidgetSections.items = res;
+                        }, function () {
+
+                        });
+                    }
+
+                }, true);
+
 
                 /**
                  * Buildfire.datastore.onUpdate method calls when Data is changed.
