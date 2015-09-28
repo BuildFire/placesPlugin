@@ -11,6 +11,7 @@
                 WidgetSections.currentCoordinates = [77, 28];
                 WidgetSections.info = null;
                 WidgetSections.currentView = null;
+                WidgetSections.items = null;
                 console.log('Widget Section Ctrl Loaded', WidgetSections.info);
 
                 var _skip = 0,
@@ -56,6 +57,18 @@
                     }
                 };
 
+                var loadAllItemsOfSections = function () {
+                    var itemFilter = {filter: {"$json.itemTitle": {"$regex": '/*'}}};
+                    WidgetSections.items = null;
+                    updateGetOptions();
+                    Items.find(itemFilter).then(function (res) {
+                        WidgetSections.items = res;
+                    }, function () {
+
+                    });
+
+                };
+
                 /**
                  * WidgetSections.items holds the array of items.
                  * @type {Array}
@@ -76,7 +89,6 @@
                     }
                     updateGetOptions();
                     WidgetSections.isBusy = true;
-
                     Sections.find(searchOptions).then(function success(result) {
                         if (WidgetSections.noMore)
                             return;
@@ -95,7 +107,6 @@
                         console.error('error');
                     });
                 };
-                WidgetSections.loadMore();
 
                 WidgetSections.toggleSectionSelection = function (ind, event) {
                     var id = WidgetSections.sections[ind].id;
@@ -171,15 +182,15 @@
                  * Buildfire.datastore.onUpdate method calls when Data is changed.
                  */
                 Buildfire.datastore.onUpdate(function (event) {
-                    if (event.tag == "placeInfo") {
+                    if (event.tag === "placeInfo") {
                         if (event.data) {
-
                             WidgetSections.info = event;
                             WidgetSections.currentView = WidgetSections.info.data.settings.defaultView;
-
                             initCarousel(WidgetSections.info.data.settings.defaultView);
                             refreshSections();
                         }
+                    } else if (event.tag === "items") {
+                        loadAllItemsOfSections();
                     }
                     else {
                         view = null;
@@ -216,6 +227,8 @@
                                         currentLayout = WidgetSections.info.data.design.secListLayout;
                                         break;
                                     case DEFAULT_VIEWS.MAP:
+                                        WidgetSections.items = null;
+                                        loadAllItemsOfSections();
                                         currentLayout = WidgetSections.info.data.design.mapLayout;
                                         break;
                                 }
