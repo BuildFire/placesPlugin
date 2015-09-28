@@ -42,7 +42,7 @@
                             var map = new google.maps.Map(elem[0], {
                                 streetViewControl: false,
                                 mapTypeControl: false,
-                                zoom: 1,
+                                zoom: 4,
                                 center: {lat: 37.090, lng: -95.712},
                                 mapTypeId: google.maps.MapTypeId.TERRAIN
                             });
