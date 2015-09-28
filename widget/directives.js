@@ -15,35 +15,17 @@
             return {
                 template: "<div></div>",
                 replace: true,
-                scope: {coordinates: '='},
+                scope: {coordinates: '=', items: '='},
                 link: function (scope, elem, attrs) {
                     scope.$watch('coordinates', function (newValue, oldValue) {
                         if (newValue) {
-                            var citymap = {
-                                chicago: {
-                                    center: {lat: 41.878, lng: -87.629},
-                                    population: 2714856
-                                },
-                                newyork: {
-                                    center: {lat: 40.714, lng: -74.005},
-                                    population: 8405837
-                                },
-                                losangeles: {
-                                    center: {lat: 34.052, lng: -118.243},
-                                    population: 3857799
-                                },
-                                vancouver: {
-                                    center: {lat: 49.25, lng: -123.1},
-                                    population: 603502
-                                }
-                            };
 
                             // Create the map.
                             var map = new google.maps.Map(elem[0], {
                                 streetViewControl: false,
                                 mapTypeControl: false,
-                                zoom: 1,
-                                center: {lat: 37.090, lng: -95.712},
+                                zoom: 4,
+                                center: {lat: scope.items[0].data.address.lat, lng: scope.items[0].data.address.lng},
                                 mapTypeId: google.maps.MapTypeId.TERRAIN
                             });
 
@@ -59,19 +41,32 @@
                             var mapType = new google.maps.StyledMapType(MAP_STYLE, styleOptions);
                             map.mapTypes.set("Report Error Hide Style", mapType);
                             map.setMapTypeId("Report Error Hide Style");
-                            // Construct the circle for each value in citymap.
-                            // Note: We scale the area of the circle based on the population.
-                            for (var city in citymap) {
-                                // Add the circle for this city to the map.
-                                var cityCircle = new google.maps.Circle({
-                                    strokeColor: '#FF0000',
-                                    strokeOpacity: 0.8,
-                                    strokeWeight: 2,
-                                    fillColor: '#FF0000',
-                                    fillOpacity: 0.35,
+
+                            var image = {
+                                url: '../resources/google_marker_icon.png',
+                                // This marker is 20 pixels wide by 32 pixels high.
+                                size: new google.maps.Size(20, 20),
+                                // The origin for this image is (0, 0).
+                                origin: new google.maps.Point(0, 0),
+                                // The anchor for this image is the base of the flagpole at (0, 32).
+                                anchor: new google.maps.Point(0, 32)
+                            };
+                            // Shapes define the clickable region of the icon. The type defines an HTML
+                            // <area> element 'poly' which traces out a polygon as a series of X,Y points.
+                            // The final coordinate closes the poly by connecting to the first coordinate.
+                            var shape = {
+                                coords: [1, 1, 1, 20, 18, 20, 18, 1],
+                                type: 'poly'
+                            };
+                            for (var _index = 0; _index < scope.items.length; _index++) {
+                                var _place = scope.items[_index];
+                                var marker = new google.maps.Marker({
+                                    position: {lat: _place.data.address.lat, lng: _place.data.address.lng},
                                     map: map,
-                                    center: citymap[city].center,
-                                    radius: Math.sqrt(citymap[city].population) * 100
+                                    icon: image,
+                                    shape: shape,
+                                    title: _place.data.itemTitle,
+                                    zIndex: _index
                                 });
                             }
                         }

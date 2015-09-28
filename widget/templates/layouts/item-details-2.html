@@ -2,13 +2,13 @@
     <div class="places-plugin item-list2">
         <div class="plugin-banner has-info-bar clearfix">
             <div class="plugin-slide text-center">
-                <img src="http://www.placehold.it/1280x720.jpg">
+                <img ng-src="{{WidgetItem.item.data.listImage}}">
             </div>
             <div class="plugin-copy clearfix">
                 <div class="col-xs-8 text-left pull-left">
-                    <p class="margin-bottom-zero ellipsis">Item Title Goes Here</p>
+                    <p class="margin-bottom-zero ellipsis">{{WidgetItem.item.data.itemTitle}}</p>
 
-                    <p class="margin-bottom-zero ellipsis">This is an item summary</p>
+                    <p class="margin-bottom-zero ellipsis">{{WidgetItem.item.data.summary}}</p>
                 </div>
                 <div class="col-xs-4 text-right pull-right padding-left-zero">
                     <span class="icon icon-map-marker icon-sm"></span>
@@ -18,16 +18,16 @@
         </div>
         <div class="plugin-banner has-info-bar location-map clearfix">
             <div class="plugin-slide map-holder">
-                <p style="position:relative; top:100px; color:#fff; text-align:center;">Map goes in here</p>
+                <p google-map coordinates="WidgetItem.coordinates" style="height: 180px;width: 342px;position:relative; top:100px; color:#fff; text-align:center;">Map goes in here</p>
             </div>
             <div class="info-bar bg-primary text-center">
-                <p class="margin-bottom-zero ellipsis col-xs-12">1234 Grand Ave, San Diego, CA 92127</p>
+                <p class="margin-bottom-zero ellipsis col-xs-12">{{WidgetItem.item.data.addressTitle+" "+WidgetItem.item.data.address.aName}}</p>
             </div>
         </div>
         <div class="padded text-center">
             <a class="text-primary">Contact info</a>
             <hr class="small">
-            <p class="text-left">WYSIWYG Editor. WYSIWYG Editor. WYSIWYG Editor. WYSIWYG Editor. WYSIWYG Editor. </p>
+            <p class="text-left">{{WidgetItem.item.data.bodyContent | safeHtml}}</p>
         </div>
     </div>
 </div>

@@ -18,9 +18,9 @@
             </div>
         </div>
         <div class="location-map">
-            <div class="map-holder" ng-if="WidgetSections.currentCoordinates">
+            <div class="map-holder" ng-if="WidgetSections.items.length">
 
-                <div google-map coordinates="WidgetSections.currentCoordinates" style="height: 100%; position: relative;"></div>
+                <div google-map coordinates="WidgetSections.currentCoordinates" data-items="WidgetSections.items" style="height: 100%; position: relative;"></div>
 
             </div>
         </div>
