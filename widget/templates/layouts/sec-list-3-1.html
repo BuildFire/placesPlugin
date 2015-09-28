@@ -12,7 +12,7 @@
 			<div class="list-layout">
 				<div class="list-item" ng-repeat="item in WidgetSections.sections">
 					<div class="list-item-media text-left overflow-hidden">
-						<div class="list-media-holder pull-left">
+						<div ng-if="item.data.mainImage" class="list-media-holder pull-left">
 							<img ng-src="{{item.data.mainImage}}">
 						</div>
 						<div class="list-item-copy text-left padding-left-ten padding-right-ten">

@@ -204,11 +204,17 @@
 
 
                 /**
-                 * Watch on ContentMedia.item to see changes and call updateItemsWithDelay
+                 * Watch on ContentSection.section to see changes and call updateItemsWithDelay
                  */
+                var initializing = true;
                 $scope.$watch(function () {
                     return ContentSection.section;
-                }, updateItemsWithDelay, true);
+                }, function () {
+                    if (initializing)
+                        initializing = false;
+                    else
+                        updateItemsWithDelay(ContentSection.section);
+                }, true);
 
             }]);
 })(window.angular, window.tinymce);

@@ -25,3 +25,8 @@
     height: 79% !important;
     top: 60px !important;
 }
+
+#scroll-infinite{
+    overflow-y: auto;
+    max-height: 570px;
+}
