@@ -10,7 +10,7 @@
 		</div>
 		<div ng-repeat="item in WidgetSections.sections">
 		<div class="plugin-banner clearfix border-bottom-grey">
-			<div class="plugin-slide text-center">
+			<div ng-if="item.data.mainImage" class="plugin-slide text-center">
 				<img ng-src="{{item.data.mainImage}}">
 			</div>
 		</div>

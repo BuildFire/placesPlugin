@@ -62,31 +62,32 @@
                  */
                 WidgetSections.sections = [];
                 /**
-                 * WidgetSections.noMore checks for further data
+                 * WidgetSections.noMoreSections checks for further data in Sections
                  * @type {boolean}
                  */
-                WidgetSections.noMore = false;
+                WidgetSections.noMoreSections = false;
 
                 /**
-                 * loadMore method loads the items in list page.
+                 * loadMoreSections method loads the sections in list page.
                  */
-                WidgetSections.loadMore = function () {
-                    if (WidgetSections.isBusy && !WidgetSections.noMore) {
+                WidgetSections.loadMoreSections = function () {
+                    console.log('widget load more called');
+                    if (WidgetSections.isBusy && !WidgetSections.noMoreSections) {
                         return;
                     }
                     updateGetOptions();
                     WidgetSections.isBusy = true;
 
                     Sections.find(searchOptions).then(function success(result) {
-                        if (WidgetSections.noMore)
+                        if (WidgetSections.noMoreSections)
                             return;
                         if (result.length <= _limit) {// to indicate there are more
-                            WidgetSections.noMore = true;
+                            WidgetSections.noMoreSections = true;
                         }
                         else {
                             result.pop();
                             searchOptions.skip = searchOptions.skip + _limit;
-                            WidgetSections.noMore = false;
+                            WidgetSections.noMoreSections = false;
                         }
                         WidgetSections.sections = WidgetSections.sections ? WidgetSections.sections.concat(result) : result;
                         WidgetSections.isBusy = false;
@@ -95,7 +96,7 @@
                         console.error('error');
                     });
                 };
-                WidgetSections.loadMore();
+                //WidgetSections.loadMore();
 
                 WidgetSections.toggleSectionSelection = function (ind, event) {
                     var id = WidgetSections.sections[ind].id;
@@ -117,8 +118,8 @@
 
                 function refreshSections() {
                     WidgetSections.sections = [];
-                    WidgetSections.noMore = false;
-                    WidgetSections.loadMore();
+                    WidgetSections.noMoreSections = false;
+                    WidgetSections.loadMoreSections();
                     $scope.$apply();
                 }
 
