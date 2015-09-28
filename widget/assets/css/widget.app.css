@@ -8,23 +8,20 @@
     background-color: #010101;
 }
 
+.map-layout1 .places-plugin .location-map .map-holder ,
 .map-layout2 .places-plugin .location-map .map-holder {
     padding: 0 !important;
-    top: -100px;
+    z-index: 1 !important;
+    height: 89% ;
+    top: 0;
 }
 
-.map-layout1 .places-plugin .location-map .map-holder {
-    padding: 0 !important;
-    top: -40px;
+.fix-map-layout2-top {
+    height: 65% !important;
+    top: 140px !important;
 }
 
-.map-layout2 .places-plugin .location-map .map-holder{
-    z-index: 1 !important;
-    height: 68% !important;
-    top: 140px;
-}
-.map-layout1 .places-plugin .location-map .map-holder {
-    z-index: 1 !important;
-    height: 75% !important;
-    top: 60px;
+.fix-map-layout1-top {
+    height: 79% !important;
+    top: 60px !important;
 }
