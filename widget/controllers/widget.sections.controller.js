@@ -238,7 +238,9 @@
                             refreshSections();
                         }
                     } else if (event.tag === "items") {
-                        loadAllItemsOfSections();
+                        if (event.data && event.data.address && event.data.address.lng && event.data.address.lat){
+                            loadAllItemsOfSections();
+                        }
                     }
                     else {
                         view = null;
