@@ -15,15 +15,17 @@
                 WidgetSections.items = null;
                 WidgetSections.sortOnClosest = false; // get its value when we get location
                 //console.log('Widget Section Ctrl Loaded', WidgetSections.info);
-
-                WidgetSections.currentCoordinates = [77, 28]; // default coord
+                WidgetSections.locationData = {
+                    items: null,
+                    currentCoordinates: [77, 28]
+                };
 
                 function getGeoLocation() {
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(function (position) {
                             $scope.$apply(function () {
-                                $scope.currentCoordinates = [position.coords.longitude, position.coords.latitude];
-                                localStorage.setItem('userLocation', JSON.stringify($scope.currentCoordinates));
+                                WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
+                                localStorage.setItem('userLocation', JSON.stringify(WidgetSections.locationData.currentCoordinates));
                             });
                         });
                     }
@@ -31,9 +33,9 @@
                 }
 
                 if (typeof(Storage) !== "undefined") {
-                    var cached = localStorage.getItem('userLocation');
-                    if (cached) {
-                        WidgetSections.currentCoordinates = JSON.parse(cached);
+                    var userLocation = localStorage.getItem('userLocation');
+                    if (userLocation) {
+                        WidgetSections.locationData.currentCoordinates = JSON.parse(userLocation);
                     }
                     else
                         getGeoLocation(); // get data if not in cache
@@ -88,9 +90,11 @@
                 var loadAllItemsOfSections = function () {
                     var itemFilter = {filter: {"$json.itemTitle": {"$regex": '/*'}}};
                     WidgetSections.items = null;
+                    WidgetSections.locationData.items = null;
                     updateGetOptions();
                     Items.find(itemFilter).then(function (res) {
                         WidgetSections.items = res;
+                        WidgetSections.locationData.items = angular.copy(WidgetSections.items);
                     }, function () {
 
                     });
@@ -238,7 +242,7 @@
                             refreshSections();
                         }
                     } else if (event.tag === "items") {
-                        if (event.data && event.data.address && event.data.address.lng && event.data.address.lat){
+                        if (event.data && event.data.address && event.data.address.lng && event.data.address.lat) {
                             loadAllItemsOfSections();
                         }
                     }
