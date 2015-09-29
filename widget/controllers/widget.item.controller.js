@@ -14,6 +14,10 @@
                         WidgetItem.item = result;
                         if(WidgetItem.item.data && WidgetItem.item.data.images)
                            initCarousel(WidgetItem.item.data.images);
+                        WidgetItem.locationData = {
+                            items: null,
+                            currentCoordinates: [WidgetItem.item.data.address.lng,WidgetItem.item.data.address.lat]
+                        };
                     },
                     function (err) {
                         console.error('Error while getting item-', err);
