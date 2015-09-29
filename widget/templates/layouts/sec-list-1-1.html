@@ -10,14 +10,15 @@
         </div>
 
         <div class="padded padding-top-zero">
-            <div ng-hide="WidgetSections.selectedSections.length">
+            <div ng-show="WidgetSections.showSections">
                 <div infinite-scroll-distance="0"
                      infinite-scroll="WidgetSections.loadMoreSections()"
                      infinite-scroll-disabled="WidgetSections.noMoreSections"
                      infinite-scroll-container="'#scroll-infinite'">
-                    <div ng-repeat="item in WidgetSections.sections" class="plugin-banner has-info-bar clearfix" style="min-height: 10px">
-                        <div ng-if="item.data.mainImage" class="plugin-slide text-center">
-                            <img ng-src="{{item.data.mainImage}}">
+                    <div ng-repeat="item in WidgetSections.sections" class="plugin-banner has-info-bar clearfix"
+                         style="min-height: 10px">
+                        <div class="plugin-slide text-center">
+                            <img default-image ng-src="{{item.data.mainImage}}">
                         </div>
                         <div class="info-bar">
                             <div class="col-xs-12 text-left pull-left">
@@ -31,15 +32,31 @@
                     </div>
                 </div>
             </div>
-            <div ng-show="WidgetSections.selectedSections.length">
-                <div infinite-scroll-distance="0"
+            <div ng-hide="WidgetSections.showSections">
+                <!--<div infinite-scroll-distance="0"
                      infinite-scroll="WidgetSections.getMoreItems()"
                      infinite-scroll-disabled="WidgetSections.noMoreItems"
-                     infinite-scroll-container="'#scroll-infinite'">
-                    <div ng-repeat="item in WidgetSections.items">
-                        <a>{{item.data.itemTitle}}</a>
+                     infinite-scroll-container="'#scroll-infinite'">-->
+
+                <div class="plugin-banner has-info-bar clearfix" ng-repeat="item in WidgetSections.items">
+                    <div class="plugin-slide text-center">
+                        <img ng-if="item.data.listImage" ng-src="{{item.data.listImage}}">
+                        <img ng-if="!item.data.listImage" src="assets/images/now-playing.png">
+                    </div>
+                    <div class="info-bar">
+                        <div class="col-xs-8 text-left pull-left">
+                            <p class="margin-bottom-zero ellipsis"><a ng-href="#/item/{{item.id}}">{{item.data.itemTitle}}</a>
+                            </p>
+
+                            <p class="margin-bottom-zero ellipsis">{{item.data.summary}}</p>
+                        </div>
+                        <div class="col-xs-4 text-right pull-right padding-left-zero">
+                            <span class="icon icon-map-marker icon-sm" style="color:#fff;"></span>
+                            <span class="miles">432 mi</span>
+                        </div>
                     </div>
                 </div>
+                <!--</div>-->
             </div>
         </div>
         <div ng-include="'templates/layouts/bottom-menu.html'"></div>

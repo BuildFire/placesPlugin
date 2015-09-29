@@ -60,13 +60,15 @@
                         <img ng-src="{{item.data.listImage | resizeImage : 50:50}}" ng-if="item.data.listImage">
                     </div>
                     <div class="copy pull-right">
+                        <div class="col-md-4 padding-zero pull-left">
                         <a class="text-primary" href="#/item/{{ContentItems.section}}/{{item.id}}"><span
                                 class="title ellipsis pull-left">{{item.data.itemTitle}}</span></a>
                         <span class="title ellipsis pull-left">{{item.data.summary}}</span>
-                        <div class="col-md-7 padding-right-zero pull-left">
+                            </div>
+                        <div class="col-md-6 padding-right-zero pull-left">
                             <a ng-click="ContentItems.editSections($index)" class="text-primary"><span ng-show="item.data.sections.length == 0" class="content ellipsis text-primary">No section</span><span ng-show="item.data.sections.length > 0" class="content ellipsis text-primary">{{item.data.sections.length}} section(s)</span></a>
                         </div>
-                        <div class="pull-right">
+                        <div class="pull-right  padding-top-fix">
                     <span class="btn-icon btn-link-icon btn-primary transition-third"
                           onclick="window.openDialog('deepLink.html', null, 'sm', null)"></span>
                     <span class="btn-icon btn-delete-icon btn-danger transition-third"

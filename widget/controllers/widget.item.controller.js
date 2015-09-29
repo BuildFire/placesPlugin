@@ -1,18 +1,17 @@
 (function (angular, window) {
     angular
         .module('placesWidget')
-        .controller('WidgetItemCtrl', ['$scope', 'COLLECTIONS', 'DB', '$routeParams', 'Buildfire', function ($scope, COLLECTIONS, DB, $routeParams, Buildfire) {
-            var WidgetItem = this;
+        .controller('WidgetItemCtrl', ['$scope', 'COLLECTIONS', 'DB', '$routeParams', 'Buildfire', '$rootScope', function ($scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope) {
+            var WidgetItem = this, view = null;
             WidgetItem.placeInfo = null;
             console.log('WidgetItemCtrl called');
+            WidgetItem.item={data:{}};
             var PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
             var Items = new DB(COLLECTIONS.Items);
             if ($routeParams.itemId) {
                 Items.getById($routeParams.itemId).then(
                     function (result) {
-                        if (result && result.data)
-                            WidgetItem.item = result;
-                        WidgetItem.coordinates = [result.data.lat, result.data.lng];
+                        WidgetItem.item = result;
                     },
                     function (err) {
                         console.error('Error while getting item-', err);
@@ -56,6 +55,19 @@
                     };
                 PlaceInfo.get().then(success, error);
             };
+
+            $rootScope.$on("Carousel:LOADED", function () {
+                console.log('carousel added------', WidgetItem.item);
+                if (!view) {
+                    console.log('if------',view);
+                    view = new Buildfire.components.carousel.view("#carousel", []);
+                }
+                if (WidgetItem.item && WidgetItem.item.data && WidgetItem.item.data.images && view) {
+                    view.loadItems(WidgetItem.item.data.images);
+                } else {
+                    view.loadItems([]);
+                }
+            });
 
             Buildfire.datastore.onUpdate(function (event) {
                 console.log('ON UPDATE called============', event);
