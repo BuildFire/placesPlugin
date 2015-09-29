@@ -8,11 +8,12 @@
                 WidgetSections.showMenu = false;
                 WidgetSections.menuTab = 'Category';
                 WidgetSections.selectedSections = [];
+                WidgetSections.showSections = true;
                 WidgetSections.currentCoordinates = [77, 28];
                 WidgetSections.info = null;
                 WidgetSections.currentView = null;
                 WidgetSections.items = null;
-                console.log('Widget Section Ctrl Loaded', WidgetSections.info);
+                //console.log('Widget Section Ctrl Loaded', WidgetSections.info);
 
                 var _skip = 0,
                     view = null,
@@ -111,6 +112,7 @@
                 //WidgetSections.loadMore();
 
                 WidgetSections.toggleSectionSelection = function (ind, event) {
+                    WidgetSections.showSections = false;
                     var id = WidgetSections.sections[ind].id;
                     if (WidgetSections.selectedSections.indexOf(id) < 0) {
                         WidgetSections.selectedSections.push(id);
@@ -119,10 +121,20 @@
                     else {
                         WidgetSections.selectedSections.splice(WidgetSections.selectedSections.indexOf(id), 1);
                         $(event.target).removeClass('active');
+                        if(!WidgetSections.showSections && WidgetSections.selectedSections.length == 0)
+                        {
+                            WidgetSections.showSections = true;
+                        }
                     }
                 };
 
                 WidgetSections.resetSectionFilter = function () {
+                    if(!WidgetSections.showSections && WidgetSections.selectedSections.length == 0)
+                    {
+                        WidgetSections.showSections = true;
+                        return;
+                    }
+                    WidgetSections.showSections = false;
                     WidgetSections.selectedSections = [];
                     $('.active.section-filter').removeClass('active');
                 };
@@ -164,18 +176,22 @@
                 $scope.$watch(function () {
                     return WidgetSections.selectedSections;
                 }, function () {
+                    var itemFilter;
                     console.log('filter changed', WidgetSections.selectedSections);
                     if (WidgetSections.selectedSections.length) {
-                        var itemFilter = {
+                        itemFilter = {
                             'filter': {'$json.sections': {'$in': WidgetSections.selectedSections}}
                         };
-
-                        Items.find(itemFilter).then(function (res) {
-                            WidgetSections.items = res;
-                        }, function () {
-
-                        });
                     }
+                    else {
+                        itemFilter = {filter: {"$json.itemTitle": {"$regex": '/*'}}};
+                    }
+                    Items.find(itemFilter).then(function (res) {
+                        WidgetSections.items = res;
+                    }, function () {
+
+                    });
+
 
                 }, true);
 
