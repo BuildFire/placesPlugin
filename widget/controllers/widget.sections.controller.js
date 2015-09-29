@@ -298,5 +298,17 @@
                  * init() function invocation to fetch previously saved user's data from datastore.
                  */
                 init();
+
+                $scope.distanceSlider = {
+                    min: 50,
+                    max: 200,
+                    ceil: 200,
+                    floor: 50
+                };
+
+              $scope.distanceSliderChange= function () {
+                 console.log($scope.distanceSlider.max);
+              };
+
             }]);
 })(window.angular, undefined);
