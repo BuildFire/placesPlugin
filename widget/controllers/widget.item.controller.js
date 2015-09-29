@@ -74,6 +74,8 @@
             Buildfire.datastore.onUpdate(function (event) {
                 console.log('ON UPDATE called============', event);
                 if(event.tag=='items' && event.data){
+                    WidgetItem.item=event;
+                    $scope.$digest();
                     if(event.data.images)
                         initCarousel(event.data.images);
                 }
