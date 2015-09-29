@@ -18,7 +18,7 @@
         </div>
         <div class="plugin-banner has-info-bar location-map clearfix">
             <div class="plugin-slide map-holder">
-                <p google-map coordinates="WidgetItem.coordinates" style="height: 180px;width: 342px;position:relative; top:100px; color:#fff; text-align:center;">Map goes in here</p>
+                <p google-map coordinates="WidgetItem.coordinates" data-items="[WidgetItem.item]" style="height: 180px;width: 342px;position:relative; top:100px; color:#fff; text-align:center;">Map goes in here</p>
             </div>
             <div class="info-bar bg-primary text-center">
                 <p class="margin-bottom-zero ellipsis col-xs-12">{{WidgetItem.item.data.addressTitle+" "+WidgetItem.item.data.address.aName}}</p>
@@ -27,7 +27,7 @@
         <div class="padded text-center">
             <a class="text-primary">Contact info</a>
             <hr class="small">
-            <p class="text-left">{{WidgetItem.item.data.bodyContent | safeHtml}}</p>
+            <p class="text-left" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml">{{WidgetItem.item.data.bodyContent | safeHtml}}</p>
         </div>
     </div>
 </div>

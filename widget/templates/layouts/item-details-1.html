@@ -22,18 +22,19 @@
 
                 <p class="text-primary ellipsis margin-zero"><a class="margin-bottom-zero text-primary ellipsis">{{WidgetItem.item.data.address.aName}}</a></p>
             </div>
-            <div style="height: 60px;width: 100px;" google-map coordinates="WidgetItem.coordinates" class="col-xs-4 text-right pull-right padding-right-zero">
+            <div style="height: 60px;width: 100px;" google-map coordinates="WidgetItem.coordinates"  data-items="[WidgetItem.item]" class="col-xs-4 text-right pull-right padding-right-zero">
                 <!--<img src="http://www.placehold.it/100x60">-->
             </div>
         </div>
         <div class="padded padding-top-ten padding-bottom-ten">
-            <p class="margin-zero">{{WidgetItem.item.data.bodyContent | safeHtml}}</p>
+            <p class="margin-zero" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml">{{WidgetItem.item.data.bodyContent | safeHtml}}</p>
+
         </div>
         <div class="padded padding-top-zero">
-            <div class="dynamic-links">
+            <div class="dynamic-links" ng-repeat="link in WidgetItem.item.data">
                 <a>
                     <span class="icon icon-cog"></span>
-                    <span class="copy">Custom link title and icon</span>
+                    <span class="copy">{{link.title}}</span>
                 </a>
             </div>
         </div>
