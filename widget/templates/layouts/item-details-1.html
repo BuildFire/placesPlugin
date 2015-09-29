@@ -27,13 +27,14 @@
             </div>
         </div>
         <div class="padded padding-top-ten padding-bottom-ten">
-            <p class="margin-zero">{{WidgetItem.item.data.bodyContent | safeHtml}}</p>
+            <p class="margin-zero" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml">{{WidgetItem.item.data.bodyContent | safeHtml}}</p>
+
         </div>
         <div class="padded padding-top-zero">
-            <div class="dynamic-links">
+            <div class="dynamic-links" ng-repeat="link in WidgetItem.item.data">
                 <a>
                     <span class="icon icon-cog"></span>
-                    <span class="copy">Custom link title and icon</span>
+                    <span class="copy">{{link.title}}</span>
                 </a>
             </div>
         </div>
