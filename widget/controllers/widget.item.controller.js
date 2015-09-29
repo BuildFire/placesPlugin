@@ -42,6 +42,39 @@
                 }
             }
 
+            WidgetItem.calculateDistance=function(){
+
+            };
+
+            WidgetItem.locationData = {
+                items: null,
+                currentCoordinates: [77, 28]
+            };
+
+            function getGeoLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        $scope.$apply(function () {
+                            WidgetItem.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
+                            localStorage.setItem('userLocation', JSON.stringify(WidgetItem.locationData.currentCoordinates));
+                        });
+                    });
+                }
+                // else - in this case, default coords will be used
+            }
+
+            if (typeof(Storage) !== "undefined") {
+                var userLocation = localStorage.getItem('userLocation');
+                if (userLocation) {
+                    WidgetItem.locationData.currentCoordinates = JSON.parse(userLocation);
+                }
+                else
+                    getGeoLocation(); // get data if not in cache
+            }
+            else
+                getGeoLocation(); // get data if localStorage is not supported
+
+
             /**
              * init() private function
              * It is used to fetch previously saved user's data
