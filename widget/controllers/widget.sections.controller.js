@@ -9,11 +9,38 @@
                 WidgetSections.menuTab = 'Category';
                 WidgetSections.selectedSections = [];
                 WidgetSections.showSections = true;
-                WidgetSections.currentCoordinates = [77, 28];
+
                 WidgetSections.info = null;
                 WidgetSections.currentView = null;
                 WidgetSections.items = null;
+                WidgetSections.sortOnClosest = false; // get its value when we get location
                 //console.log('Widget Section Ctrl Loaded', WidgetSections.info);
+
+                WidgetSections.currentCoordinates = [77, 28]; // default coord
+
+                function getGeoLocation() {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(function (position) {
+                            $scope.$apply(function () {
+                                $scope.currentCoordinates = [position.coords.longitude, position.coords.latitude];
+                                localStorage.setItem('userLocation', JSON.stringify($scope.currentCoordinates));
+                            });
+                        });
+                    }
+                    // else - in this case, default coords will be used
+                }
+
+                if (typeof(Storage) !== "undefined") {
+                    var cached = localStorage.getItem('userLocation');
+                    if (cached) {
+                        WidgetSections.currentCoordinates = JSON.parse(cached);
+                    }
+                    else
+                        getGeoLocation(); // get data if not in cache
+                }
+                else
+                    getGeoLocation(); // get data if localStorage is not supported
+
 
                 var _skip = 0,
                     view = null,
@@ -121,16 +148,14 @@
                     else {
                         WidgetSections.selectedSections.splice(WidgetSections.selectedSections.indexOf(id), 1);
                         $(event.target).removeClass('active');
-                        if(!WidgetSections.showSections && WidgetSections.selectedSections.length == 0)
-                        {
+                        if (!WidgetSections.showSections && WidgetSections.selectedSections.length == 0) {
                             WidgetSections.showSections = true;
                         }
                     }
                 };
 
                 WidgetSections.resetSectionFilter = function () {
-                    if(!WidgetSections.showSections && WidgetSections.selectedSections.length == 0)
-                    {
+                    if (!WidgetSections.showSections && WidgetSections.selectedSections.length == 0) {
                         WidgetSections.showSections = true;
                         return;
                     }
@@ -173,9 +198,14 @@
                     }
                 };
 
+                var selectedSectionsWatcherInit = true;
                 $scope.$watch(function () {
                     return WidgetSections.selectedSections;
                 }, function () {
+                    if (selectedSectionsWatcherInit) {
+                        selectedSectionsWatcherInit = false;
+                        return;
+                    }
                     var itemFilter;
                     console.log('filter changed', WidgetSections.selectedSections);
                     if (WidgetSections.selectedSections.length) {
