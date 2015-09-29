@@ -20,7 +20,7 @@
         </div>
         <div class="location-map">
             <div class="map-holder" ng-class="{'fix-map-layout1-top':WidgetSections.items.length}">
-                <div google-map coordinates="WidgetSections.currentCoordinates" data-items="WidgetSections.items"></div>
+                <div google-map style="height: 100%; position: relative" coordinates="WidgetSections.currentCoordinates" data-items="WidgetSections.items"></div>
             </div>
         </div>
         <div ng-class="WidgetSections.showMenu == false ? '' : 'active'"

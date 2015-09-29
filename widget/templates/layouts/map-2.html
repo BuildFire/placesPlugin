@@ -21,7 +21,7 @@
         </div>
         <div class="location-map">
             <div class="map-holder" ng-class="{'fix-map-layout2-top':WidgetSections.info.data.content.images.length}">
-                <div google-map data-items="WidgetSections.items" coordinates="WidgetSections.currentCoordinates"></div>
+                <div google-map style="height: 100%; position: relative" data-items="WidgetSections.items" coordinates="WidgetSections.currentCoordinates"></div>
             </div>
         </div>
         <div ng-class="WidgetSections.showMenu == false ? '' : 'active'" class="bottom fixed-bottom clearfix transition-third">

@@ -121,16 +121,14 @@
                     else {
                         WidgetSections.selectedSections.splice(WidgetSections.selectedSections.indexOf(id), 1);
                         $(event.target).removeClass('active');
-                        if(!WidgetSections.showSections && WidgetSections.selectedSections.length == 0)
-                        {
+                        if (!WidgetSections.showSections && WidgetSections.selectedSections.length == 0) {
                             WidgetSections.showSections = true;
                         }
                     }
                 };
 
                 WidgetSections.resetSectionFilter = function () {
-                    if(!WidgetSections.showSections && WidgetSections.selectedSections.length == 0)
-                    {
+                    if (!WidgetSections.showSections && WidgetSections.selectedSections.length == 0) {
                         WidgetSections.showSections = true;
                         return;
                     }
@@ -208,7 +206,9 @@
                             refreshSections();
                         }
                     } else if (event.tag === "items") {
-                        loadAllItemsOfSections();
+                        if (event.data && event.data.address && event.data.address.lng && event.data.address.lat){
+                            loadAllItemsOfSections();
+                        }
                     }
                     else {
                         view = null;

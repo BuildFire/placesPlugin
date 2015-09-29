@@ -28,7 +28,7 @@
                                 mapTypeControl: false,
                                 zoom: 4,
                                 center: {lat: mapCenterLat, lng: mapCenterLng},
-                                mapTypeId: google.maps.MapTypeId.TERRAIN
+                                mapTypeId: google.maps.MapTypeId.ROADMAP
                             });
 
                             var styleOptions = {
@@ -60,6 +60,11 @@
                                 coords: [1, 1, 1, 20, 18, 20, 18, 1],
                                 type: 'poly'
                             };
+
+
+                            var markers = [];
+
+
                             for (var _index = 0; _index < scope.items.length; _index++) {
                                 var _place = scope.items[_index];
                                 var marker = new google.maps.Marker({
@@ -70,7 +75,10 @@
                                     title: _place.data.itemTitle,
                                     zIndex: _index
                                 });
+                                markers.push(marker);
                             }
+
+                            var markerCluster = new MarkerClusterer(map, markers);
                         }
                     }, true);
                 }
