@@ -1,15 +1,14 @@
 (function (angular) {
     angular
         .module('placesWidget')
-        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS',
-            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS) {
+        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance',
+            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance) {
 
                 var WidgetSections = this;
                 WidgetSections.showMenu = false;
                 WidgetSections.menuTab = 'Category';
                 WidgetSections.selectedSections = [];
                 WidgetSections.showSections = true;
-
                 WidgetSections.info = null;
                 WidgetSections.currentView = null;
                 WidgetSections.items = null;
@@ -19,6 +18,12 @@
                     items: null,
                     currentCoordinates: [77, 28]
                 };
+
+              /*  GeoDistance.getDistance([28,77],[[30,70],[38,71],[58,79]]).then(function(result){
+                    console.log('distance result',result);
+                },function(err){
+                    console.log('distance err',err);
+                });*/
 
                 function getGeoLocation() {
                     if (navigator.geolocation) {

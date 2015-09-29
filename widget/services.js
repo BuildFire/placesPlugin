@@ -1,5 +1,5 @@
 (function (angular, buildfire, location) {
-'use strict';
+    'use strict';
     //created mediaCenterWidget module
     var settings, appId;
     var Settings = {
@@ -242,5 +242,43 @@
                     }
                 }
             };
+        }])
+        .factory('GeoDistance', ['$q', '$http', function ($q, $http) {
+            var _getDistance = function (origin, destinations, distanceUnit) {
+                var deferred = $q.defer();
+                if (!origin || !Array.isArray(origin)) {
+                    deferred.reject({
+                        code: 'NOT_ARRAY',
+                        message: 'origin is not an Array'
+                    });
+                }
+                if (!destinations || !Array.isArray(destinations)) {
+                    deferred.reject({
+                        code: 'NOT_ARRAY',
+                        message: 'destinations is not an Array'
+                    });
+                }
+
+                var destinationsString = ''
+                    , strBuilder = [];
+                destinations.forEach(function (_dest) {
+                    strBuilder.push(_dest.toString());
+                });
+                destinationsString = strBuilder.join('|');
+                console.log('destinationsString', destinationsString);
+                var _url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + origin.toString() + '&destinations=' + destinationsString + '&mode=driving&key=AIzaSyCRWyvs4UfQ9qjen_smzLFmpVqsjqTYdFI';
+                $http({
+                    method: 'GET',
+                    url: _url
+                }).then(function (res) {
+                    deferred.resolve(res);
+                }, function (err) {
+                    deferred.reject(err);
+                });
+                return deferred.promise;
+            };
+            return {
+                getDistance: _getDistance
+            }
         }]);
 })(window.angular, window.buildfire, window.location);
