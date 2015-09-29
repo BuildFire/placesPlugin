@@ -9,7 +9,8 @@
             'ngAnimate',
             'ngRoute',
             'ui.bootstrap',
-            'infinite-scroll'
+            'infinite-scroll',
+            'rzModule'
         ])
         //injected ngRoute for routing
         //injected ui.bootstrap for angular bootstrap component
