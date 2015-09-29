@@ -12,6 +12,8 @@
                 Items.getById($routeParams.itemId).then(
                     function (result) {
                         WidgetItem.item = result;
+                        if(WidgetItem.item.data && WidgetItem.item.data.images)
+                           initCarousel(WidgetItem.item.data.images);
                     },
                     function (err) {
                         console.error('Error while getting item-', err);
@@ -71,7 +73,17 @@
 
             Buildfire.datastore.onUpdate(function (event) {
                 console.log('ON UPDATE called============', event);
+                if(event.tag=='items' && event.data){
+                    if(event.data.images)
+                        initCarousel(event.data.images);
+                }
             });
+
+            function initCarousel(images){
+                if(view){
+                    view.loadItems(images);
+                }
+            }
 
             /**
              * init() function invocation to fetch previously saved user's data from datastore.

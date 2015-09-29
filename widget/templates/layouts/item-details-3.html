@@ -3,7 +3,7 @@
         <div class="media-center-banner plugin-banner clearfix border-bottom-grey">
             <div class="plugin-slider has-info-bar has-info-bar-double text-center">
                 <div class="plugin-slide show-map">
-                    <span google-map coordinates="WidgetItem.coordinates"
+                    <span google-map coordinates="WidgetItem.coordinates" data-items="[WidgetItem.item]"
                           style="height: 200px;width: 342px; position:relative;">Google Maps Here</span>
                 </div>
             </div>
@@ -22,33 +22,9 @@
     <div class="padding-top-fifteen padding-bottom-ten text-center">
         <div class="plugin-thumbnail-slider clearfix">
             <p>{{WidgetItem.item.data.addressTitle+" "+WidgetItem.item.data.address.aName}}</p>
-            <div class="thumbnail-slider text-center">
-                <div class="thumbnail-slide">
-                    <img class="border-radius-four" src="http://www.placehold.it/140x100">
-                </div>
-                <div class="thumbnail-slide">
-                    <img class="border-radius-four" src="http://www.placehold.it/140x100">
-                </div>
-                <div class="thumbnail-slide">
-                    <img class="border-radius-four" src="http://www.placehold.it/140x100">
-                </div>
-                <div class="thumbnail-slide">
-                    <img class="border-radius-four" src="http://www.placehold.it/140x100">
-                </div>
-                <div class="thumbnail-slide">
-                    <img class="border-radius-four" src="http://www.placehold.it/140x100">
-                </div>
-                <div class="thumbnail-slide">
-                    <img class="border-radius-four" src="http://www.placehold.it/140x100">
-                </div>
-                <div class="thumbnail-slide">
-                    <img class="border-radius-four" src="http://www.placehold.it/140x100">
-                </div>
-                <div class="thumbnail-slide">
-                    <img class="border-radius-four" src="http://www.placehold.it/140x100">
-                </div>
-                <div class="thumbnail-slide">
-                    <img class="border-radius-four" src="http://www.placehold.it/140x100">
+            <div class="thumbnail-slider text-center" style="height: 100px; width: 100%;white-space: nowrap; overflow-x: auto;">
+                <div class="thumbnail-slide" style="display: inline-block" ng-repeat="image in WidgetItem.item.data.images">
+                    <img class="border-radius-four" ng-src="{{image.iconUrl | cropImage : 140 : 100}}">
                 </div>
             </div>
         </div>
