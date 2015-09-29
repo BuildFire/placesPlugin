@@ -3,21 +3,9 @@
     <span class="icon icon-cross2 close-modal" onclick="EditSectionPopup.cancel()"></span>
 </div>
 <div class="padded clearfix">
-    <!-- <div class="content">
-         <div ng-repeat="section in EditSectionPopup.sections">
-             {{section.data.secTitle}}
-         </div>
-     </div>-->
     <div class="d-item double-line square-icon clearfix" ng-repeat="section in sections">
-
-        <div class="media-holder pull-left">
-            <div class="">
-                <input type="checkbox" ng-model="section.data.selected"/></div>
-            <a class="text-primary"><span
-                    class="title ellipsis pull-left">{{section.data.secTitle}}</span></a>
-        </div>
-        <div class="copy pull-right">
-        </div>
+            <input type="checkbox" ng-model="section.data.selected"/>
+            <span class="padding-left-fifteen">{{section.data.secTitle}}</span>
     </div>
 </div>
 <div class="bottom border-top-grey clearfix">

@@ -17,16 +17,18 @@
                 replace: true,
                 scope: {coordinates: '=', items: '='},
                 link: function (scope, elem, attrs) {
-                    scope.$watch('coordinates', function (newValue, oldValue) {
+                    scope.$watch('items', function (newValue, oldValue) {
                         if (newValue) {
+                            var mapCenterLat = (scope.items.length && scope.items[0].data.address.lat) ? scope.items[0].data.address.lat : 21.7679;
+                            var mapCenterLng = (scope.items.length && scope.items[0].data.address.lng) ? scope.items[0].data.address.lng : 78.8718;
 
                             // Create the map.
                             var map = new google.maps.Map(elem[0], {
                                 streetViewControl: false,
                                 mapTypeControl: false,
                                 zoom: 4,
-                                center: {lat: scope.items[0].data.address.lat, lng: scope.items[0].data.address.lng},
-                                mapTypeId: google.maps.MapTypeId.TERRAIN
+                                center: {lat: mapCenterLat, lng: mapCenterLng},
+                                mapTypeId: google.maps.MapTypeId.ROADMAP
                             });
 
                             var styleOptions = {
@@ -58,6 +60,11 @@
                                 coords: [1, 1, 1, 20, 18, 20, 18, 1],
                                 type: 'poly'
                             };
+
+
+                            var markers = [];
+
+
                             for (var _index = 0; _index < scope.items.length; _index++) {
                                 var _place = scope.items[_index];
                                 var marker = new google.maps.Marker({
@@ -68,10 +75,27 @@
                                     title: _place.data.itemTitle,
                                     zIndex: _index
                                 });
+                                markers.push(marker);
                             }
+
+                            var markerCluster = new MarkerClusterer(map, markers);
                         }
                     }, true);
                 }
             }
+        })
+        .directive('defaultImage', function () {
+            return {
+                restrict: 'A',
+                link: function (scope, element, attrs) {
+                    attrs.$observe('ngSrc', function (ngSrc) {
+
+                        if (!ngSrc) {
+                            element.attr('src', 'assets/images/placeholder.jpg'); // set default image
+                        }
+
+                    });
+                }
+            };
         })
 })(window.angular, undefined);

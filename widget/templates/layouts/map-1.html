@@ -8,6 +8,7 @@
                 <div class="copy stretch pull-left margin-left-ten">
                     <p class="margin-bottom-zero ellipsis margin-top-ten text-primary"><a class="ellipsis text-primary">1234
                         Grand Ave, San Diego, 92127</a></p>
+
                     <p class="margin-bottom-zero ellipsis">Summary goes here, if there is more do this to the text.</p>
                 </div>
             </div>
@@ -18,13 +19,12 @@
             </div>
         </div>
         <div class="location-map">
-            <div class="map-holder" ng-if="WidgetSections.items.length">
-
-                <div google-map coordinates="WidgetSections.currentCoordinates" data-items="WidgetSections.items" style="height: 100%; position: relative;"></div>
-
+            <div class="map-holder" ng-class="{'fix-map-layout1-top':WidgetSections.items.length}">
+                <div google-map style="height: 100%; position: relative" coordinates="WidgetSections.currentCoordinates" data-items="WidgetSections.items"></div>
             </div>
         </div>
-        <div ng-class="WidgetSections.showMenu == false ? '' : 'active'" class="bottom fixed-bottom clearfix transition-third">
+        <div ng-class="WidgetSections.showMenu == false ? '' : 'active'"
+             class="bottom fixed-bottom clearfix transition-third">
             <div>
                 <div class="extra-links">
                     <a class="my-location" style="background:#09a3ee;">

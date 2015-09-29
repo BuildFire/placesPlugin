@@ -8,11 +8,39 @@
                 WidgetSections.showMenu = false;
                 WidgetSections.menuTab = 'Category';
                 WidgetSections.selectedSections = [];
-                WidgetSections.currentCoordinates = [77, 28];
+                WidgetSections.showSections = true;
+
                 WidgetSections.info = null;
                 WidgetSections.currentView = null;
                 WidgetSections.items = null;
-                console.log('Widget Section Ctrl Loaded', WidgetSections.info);
+                WidgetSections.sortOnClosest = false; // get its value when we get location
+                //console.log('Widget Section Ctrl Loaded', WidgetSections.info);
+
+                WidgetSections.currentCoordinates = [77, 28]; // default coord
+
+                function getGeoLocation() {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(function (position) {
+                            $scope.$apply(function () {
+                                $scope.currentCoordinates = [position.coords.longitude, position.coords.latitude];
+                                localStorage.setItem('userLocation', JSON.stringify($scope.currentCoordinates));
+                            });
+                        });
+                    }
+                    // else - in this case, default coords will be used
+                }
+
+                if (typeof(Storage) !== "undefined") {
+                    var cached = localStorage.getItem('userLocation');
+                    if (cached) {
+                        WidgetSections.currentCoordinates = JSON.parse(cached);
+                    }
+                    else
+                        getGeoLocation(); // get data if not in cache
+                }
+                else
+                    getGeoLocation(); // get data if localStorage is not supported
+
 
                 var _skip = 0,
                     view = null,
@@ -111,6 +139,7 @@
                 //WidgetSections.loadMore();
 
                 WidgetSections.toggleSectionSelection = function (ind, event) {
+                    WidgetSections.showSections = false;
                     var id = WidgetSections.sections[ind].id;
                     if (WidgetSections.selectedSections.indexOf(id) < 0) {
                         WidgetSections.selectedSections.push(id);
@@ -119,10 +148,18 @@
                     else {
                         WidgetSections.selectedSections.splice(WidgetSections.selectedSections.indexOf(id), 1);
                         $(event.target).removeClass('active');
+                        if (!WidgetSections.showSections && WidgetSections.selectedSections.length == 0) {
+                            WidgetSections.showSections = true;
+                        }
                     }
                 };
 
                 WidgetSections.resetSectionFilter = function () {
+                    if (!WidgetSections.showSections && WidgetSections.selectedSections.length == 0) {
+                        WidgetSections.showSections = true;
+                        return;
+                    }
+                    WidgetSections.showSections = false;
                     WidgetSections.selectedSections = [];
                     $('.active.section-filter').removeClass('active');
                 };
@@ -161,21 +198,30 @@
                     }
                 };
 
+                var selectedSectionsWatcherInit = true;
                 $scope.$watch(function () {
                     return WidgetSections.selectedSections;
                 }, function () {
+                    if (selectedSectionsWatcherInit) {
+                        selectedSectionsWatcherInit = false;
+                        return;
+                    }
+                    var itemFilter;
                     console.log('filter changed', WidgetSections.selectedSections);
                     if (WidgetSections.selectedSections.length) {
-                        var itemFilter = {
+                        itemFilter = {
                             'filter': {'$json.sections': {'$in': WidgetSections.selectedSections}}
                         };
-
-                        Items.find(itemFilter).then(function (res) {
-                            WidgetSections.items = res;
-                        }, function () {
-
-                        });
                     }
+                    else {
+                        itemFilter = {filter: {"$json.itemTitle": {"$regex": '/*'}}};
+                    }
+                    Items.find(itemFilter).then(function (res) {
+                        WidgetSections.items = res;
+                    }, function () {
+
+                    });
+
 
                 }, true);
 
@@ -192,7 +238,9 @@
                             refreshSections();
                         }
                     } else if (event.tag === "items") {
-                        loadAllItemsOfSections();
+                        if (event.data && event.data.address && event.data.address.lng && event.data.address.lat){
+                            loadAllItemsOfSections();
+                        }
                     }
                     else {
                         view = null;
