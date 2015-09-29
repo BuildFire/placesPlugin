@@ -90,7 +90,7 @@
                 ContentItem.linkEditor.onAddItems = function (items) {
                     if (!ContentItem.item.data.links)
                         ContentItem.item.data.links = [];
-                    ContentItem.item.data.links.push.apply(ContentItem.item.data.links, items);
+                    ContentItem.item.data.links.push(items);
                     $scope.$digest();
                 };
                 // this method will be called when an item deleted from the list
