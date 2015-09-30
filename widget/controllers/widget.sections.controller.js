@@ -16,14 +16,8 @@
                 //console.log('Widget Section Ctrl Loaded', WidgetSections.info);
                 WidgetSections.locationData = {
                     items: null,
-                    currentCoordinates: [77, 28]
+                    currentCoordinates: [-117.1920427, 32.7708401] // default san diego
                 };
-
-                /*  GeoDistance.getDistance([28,77],[[30,70],[38,71],[58,79]]).then(function(result){
-                 console.log('distance result',result);
-                 },function(err){
-                 console.log('distance err',err);
-                 });*/
 
                 function getGeoLocation() {
                     if (navigator.geolocation) {
@@ -41,6 +35,7 @@
                 if (typeof(Storage) !== "undefined") {
                     var userLocation = localStorage.getItem('userLocation');
                     if (userLocation) {
+                        WidgetSections.sortOnClosest = true;// will be true if user allows location
                         WidgetSections.locationData.currentCoordinates = JSON.parse(userLocation);
                     }
                     else
@@ -172,6 +167,7 @@
                     }
                     WidgetSections.showSections = false;
                     WidgetSections.selectedSections = [];
+                    filterChanged();
                     $('.active.section-filter').removeClass('active');
                 };
 
@@ -209,10 +205,7 @@
                     }
                 };
 
-                var selectedSectionsWatcherInit = true;
-                $scope.$watch(function () {
-                    return WidgetSections.selectedSections;
-                }, function () {
+                function filterChanged() {
                     if (selectedSectionsWatcherInit) {
                         selectedSectionsWatcherInit = false;
                         return;
@@ -228,14 +221,24 @@
                         itemFilter = {filter: {"$json.itemTitle": {"$regex": '/*'}}};
                     }
                     Items.find(itemFilter).then(function (res) {
-                        console.log(res);
+
+                        res.forEach(function (_item) {
+                            _item.data.distance = 0; // default distance value
+                            _item.data.distanceText = 'Fetching..';
+                        });
+
                         WidgetSections.items = res;
                     }, function () {
 
                     });
 
 
-                }, true);
+                }
+
+                var selectedSectionsWatcherInit = true;
+                $scope.$watch(function () {
+                    return WidgetSections.selectedSections;
+                }, filterChanged, true);
 
 
                 /**
@@ -281,6 +284,21 @@
                     var success = function (result) {
                             if (result && result.data && result.id) {
                                 WidgetSections.info = result;
+
+                                if(WidgetSections.info.data.settings.showDistanceIn == 'miles')
+                                    $scope.distanceSlider = {
+                                        min: 50,
+                                        max: 50,
+                                        ceil: 200, //upper limit
+                                        floor: 50
+                                    };
+                                else
+                                    $scope.distanceSlider = {
+                                        min: 80,
+                                        max: 80,
+                                        ceil: 320, //upper limit
+                                        floor: 80
+                                    };
                             }
                             WidgetSections.currentView = WidgetSections.info ? WidgetSections.info.data.settings.defaultView : null;
                             if (WidgetSections.currentView) {
@@ -307,24 +325,23 @@
                  */
                 init();
 
-                $scope.distanceSlider = {
-                    min: 50,
-                    max: 200,
-                    ceil: 200,
-                    floor: 50
-                };
+
 
                 $scope.distanceSliderChange = function () {
-                    console.log($scope.distanceSlider.max);
+                    console.log('slider chnged');
+                    //remove items from collection which are out of range
+                    for (var i = WidgetSections.items.length - 1; i >= 0; i--) {
+                        if (WidgetSections.items[i].data.distance <= 0 || WidgetSections.items[i].data.distance > $scope.distanceSlider.max || WidgetSections.items[i].data.distance < $scope.distanceSlider.min) {
+                            WidgetSections.items.splice(i, 1);
+                        }
+                    }
                 };
 
                 WidgetSections.itemsOrder = function (item) {
-                    console.error(WidgetSections.info);
-                    /*if(WidgetSections.sortOnClosest)
-                     return item.distance;
-                     else
-                    return item[WidgetSections.info.data.content.sortByItems];*/
-                    return item.itemTitle;
+                    if (WidgetSections.sortOnClosest)
+                        return item.distance;
+                    else
+                        return item[WidgetSections.info.data.content.sortByItems];
                 };
 
                 var initItems = true;
@@ -332,16 +349,22 @@
                     return WidgetSections.items;
                 }, function () {
 
-                    if(initItems)
-                    {
+                    if (initItems) {
                         initItems = false;
                         return;
                     }
 
-                    GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates,WidgetSections.items,'').then(function(result){
-                        console.log('distance result',result);
-                    },function(err){
-                        console.log('distance err',err);
+                    GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, WidgetSections.items, WidgetSections.info.data.settings.showDistanceIn).then(function (result) {
+                        console.log('distance result', result);
+
+                        for (var _ind = 0; _ind < WidgetSections.items.length; _ind++) {
+                            WidgetSections.items[_ind].data.distanceText = (result.rows[0].elements[_ind].status != 'OK') ? 'NA' : result.rows[0].elements[_ind].distance.text;
+                            WidgetSections.items[_ind].data.distance = (result.rows[0].elements[_ind].status != 'OK') ? -1 : result.rows[0].elements[_ind].distance.value;
+                        }
+
+
+                    }, function (err) {
+                        console.error('distance err', err);
                     });
                 });
 
