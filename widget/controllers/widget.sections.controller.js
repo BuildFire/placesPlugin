@@ -353,10 +353,11 @@
                 };
 
                 WidgetSections.itemsOrder = function (item) {
+                    //console.error(WidgetSections.info.data.content.sortByItems);
                     if (WidgetSections.sortOnClosest)
-                        return item.distance;
+                        return item.data.distance;
                     else
-                        return item[WidgetSections.info.data.content.sortByItems];
+                        return item.data.itemTitle;
                 };
 
                 WidgetSections.selectedMarker = function (itemIndex) {

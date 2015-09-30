@@ -24,7 +24,8 @@
                 <div google-map style="height: 100%; position: relative" location-data="WidgetSections.locationData" marker-callback="WidgetSections.selectedMarker"></div>
             </div>
         </div>
-        <div ng-class="WidgetSections.showMenu == false ? '' : 'active'" class="bottom fixed-bottom clearfix transition-third">
+        <div ng-include="'templates/layouts/bottom-menu.html'"></div>
+        <!--<div ng-class="WidgetSections.showMenu == false ? '' : 'active'" class="bottom fixed-bottom clearfix transition-third">
             <div>
                 <div class="extra-links">
                     <a class="my-location" style="background:#09a3ee;">
@@ -39,9 +40,9 @@
                 </div>
             </div>
             <div class="col-xs-12 pull-left text-center transition-third" style="background:#09a3ee;">
-                <!--<a ng-click="WidgetSections.currentView = 'map'" style="color:#fff;">Map</a>-->
+                &lt;!&ndash;<a ng-click="WidgetSections.currentView = 'map'" style="color:#fff;">Map</a>&ndash;&gt;
                 <a ng-click="WidgetSections.showMenu = !WidgetSections.showMenu" style="color:#fff;">Filter</a>
-                <!--<a ng-click="WidgetSections.resetSectionFilter()" style="color:#fff;">See All</a>-->
+                &lt;!&ndash;<a ng-click="WidgetSections.resetSectionFilter()" style="color:#fff;">See All</a>&ndash;&gt;
             </div>
             <div class="col-xs-12 pull-left hidden-content">
                 <div class="tabs clearfix">
@@ -86,6 +87,6 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
 </div>
