@@ -38,7 +38,7 @@
                      infinite-scroll-disabled="WidgetSections.noMoreItems"
                      infinite-scroll-container="'#scroll-infinite'">-->
 
-                <div class="plugin-banner has-info-bar clearfix" ng-repeat="item in WidgetSections.items">
+                <div class="plugin-banner has-info-bar clearfix" ng-repeat="item in WidgetSections.items | orderBy: WidgetSections.itemsOrder">
                     <div class="plugin-slide text-center">
                         <img ng-if="item.data.listImage" ng-src="{{item.data.listImage}}">
                         <img ng-if="!item.data.listImage" src="assets/images/now-playing.png">

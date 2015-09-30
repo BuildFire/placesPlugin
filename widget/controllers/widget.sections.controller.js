@@ -12,23 +12,24 @@
                 WidgetSections.info = null;
                 WidgetSections.currentView = null;
                 WidgetSections.items = null;
-                WidgetSections.sortOnClosest = false; // get its value when we get location
+                WidgetSections.sortOnClosest = false; // default value
                 //console.log('Widget Section Ctrl Loaded', WidgetSections.info);
                 WidgetSections.locationData = {
                     items: null,
                     currentCoordinates: [77, 28]
                 };
 
-              /*  GeoDistance.getDistance([28,77],[[30,70],[38,71],[58,79]]).then(function(result){
-                    console.log('distance result',result);
-                },function(err){
-                    console.log('distance err',err);
-                });*/
+                /*  GeoDistance.getDistance([28,77],[[30,70],[38,71],[58,79]]).then(function(result){
+                 console.log('distance result',result);
+                 },function(err){
+                 console.log('distance err',err);
+                 });*/
 
                 function getGeoLocation() {
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(function (position) {
                             $scope.$apply(function () {
+                                WidgetSections.sortOnClosest = true;// will be true if user allows location
                                 WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
                                 localStorage.setItem('userLocation', JSON.stringify(WidgetSections.locationData.currentCoordinates));
                             });
@@ -98,6 +99,7 @@
                     WidgetSections.locationData.items = null;
                     updateGetOptions();
                     Items.find(itemFilter).then(function (res) {
+                        console.log(res);
                         WidgetSections.items = res;
                         WidgetSections.locationData.items = angular.copy(WidgetSections.items);
                     }, function () {
@@ -226,6 +228,7 @@
                         itemFilter = {filter: {"$json.itemTitle": {"$regex": '/*'}}};
                     }
                     Items.find(itemFilter).then(function (res) {
+                        console.log(res);
                         WidgetSections.items = res;
                     }, function () {
 
@@ -311,9 +314,36 @@
                     floor: 50
                 };
 
-              $scope.distanceSliderChange= function () {
-                 console.log($scope.distanceSlider.max);
-              };
+                $scope.distanceSliderChange = function () {
+                    console.log($scope.distanceSlider.max);
+                };
+
+                WidgetSections.itemsOrder = function (item) {
+                    console.error(WidgetSections.info);
+                    /*if(WidgetSections.sortOnClosest)
+                     return item.distance;
+                     else
+                    return item[WidgetSections.info.data.content.sortByItems];*/
+                    return item.itemTitle;
+                };
+
+                var initItems = true;
+                $scope.$watch(function () {
+                    return WidgetSections.items;
+                }, function () {
+
+                    if(initItems)
+                    {
+                        initItems = false;
+                        return;
+                    }
+
+                    GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates,WidgetSections.items,'').then(function(result){
+                        console.log('distance result',result);
+                    },function(err){
+                        console.log('distance err',err);
+                    });
+                });
 
             }]);
 })(window.angular, undefined);
