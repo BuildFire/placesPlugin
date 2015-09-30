@@ -8,8 +8,8 @@
     /**
      * Inject dependency
      */
-        .controller('ContentItemCtrl', ['$scope', 'item', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout',
-            function ($scope, item, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout) {
+        .controller('ContentItemCtrl', ['$scope', 'item', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout','EVENTS','PATHS','Messaging',
+            function ($scope, item, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout,EVENTS,PATHS,Messaging) {
                 $scope.itemShow = 'Content';
                 var ContentItem = this;
                 var tmrDelayForItem = null;
@@ -303,6 +303,15 @@
                         ContentItem.currentCoordinates = null;
                     }
                 };
+
+                //syn with widget
+                Messaging.sendMessageToWidget({
+                    name: EVENTS.ROUTE_CHANGE,
+                    message: {
+                        path: PATHS.ITEM,
+                        id:ContentItem.item? ContentItem.item.id : ""
+                    }
+                });
 
                 $scope.$watch(function () {
                     return ContentItem.item;

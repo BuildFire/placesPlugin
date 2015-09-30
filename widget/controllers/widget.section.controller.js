@@ -68,6 +68,10 @@
                 PlaceInfo.get().then(success, error);
             };
 
+            Buildfire.datastore.onUpdate(function(event){
+                console.log('ONUpdate------in section controller----',event);
+            });
+
             /**
              * init() function invocation to fetch previously saved user's data from datastore.
              */

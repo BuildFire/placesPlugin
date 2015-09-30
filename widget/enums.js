@@ -26,7 +26,8 @@
             Items: "items"
         })
         .constant('PATHS', {
-            MEDIA: "MEDIA",
+            ITEM: "ITEM",
+            SECTION: "SECTION",
             HOME: "HOME"
         })
         .constant('DEFAULT_VIEWS', {

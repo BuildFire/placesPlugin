@@ -203,6 +203,15 @@
                 };
 
 
+                //syn with widget
+                Messaging.sendMessageToWidget({
+                    name: EVENTS.ROUTE_CHANGE,
+                    message: {
+                        path: PATHS.SECTION,
+                        id: ContentSection.section ? ContentSection.section.id : ""
+                    }
+                });
+
                 /**
                  * Watch on ContentSection.section to see changes and call updateItemsWithDelay
                  */

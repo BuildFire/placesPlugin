@@ -19,11 +19,11 @@
                     currentCoordinates: [77, 28]
                 };
 
-              /*  GeoDistance.getDistance([28,77],[[30,70],[38,71],[58,79]]).then(function(result){
-                    console.log('distance result',result);
-                },function(err){
-                    console.log('distance err',err);
-                });*/
+                /*  GeoDistance.getDistance([28,77],[[30,70],[38,71],[58,79]]).then(function(result){
+                 console.log('distance result',result);
+                 },function(err){
+                 console.log('distance err',err);
+                 });*/
 
                 function getGeoLocation() {
                     if (navigator.geolocation) {
