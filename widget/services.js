@@ -244,36 +244,45 @@
             };
         }])
         .factory('GeoDistance', ['$q', '$http', function ($q, $http) {
-            var _getDistance = function (origin, destinations, distanceUnit) {
+            var _getDistance = function (origin, items, distanceUnit) {
                 var deferred = $q.defer();
+                var originMap = {lat: origin[1], lng: origin[0]};
+                var destinationsMap = [];
+
                 if (!origin || !Array.isArray(origin)) {
                     deferred.reject({
                         code: 'NOT_ARRAY',
                         message: 'origin is not an Array'
                     });
                 }
-                if (!destinations || !Array.isArray(destinations)) {
+                if (!items || !Array.isArray(items) || !items.length) {
                     deferred.reject({
                         code: 'NOT_ARRAY',
                         message: 'destinations is not an Array'
                     });
                 }
 
-                var destinationsString = ''
-                    , strBuilder = [];
-                destinations.forEach(function (_dest) {
-                    strBuilder.push(_dest.toString());
+                items.forEach(function (_dest) {
+                    if (_dest.data.address.lat && _dest.data.address.lng)
+                        destinationsMap.push({lat: _dest.data.address.lat, lng: _dest.data.address.lng});
+                    else
+                        destinationsMap.push({lat: 0, lng: 0});
                 });
-                destinationsString = strBuilder.join('|');
-                console.log('destinationsString', destinationsString);
-                var _url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + origin.toString() + '&destinations=' + destinationsString + '&mode=driving&key=AIzaSyCRWyvs4UfQ9qjen_smzLFmpVqsjqTYdFI';
-                $http({
-                    method: 'GET',
-                    url: _url
-                }).then(function (res) {
-                    deferred.resolve(res);
-                }, function (err) {
-                    deferred.reject(err);
+
+                var service = new google.maps.DistanceMatrixService;
+                service.getDistanceMatrix({
+                    origins: [originMap],
+                    destinations: destinationsMap,
+                    travelMode: google.maps.TravelMode.DRIVING,
+                    unitSystem: distanceUnit == 'kilometers' ? google.maps.UnitSystem.METRIC : google.maps.UnitSystem.IMPERIAL,
+                    avoidHighways: false,
+                    avoidTolls: false
+                }, function (response, status) {
+                    if (status !== google.maps.DistanceMatrixStatus.OK) {
+                        deferred.reject(status);
+                    } else {
+                        deferred.resolve(response);
+                    }
                 });
                 return deferred.promise;
             };

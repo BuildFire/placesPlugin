@@ -29,7 +29,7 @@
                     controllerAs: 'ContentSections',
                     controller: 'ContentSectionsCtrl',
                     resolve: {
-                        PlaceInfo: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', function ($q, DB, COLLECTIONS, Orders, Location) {
+                        PlaceInfo: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location','OrdersItems', function ($q, DB, COLLECTIONS, Orders, Location,OrdersItems) {
                             var deferred = $q.defer();
                             var PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
                             var _bootstrap = function () {
@@ -39,7 +39,8 @@
                                         descriptionHTML: '',
                                         description: '',
                                         sortBy: Orders.ordersMap.Newest,
-                                        rankOfLastItem: ''
+                                        rankOfLastItem: '',
+                                        sortByItems: OrdersItems.ordersMap.Newest,
                                     },
                                     design: {
                                         secListLayout: "sec-list-1-1",

@@ -4,8 +4,12 @@
 </div>
 <div class="padded clearfix">
     <div class="d-item double-line square-icon clearfix" ng-repeat="section in sections">
-            <input type="checkbox" ng-model="section.data.selected"/>
-            <span class="padding-left-fifteen">{{section.data.secTitle}}</span>
+        <div class="checkbox checkbox-primary">
+            <input id="checkbox-{{section.id}}" type="checkbox" ng-model="section.data.selected"/>
+            <label for="checkbox-{{section.id}}">{{section.data.secTitle}}</label>
+        </div>
+
+            <!--<span class="padding-left-fifteen"></span>-->
     </div>
 </div>
 <div class="bottom border-top-grey clearfix">
