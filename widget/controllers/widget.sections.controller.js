@@ -12,6 +12,8 @@
                 WidgetSections.info = null;
                 WidgetSections.currentView = null;
                 WidgetSections.items = null;
+                WidgetSections.selectedItem = null;
+                WidgetSections.selectedItemDistance = null;
                 WidgetSections.sortOnClosest = false; // default value
                 //console.log('Widget Section Ctrl Loaded', WidgetSections.info);
                 WidgetSections.locationData = {
@@ -342,6 +344,20 @@
                         return item.distance;
                     else
                         return item[WidgetSections.info.data.content.sortByItems];
+                };
+
+                WidgetSections.selectedMarker = function (itemIndex) {
+                    WidgetSections.selectedItem = WidgetSections.locationData.items[itemIndex];
+                    GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, [WidgetSections.selectedItem], '').then(function (result) {
+                        if (result.rows.length && result.rows[0].elements.length && result.rows[0].elements[0].distance.text) {
+                            WidgetSections.selectedItemDistance = result.rows[0].elements[0].distance.text;
+                        } else {
+                            WidgetSections.selectedItemDistance = null;
+                        }
+                    }, function (err) {
+                        console.log('distance err', err);
+                        WidgetSections.selectedItemDistance = null;
+                    });
                 };
 
                 var initItems = true;
