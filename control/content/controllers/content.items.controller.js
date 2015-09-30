@@ -8,8 +8,8 @@
     /**
      * Inject dependency
      */
-        .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'DB', 'COLLECTIONS', 'Modals', 'OrdersItems',
-            function ($scope, $routeParams, DB, COLLECTIONS, Modals, OrdersItems) {
+        .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'DB', 'COLLECTIONS', 'Modals', 'OrdersItems','Messaging','EVENTS','PATHS',
+            function ($scope, $routeParams, DB, COLLECTIONS, Modals, OrdersItems,Messaging,EVENTS,PATHS) {
 
                 var ContentItems = this;
 
@@ -163,6 +163,15 @@
                     });
 
                 };
+
+                //syn with widget
+                Messaging.sendMessageToWidget({
+                    name: EVENTS.ROUTE_CHANGE,
+                    message: {
+                        path: PATHS.SECTION,
+                        id:ContentItems.section
+                    }
+                });
 
             }]);
 })(window.angular, window.tinymce);

@@ -96,7 +96,6 @@
                     WidgetSections.locationData.items = null;
                     updateGetOptions();
                     Items.find(itemFilter).then(function (res) {
-                        console.log(res);
                         WidgetSections.items = res;
                         WidgetSections.locationData.items = angular.copy(WidgetSections.items);
                     }, function () {

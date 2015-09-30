@@ -401,6 +401,15 @@
                     ContentSections.masterInfo = angular.copy(info);
                 }
 
+
+                //syn with widget
+                Messaging.sendMessageToWidget({
+                    name: EVENTS.ROUTE_CHANGE,
+                    message: {
+                        path: PATHS.HOME
+                    }
+                });
+
                 $scope.$watch(function () {
                     return ContentSections.info;
                 }, saveDataWithDelay, true);

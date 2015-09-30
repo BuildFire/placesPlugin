@@ -1,22 +1,22 @@
 (function (angular, window) {
     angular
         .module('placesWidget')
-        .controller('WidgetItemCtrl', ['$scope', 'COLLECTIONS', 'DB', '$routeParams', 'Buildfire', '$rootScope', function ($scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope) {
+        .controller('WidgetItemCtrl', ['$scope', 'COLLECTIONS', 'DB', '$routeParams', 'Buildfire', '$rootScope', 'GeoDistance', 'Messaging', 'Location', 'EVENTS', 'PATHS', function ($scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS) {
             var WidgetItem = this, view = null;
             WidgetItem.placeInfo = null;
             console.log('WidgetItemCtrl called');
-            WidgetItem.item={data:{}};
+            WidgetItem.item = {data: {}};
             var PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
             var Items = new DB(COLLECTIONS.Items);
             if ($routeParams.itemId) {
                 Items.getById($routeParams.itemId).then(
                     function (result) {
                         WidgetItem.item = result;
-                        if(WidgetItem.item.data && WidgetItem.item.data.images)
-                           initCarousel(WidgetItem.item.data.images);
+                        if (WidgetItem.item.data && WidgetItem.item.data.images)
+                            initCarousel(WidgetItem.item.data.images);
                         WidgetItem.locationData = {
                             items: null,
-                            currentCoordinates: [WidgetItem.item.data.address.lng,WidgetItem.item.data.address.lat]
+                            currentCoordinates: [WidgetItem.item.data.address.lng, WidgetItem.item.data.address.lat]
                         };
                     },
                     function (err) {
@@ -46,7 +46,7 @@
                 }
             }
 
-            WidgetItem.calculateDistance=function(){
+            WidgetItem.calculateDistance = function () {
 
             };
 
@@ -61,6 +61,7 @@
                         $scope.$apply(function () {
                             WidgetItem.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
                             localStorage.setItem('userLocation', JSON.stringify(WidgetItem.locationData.currentCoordinates));
+                            console.log(WidgetItem.locationData.currentCoordinates, 'USERLocation');
                         });
                     });
                 }
@@ -98,7 +99,7 @@
             $rootScope.$on("Carousel:LOADED", function () {
                 console.log('carousel added------', WidgetItem.item);
                 if (!view) {
-                    console.log('if------',view);
+                    console.log('if------', view);
                     view = new Buildfire.components.carousel.view("#carousel", []);
                 }
                 if (WidgetItem.item && WidgetItem.item.data && WidgetItem.item.data.images && view) {
@@ -110,16 +111,16 @@
 
             Buildfire.datastore.onUpdate(function (event) {
                 console.log('ON UPDATE called============', event);
-                if(event.tag=='items' && event.data){
-                    WidgetItem.item=event;
+                if (event.tag == 'items' && event.data) {
+                    WidgetItem.item = event;
                     $scope.$digest();
-                    if(event.data.images)
+                    if (event.data.images)
                         initCarousel(event.data.images);
                 }
             });
 
-            function initCarousel(images){
-                if(view){
+            function initCarousel(images) {
+                if (view) {
                     view.loadItems(images);
                 }
             }
