@@ -8,8 +8,8 @@
     /**
      * Inject dependency
      */
-        .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'DB', 'COLLECTIONS', 'Modals', 'OrdersItems','Messaging','EVENTS','PATHS',
-            function ($scope, $routeParams, DB, COLLECTIONS, Modals, OrdersItems,Messaging,EVENTS,PATHS) {
+        .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'DB', 'COLLECTIONS', 'Modals', 'OrdersItems','Messaging','EVENTS','PATHS','Location',
+            function ($scope, $routeParams, DB, COLLECTIONS, Modals, OrdersItems,Messaging,EVENTS,PATHS,Location) {
 
                 var ContentItems = this;
 
@@ -159,6 +159,9 @@
                     }, function (err) {
                     });
 
+                };
+                ContentItems.done = function () {
+                    Location.goToHome();
                 };
 
                 //syn with widget
