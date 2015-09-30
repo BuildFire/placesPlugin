@@ -34,8 +34,8 @@
                         <span class="icon icon-menu"></span>
                     </a>
                 </div>
-                <div class="col-xs-12 pull-left text-center viewing-label" style="background:rgba(255,255,255,0.8);">
-                    <p class="margin-zero ellipsis">Viewing: Uptown, Greenwich Village, Dogtown, and Downtown</p>
+                <div ng-if="WidgetSections.selectedItem" class="col-xs-12 pull-left text-center viewing-label" style="background:rgba(255,255,255,0.8);">
+                    <p class="margin-zero ellipsis">Viewing: {{WidgetSections.selectedItem.data.address.aName}}</p>
                 </div>
             </div>
             <div class="col-xs-12 pull-left text-center transition-third" style="background:#09a3ee;">

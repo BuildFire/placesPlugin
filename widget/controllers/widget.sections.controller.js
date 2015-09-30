@@ -251,9 +251,23 @@
                             initCarousel(WidgetSections.info.data.settings.defaultView);
                             refreshSections();
                         }
-                    } else if (event.tag === "items") {
-                        if (event.data && event.data.address && event.data.address.lng && event.data.address.lat) {
-                            loadAllItemsOfSections();
+                    }
+                    else if (event.tag === "items") {
+                        if (event.data) {
+                            if (event.data.address && event.data.address.lng && event.data.address.lat) {
+                                loadAllItemsOfSections();
+                            }
+                        } else if (event.id && WidgetSections.locationData.items) {
+                            for (var _index = 0; _index < WidgetSections.locationData.items.length; _index++) {
+                                if (WidgetSections.locationData.items[_index].id == event.id) {
+                                    WidgetSections.locationData.items.splice(_index, 1);
+                                    break;
+                                }
+                            }
+                            WidgetSections.selectedItem = null;
+                            WidgetSections.selectedItemDistance = null;
+                            WidgetSections.items = angular.copy(WidgetSections.locationData.items);
+                            $scope.$apply();
                         }
                     }
                     else {

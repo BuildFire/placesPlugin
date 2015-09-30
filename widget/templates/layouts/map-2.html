@@ -6,7 +6,7 @@
                     <div id="carousel" build-fire-carousel=""></div>
                 </div>
             </div>
-            <div class="info-bar bg-primary padding-top-five padding-bottom-five">
+            <div ng-if="WidgetSections.selectedItem" class="info-bar bg-primary padding-top-five padding-bottom-five">
                 <div class="col-xs-9 pull-left">
                     <p class="margin-bottom-zero">{{WidgetSections.selectedItem.data.itemTitle}}</p>
 
