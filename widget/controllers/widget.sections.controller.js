@@ -12,6 +12,8 @@
                 WidgetSections.info = null;
                 WidgetSections.currentView = null;
                 WidgetSections.items = null;
+                WidgetSections.selectedItem = null;
+                WidgetSections.selectedItemDistance = null;
                 WidgetSections.sortOnClosest = false; // default value
                 //console.log('Widget Section Ctrl Loaded', WidgetSections.info);
                 WidgetSections.locationData = {
@@ -323,8 +325,22 @@
                     /*if(WidgetSections.sortOnClosest)
                      return item.distance;
                      else
-                    return item[WidgetSections.info.data.content.sortByItems];*/
+                     return item[WidgetSections.info.data.content.sortByItems];*/
                     return item.itemTitle;
+                };
+
+                WidgetSections.selectedMarker = function (itemIndex) {
+                    WidgetSections.selectedItem = WidgetSections.locationData.items[itemIndex];
+                    GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, [WidgetSections.selectedItem], '').then(function (result) {
+                        if (result.rows.length && result.rows[0].elements.length && result.rows[0].elements[0].distance.text) {
+                            WidgetSections.selectedItemDistance = result.rows[0].elements[0].distance.text;
+                        } else {
+                            WidgetSections.selectedItemDistance = null;
+                        }
+                    }, function (err) {
+                        console.log('distance err', err);
+                        WidgetSections.selectedItemDistance = null;
+                    });
                 };
 
                 var initItems = true;
@@ -332,16 +348,15 @@
                     return WidgetSections.items;
                 }, function () {
 
-                    if(initItems)
-                    {
+                    if (initItems) {
                         initItems = false;
                         return;
                     }
 
-                    GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates,WidgetSections.items,'').then(function(result){
-                        console.log('distance result',result);
-                    },function(err){
-                        console.log('distance err',err);
+                    GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, WidgetSections.items, '').then(function (result) {
+                        console.log('distance result', result);
+                    }, function (err) {
+                        console.log('distance err', err);
                     });
                 });
 

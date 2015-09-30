@@ -263,8 +263,8 @@
                 }
 
                 items.forEach(function (_dest) {
-                    if(_dest.data.address.lat && _dest.data.address.lng)
-                    destinationsMap.push({lat: _dest.data.address.lat, lng: _dest.data.address.lng})
+                    if (_dest.data && _dest.data.address && _dest.data.address.lat && _dest.data.address.lng)
+                        destinationsMap.push({lat: _dest.data.address.lat, lng: _dest.data.address.lng})
                 });
 
                 var service = new google.maps.DistanceMatrixService;

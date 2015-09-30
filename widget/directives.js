@@ -15,7 +15,7 @@
             return {
                 template: "<div></div>",
                 replace: true,
-                scope: {locationData: '=locationData'},
+                scope: {locationData: '=locationData', markerCallback: '=markerCallback'},
                 link: function (scope, elem, attrs) {
                     scope.$watch('locationData', function (newValue, oldValue) {
                         if (newValue) {
@@ -72,7 +72,10 @@
 
                             if (scope.locationData && scope.locationData.currentCoordinates && scope.locationData.currentCoordinates.length) {
                                 var currentLocationMarker = new google.maps.Marker({
-                                    position: {lat: scope.locationData.currentCoordinates[1], lng: scope.locationData.currentCoordinates[0]},
+                                    position: {
+                                        lat: scope.locationData.currentCoordinates[1],
+                                        lng: scope.locationData.currentCoordinates[0]
+                                    },
                                     map: map,
                                     icon: currentLocationIcon,
                                     shape: shape
@@ -90,6 +93,10 @@
                                         shape: shape,
                                         title: _place.data.itemTitle,
                                         zIndex: _index
+                                    });
+                                    marker.addListener('click', function () {
+                                        var _this = this;
+                                        scope.markerCallback(_this.zIndex);
                                     });
                                     placeLocationMarkers.push(marker);
                                 }
