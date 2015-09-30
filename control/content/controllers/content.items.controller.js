@@ -144,10 +144,13 @@
                 ContentItems.editSections = function (ind) {
                     Sections.find({}).then(function (data) {
                         Modals.editSectionModal(data, ContentItems.items[ind]).then(function (result) {
-                           console.log(result);
+                           //console.log(result);
 
                             Items.update(result.id, result.data).then(function () {
-                                ContentItems.items[ind].data.sections = result.data.sections;
+                                //ContentItems.items[ind].data.sections = result.data.sections;
+                                _skip = 0;
+                                ContentItems.items =[];
+                                ContentItems.getMore();
                             }, function () {
                                 console.error('err happened');
                             });
