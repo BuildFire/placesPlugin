@@ -1,7 +1,7 @@
 <div ng-class="WidgetSections.showMenu ? 'active' : ''" class="bottom fixed-bottom clearfix transition-third">
     <div>
         <div class="extra-links">
-            <a ng-click="WidgetSections.currentView = 'map'" ng-hide="WidgetSections.currentView == 'map'" class="my-location" style="background:#09a3ee;">
+            <a ng-click="WidgetSections.currentView = 'map'"  class="my-location" style="background:#09a3ee;">
                 <span class="icon icon-aim"></span>
             </a>
             <a ng-click="WidgetSections.currentView = 'list'" ng-hide="WidgetSections.currentView == 'list'" class="view-type" style="background:#09a3ee;">
@@ -57,12 +57,17 @@
                              ng-style="WidgetSections.sortOnClosest ? {} : {'background':'#09a3ee'}">
                             <a ng-class="WidgetSections.sortOnClosest ? '' : 'active'">Default</a>
                         </div>
-                        <div ng-style="WidgetSections.sortOnClosest == false ? {} : {'background':'#09a3ee'}"
+                        <div ng-hide="WidgetSections.locationData.currentCoordinates == null" ng-style="WidgetSections.sortOnClosest == false ? {} : {'background':'#09a3ee'}"
                              ng-class="WidgetSections.sortOnClosest ? '' : 'active'"
                              ng-click="WidgetSections.sortOnClosest = true" class="col-xs-6 padding-zero text-center">
                             <a ng-class="WidgetSections.sortOnClosest ? 'active' : ''">Closest to Me</a>
                         </div>
+                        <div ng-show="WidgetSections.locationData.currentCoordinates == null"
+                             class="col-xs-6 padding-zero text-center">
+                            <a style="background-color: lightgrey" ng-class="WidgetSections.sortOnClosest ? 'active' : ''">Closest to Me</a>
+                        </div>
                     </div>
+                    <p class="location-share-msg" ng-show="WidgetSections.locationData.currentCoordinates == null">Enable Location sharing to activate Closest to me </p>
                 </div>
             </div>
         </div>

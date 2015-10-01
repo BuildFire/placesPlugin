@@ -119,6 +119,15 @@
                 }
             });
 
+            //syn with widget side
+            Messaging.sendMessageToControl({
+                name: EVENTS.ROUTE_CHANGE,
+                message: {
+                    path: PATHS.ITEM,
+                    id:$routeParams.itemId
+                }
+            });
+
             function initCarousel(images) {
                 if (view) {
                     view.loadItems(images);

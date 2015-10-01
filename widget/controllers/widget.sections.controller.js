@@ -18,7 +18,8 @@
                 //console.log('Widget Section Ctrl Loaded', WidgetSections.info);
                 WidgetSections.locationData = {
                     items: null,
-                    currentCoordinates: [-117.1920427, 32.7708401] // default san diego
+                    //currentCoordinates: [-117.1920427, 32.7708401] // default san diego
+                    currentCoordinates: null
                 };
 
                 function getGeoLocation() {
@@ -27,7 +28,7 @@
                             $scope.$apply(function () {
                                 WidgetSections.sortOnClosest = true;// will be true if user allows location
                                 WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
-                                localStorage.setItem('userLocation', JSON.stringify(WidgetSections.locationData.currentCoordinates));
+                                localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
                             });
                         });
                     }
@@ -35,7 +36,7 @@
                 }
 
                 if (typeof(Storage) !== "undefined") {
-                    var userLocation = localStorage.getItem('userLocation');
+                    var userLocation = localStorage.getItem('user_location');
                     if (userLocation) {
                         WidgetSections.sortOnClosest = true;// will be true if user allows location
                         WidgetSections.locationData.currentCoordinates = JSON.parse(userLocation);
@@ -309,17 +310,17 @@
 
                                 if (WidgetSections.info.data.settings.showDistanceIn == 'miles')
                                     $scope.distanceSlider = {
-                                        min: 50,
-                                        max: 50,
+                                        min: 0,
+                                        max: 200,
                                         ceil: 200, //upper limit
-                                        floor: 50
+                                        floor: 0
                                     };
                                 else
                                     $scope.distanceSlider = {
-                                        min: 80,
-                                        max: 80,
+                                        min: 0,
+                                        max: 320,
                                         ceil: 320, //upper limit
-                                        floor: 80
+                                        floor: 0
                                     };
                             }
                             WidgetSections.currentView = WidgetSections.info ? WidgetSections.info.data.settings.defaultView : null;
@@ -386,7 +387,7 @@
                     return WidgetSections.items;
                 }, function () {
 
-                    if (initItems) {
+                    if (initItems || WidgetSections.locationData.currentCoordinates == null) {
                         initItems = false;
                         return;
                     }
@@ -394,15 +395,24 @@
                         GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, WidgetSections.items, WidgetSections.info.data.settings.showDistanceIn).then(function (result) {
                             console.log('distance result', result);
 
-                            for (var _ind = 0; _ind < WidgetSections.items.length; _ind++) {
-                                WidgetSections.items[_ind].data.distanceText = (result.rows[0].elements[_ind].status != 'OK') ? 'NA' : result.rows[0].elements[_ind].distance.text;
-                                WidgetSections.items[_ind].data.distance = (result.rows[0].elements[_ind].status != 'OK') ? -1 : result.rows[0].elements[_ind].distance.value;
-                            }
+                    GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, WidgetSections.items, WidgetSections.info.data.settings.showDistanceIn).then(function (result) {
+                        console.log('distance result', result);
+                        for (var _ind = 0; _ind < WidgetSections.items.length; _ind++) {
+                            WidgetSections.items[_ind].data.distanceText = (result.rows[0].elements[_ind].status != 'OK') ? 'NA' : result.rows[0].elements[_ind].distance.text;
+                            WidgetSections.items[_ind].data.distance = (result.rows[0].elements[_ind].status != 'OK') ? -1 : result.rows[0].elements[_ind].distance.value;
+                        }
 
 
-                        }, function (err) {
-                            console.error('distance err', err);
-                        });
+                    }, function (err) {
+                        console.error('distance err', err);
+                    });
+                });
+
+                //syn with widget side
+                Messaging.sendMessageToControl({
+                    name: EVENTS.ROUTE_CHANGE,
+                    message: {
+                        path: PATHS.HOME
                     }
                 });
 

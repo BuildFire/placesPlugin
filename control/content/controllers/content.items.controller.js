@@ -53,10 +53,11 @@
 
                         ContentItems.isBusy = false;
                         var sortOrder = OrdersItems.getOrder(name || OrdersItems.ordersMap.Default);
-                        ContentItems.info.data.content.sortBy = name;
-                        ContentItems.info.data.content.sortByValue = sortOrder.value;
+                        console.error(name,sortOrder);
+                        ContentItems.info.data.content.sortByItems = name;
+                        ContentItems.info.data.content.sortByItemsValue = sortOrder.value;
                         ContentItems.getMore();
-                        ContentItems.itemSortableOptions.disabled = !(ContentItems.info.data.content.sortBy === Orders.ordersMap.Manually);
+                        ContentItems.itemSortableOptions.disabled = !(ContentItems.info.data.content.sortByItems === OrdersItems.ordersMap.Manually);
                     }
                 };
 
