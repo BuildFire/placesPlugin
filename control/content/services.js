@@ -50,15 +50,15 @@
                 Default: "Manually",
                 Newest: "Newest",
                 Oldest: "Oldest",
-                SectionAZ: "Section A-Z",
-                SectionZA: "Section Z-A"
+                ItemAZ: "Item A-Z",
+                ItemZA: "Item Z-A"
             };
             var orders = [
                 {id: 1, name: "Manually", value: "Manually", key: "rank", order: 1},
                 {id: 1, name: "Newest", value: "Newest", key: "dateCreated", order: -1},
                 {id: 1, name: "Oldest", value: "Oldest", key: "dateCreated", order: 1},
-                {id: 1, name: "SectionA-Z", value: "Section A-Z", key: "title", order: 1},
-                {id: 1, name: "SectionZ-A", value: "Section Z-A", key: "title", order: -1}
+                {id: 1, name: "ItemA-Z", value: "Item A-Z", key: "itemTitle", order: 1},
+                {id: 1, name: "ItemZ-A", value: "Item Z-A", key: "itemTitle", order: -1}
             ];
             return {
                 ordersMap: ordersMap,
