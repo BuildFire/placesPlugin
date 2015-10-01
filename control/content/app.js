@@ -89,6 +89,42 @@
                     controller: 'ContentSectionPopupCtrl'
                 })
                 .otherwise('/');
+        }])
+        .run(['Location', 'Messaging','EVENTS','PATHS', function (Location, Messaging,EVENTS,PATHS) {
+            // Handler to receive message from widget
+            Messaging.onReceivedMessage = function (event) {
+                console.log('Event rcv-----------------------------?????????????????????????????????---------------********************* in Control Panal side----', event);
+                if (event) {
+                    switch (event.name) {
+                        case EVENTS.ROUTE_CHANGE:
+                            var path = event.message.path,
+                                id = event.message.id;
+                            var url = "#/";
+                            switch (path) {
+                                case PATHS.ITEM:
+                                    url = url + "item";
+                                    if (id) {
+                                        url = url + "/" + id;
+                                    }
+                                    break;
+                                case PATHS.HOME:
+                                    url = url + "home";
+                                    break;
+                                case PATHS.SECTION:
+                                    url = url + "items";
+                                    if (id) {
+                                        url = url + "/" + id;
+                                    }
+                                    break;
+                                default :
+
+                                    break
+                            }
+                            Location.go(url);
+                            break;
+                    }
+                }
+            };
         }]);
 })
 (window.angular, window.buildfire);

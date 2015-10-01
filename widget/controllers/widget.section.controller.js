@@ -1,7 +1,7 @@
 (function (angular, window) {
     angular
         .module('placesWidget')
-        .controller('WidgetSectionCtrl', ['$scope', '$window', 'AppConfig', 'Messaging', 'Buildfire', 'COLLECTIONS', 'EVENTS', '$timeout', 'DB', '$routeParams', function ($scope, $window, AppConfig, Messaging, Buildfire, COLLECTIONS, EVENTS, $timeout, DB, $routeParams) {
+        .controller('WidgetSectionCtrl', ['$scope', '$window', 'AppConfig', 'Messaging', 'Buildfire', 'COLLECTIONS', 'Location', 'EVENTS', 'PATHS', '$timeout', 'DB', '$routeParams', function ($scope, $window, AppConfig, Messaging, Buildfire, COLLECTIONS, Location, EVENTS, PATHS, $timeout, DB, $routeParams) {
             var WidgetSection = this;
             WidgetSection.placeInfo = null;
             console.log('Section Controller called');
@@ -68,8 +68,17 @@
                 PlaceInfo.get().then(success, error);
             };
 
-            Buildfire.datastore.onUpdate(function(event){
-                console.log('ONUpdate------in section controller----',event);
+            Buildfire.datastore.onUpdate(function (event) {
+                console.log('ONUpdate------in section controller----', event);
+            });
+
+            //syn with widget side
+            Messaging.sendMessageToControl({
+                name: EVENTS.ROUTE_CHANGE,
+                message: {
+                    path: PATHS.SECTION,
+                    id: $routeParams.sectionId
+                }
             });
 
             /**

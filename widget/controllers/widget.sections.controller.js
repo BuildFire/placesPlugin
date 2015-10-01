@@ -300,7 +300,7 @@
                             if (result && result.data && result.id) {
                                 WidgetSections.info = result;
 
-                                if(WidgetSections.info.data.settings.showDistanceIn == 'miles')
+                                if (WidgetSections.info.data.settings.showDistanceIn == 'miles')
                                     $scope.distanceSlider = {
                                         min: 50,
                                         max: 50,
@@ -339,7 +339,6 @@
                  * init() function invocation to fetch previously saved user's data from datastore.
                  */
                 init();
-
 
 
                 $scope.distanceSliderChange = function () {
@@ -396,6 +395,14 @@
                     }, function (err) {
                         console.error('distance err', err);
                     });
+                });
+
+                //syn with widget side
+                Messaging.sendMessageToControl({
+                    name: EVENTS.ROUTE_CHANGE,
+                    message: {
+                        path: PATHS.HOME
+                    }
                 });
 
             }]);
