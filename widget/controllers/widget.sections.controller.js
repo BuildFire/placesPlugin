@@ -46,6 +46,12 @@
                 else
                     getGeoLocation(); // get data if localStorage is not supported
 
+/// load items
+                function loadItems(carouselItems) {
+                    // create an instance and pass it the items if you don't have items yet just pass []
+                    if (view)
+                        view.loadItems(carouselItems);
+                }
 
                 var _skip = 0,
                     view = null,
@@ -182,26 +188,26 @@
 
 
                 var initCarousel = function (_defaultView) {
-                    var resetCarousel = function (_layout) {
-                        if (currentLayout !== _layout && view && WidgetSections.info.data.content.images) {
-                            currentLayout = _layout;
-                            if (WidgetSections.info.data.content.images.length)
-                                view._destroySlider();
-                            view = null;
-                        }
-                        else {
-                            if (view) {
-                                view.loadItems(WidgetSections.info.data.content.images);
-                            }
-                        }
-                    };
-
                     switch (_defaultView) {
                         case DEFAULT_VIEWS.LIST:
-                            resetCarousel(WidgetSections.info.data.design.secListLayout);
+                            if (currentLayout !== WidgetSections.info.data.design.secListLayout) {
+                                currentLayout = WidgetSections.info.data.design.secListLayout;
+                            }
+                            if (WidgetSections.info && WidgetSections.info.data.content.images.length) {
+                                loadItems(WidgetSections.info.data.content.images);
+                            } else {
+                                loadItems([]);
+                            }
                             break;
                         case DEFAULT_VIEWS.MAP:
-                            resetCarousel(WidgetSections.info.data.design.mapLayout);
+                            if (currentLayout !== WidgetSections.info.data.design.mapLayout) {
+                                currentLayout = WidgetSections.info.data.design.mapLayout;
+                            }
+                            if (WidgetSections.selectedItem && WidgetSections.selectedItem.data.images.length) {
+                                loadItems(WidgetSections.selectedItem.data.images);
+                            } else {
+                                loadItems([]);
+                            }
                             break;
                     }
                 };
@@ -281,11 +287,12 @@
 
                 $rootScope.$on("Carousel:LOADED", function () {
                     if (!view) {
-                        view = new Buildfire.components.carousel.view("#carousel", []);
+                        view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
                     }
-                    if (WidgetSections.info && WidgetSections.info.data.content && WidgetSections.info.data.content.images) {
-                        view.loadItems(WidgetSections.info.data.content.images);
-                    } else {
+                    if (view && WidgetSections.info && WidgetSections.info.data && WidgetSections.info.data.settings.defaultView) {
+                        initCarousel(WidgetSections.info.data.settings.defaultView)
+                    }
+                    else {
                         view.loadItems([]);
                     }
                 });
@@ -300,7 +307,7 @@
                             if (result && result.data && result.id) {
                                 WidgetSections.info = result;
 
-                                if(WidgetSections.info.data.settings.showDistanceIn == 'miles')
+                                if (WidgetSections.info.data.settings.showDistanceIn == 'miles')
                                     $scope.distanceSlider = {
                                         min: 50,
                                         max: 50,
@@ -341,7 +348,6 @@
                 init();
 
 
-
                 $scope.distanceSliderChange = function () {
                     console.log('slider chnged');
                     //remove items from collection which are out of range
@@ -362,8 +368,9 @@
 
                 WidgetSections.selectedMarker = function (itemIndex) {
                     WidgetSections.selectedItem = WidgetSections.locationData.items[itemIndex];
+                    initCarousel(WidgetSections.info.data.settings.defaultView);
                     GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, [WidgetSections.selectedItem], '').then(function (result) {
-                        if (result.rows.length && result.rows[0].elements.length && result.rows[0].elements[0].distance.text) {
+                        if (result.rows.length && result.rows[0].elements.length && result.rows[0].elements[0].distance && result.rows[0].elements[0].distance.text) {
                             WidgetSections.selectedItemDistance = result.rows[0].elements[0].distance.text;
                         } else {
                             WidgetSections.selectedItemDistance = null;
@@ -383,19 +390,20 @@
                         initItems = false;
                         return;
                     }
+                    if (WidgetSections.items && WidgetSections.items.length) {
+                        GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, WidgetSections.items, WidgetSections.info.data.settings.showDistanceIn).then(function (result) {
+                            console.log('distance result', result);
 
-                    GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, WidgetSections.items, WidgetSections.info.data.settings.showDistanceIn).then(function (result) {
-                        console.log('distance result', result);
-
-                        for (var _ind = 0; _ind < WidgetSections.items.length; _ind++) {
-                            WidgetSections.items[_ind].data.distanceText = (result.rows[0].elements[_ind].status != 'OK') ? 'NA' : result.rows[0].elements[_ind].distance.text;
-                            WidgetSections.items[_ind].data.distance = (result.rows[0].elements[_ind].status != 'OK') ? -1 : result.rows[0].elements[_ind].distance.value;
-                        }
+                            for (var _ind = 0; _ind < WidgetSections.items.length; _ind++) {
+                                WidgetSections.items[_ind].data.distanceText = (result.rows[0].elements[_ind].status != 'OK') ? 'NA' : result.rows[0].elements[_ind].distance.text;
+                                WidgetSections.items[_ind].data.distance = (result.rows[0].elements[_ind].status != 'OK') ? -1 : result.rows[0].elements[_ind].distance.value;
+                            }
 
 
-                    }, function (err) {
-                        console.error('distance err', err);
-                    });
+                        }, function (err) {
+                            console.error('distance err', err);
+                        });
+                    }
                 });
 
             }]);
