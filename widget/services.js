@@ -1,5 +1,5 @@
 (function (angular, buildfire, location) {
-'use strict';
+    'use strict';
     //created mediaCenterWidget module
     var settings, appId;
     var Settings = {
@@ -50,15 +50,15 @@
                 Default: "Manually",
                 Newest: "Newest",
                 Oldest: "Oldest",
-                Most: " Oldest",
-                Least: " Oldest"
+                SectionAZ: "Section Name A-Z",
+                SectionZA: "Section Name Z-A"
             };
             var orders = [
                 {id: 1, name: "Manually", value: "Manually", key: "rank", order: 1},
                 {id: 1, name: "Newest", value: "Newest", key: "dateCreated", order: -1},
                 {id: 1, name: "Oldest", value: "Oldest", key: "dateCreated", order: 1},
-                {id: 1, name: "Most", value: "Most Items", key: "title", order: 1},
-                {id: 1, name: "Least", value: "Least Items", key: "title", order: -1}
+                {id: 1, name: "Section Name A-Z", value: "Section Name A-Z", key: "secTitle", order: 1},
+                {id: 1, name: "Section Name Z-A", value: "Section Name Z-A", key: "secTitle", order: -1}
             ];
             return {
                 ordersMap: ordersMap,
@@ -237,14 +237,57 @@
                                 height: 770
                             }) + ")"
                         };
-                        return;
                     } else {
                         $rootScope.currentBackgroundImage = "";
                     }
                 }
             };
+        }])
+        .factory('GeoDistance', ['$q', '$http', function ($q, $http) {
+            var _getDistance = function (origin, items, distanceUnit) {
+                var deferred = $q.defer();
+                var originMap = {lat: origin[1], lng: origin[0]};
+                var destinationsMap = [];
+
+                if (!origin || !Array.isArray(origin)) {
+                    deferred.reject({
+                        code: 'NOT_ARRAY',
+                        message: 'origin is not an Array'
+                    });
+                }
+                if (!items || !Array.isArray(items) || !items.length) {
+                    deferred.reject({
+                        code: 'NOT_ARRAY',
+                        message: 'destinations is not an Array'
+                    });
+                }
+
+                items.forEach(function (_dest) {
+                    if (_dest.data.address.lat && _dest.data.address.lng)
+                        destinationsMap.push({lat: _dest.data.address.lat, lng: _dest.data.address.lng});
+                    else
+                        destinationsMap.push({lat: 0, lng: 0});
+                });
+
+                var service = new google.maps.DistanceMatrixService;
+                service.getDistanceMatrix({
+                    origins: [originMap],
+                    destinations: destinationsMap,
+                    travelMode: google.maps.TravelMode.DRIVING,
+                    unitSystem: distanceUnit == 'kilometers' ? google.maps.UnitSystem.METRIC : google.maps.UnitSystem.IMPERIAL,
+                    avoidHighways: false,
+                    avoidTolls: false
+                }, function (response, status) {
+                    if (status !== google.maps.DistanceMatrixStatus.OK) {
+                        deferred.reject(status);
+                    } else {
+                        deferred.resolve(response);
+                    }
+                });
+                return deferred.promise;
+            };
+            return {
+                getDistance: _getDistance
+            }
         }]);
 })(window.angular, window.buildfire, window.location);
-/*$rootScope.currentBackgroundImage ={
- "background-color": "black"
- };*/

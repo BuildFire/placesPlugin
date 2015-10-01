@@ -1,0 +1,42 @@
+<div class="holder padding-zero">
+    <div class="places-plugin item-list2">
+        <div class="plugin-banner has-info-bar clearfix">
+            <div class="plugin-slide text-center">
+                <div id="carousel" build-fire-carousel=""></div>
+            </div>
+            <div class="plugin-copy clearfix">
+                <div class="col-xs-8 text-left pull-left">
+                    <p class="margin-bottom-zero ellipsis">{{WidgetItem.item.data.itemTitle}}</p>
+
+                    <p class="margin-bottom-zero ellipsis">{{WidgetItem.item.data.summary}}</p>
+                </div>
+                <div class="col-xs-4 text-right pull-right padding-left-zero">
+                    <span class="icon icon-map-marker icon-sm"></span>
+                    <span class="miles">324 mi</span>
+                </div>
+            </div>
+        </div>
+        <div class="border-top-grey border-bottom-grey clearfix">
+            <div class="col-xs-8 text-left pull-left padding-right-zero margin-top-ten padding-bottom-five">
+                <p class="text-primary ellipsis margin-zero"><a class="margin-bottom-zero text-primary">{{WidgetItem.item.data.addressTitle}}</a></p>
+
+                <p class="text-primary ellipsis margin-zero"><a class="margin-bottom-zero text-primary ellipsis">{{WidgetItem.item.data.address.aName}}</a></p>
+            </div>
+            <div style="height: 60px;width: 100px;" google-map location-data="WidgetItem.locationData" class="col-xs-4 text-right pull-right padding-right-zero">
+                <!--<img src="http://www.placehold.it/100x60">-->
+            </div>
+        </div>
+        <div class="padded padding-top-ten padding-bottom-ten">
+            <p class="margin-zero" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml">{{WidgetItem.item.data.bodyContent | safeHtml}}</p>
+
+        </div>
+        <div class="padded padding-top-zero">
+            <div class="dynamic-links" ng-repeat="link in WidgetItem.item.data.links">
+                <a>
+                    <span class="icon icon-cog"></span>
+                    <span class="copy">{{link.title}}</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -8,36 +8,58 @@
     /**
      * Inject dependency
      */
-        .controller('ContentItemsCtrl', ['$scope','$routeParams','DB','COLLECTIONS','Modals',
-            function ($scope,$routeParams,DB,COLLECTIONS,Modals) {
+        .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'DB', 'COLLECTIONS', 'Modals', 'OrdersItems','Messaging','EVENTS','PATHS','Location',
+            function ($scope, $routeParams, DB, COLLECTIONS, Modals, OrdersItems,Messaging,EVENTS,PATHS,Location) {
 
                 var ContentItems = this;
 
                 /**
-                 * Create instance of PlaceInfo,Sections and Items db collection
+                 * Create instance of Sections and Items db collection
                  * @type {DB}
                  */
-                var PlaceInfo = new DB(COLLECTIONS.PlaceInfo),
-                    Sections = new DB(COLLECTIONS.Sections),
+                var Sections = new DB(COLLECTIONS.Sections),
                     Items = new DB(COLLECTIONS.Items);
 
-                ContentItems.section  = $routeParams.sectionId;
+                ContentItems.section = $routeParams.sectionId;
                 console.log(ContentItems.section);
                 ContentItems.isBusy = false;
                 /* tells if data is being fetched*/
                 ContentItems.items = [];
 
+                ContentItems.sortOptions = OrdersItems.options;
 
                 var _skip = 0,
                     _limit = 5,
                     _maxLimit = 19,
                     searchOptions = {
-                        filter: {'$and':[{"$json.itemTitle": {"$regex": '/*'}},{"$json.sections": { "$all": [ContentItems.section]}}]},
+                        filter: {'$and': [{"$json.itemTitle": {"$regex": '/*'}}, {"$json.sections": {"$all": [ContentItems.section]}}]},
                         skip: _skip,
                         limit: _limit + 1 // the plus one is to check if there are any more
                     };
 
+                /**
+                 * ContentItems.toggleSortOrder() to change the sort by
+                 */
+                ContentItems.toggleSortOrder = function (name) {
+                    if (!name) {
+                        console.info('There was a problem sorting your data');
+                    } else {
+                        ContentItems.items = [];
 
+                        /* reset Search options */
+                        ContentItems.noMore = false;
+                        searchOptions.skip = 0;
+                        /* Reset skip to ensure search begins from scratch*/
+
+                        ContentItems.isBusy = false;
+                        var sortOrder = OrdersItems.getOrder(name || OrdersItems.ordersMap.Default);
+                        console.error(name,sortOrder);
+                        ContentItems.info.data.content.sortByItems = name;
+                        ContentItems.info.data.content.sortByItemsValue = sortOrder.value;
+                        ContentItems.getMore();
+                        ContentItems.itemSortableOptions.disabled = !(ContentItems.info.data.content.sortByItems === OrdersItems.ordersMap.Manually);
+                    }
+                };
 
 
                 /**
@@ -55,7 +77,7 @@
                     //updateSearchOptions();
                     ContentItems.isBusy = true;
                     Items.find(searchOptions).then(function success(result) {
-                        console.log('???????????',result);
+                        console.log('???????????', result);
                         if (result.length <= _limit) {// to indicate there are more
                             ContentItems.noMore = true;
                         }
@@ -107,7 +129,8 @@
                  * @param value to be search.
                  */
                 ContentItems.searchListItem = function (value) {
-                    searchOptions.skip = 0; /*reset the skip value*/
+                    searchOptions.skip = 0;
+                    /*reset the skip value*/
 
                     ContentItems.isBusy = false;
                     ContentItems.items = [];
@@ -115,9 +138,44 @@
                     if (!value) {
                         value = '/*';
                     }
-                    searchOptions.filter = {'$and':[{"$json.itemTitle": {"$regex": value}},{"$json.sections": { "$all": [ContentItems.section]}}]};// {"$json.secTitle": {"$regex": value}};
+                    searchOptions.filter = {'$and': [{"$json.itemTitle": {"$regex": value}}, {"$json.sections": {"$all": [ContentItems.section]}}]};// {"$json.secTitle": {"$regex": value}};
                     ContentItems.getMore();
                 };
+
+                ContentItems.editSections = function (ind) {
+                    Sections.find({}).then(function (data) {
+                        Modals.editSectionModal(data, ContentItems.items[ind]).then(function (result) {
+                           //console.log(result);
+
+                            Items.update(result.id, result.data).then(function () {
+                                //ContentItems.items[ind].data.sections = result.data.sections;
+                                _skip = 0;
+                                ContentItems.items =[];
+                                ContentItems.getMore();
+                            }, function () {
+                                console.error('err happened');
+                            });
+
+
+                        }, function (cancelData) {
+                            //do something on cancel
+                        });
+                    }, function (err) {
+                    });
+
+                };
+                ContentItems.done = function () {
+                    Location.goToHome();
+                };
+
+                //syn with widget
+                Messaging.sendMessageToWidget({
+                    name: EVENTS.ROUTE_CHANGE,
+                    message: {
+                        path: PATHS.SECTION,
+                        id:ContentItems.section
+                    }
+                });
 
             }]);
 })(window.angular, window.tinymce);

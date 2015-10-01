@@ -44,21 +44,47 @@
                 }
             };
         }])
+        .factory('OrdersItems', [function () {
+            var ordersMap = {
+                Manually: "Manually",
+                Default: "Manually",
+                Newest: "Newest",
+                Oldest: "Oldest",
+                ItemAZ: "Item A-Z",
+                ItemZA: "Item Z-A"
+            };
+            var orders = [
+                {id: 1, name: "Manually", value: "Manually", key: "rank", order: 1},
+                {id: 1, name: "Newest", value: "Newest", key: "dateCreated", order: -1},
+                {id: 1, name: "Oldest", value: "Oldest", key: "dateCreated", order: 1},
+                {id: 1, name: "ItemA-Z", value: "Item A-Z", key: "itemTitle", order: 1},
+                {id: 1, name: "ItemZ-A", value: "Item Z-A", key: "itemTitle", order: -1}
+            ];
+            return {
+                ordersMap: ordersMap,
+                options: orders,
+                getOrder: function (name) {
+                    return orders.filter(function (order) {
+                        return order.name === name;
+                    })[0];
+                }
+            };
+        }])
         .factory('Orders', [function () {
             var ordersMap = {
                 Manually: "Manually",
                 Default: "Manually",
                 Newest: "Newest",
                 Oldest: "Oldest",
-                Most: " Oldest",
-                Least: " Oldest"
+                SectionAZ: "Section Name A-Z",
+                SectionZA: "Section Name Z-A"
             };
             var orders = [
                 {id: 1, name: "Manually", value: "Manually", key: "rank", order: 1},
                 {id: 1, name: "Newest", value: "Newest", key: "dateCreated", order: -1},
                 {id: 1, name: "Oldest", value: "Oldest", key: "dateCreated", order: 1},
-                {id: 1, name: "Most", value: "Most Items", key: "title", order: 1},
-                {id: 1, name: "Least", value: "Least Items", key: "title", order: -1}
+                {id: 1, name: "Section Name A-Z", value: "Section Name A-Z", key: "secTitle", order: 1},
+                {id: 1, name: "Section Name Z-A", value: "Section Name Z-A", key: "secTitle", order: -1}
             ];
             return {
                 ordersMap: ordersMap,
@@ -237,11 +263,46 @@
                                 height: 770
                             }) + ")"
                         };
-                        return;
                     } else {
                         $rootScope.currentBackgroundImage = "";
                     }
                 }
             };
+        }])
+        .factory("Utils", ['$http', 'GOOGLE_KEYS', '$q', function ($http, GOOGLE_KEYS, $q) {
+            function inRange(min, number, max) {
+                return ( !isNaN(number) && (number >= min) && (number <= max) );
+            }
+
+            return {
+                validLongLats: function (longLats) {
+                    var deferred = $q.defer()
+                        , longitude = longLats.split(",")[0]
+                        , latitude = longLats.split(",")[1]
+                        , valid = (inRange(-90, latitude, 90) && inRange(-180, longitude, 180));
+
+                    if (valid) {
+                        $http.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude + "," + longitude + "&key=" + GOOGLE_KEYS.API_KEY)
+                            .then(function (response) {
+                                // this callback will be called asynchronously
+                                // when the response is available
+                                if (response.data && response.data.results && response.data.results.length) {
+                                    deferred.resolve(response);
+                                } else {
+                                    deferred.resolve(true);
+                                }
+                            }, function (error) {
+                                // called asynchronously if an error occurs
+                                // or server returns response with an error status.
+                                deferred.reject(error);
+                            });
+                    }
+                    else {
+                        deferred.resolve(null);
+                    }
+                    return deferred.promise;
+                }
+            }
         }]);
+
 })(window.angular, window.buildfire, window.location);

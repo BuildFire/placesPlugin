@@ -21,11 +21,17 @@
             DESIGN_BGIMAGE_CHANGE: "DESIGN_BGIMAGE_CHANGE"
         })
         .constant('COLLECTIONS', {
-            MediaContent: "MediaContent",
-            MediaCenter: "MediaCenter"
+            PlaceInfo: "placeInfo",
+            Sections: "sections",
+            Items: "items"
         })
         .constant('PATHS', {
-            MEDIA: "MEDIA",
+            ITEM: "ITEM",
+            SECTION: "SECTION",
             HOME: "HOME"
+        })
+        .constant('DEFAULT_VIEWS', {
+            MAP: "map",
+            LIST: "list"
         });
 })(window.angular, undefined);

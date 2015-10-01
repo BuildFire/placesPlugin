@@ -26,7 +26,12 @@
             Items: "items"
         })
         .constant('PATHS', {
-            MEDIA: "MEDIA",
+            ITEM: "ITEM",
+            SECTION: "SECTION",
             HOME: "HOME"
+        })
+        .constant('GOOGLE_KEYS', {
+            API_KEY: 'AIzaSyB0xpJ-AseoeusvT2PPWd5MOak58CR_B0c'
         });
+
 })(window.angular, undefined);

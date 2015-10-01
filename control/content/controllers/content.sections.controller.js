@@ -2,49 +2,112 @@
     'use strict';
     angular
         .module('placesContent')
-        .controller('ContentSectionsCtrl', ['$scope', 'PlaceInfo', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire','Modals',
-            function ($scope, PlaceInfo, DB, $timeout, COLLECTIONS, Orders, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire,Modals) {
-                var ContentSections = this;
-                ContentSections.isBusy = false;
-                /* tells if data is being fetched*/
-                ContentSections.sections = [];
-
-                ContentSections.sortOptions = Orders.options;
-
-                Buildfire.deeplink.createLink('section:7');
-                Buildfire.deeplink.getData(function (data) {
-                    console.log('DeepLInk calleed', data);
-                    if (data) alert('deep link data: ' + data);
-                });
-                ContentSections.info = PlaceInfo;
-                AppConfig.setSettings(PlaceInfo.data);
-                AppConfig.setAppId(PlaceInfo.id);
-                updateMasterInfo(ContentSections.info);
+        .controller('ContentSectionsCtrl', ['$scope', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Modals',
+            function ($scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals) {
 
                 var header = {
-                    mainImage: 'Section Image',
-                    secTitle: 'Section Title',
-                    secSummary: "Section Summary",
-                    itemListBGImage: 'Item List Background Image'
-                };
-                var headerRow = ["mainImage", "secTitle", "secSummary", "itemListBGImage"];
-                var tmrDelayForMedia = null;
-                var _skip = 0,
-                    _limit = 5,
-                    _maxLimit = 19,
-                    searchOptions = {
+                        mainImage: 'Section Image',
+                        secTitle: 'Section Title',
+                        secSummary: "Section Summary",
+                        itemListBGImage: 'Item List Background Image'
+                    }
+                    , headerRow = ["mainImage", "secTitle", "secSummary", "itemListBGImage"]
+                    , tmrDelayForMedia = null
+                    , _skip = 0
+                    , _limit = 5
+                    , _maxLimit = 19
+                    , searchOptions = {
                         filter: {"$json.secTitle": {"$regex": '/*'}},
                         skip: _skip,
                         limit: _limit + 1 // the plus one is to check if there are any more
+                    }
+                    , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
+                    , Sections = new DB(COLLECTIONS.Sections)
+                    , records = []
+                    , _infoData = {
+                        data: {
+                            content: {
+                                images: [],
+                                descriptionHTML: '',
+                                description: '<p>&nbsp;<br></p>',
+                                sortBy: Orders.ordersMap.Newest,
+                                rankOfLastItem: '',
+                                sortByItems: OrdersItems.ordersMap.Newest
+                            },
+                            design: {
+                                secListLayout: "sec-list-1-1",
+                                mapLayout: "map-1",
+                                itemListLayout: "item-list-1",
+                                itemDetailsLayout: "item-details-1",
+                                secListBGImage: ""
+                            },
+                            settings: {
+                                defaultView: "list",
+                                showDistanceIn: "miles"
+                            }
+                        }
                     };
 
+
+                var ContentSections = this;
+                ContentSections.info = angular.copy(_infoData);
+                ContentSections.masterInfo = null;
+                ContentSections.isBusy = false;
+                ContentSections.sections = [];
+                ContentSections.sortOptions = Orders.options;
+                ContentSections.itemSortableOptions = {
+                    handle: '> .cursor-grab',
+                    disabled: !(ContentSections.info.data.content.sortBy === Orders.ordersMap.Manually),
+                    stop: function (e, ui) {
+                        var endIndex = ui.item.sortable.dropindex,
+                            maxRank = 0,
+                            draggedItem = ContentSections.items[endIndex];
+                        if (draggedItem) {
+                            var prev = ContentSections.items[endIndex - 1],
+                                next = ContentSections.items[endIndex + 1];
+                            var isRankChanged = false;
+                            if (next) {
+                                if (prev) {
+                                    draggedItem.data.rank = ((prev.data.rank || 0) + (next.data.rank || 0)) / 2;
+                                    isRankChanged = true;
+                                } else {
+                                    draggedItem.data.rank = (next.data.rank || 0) / 2;
+                                    isRankChanged = true;
+                                }
+                            } else {
+                                if (prev) {
+                                    draggedItem.data.rank = (((prev.data.rank || 0) * 2) + 10) / 2;
+                                    maxRank = draggedItem.data.rank;
+                                    isRankChanged = true;
+                                }
+                            }
+                            if (isRankChanged) {
+                                Sections.update(draggedItem.id, draggedItem.data, function (err) {
+                                    if (err) {
+                                        console.error('Error during updating rank');
+                                    } else {
+                                        if (ContentSections.data.content.rankOfLastItem < maxRank) {
+                                            ContentSections.data.content.rankOfLastItem = maxRank;
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                };
+                //option for wysiwyg
+                ContentSections.bodyWYSIWYGOptions = {
+                    plugins: 'advlist autolink link image lists charmap print preview',
+                    skin: 'lightgray',
+                    trusted: true,
+                    theme: 'modern'
+                };
                 /**
-                 * Create instance of PlaceInfo,Sections and Items db collection
-                 * @type {DB}
+                 * ContentSections.noMore tells if all data has been loaded
                  */
-                var PlaceInfo = new DB(COLLECTIONS.PlaceInfo),
-                    Sections = new DB(COLLECTIONS.Sections);
-                    //,Items = new DB(COLLECTIONS.Items);
+                ContentSections.noMore = false;
+                // create a new instance of the buildfire carousel editor
+                ContentSections.editor = new Buildfire.components.carousel.editor("#carousel");
 
                 var updateSearchOptions = function () {
                     var order;
@@ -61,27 +124,76 @@
                     }
                 };
 
-                /**
-                 * ContentSections.getTemplate() used to download csv template
-                 */
-                ContentSections.getTemplate = function () {
-                    var templateData = [{
-                        mainImage: '',
-                        secTitle: '',
-                        secSummary: '',
-                        itemListBGImage: ''
-                    }];
-                    var csv = $csv.jsonToCsv(angular.toJson(templateData), {
-                        header: header
-                    });
-                    $csv.download(csv, "Template.csv");
+                var init = function () {
+                    var success = function (result) {
+                            console.info('Init success result:', result);
+                            if (Object.keys(result.data).length > 0) {
+                                ContentSections.info = result;
+                            }
+                            // initialize carousel data
+                            if (ContentSections.info && ContentSections.info.data.content && ContentSections.info.data.content.images) {
+                                ContentSections.editor.loadItems(ContentSections.info.data.content.images);
+                            }
+                            else {
+                                ContentSections.editor.loadItems([]);
+                            }
+                            updateMasterInfo(ContentSections.info);
+
+                            if (tmrDelayForMedia) {
+                                clearTimeout(tmrDelayForMedia)
+                            }
+                        }
+                        , error = function (err) {
+                            console.error('Error while getting data', err);
+                            if (tmrDelayForMedia) {
+                                clearTimeout(tmrDelayForMedia)
+                            }
+
+                        };
+                    PlaceInfo.get().then(success, error);
                 };
 
-                /**
-                 * records holds the data to export the data.
-                 * @type {Array}
-                 */
-                var records = [];
+                function saveData(_info) {
+                    PlaceInfo.save(_info.data).then(function (data) {
+                        updateMasterInfo(_info);
+                        AppConfig.setSettings(_info.data);
+                        if (_info.id)
+                            AppConfig.setAppId(_info.id);
+                        console.info('-----------saved---------Data-------', _info);
+                    }, function (err) {
+                        console.error('Error-------', err);
+                    });
+                }
+
+                function saveDataWithDelay(_info) {
+                    if (tmrDelayForMedia) {
+                        clearTimeout(tmrDelayForMedia);
+                    }
+                    if (!isUnchanged(_info)) {
+                        tmrDelayForMedia = setTimeout(function () {
+                            saveData(_info);
+                        }, 1000);
+                    }
+                }
+
+                function isUnchanged(info) {
+                    return angular.equals(info, ContentSections.masterInfo);
+                }
+
+                function updateMasterInfo(info) {
+                    ContentSections.masterInfo = angular.copy(info);
+                }
+
+                function isValidItem(item, index, array) {
+                    return item.secTitle || item.secSummary;
+                }
+
+                function validateCsv(items) {
+                    if (!Array.isArray(items) || !items.length) {
+                        return false;
+                    }
+                    return items.every(isValidItem);
+                }
 
                 /**
                  * getRecords function get the  all items from DB
@@ -106,45 +218,57 @@
                     });
                 }
 
+                Buildfire.deeplink.createLink('section:7');
+                Buildfire.deeplink.getData(function (data) {
+                    console.log('DeepLInk calleed', data);
+                    if (data) alert('deep link data: ' + data);
+                });
+
+                updateMasterInfo(ContentSections.info);
                 /**
-                 * ContentSections.exportCSV() used to export people list data to CSV
+                 *  init() function invocation to fetch previously saved user's data from datastore.
                  */
-                ContentSections.exportCSV = function () {
-                    var search = angular.copy(searchOptions);
-                    search.skip = 0;
-                    search.limit = _maxLimit + 1;
-                    getRecords(search,
-                        []
-                        , function (data) {
-                            if (data && data.length) {
-                                var persons = [];
-                                angular.forEach(angular.copy(data), function (value) {
-                                    delete value.data.dateCreated;
-                                    persons.push(value.data);
-                                });
-                                var csv = $csv.jsonToCsv(angular.toJson(persons), {
-                                    header: header
-                                });
-                                $csv.download(csv, "Export.csv");
-                            }
-                            else {
-                                ContentSections.getTemplate();
-                            }
-                            records = [];
-                        });
+                init();
+
+                // this method will be called when a new item added to the list
+                ContentSections.editor.onAddItems = function (items) {
+                    if (!ContentSections.info.data.content.images)
+                        ContentSections.info.data.content.images = [];
+                    ContentSections.info.data.content.images.push.apply(ContentSections.info.data.content.images, items);
+                    $scope.$digest();
                 };
-
-                function isValidItem(item, index, array) {
-                    return item.secTitle || item.secSummary;
-                }
-
-                function validateCsv(items) {
-                    if (!Array.isArray(items) || !items.length) {
-                        return false;
-                    }
-                    return items.every(isValidItem);
-                }
-
+                // this method will be called when an item deleted from the list
+                ContentSections.editor.onDeleteItem = function (item, index) {
+                    ContentSections.info.data.content.images.splice(index, 1);
+                    $scope.$digest();
+                };
+                // this method will be called when you edit item details
+                ContentSections.editor.onItemChange = function (item, index) {
+                    ContentSections.info.data.content.images.splice(index, 1, item);
+                    $scope.$digest();
+                };
+                // this method will be called when you change the order of items
+                ContentSections.editor.onOrderChange = function (item, oldIndex, newIndex) {
+                    var temp = ContentSections.info.data.content.images[oldIndex];
+                    ContentSections.info.data.content.images[oldIndex] = ContentSections.info.data.content.images[newIndex];
+                    ContentSections.info.data.content.images[newIndex] = temp;
+                    $scope.$digest();
+                };
+                /**
+                 * ContentSections.getTemplate() used to download csv template
+                 */
+                ContentSections.getTemplate = function () {
+                    var templateData = [{
+                        mainImage: '',
+                        secTitle: '',
+                        secSummary: '',
+                        itemListBGImage: ''
+                    }];
+                    var csv = $csv.jsonToCsv(angular.toJson(templateData), {
+                        header: header
+                    });
+                    $csv.download(csv, "Template.csv");
+                };
                 /**
                  * method to open the importCSV Dialog
                  */
@@ -188,22 +312,48 @@
                         //do something on cancel
                     });
                 };
-
+                /**
+                 * ContentSections.exportCSV() used to export people list data to CSV
+                 */
+                ContentSections.exportCSV = function () {
+                    var search = angular.copy(searchOptions);
+                    search.skip = 0;
+                    search.limit = _maxLimit + 1;
+                    getRecords(search,
+                        []
+                        , function (data) {
+                            if (data && data.length) {
+                                var persons = [];
+                                angular.forEach(angular.copy(data), function (value) {
+                                    delete value.data.dateCreated;
+                                    persons.push(value.data);
+                                });
+                                var csv = $csv.jsonToCsv(angular.toJson(persons), {
+                                    header: header
+                                });
+                                $csv.download(csv, "Export.csv");
+                            }
+                            else {
+                                ContentSections.getTemplate();
+                            }
+                            records = [];
+                        });
+                };
                 /**
                  * ContentSections.removeListSection() used to delete an item from section list
                  * @param _index tells the index of item to be deleted.
                  */
-                ContentSections.removeListSection = function (index) {
+                ContentSections.removeListSection = function (_index) {
 
-                    if ("undefined" == typeof index) {
+                    if ("undefined" == typeof _index) {
                         return;
                     }
-                    var item = ContentSections.sections[index];
+                    var item = ContentSections.sections[_index];
                     if ("undefined" !== typeof item) {
                         Modals.removePopupModal({title: ''}).then(function (result) {
                             if (result) {
                                 Sections.delete(item.id).then(function (data) {
-                                    ContentSections.sections.splice(index, 1);
+                                    ContentSections.sections.splice(_index, 1);
                                 }, function (err) {
                                     console.error('Error while deleting an item-----', err);
                                 });
@@ -216,12 +366,6 @@
                         });
                     }
                 };
-
-                /**
-                 * ContentSections.noMore tells if all data has been loaded
-                 */
-                ContentSections.noMore = false;
-
                 /**
                  * ContentSections.getMore is used to load the items
                  */
@@ -246,13 +390,13 @@
                         ContentSections.isBusy = false;
                     });
                 };
-
                 /**
                  * ContentSections.searchListSection() used to search items section
                  * @param value to be search.
                  */
                 ContentSections.searchListSection = function (value) {
-                    searchOptions.skip = 0; /*reset the skip value*/
+                    searchOptions.skip = 0;
+                    /*reset the skip value*/
 
                     ContentSections.isBusy = false;
                     ContentSections.sections = [];
@@ -263,7 +407,6 @@
                     searchOptions.filter = {"$json.secTitle": {"$regex": value}};
                     ContentSections.getMore();
                 };
-
                 /**
                  * ContentHome.toggleSortOrder() to change the sort by
                  */
@@ -271,8 +414,6 @@
                     if (!name) {
                         console.info('There was a problem sorting your data');
                     } else {
-                        ContentSections.items = [];
-
                         /* reset Search options */
                         ContentSections.noMore = false;
                         searchOptions.skip = 0;
@@ -288,97 +429,16 @@
                     }
                 };
 
-
-                ContentSections.itemSortableOptions = {
-                    handle: '> .cursor-grab',
-                    disabled: !(ContentSections.info.data.content.sortBy === Orders.ordersMap.Manually),
-                    stop: function (e, ui) {
-                        var endIndex = ui.item.sortable.dropindex,
-                            maxRank = 0,
-                            draggedItem = ContentSections.items[endIndex];
-                        console.log(ui.item.sortable.dropindex)
-                        if (draggedItem) {
-                            var prev = ContentSections.items[endIndex - 1],
-                                next = ContentSections.items[endIndex + 1];
-                            var isRankChanged = false;
-                            if (next) {
-                                if (prev) {
-                                    draggedItem.data.rank = ((prev.data.rank || 0) + (next.data.rank || 0)) / 2;
-                                    isRankChanged = true;
-                                } else {
-                                    draggedItem.data.rank = (next.data.rank || 0) / 2;
-                                    isRankChanged = true;
-                                }
-                            } else {
-                                if (prev) {
-                                    draggedItem.data.rank = (((prev.data.rank || 0) * 2) + 10) / 2;
-                                    maxRank = draggedItem.data.rank;
-                                    isRankChanged = true;
-                                }
-                            }
-                            if (isRankChanged) {
-                                Sections.update(draggedItem.id, draggedItem.data, function (err) {
-                                    if (err) {
-                                        console.error('Error during updating rank');
-                                    } else {
-                                        if (ContentSections.data.content.rankOfLastItem < maxRank) {
-                                            ContentSections.data.content.rankOfLastItem = maxRank;
-                                        }
-                                    }
-                                });
-                            }
-                        }
+                //syn with widget
+                Messaging.sendMessageToWidget({
+                    name: EVENTS.ROUTE_CHANGE,
+                    message: {
+                        path: PATHS.HOME
                     }
-                };
-
-
-                function isUnchanged(info) {
-                    return angular.equals(info, ContentSections.masterInfo);
-                }
-
-                function updateData() {
-                    PlaceInfo.update(ContentSections.info.id, ContentSections.info.data).then(function (data) {
-                        updateMasterInfo(data);
-                        AppConfig.setSettings(ContentSections.info.data);
-                    }, function (err) {
-                        //resetInfo();
-                        console.error('Error-------', err);
-                    });
-                }
-
-                function saveDataWithDelay() {
-                    if (tmrDelayForMedia) {
-                        clearTimeout(tmrDelayForMedia);
-                    }
-                    if (!isUnchanged(ContentSections.info)) {
-                        tmrDelayForMedia = setTimeout(function () {
-                            updateData();
-                        }, 1000);
-                    }
-                }
-
-                function updateMasterInfo(info) {
-                    ContentSections.masterInfo = angular.copy(info);
-                }
-
+                });
                 $scope.$watch(function () {
                     return ContentSections.info;
                 }, saveDataWithDelay, true);
 
-                /*
-                 * Fetch data from datastore
-                 */
-               /* var init = function () {
-                    var success = function (result) {
-                            ContentSections.sections = result;
-                            console.log('>>>>>>>>>>>>>',result);
-                        }
-                        , error = function (err) {
-                            console.error('Error while getting data', err);
-                        };
-                    Sections.find(searchOptions).then(success, error);
-                };
-
-                init();*/
             }]);
 })(window.angular, undefined);

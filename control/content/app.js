@@ -5,6 +5,7 @@
         .module('placesContent',
         [
             'placesContentEnums',
+            'placesContentDirectives',
             'placesServices',
             'placesFilters',
             'placesModals',
@@ -14,7 +15,8 @@
             'ui.sortable',
             'infinite-scroll',
             'bngCsv',
-            'ui.tinymce'
+            'ui.tinymce',
+            'uiSwitch'
 
         ])
         //injected ngRoute for routing
@@ -25,56 +27,10 @@
                 .when('/', {
                     templateUrl: 'templates/sections.html',
                     controllerAs: 'ContentSections',
-                    controller: 'ContentSectionsCtrl',
-                    resolve: {
-                        PlaceInfo: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', function ($q, DB, COLLECTIONS, Orders, Location) {
-                            var deferred = $q.defer();
-                            var PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
-                            var _bootstrap = function () {
-                                PlaceInfo.save({
-                                    content: {
-                                        images: [],
-                                        descriptionHTML: '',
-                                        description: '',
-                                        sortBy: Orders.ordersMap.Newest,
-                                        rankOfLastItem: ''
-                                    },
-                                    design: {
-                                        secListLayout: "sec-list-1-1",
-                                        mapLayout: "map-1",
-                                        itemListLayout: "item-list-1",
-                                        itemDetailsLayout: "item-details-1",
-                                        secListBGImage: ""
-                                    },
-                                    settings: {
-                                        defaultView: "list",
-                                        showDistanceIn: "miles"
-                                    }
-                                }).then(function success() {
-                                    Location.goToHome();
-                                }, function fail() {
-                                    _bootstrap();
-                                });
-                            };
-                            PlaceInfo.get().then(function success(result) {
-                                    if (result && result.id && result.data) {
-                                        deferred.resolve(result);
-                                    }
-                                    else {
-                                        //error in bootstrapping
-                                        _bootstrap(); //bootstrap again  _bootstrap();
-                                    }
-                                },
-                                function fail(err) {
-                                    Location.goToHome();
-                                }
-                            );
-                            return deferred.promise;
-                        }]
-                    }
+                    controller: 'ContentSectionsCtrl'
                 })
                 .when('/item/:sectionId', {
-                    templateUrl: 'templates/item-content.html',
+                    templateUrl: 'templates/item.html',
                     controllerAs: 'ContentItem',
                     controller: 'ContentItemCtrl',
                     resolve: {
@@ -96,6 +52,7 @@
                             if (itemId) {
                                 Items.getById(itemId).then(function success(result) {
                                         if (result && result.data) {
+                                            console.log(';;;;;;;;;;;', result.data);
                                             deferred.resolve(result);
                                         }
                                         else {
@@ -119,41 +76,55 @@
                 .when('/section', {
                     templateUrl: 'templates/section.html',
                     controllerAs: 'ContentSection',
-                    controller: 'ContentSectionCtrl',
-                    resolve: {
-                        section: function () {
-                            return null;
-                        }
-                    }
+                    controller: 'ContentSectionCtrl'
                 })
                 .when('/section/:sectionId', {
                     templateUrl: 'templates/section.html',
                     controllerAs: 'ContentSection',
-                    controller: 'ContentSectionCtrl',
-                    resolve: {
-                        section: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', '$route', function ($q, DB, COLLECTIONS, Orders, Location, $route) {
-                            var deferred = $q.defer();
-                            var Sections = new DB(COLLECTIONS.Sections);
-                            var sectionId = $route.current.params.sectionId;
-                            if (sectionId) {
-                                Sections.getById(sectionId).then(function success(result) {
-                                        if (result && result.data) {
-                                            deferred.resolve(result);
-                                        }
-                                        else {
-                                            Location.goToHome();
-                                        }
-                                    },
-                                    function fail() {
-                                        Location.goToHome();
-                                    }
-                                );
-                            }
-                            return deferred.promise;
-                        }]
-                    }
+                    controller: 'ContentSectionCtrl'
+                })
+                .when('/test', {
+                    templateUrl: 'templates/modals/section.html',
+                    controllerAs: 'ContentSectionPopup',
+                    controller: 'ContentSectionPopupCtrl'
                 })
                 .otherwise('/');
+        }])
+        .run(['Location', 'Messaging','EVENTS','PATHS', function (Location, Messaging,EVENTS,PATHS) {
+            // Handler to receive message from widget
+            Messaging.onReceivedMessage = function (event) {
+                console.log('Event rcv-----------------------------?????????????????????????????????---------------********************* in Control Panal side----', event);
+                if (event) {
+                    switch (event.name) {
+                        case EVENTS.ROUTE_CHANGE:
+                            var path = event.message.path,
+                                id = event.message.id;
+                            var url = "#/";
+                            switch (path) {
+                                case PATHS.ITEM:
+                                    url = url + "item";
+                                    if (id) {
+                                        url = url + "/" + id;
+                                    }
+                                    break;
+                                case PATHS.HOME:
+                                    url = url + "home";
+                                    break;
+                                case PATHS.SECTION:
+                                    url = url + "items";
+                                    if (id) {
+                                        url = url + "/" + id;
+                                    }
+                                    break;
+                                default :
+
+                                    break
+                            }
+                            Location.go(url);
+                            break;
+                    }
+                }
+            };
         }]);
 })
 (window.angular, window.buildfire);

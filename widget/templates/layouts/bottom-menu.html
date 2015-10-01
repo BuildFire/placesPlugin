@@ -1,0 +1,75 @@
+<div ng-class="WidgetSections.showMenu ? 'active' : ''" class="bottom fixed-bottom clearfix transition-third">
+    <div>
+        <div class="extra-links">
+            <a ng-click="WidgetSections.currentView = 'map'"  class="my-location" style="background:#09a3ee;">
+                <span class="icon icon-aim"></span>
+            </a>
+            <a ng-click="WidgetSections.currentView = 'list'" ng-hide="WidgetSections.currentView == 'list'" class="view-type" style="background:#09a3ee;">
+                <span class="icon icon-menu"></span>
+            </a>
+        </div>
+        <!-- ngIf: WidgetSections.selectedItem -->
+    </div>
+    <div class="col-xs-12 pull-left text-center transition-third" style="background:#09a3ee;">
+        <a ng-click="WidgetSections.showMenu = !WidgetSections.showMenu" style="color:#fff;">Filter</a>
+    </div>
+    <div class="col-xs-12 pull-left hidden-content">
+        <div class="tabs clearfix">
+            <div ng-class="WidgetSections.menuTab == 'Category' ? 'active' : ''"
+                 ng-click="WidgetSections.menuTab = 'Category'"
+                 class="tab tab-category col-xs-6 padding-zero text-center border-bottom-grey">
+                <a>Category</a>
+            </div>
+            <div ng-class="WidgetSections.menuTab == 'Sorting' ? 'active' : ''"
+                 ng-click="WidgetSections.menuTab = 'Sorting'"
+                 class="tab tab-sorting col-xs-6 border-left-grey padding-zero border-bottom-grey text-center">
+                <a>Sorting</a>
+            </div>
+        </div>
+        <div class="tab-content clearfix">
+            <div ng-class="WidgetSections.menuTab == 'Category' ? 'active' : ''" class="category-tab tab">
+                <a ng-class="(WidgetSections.selectedSections.length == 0 && WidgetSections.showSections == false) ? 'active' : ''"
+                   ng-click="WidgetSections.resetSectionFilter()" class="list-item">All Locations</a>
+                <a ng-click="WidgetSections.toggleSectionSelection($index,$event)"
+                   ng-repeat="item in WidgetSections.sections"
+                   class="list-item section-filter">{{item.data.secTitle}}</a>
+            </div>
+            <div ng-class="WidgetSections.menuTab == 'Sorting' ? 'active' : ''" class="sorting-tab tab padded">
+                <div class="distance">
+                    <p class="text-primary">Distance</p>
+                    <p ng-show="WidgetSections.info.data.settings.showDistanceIn == 'miles'">50 to 200 miles</p>
+                    <p ng-hide="WidgetSections.info.data.settings.showDistanceIn == 'miles'">80 to 320 km</p>
+                    <rzslider rz-slider-tpl-url="templates/layouts/slider-template.html"
+                              rz-slider-floor="distanceSlider.floor"
+                              rz-slider-ceil="distanceSlider.ceil"
+                              rz-slider-model="distanceSlider.min"
+                              rz-slider-high="distanceSlider.max"
+                              rz-slider-step="5"
+                              rz-slider-hide-limit-labels="true"
+                              rz-slider-on-end="distanceSliderChange()"></rzslider>
+                </div>
+                <div class="sort-items margin-top-twenty">
+                    <p class="text-primary">Sort Items</p>
+
+                    <div class="toggle-btns border-radius-four overflow-hidden">
+                        <div ng-click="WidgetSections.sortOnClosest = false"
+                             class="col-xs-6 padding-zero text-center primaryBackgroundTheme"
+                             ng-style="WidgetSections.sortOnClosest ? {} : {'background':'#09a3ee'}">
+                            <a ng-class="WidgetSections.sortOnClosest ? '' : 'active'">Default</a>
+                        </div>
+                        <div ng-hide="WidgetSections.locationData.currentCoordinates == null" ng-style="WidgetSections.sortOnClosest == false ? {} : {'background':'#09a3ee'}"
+                             ng-class="WidgetSections.sortOnClosest ? '' : 'active'"
+                             ng-click="WidgetSections.sortOnClosest = true" class="col-xs-6 padding-zero text-center">
+                            <a ng-class="WidgetSections.sortOnClosest ? 'active' : ''">Closest to Me</a>
+                        </div>
+                        <div ng-show="WidgetSections.locationData.currentCoordinates == null"
+                             class="col-xs-6 padding-zero text-center">
+                            <a style="background-color: lightgrey" ng-class="WidgetSections.sortOnClosest ? 'active' : ''">Closest to Me</a>
+                        </div>
+                    </div>
+                    <p class="location-share-msg" ng-show="WidgetSections.locationData.currentCoordinates == null">Enable Location sharing to activate Closest to me </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

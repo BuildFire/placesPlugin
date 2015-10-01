@@ -3,44 +3,21 @@
  */
 (function (angular, tinymce) {
     'use strict';
-    angular
-        .module('placesContent')
-    /**
-     * Inject dependency
-     */
-        .controller('ContentSectionCtrl', ['$scope', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Location', 'section',
-            function ($scope, DB, $timeout, COLLECTIONS, Orders, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Location, section) {
-
-                var ContentSection = this;
-                console.log(section);
-                var tmrDelayForMedia = null;
+    angular.module('placesContent')
+        .controller('ContentSectionCtrl', ['$scope', '$routeParams', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Location',
+            function ($scope, $routeParams, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Location) {
                 /**
-                 * Create instance of Sections db collection
+                 * Sections is an instance of Sections db collection
                  * @type {DB}
+                 *
+                 * PlaceSettings will get the Place initialized settings
+                 *
+                 * initializing will Watch on ContentSection.section to see changes and call updateItemsWithDelay
                  */
-                var Sections = new DB(COLLECTIONS.Sections);
-
-                /**
-                 * Get the Place initialized settings
-                 */
-                var PlaceSettings = AppConfig.getSettings();
-                /**
-                 * Get the MediaCenter master collection data object id
-                 */
-                var appId = AppConfig.getAppId();
-
-                var selectImageOptions = {showIcons: false, multiSelection: false};
-
-                /**
-                 * This updatemasterSection will update the ContentSection.section with passed item
-                 * @param item
-                 */
-                function updateMasterSection(item) {
-                    ContentSection.section = angular.copy(item);
-                }
-
-                function init() {
-                    var blankData = {
+                var ContentSection = this
+                    , tmrDelayForMedia = null
+                    , Sections = new DB(COLLECTIONS.Sections)
+                    , _sectionData = {
                         data: {
                             mainImage: '',
                             secTitle: '',
@@ -49,25 +26,60 @@
                             sortBy: '',
                             rankOfLastItem: ''
                         }
-                    };
-
-                    updateMasterSection(blankData);
-
-                    if (section) {
-                        ContentSection.section = section;
                     }
-                    else {
-                        ContentSection.section = blankData;
+                    , selectImageOptions = {showIcons: false, multiSelection: false}
+                    , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
+                    , placeInfoData = {
+                        data: {
+                            content: {
+                                images: [],
+                                descriptionHTML: '',
+                                description: '<p>&nbsp;<br></p>',
+                                sortBy: Orders.ordersMap.Newest,
+                                rankOfLastItem: '',
+                                sortByItems: OrdersItems.ordersMap.Newest
+                            },
+                            design: {
+                                secListLayout: "sec-list-1-1",
+                                mapLayout: "map-1",
+                                itemListLayout: "item-list-1",
+                                itemDetailsLayout: "item-details-1",
+                                secListBGImage: ""
+                            },
+                            settings: {
+                                defaultView: "list",
+                                showDistanceIn: "miles"
+                            }
+                        }
                     }
+                    , initializing = true;
+
+
+                ContentSection.section = angular.copy(_sectionData);
+                ContentSection.masterSection = null;
+
+                function updateMasterSection(item) {
+                    ContentSection.masterSection = angular.copy(item);
                 }
-
-                init();
 
                 /**
                  * This resetItem will reset the ContentSection.section with ContentSection.masterSection
                  */
                 function resetItem() {
                     ContentSection.section = angular.copy(ContentSection.masterSection);
+                }
+
+                function init() {
+                    var success = function (result) {
+                            console.info('Init placeInfoData success result:', result);
+                            if (Object.keys(result.data).length > 0) {
+                                placeInfoData = result;
+                            }
+                        }
+                        , error = function (err) {
+                            console.error('Error while getting data', err);
+                        };
+                    PlaceInfo.get().then(success, error);
                 }
 
 
@@ -83,9 +95,9 @@
                 /**
                  * This updateItemData method will call the Builfire update method to update the ContentMedia.item
                  */
-                function updateItemData() {
-                    Sections.update(ContentSection.section.id, ContentSection.section.data).then(function (data) {
-                        updateMasterSection(ContentSection.section);
+                function updateItemData(_section) {
+                    Sections.update(_section.id, _section.data).then(function (data) {
+                        updateMasterSection(_section);
                     }, function (err) {
                         resetItem();
                         console.error('Error-------', err);
@@ -96,17 +108,13 @@
                  * This addNewItem method will call the Builfire insert method to insert ContentMedia.item
                  */
 
-                function addNewItem() {
-                    Sections.insert(ContentSection.section.data).then(function (data) {
-                        Sections.getById(data.id).then(function (item) {
-                            ContentSection.section = item;
-                            updateMasterSection(item);
-                            PlaceSettings.content.rankOfLastItem = item.data.rank;
-                            Sections.update(appId, PlaceSettings).then(function (data) {
-                                console.info("Updated MediaCenter rank");
-                            }, function (err) {
-                                console.error('Error-------', err);
-                            });
+                function addNewItem(_section) {
+                    Sections.insert(_section.data).then(function (item) {
+                        ContentSection.section = item;
+                        updateMasterSection(item);
+                        placeInfoData.data.content.rankOfLastItem = item.data.rank;
+                        PlaceInfo.save(placeInfoData.data).then(function (data) {
+                            console.info("Updated MediaCenter rank");
                         }, function (err) {
                             resetItem();
                             console.error('Error while getting----------', err);
@@ -116,28 +124,47 @@
                     });
                 }
 
+
                 /**
                  * updateItemsWithDelay called when ever there is some change in current section
-                 * @param item
+                 * @param _section
                  */
-                function updateItemsWithDelay(section) {
+                function updateItemsWithDelay(_section) {
                     if (tmrDelayForMedia) {
                         clearTimeout(tmrDelayForMedia);
                     }
-                    if (!isUnChanged(ContentSection.section)) {
+                    if (!isUnChanged(_section)) {
                         tmrDelayForMedia = setTimeout(function () {
-                            if (section.id) {
-                                updateItemData();
+                            if (_section.id) {
+                                updateItemData(_section);
                             }
                             else {
                                 ContentSection.section.data.dateCreated = +new Date();
-                                addNewItem();
+                                addNewItem(_section);
                             }
 
                         }, 1000);
                     }
                 }
 
+                updateMasterSection(ContentSection.section);
+
+                init();
+
+                if ($routeParams.sectionId) {
+                    Sections.getById($routeParams.sectionId).then(function (result) {
+                            if (result && result.data) {
+                                ContentSection.section = result;
+                            }
+                            else {
+                                Location.goToHome();
+                            }
+                        },
+                        function fail() {
+                            Location.goToHome();
+                        }
+                    );
+                }
                 /**
                  * callback function of Main image icon selection click
                  */
@@ -182,13 +209,13 @@
                     ContentSection.section.data.itemListBGImage = '';
                 };
 
-
                 /**
                  * done will close the single item view
                  */
                 ContentSection.done = function () {
                     Location.goToHome();
                 };
+
                 /**
                  * will delete the current item from MediaContent collection
                  */
@@ -202,13 +229,22 @@
                     }
                 };
 
+                //syn with widget
+                Messaging.sendMessageToWidget({
+                    name: EVENTS.ROUTE_CHANGE,
+                    message: {
+                        path: PATHS.SECTION,
+                        id: ContentSection.section ? ContentSection.section.id : ""
+                    }
+                });
 
-                /**
-                 * Watch on ContentMedia.item to see changes and call updateItemsWithDelay
-                 */
                 $scope.$watch(function () {
                     return ContentSection.section;
-                }, updateItemsWithDelay, true);
-
+                }, function () {
+                    if (initializing)
+                        initializing = false;
+                    else
+                        updateItemsWithDelay(ContentSection.section);
+                }, true);
             }]);
 })(window.angular, window.tinymce);

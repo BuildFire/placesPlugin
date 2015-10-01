@@ -1,52 +1,56 @@
 <!DOCTYPE html>
 <html ng-app="placesContent">
 <head lang="en">
-	<!-- CSS -->
-	<link href="../../../../styles/helper.css" rel="stylesheet">
-	<link href="../../../../styles/siteIcons.css" rel="stylesheet">
-	<link href="../../../scripts/owlCarousel/owlCarousel.css" rel="stylesheet">
-	<link href="assets/css/control.content.css" rel="stylesheet">
+    <!-- CSS -->
+    <link href="../../../../styles/helper.css" rel="stylesheet">
+    <link href="../../../../styles/siteIcons.css" rel="stylesheet">
+    <link href="../../../../scripts/owlCarousel/owlCarousel.css" rel="stylesheet">
+    <link href="assets/css/control.content.css" rel="stylesheet">
+    <link href="assets/css/ui-switch.min.css" rel="stylesheet">
 
-	<!--SDK js-->
-	<script src="../../../../scripts/buildfire.js"></script>
-	<script src="../../../../scripts/jquery/jquery-1.11.2.min.js"></script>
-	<script src="../../../../scripts/angular/angular.min.js"></script>
-	<script src="../../../../scripts/angular/angular-route.min.js"></script>
-	<script src="../../../../scripts/angular/angular-animate.min.js"></script>
-	<script src="../../../../scripts/angular/ui-bootstrap.min.js"></script>
-	<script src="../../../../scripts/tinymce/tinymce.min.js"></script>
-	<script src="../../../../scripts/tinymce/ui-tinymce.js"></script>
+    <!--SDK js-->
+    <script src="../../../../scripts/buildfire.js"></script>
+    <script src="../../../../scripts/jquery/jquery-1.11.2.min.js"></script>
+    <script src="../../../../scripts/angular/angular.min.js"></script>
+    <script src="../../../../scripts/angular/angular-route.min.js"></script>
+    <script src="../../../../scripts/angular/angular-animate.min.js"></script>
+    <script src="../../../../scripts/angular/ui-bootstrap.min.js"></script>
+    <script src="../../../../scripts/tinymce/tinymce.min.js"></script>
+    <script src="../../../../scripts/tinymce/ui-tinymce.js"></script>
 
-	<!-- JS -->
-	<script src="assets/js/jquery-ui.min.js"></script>
-	<script src="assets/js/sortable.js"></script>
-	<script src="assets/js/ng-infinite-scroll.js"></script>
-	<script src="assets/js/angular-csv.js"></script>
-	<script src="assets/js/ng-clip.min.js"></script>
-	<script src="assets/js/ZeroClipboard.min.js"></script>
-	<script src="../../../../scripts/sortable.min.js"></script>
-	<script src="../../../../scripts/buildfire/components/carousel/carousel.js"></script>
-	<script src="../../../../scripts/buildfire/components/actionItems/sortableList.js"></script>
+    <!-- JS -->
+    <script src="assets/js/jquery-ui.min.js"></script>
+    <script src="assets/js/sortable.js"></script>
+    <script src="assets/js/ng-infinite-scroll.js"></script>
+    <script src="assets/js/angular-csv.js"></script>
+    <script src="assets/js/ng-clip.min.js"></script>
+    <script src="assets/js/ZeroClipboard.min.js"></script>
+    <script src="../../../../scripts/sortable.min.js"></script>
+    <script src="../../../../scripts/buildfire/components/carousel/carousel.js"></script>
+    <script src="../../../../scripts/buildfire/components/actionItems/sortableList.js"></script>
+    <!--google map api-->
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
 
+    <!--App js-->
+    <script src="app.js"></script>
+    <script src="enums.js"></script>
+    <script src="services.js"></script>
+    <script src="filters.js"></script>
+    <script src="modals.js"></script>
+    <script src="directives.js"></script>
+    <!--<script src="directives.js"></script>-->
+    <!-- Controllers -->
+    <script src="controllers/content.sections.controller.js"></script>
+    <script src="controllers/content.items.controller.js"></script>
+    <script src="controllers/content.section.controller.js"></script>
+    <script src="controllers/content.item.controller.js"></script>
 
-	<script src="app.js"></script>
-	<script src="enums.js"></script>
-	<script src="services.js"></script>
-	<script src="filters.js"></script>
-	<script src="modals.js"></script>
-	<!--<script src="directives.js"></script>-->
-	<!-- Controllers -->
-	<script src="controllers/content.sections.controller.js"></script>
-	<script src="controllers/content.items.controller.js"></script>
-	<script src="controllers/content.section.controller.js"></script>
-	<script src="controllers/content.item.controller.js"></script>
-
-
-	<meta charset="UTF-8">
+    <script src="assets/js/ui-switch.min.js"></script>
+    <meta charset="UTF-8">
 </head>
 <body>
 <div class="main_view">
-	<div class="content" ng-view=""></div>
+    <div class="content" ng-view=""></div>
 </div>
 </body>
 </html>

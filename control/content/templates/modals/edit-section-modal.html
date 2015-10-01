@@ -1,0 +1,23 @@
+<div class="header clearfix border-bottom-grey">
+    <h4 class="margin-zero">Choose Sections</h4>
+    <span class="icon icon-cross2 close-modal" onclick="EditSectionPopup.cancel()"></span>
+</div>
+<div class="padded clearfix">
+    <div class="d-item double-line square-icon clearfix" ng-repeat="section in sections">
+        <div class="checkbox checkbox-primary">
+            <input id="checkbox-{{section.id}}" type="checkbox" ng-model="section.data.selected"/>
+            <label for="checkbox-{{section.id}}">{{section.data.secTitle}}</label>
+        </div>
+
+            <!--<span class="padding-left-fifteen"></span>-->
+    </div>
+</div>
+<div class="bottom border-top-grey clearfix">
+    <div class="col-md-6 pull-left text-center">
+        <a class="text-primary default-background-hover transition-third"
+           ng-click="cancel()">Cancel</a>
+    </div>
+    <div class="col-md-6 pull-right text-center border-left-grey">
+        <a class="text-success default-background-hover transition-third" ng-click="ok()">Save</a>
+    </div>
+</div>
