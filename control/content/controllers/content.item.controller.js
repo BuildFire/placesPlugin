@@ -38,9 +38,15 @@
                     if (item) {
                         updateMasterItem(item);
                         ContentItem.item = item;
-                        if (item.data && item.data.address && item.data.address.aName) {
-                            ContentItem.currentAddress = item.data.address.aName;
-                            ContentItem.currentCoordinates = [item.data.address.lng, item.data.address.lat];
+                        if(item.data){
+                            if(item.data.images)
+                            ContentItem.editor.loadItems(ContentItem.item.data.images);
+                            if(item.data.links)
+                            ContentItem.linkEditor.loadItems(ContentItem.item.data.links);
+                            if (item.data.address && item.data.address.aName) {
+                                ContentItem.currentAddress = item.data.address.aName;
+                                ContentItem.currentCoordinates = [item.data.address.lng, item.data.address.lat];
+                            }
                         }
                     }
                     else {
@@ -110,21 +116,6 @@
                     ContentItem.item.data.links[newIndex] = temp;
                     $scope.$digest();
                 };
-
-                // initialize carousel data
-                if (ContentItem.item && ContentItem.item.data) {
-                    ContentItem.editor = new Buildfire.components.carousel.editor("#carousel");
-                    ContentItem.linkEditor = new Buildfire.components.actionItems.sortableList("#actionItems");
-                    if (ContentItem.item.data.images) {
-                        ContentItem.editor.loadItems(ContentItem.item.data.images);
-                    }
-                    else
-                        ContentItem.editor.loadItems([]);
-                    if (ContentItem.item.data.links)
-                        ContentItem.linkEditor.loadItems(ContentItem.item.data.links);
-                    else
-                        ContentItem.linkEditor.loadItems([]);
-                }
 
                 /**
                  * Create instance of Items db collection
