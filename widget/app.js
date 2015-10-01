@@ -44,6 +44,11 @@
                     controllerAs: 'WidgetItem',
                     controller: 'WidgetItemCtrl'
                 })
+                .when('/item', {
+                    templateUrl: 'templates/item.html',
+                    controllerAs: 'WidgetItem',
+                    controller: 'WidgetItemCtrl'
+                })
                 .otherwise('/');
         }])
         .run(['Location','Messaging','EVENTS','PATHS', function (Location,Messaging,EVENTS,PATHS) {
@@ -80,12 +85,8 @@
                     }
                 }
             };
-            /*buildfire.deeplink.getData(function (data) {
-                if (data) {
-                    Location.goTo("#/people/" + JSON.parse(data).id);
-                }
-            });*/
+            buildfire.deeplink.getData(function (data) {
+                console.log('DEEPLINK data Recieved-----------------',data);
+            });
         }]);
-
-
 })(window.angular, window.buildfire);

@@ -112,6 +112,10 @@
             Buildfire.datastore.onUpdate(function (event) {
                 console.log('ON UPDATE called============', event);
                 if (event.tag == 'items' && event.data) {
+                    WidgetItem.locationData = {
+                        items: null,
+                        currentCoordinates: [event.data.address.lng, event.data.address.lat]
+                    };
                     WidgetItem.item = event;
                     $scope.$digest();
                     if (event.data.images)
