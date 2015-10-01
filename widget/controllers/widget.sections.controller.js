@@ -394,18 +394,16 @@
                     if (WidgetSections.items && WidgetSections.items.length) {
                         GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, WidgetSections.items, WidgetSections.info.data.settings.showDistanceIn).then(function (result) {
                             console.log('distance result', result);
-
-                    GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, WidgetSections.items, WidgetSections.info.data.settings.showDistanceIn).then(function (result) {
-                        console.log('distance result', result);
-                        for (var _ind = 0; _ind < WidgetSections.items.length; _ind++) {
-                            WidgetSections.items[_ind].data.distanceText = (result.rows[0].elements[_ind].status != 'OK') ? 'NA' : result.rows[0].elements[_ind].distance.text;
-                            WidgetSections.items[_ind].data.distance = (result.rows[0].elements[_ind].status != 'OK') ? -1 : result.rows[0].elements[_ind].distance.value;
-                        }
+                            for (var _ind = 0; _ind < WidgetSections.items.length; _ind++) {
+                                WidgetSections.items[_ind].data.distanceText = (result.rows[0].elements[_ind].status != 'OK') ? 'NA' : result.rows[0].elements[_ind].distance.text;
+                                WidgetSections.items[_ind].data.distance = (result.rows[0].elements[_ind].status != 'OK') ? -1 : result.rows[0].elements[_ind].distance.value;
+                            }
 
 
-                    }, function (err) {
-                        console.error('distance err', err);
-                    });
+                        }, function (err) {
+                            console.error('distance err', err);
+                        });
+                    }
                 });
 
                 //syn with widget side
