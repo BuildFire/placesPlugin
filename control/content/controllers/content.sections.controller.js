@@ -345,15 +345,15 @@
                  */
                 ContentSections.removeListSection = function (_index) {
 
-                    if ("undefined" == typeof index) {
+                    if ("undefined" == typeof _index) {
                         return;
                     }
-                    var item = ContentSections.sections[index];
+                    var item = ContentSections.sections[_index];
                     if ("undefined" !== typeof item) {
                         Modals.removePopupModal({title: ''}).then(function (result) {
                             if (result) {
                                 Sections.delete(item.id).then(function (data) {
-                                    ContentSections.sections.splice(index, 1);
+                                    ContentSections.sections.splice(_index, 1);
                                 }, function (err) {
                                     console.error('Error while deleting an item-----', err);
                                 });

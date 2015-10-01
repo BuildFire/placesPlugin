@@ -76,39 +76,12 @@
                 .when('/section', {
                     templateUrl: 'templates/section.html',
                     controllerAs: 'ContentSection',
-                    controller: 'ContentSectionCtrl',
-                    resolve: {
-                        section: function () {
-                            return null;
-                        }
-                    }
+                    controller: 'ContentSectionCtrl'
                 })
                 .when('/section/:sectionId', {
                     templateUrl: 'templates/section.html',
                     controllerAs: 'ContentSection',
-                    controller: 'ContentSectionCtrl',
-                    resolve: {
-                        section: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', '$route', function ($q, DB, COLLECTIONS, Orders, Location, $route) {
-                            var deferred = $q.defer();
-                            var Sections = new DB(COLLECTIONS.Sections);
-                            var sectionId = $route.current.params.sectionId;
-                            if (sectionId) {
-                                Sections.getById(sectionId).then(function success(result) {
-                                        if (result && result.data) {
-                                            deferred.resolve(result);
-                                        }
-                                        else {
-                                            Location.goToHome();
-                                        }
-                                    },
-                                    function fail() {
-                                        Location.goToHome();
-                                    }
-                                );
-                            }
-                            return deferred.promise;
-                        }]
-                    }
+                    controller: 'ContentSectionCtrl'
                 })
                 .when('/test', {
                     templateUrl: 'templates/modals/section.html',
