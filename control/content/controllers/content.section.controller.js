@@ -12,7 +12,6 @@
                  *
                  * PlaceSettings will get the Place initialized settings
                  *
-                 * initializing will Watch on ContentSection.section to see changes and call updateItemsWithDelay
                  */
                 var ContentSection = this
                     , tmrDelayForMedia = null
@@ -51,8 +50,7 @@
                                 showDistanceIn: "miles"
                             }
                         }
-                    }
-                    , initializing = true;
+                    };
 
 
                 ContentSection.section = angular.copy(_sectionData);
@@ -139,10 +137,9 @@
                                 updateItemData(_section);
                             }
                             else {
-                                ContentSection.section.data.dateCreated = +new Date();
+                                _section.data.dateCreated = +new Date();
                                 addNewItem(_section);
                             }
-
                         }, 1000);
                     }
                 }
@@ -240,11 +237,6 @@
 
                 $scope.$watch(function () {
                     return ContentSection.section;
-                }, function () {
-                    if (initializing)
-                        initializing = false;
-                    else
-                        updateItemsWithDelay(ContentSection.section);
-                }, true);
+                }, updateItemsWithDelay, true);
             }]);
 })(window.angular, window.tinymce);
