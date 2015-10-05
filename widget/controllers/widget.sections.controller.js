@@ -259,7 +259,6 @@
                             WidgetSections.selectedItem = null;
                             WidgetSections.selectedItemDistance = null;
                             WidgetSections.currentView = WidgetSections.info.data.settings.defaultView;
-                            initCarousel(WidgetSections.info.data.settings.defaultView);
                             refreshSections();
                         }
                     }
@@ -290,7 +289,7 @@
                     }
                 });
 
-                $rootScope.$on("Carousel:LOADED", function () {
+                $scope.$on("Carousel:LOADED", function () {
                     if (!view) {
                         view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
                     }

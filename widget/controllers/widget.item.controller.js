@@ -102,7 +102,7 @@
                 PlaceInfo.get().then(success, error);
             };
 
-            $rootScope.$on("Carousel:LOADED", function () {
+            $scope.$on("Carousel:LOADED", function () {
                 console.log('carousel added------', WidgetItem.item);
                 if (!view) {
                     console.log('if------', view);

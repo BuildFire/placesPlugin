@@ -5,25 +5,17 @@
     'use strict';
     angular
         .module('placesContent')
-    /**
-     * Inject dependency
-     */
-        .controller('ContentItemCtrl', ['$scope', 'item', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout','EVENTS','PATHS','Messaging',
-            function ($scope, item, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout,EVENTS,PATHS,Messaging) {
-                $scope.itemShow = 'Content';
-                var ContentItem = this;
-                var tmrDelayForItem = null;
-                ContentItem.currentAddress = null;
-                ContentItem.validCoordinatesFailure = false;
-                ContentItem.currentCoordinates = null;
+        .controller('ContentItemCtrl', ['$scope', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout', 'EVENTS', 'PATHS', 'Messaging',
+            function ($scope, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout, EVENTS, PATHS, Messaging) {
 
-                function init() {
-                    var data = {
+                var tmrDelayForItem = null
+                    , Items = new DB(COLLECTIONS.Items)
+                    , _data = {
                         listImage: '',
                         itemTitle: '',
                         images: [],
                         summary: '',
-                        bodyContent: '',
+                        bodyContent: '<p>&nbsp;<br></p>',
                         bodyContentHTML: '',
                         addressTitle: '',
                         sections: [$routeParams.sectionId],
@@ -35,25 +27,36 @@
                         links: [],
                         backgroundImage: ''
                     };
-                    if (item) {
-                        updateMasterItem(item);
-                        ContentItem.item = item;
-                        if(item.data){
-                            if(item.data.images)
-                            ContentItem.editor.loadItems(ContentItem.item.data.images);
-                            if(item.data.links)
-                            ContentItem.linkEditor.loadItems(ContentItem.item.data.links);
-                            if (item.data.address && item.data.address.aName) {
-                                ContentItem.currentAddress = item.data.address.aName;
-                                ContentItem.currentCoordinates = [item.data.address.lng, item.data.address.lat];
+
+                $scope.itemShow = 'Content';
+
+                var ContentItem = this;
+                ContentItem.currentAddress = null;
+                ContentItem.validCoordinatesFailure = false;
+                ContentItem.currentCoordinates = null;
+                ContentItem.item = angular.copy({data: _data});
+                ContentItem.masterItem = angular.copy(ContentItem.item);
+
+                function init() {
+                    if ($routeParams.itemId) {
+                        Items.getById($routeParams.itemId).then(function success(result) {
+                                if (result && result.data) {
+                                    ContentItem.item = result;
+                                    updateMasterItem(ContentItem.item);
+                                }
+                                if (ContentItem.item.data.images)
+                                    ContentItem.editor.loadItems(ContentItem.item.data.images);
+                                if (ContentItem.item.data.links)
+                                    ContentItem.linkEditor.loadItems(ContentItem.item.data.links);
+                                if (ContentItem.item.data.address && ContentItem.item.data.address.aName) {
+                                    ContentItem.currentAddress = ContentItem.item.data.address.aName;
+                                    ContentItem.currentCoordinates = [ContentItem.item.data.address.lng, ContentItem.item.data.address.lat];
+                                }
+                            },
+                            function fail(err) {
+                                console.log('Error', err);
                             }
-                        }
-                    }
-                    else {
-                        updateMasterItem({data: data});
-                        ContentItem.item = {
-                            data: data
-                        };
+                        );
                     }
                 }
 
@@ -118,52 +121,6 @@
                 };
 
                 /**
-                 * Create instance of Items db collection
-                 * @type {DB}
-                 */
-                var Items = new DB(COLLECTIONS.Items);
-
-                var bgImgCB = function (error, result) {
-                    if (error) {
-                        console.error('Error:', error);
-                    } else {
-                        ContentItem.item.data.backgroundImage = result.selectedFiles && result.selectedFiles[0] || null;
-                        $scope.$digest();
-                    }
-                };
-                var listImgCB = function (error, result) {
-                    if (error) {
-                        console.error('Error:', error);
-                    } else {
-                        ContentItem.item.data.listImage = result.selectedFiles && result.selectedFiles[0] || null;
-                        $scope.$digest();
-                    }
-                };
-                var options = {showIcons: false, multiSelection: false};
-                ContentItem.addBackgroundImage = function () {
-                    Buildfire.imageLib.showDialog(options, bgImgCB);
-                };
-                ContentItem.removeBackgroundImage = function () {
-                    ContentItem.item.data.backgroundImage = null;
-                };
-                ContentItem.addListImage = function () {
-                    Buildfire.imageLib.showDialog(options, listImgCB);
-                };
-                ContentItem.removeListImage = function () {
-                    ContentItem.item.data.listImage = null;
-                };
-                /**
-                 * done will close the single item view
-                 */
-                ContentItem.done = function () {
-                    Location.go('#/items/' + $routeParams.sectionId);
-                };
-
-
-                /*Default BootStrapping and auto save block start*/
-
-
-                /**
                  * This updateMasterItem will update the ContentMedia.masterItem with passed item
                  * @param item
                  */
@@ -178,16 +135,6 @@
                     ContentItem.item = angular.copy(ContentItem.masterItem);
                 }
 
-                /**
-                 * filter to remove the body from copied data
-                 * @param item
-                 * @returns {XMLList|XML|*}
-                 */
-                function filter(item) {
-                    var newItem = angular.copy(item);
-                    newItem.data.bodyContent = '';
-                    return newItem;
-                }
 
                 /**
                  * isUnChanged to check whether there is change in controller media item or not
@@ -195,17 +142,12 @@
                  * @returns {*|boolean}
                  */
                 function isUnChanged(item) {
-                    if (item.data.bodyContent && tinymce.editors[0] && angular.equals(tinymce.editors[0].getContent({format: 'text'}).trim(), "")) {
-                        return angular.equals(filter(item), ContentItem.masterItem);
-                    }
-                    else {
-                        return angular.equals(item, ContentItem.masterItem);
-                    }
+                    return angular.equals(item, ContentItem.masterItem);
                 }
 
                 function insertAndUpdate(_item) {
                     if (_item.id) {
-                        console.log('Item exist----');
+                        console.info('****************Item exist***********************');
                         Items.update(_item.id, _item.data).then(function (data) {
                             console.log('Data updated successfully---', data);
                         }, function (err) {
@@ -213,21 +155,21 @@
                         });
                     }
                     else {
+                        console.info('****************Item inserted***********************');
+                        _item.data.deepLinkUrl = Buildfire.deeplink.createLink({id: _item.id});
+                        _item.data.dateCreated = new Date();
                         Items.insert(_item.data).then(function (data) {
-                            console.log('Success---', data);
-                            _item.id = data.id;
-                            _item.data.deepLinkUrl = Buildfire.deeplink.createLink({id: _item.id});
-                            _item.data.dateCreated = new Date();
+                            ContentItem.item.id = data.id;
+                            updateMasterItem(ContentItem.item);
                         }, function (err) {
                             console.log('Error---', err);
                         });
-                        console.log('insert new item');
                     }
                 }
 
                 /**
                  * updateItemsWithDelay called when ever there is some change in current media item
-                 * @param item
+                 * @param _item
                  */
                 function updateItemsWithDelay(_item) {
                     if (tmrDelayForItem) {
@@ -242,7 +184,34 @@
 
                 init();
 
-
+                ContentItem.addBackgroundImage = function () {
+                    var options = {showIcons: false, multiSelection: false}
+                        , callback = function (error, result) {
+                            if (error) {
+                                console.error('Error:', error);
+                            } else {
+                                ContentItem.item.data.backgroundImage = result.selectedFiles && result.selectedFiles[0] || null;
+                                $scope.$digest();
+                            }
+                        };
+                    Buildfire.imageLib.showDialog(options, callback);
+                };
+                ContentItem.removeBackgroundImage = function () {
+                    ContentItem.item.data.backgroundImage = null;
+                };
+                ContentItem.addListImage = function () {
+                    var options = {showIcons: false, multiSelection: false};
+                    Buildfire.imageLib.showDialog(options, listImgCB);
+                };
+                ContentItem.removeListImage = function () {
+                    ContentItem.item.data.listImage = null;
+                };
+                /**
+                 * done will close the single item view
+                 */
+                ContentItem.done = function () {
+                    Location.go('#/items/' + $routeParams.sectionId);
+                };
                 ContentItem.setLocation = function (data) {
                     ContentItem.item.data.address = {
                         lng: data.coordinates[0],
@@ -302,7 +271,7 @@
                     name: EVENTS.ROUTE_CHANGE,
                     message: {
                         path: PATHS.ITEM,
-                        id:ContentItem.item? ContentItem.item.id : ""
+                        id: ContentItem.item ? ContentItem.item.id : ""
                     }
                 });
 
