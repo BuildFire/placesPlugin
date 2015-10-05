@@ -80,11 +80,13 @@
                     }
                 }
             };
-            /*buildfire.deeplink.getData(function (data) {
+            buildfire.deeplink.getData(function (data) {
                 if (data) {
-                    Location.goTo("#/people/" + JSON.parse(data).id);
+                    console.log('data---',data);
+                    Location.go("#/item/" + JSON.parse(data).id);
                 }
-            });*/
+
+            });
         }]);
 
 
