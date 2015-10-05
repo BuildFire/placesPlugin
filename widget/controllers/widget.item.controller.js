@@ -109,8 +109,7 @@
                 }
             });
 
-            Buildfire.datastore.onUpdate(function (event) {
-                console.log('ON UPDATE called============', event);
+            var clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
                 if (event.tag == 'items' && event.data) {
                     WidgetItem.item = event;
                     $scope.$digest();
@@ -124,7 +123,7 @@
                 name: EVENTS.ROUTE_CHANGE,
                 message: {
                     path: PATHS.ITEM,
-                    id:$routeParams.itemId
+                    id: $routeParams.itemId
                 }
             });
 
@@ -138,5 +137,12 @@
              * init() function invocation to fetch previously saved user's data from datastore.
              */
             init();
+
+            /**
+             * will called when controller scope has been destroyed.
+             */
+            $scope.$on("$destroy", function () {
+                clearOnUpdateListener.clear();
+            });
         }]);
 })(window.angular, window);
