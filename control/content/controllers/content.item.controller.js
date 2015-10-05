@@ -216,6 +216,7 @@
                         Items.insert(ContentItem.item.data).then(function (data) {
                             console.log('Success---', data);
                             ContentItem.item.id = data.id;
+                            ContentItem.item.data.deepLinkUrl = Buildfire.deeplink.createLink({id: ContentItem.item.id});
                         }, function (err) {
                             console.log('Error---', err);
                         });
