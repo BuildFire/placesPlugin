@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="plugin-banner has-info-bar location-map clearfix">
-            <div class="plugin-slide map-holder">
+            <div ng-if="WidgetItem.locationData.currentCoordinates" class="plugin-slide map-holder">
                 <p google-map location-data="WidgetItem.locationData" style="height: 180px;width: 342px;position:relative; top:100px; color:#fff; text-align:center;">Map goes in here</p>
             </div>
             <div class="info-bar bg-primary text-center">

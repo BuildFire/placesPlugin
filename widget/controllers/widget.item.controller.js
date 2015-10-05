@@ -2,22 +2,33 @@
     angular
         .module('placesWidget')
         .controller('WidgetItemCtrl', ['$scope', 'COLLECTIONS', 'DB', '$routeParams', 'Buildfire', '$rootScope', 'GeoDistance', 'Messaging', 'Location', 'EVENTS', 'PATHS', function ($scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS) {
-            var WidgetItem = this, view = null;
+            var WidgetItem = this
+                , view = null
+                , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
+                , Items = new DB(COLLECTIONS.Items)
+                , itemLat = ''
+                , itemLng = '';
+
+            WidgetItem.locationData = {
+                items: null,
+                currentCoordinates: null
+            };
             WidgetItem.placeInfo = null;
-            console.log('WidgetItemCtrl called');
             WidgetItem.item = {data: {}};
-            var PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
-            var Items = new DB(COLLECTIONS.Items);
+
             if ($routeParams.itemId) {
                 Items.getById($routeParams.itemId).then(
                     function (result) {
                         WidgetItem.item = result;
                         if (WidgetItem.item.data && WidgetItem.item.data.images)
                             initCarousel(WidgetItem.item.data.images);
-                        WidgetItem.locationData = {
-                            items: null,
-                            currentCoordinates: [WidgetItem.item.data.address.lng, WidgetItem.item.data.address.lat]
-                        };
+                        itemLat = (WidgetItem.item.data.address && WidgetItem.item.data.address.lat) ? WidgetItem.item.data.address.lat : null;
+                        itemLng = (WidgetItem.item.data.address && WidgetItem.item.data.address.lng) ? WidgetItem.item.data.address.lng : null;
+                        if (itemLat && itemLng) {
+                            WidgetItem.locationData.currentCoordinates = [itemLng, itemLat];
+                        } else {
+                            WidgetItem.locationData.currentCoordinates = null;
+                        }
                     },
                     function (err) {
                         console.error('Error while getting item-', err);
@@ -48,11 +59,6 @@
 
             WidgetItem.calculateDistance = function () {
 
-            };
-
-            WidgetItem.locationData = {
-                items: null,
-                currentCoordinates: [77, 28]
             };
 
             function getGeoLocation() {
