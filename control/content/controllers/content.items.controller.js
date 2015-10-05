@@ -8,8 +8,8 @@
     /**
      * Inject dependency
      */
-        .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'DB', 'COLLECTIONS', 'Modals', 'OrdersItems','Messaging','EVENTS','PATHS','Location',
-            function ($scope, $routeParams, DB, COLLECTIONS, Modals, OrdersItems,Messaging,EVENTS,PATHS,Location) {
+        .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'DB', 'COLLECTIONS', 'Modals', 'OrdersItems', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'PlaceInfo',
+            function ($scope, $routeParams, DB, COLLECTIONS, Modals, OrdersItems, Messaging, EVENTS, PATHS, Location, PlaceInfoData) {
 
                 var ContentItems = this;
 
@@ -18,14 +18,15 @@
                  * @type {DB}
                  */
                 var Sections = new DB(COLLECTIONS.Sections),
-                    Items = new DB(COLLECTIONS.Items);
+                    Items = new DB(COLLECTIONS.Items),
+                    PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
 
                 ContentItems.section = $routeParams.sectionId;
                 console.log(ContentItems.section);
                 ContentItems.isBusy = false;
                 /* tells if data is being fetched*/
                 ContentItems.items = [];
-
+                ContentItems.info = null;
                 ContentItems.sortOptions = OrdersItems.options;
 
                 var _skip = 0,
@@ -37,6 +38,56 @@
                         limit: _limit + 1 // the plus one is to check if there are any more
                     };
 
+                var tmrDelayForInfo;
+
+                var updateSearchOptions = function () {
+                    var order;
+                    if (ContentItems.info && ContentItems.info.data && ContentItems.info.data.content)
+                        order = OrdersItems.getOrder(ContentItems.info.data.content.sortByItems || OrdersItems.ordersMap.Default);
+                    else
+                        order = OrdersItems.getOrder(OrdersItems.ordersMap.Default);
+
+                    if (order) {
+                        var sort = {};
+                        sort[order.key] = order.order;
+                        searchOptions.sort = sort;
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                };
+
+                function init() {
+                    console.clear();
+                    console.error('laksahay', PlaceInfoData);
+                    if (PlaceInfoData) {
+                        ContentItems.info = PlaceInfoData;
+                    }
+                }
+
+                function saveInfoData(_info) {
+                    PlaceInfo.save(_info.data).then(function (data) {
+                    }, function (err) {
+                        console.error('Error-------', err);
+                    });
+                }
+
+                function saveInfoDataWithDelay(_info, oldInfo) {
+                    if (!oldInfo)
+                        return;
+                    if (tmrDelayForInfo) {
+                        clearTimeout(tmrDelayForInfo);
+                    }
+                    //if (!isUnchanged(_info)) {
+                    tmrDelayForInfo = setTimeout(function () {
+                        saveInfoData(_info);
+                    }, 1000);
+                    //}
+                }
+
+
+                init();
                 /**
                  * ContentItems.toggleSortOrder() to change the sort by
                  */
@@ -53,7 +104,7 @@
 
                         ContentItems.isBusy = false;
                         var sortOrder = OrdersItems.getOrder(name || OrdersItems.ordersMap.Default);
-                        console.error(name,sortOrder);
+                        console.error(name, sortOrder);
                         ContentItems.info.data.content.sortByItems = name;
                         ContentItems.info.data.content.sortByItemsValue = sortOrder.value;
                         ContentItems.getMore();
@@ -74,7 +125,7 @@
                     if (ContentItems.isBusy && !ContentItems.noMore) {
                         return;
                     }
-                    //updateSearchOptions();
+                    updateSearchOptions();
                     ContentItems.isBusy = true;
                     Items.find(searchOptions).then(function success(result) {
                         console.log('???????????', result);
@@ -145,12 +196,12 @@
                 ContentItems.editSections = function (ind) {
                     Sections.find({}).then(function (data) {
                         Modals.editSectionModal(data, ContentItems.items[ind]).then(function (result) {
-                           //console.log(result);
+                            //console.log(result);
 
                             Items.update(result.id, result.data).then(function () {
                                 //ContentItems.items[ind].data.sections = result.data.sections;
                                 _skip = 0;
-                                ContentItems.items =[];
+                                ContentItems.items = [];
                                 ContentItems.getMore();
                             }, function () {
                                 console.error('err happened');
@@ -173,9 +224,13 @@
                     name: EVENTS.ROUTE_CHANGE,
                     message: {
                         path: PATHS.SECTION,
-                        id:ContentItems.section
+                        id: ContentItems.section
                     }
                 });
+
+                $scope.$watch(function () {
+                    return ContentItems.info;
+                }, saveInfoDataWithDelay, true);
 
             }]);
 })(window.angular, window.tinymce);

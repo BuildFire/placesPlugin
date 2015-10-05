@@ -255,10 +255,11 @@
                 Buildfire.datastore.onUpdate(function (event) {
                     if (event.tag === "placeInfo") {
                         if (event.data) {
-                            WidgetSections.info = event;
+                            /*WidgetSections.info = event;
                             WidgetSections.currentView = WidgetSections.info.data.settings.defaultView;
                             initCarousel(WidgetSections.info.data.settings.defaultView);
-                            refreshSections();
+                            refreshSections();*/
+                            Location.goToHome();
                         }
                     }
                     else if (event.tag === "items") {

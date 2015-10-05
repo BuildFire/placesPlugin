@@ -203,20 +203,21 @@
                     }
                 }
 
-                function insertAndUpdate() {
-                    if (ContentItem.item.id) {
+                function insertAndUpdate(_item) {
+                    if (_item.id) {
                         console.log('Item exist----');
-                        Items.update(ContentItem.item.id, ContentItem.item.data).then(function (data) {
+                        Items.update(_item.id, _item.data).then(function (data) {
                             console.log('Data updated successfully---', data);
                         }, function (err) {
                             console.log('Error while updating data---', err);
                         });
                     }
                     else {
-                        Items.insert(ContentItem.item.data).then(function (data) {
+                        Items.insert(_item.data).then(function (data) {
                             console.log('Success---', data);
-                            ContentItem.item.id = data.id;
-                            ContentItem.item.data.deepLinkUrl = Buildfire.deeplink.createLink({id: ContentItem.item.id});
+                            _item.id = data.id;
+                            _item.data.deepLinkUrl = Buildfire.deeplink.createLink({id: _item.id});
+                            _item.data.dateCreated = new Date();
                         }, function (err) {
                             console.log('Error---', err);
                         });
@@ -228,13 +229,13 @@
                  * updateItemsWithDelay called when ever there is some change in current media item
                  * @param item
                  */
-                function updateItemsWithDelay() {
+                function updateItemsWithDelay(_item) {
                     if (tmrDelayForItem) {
                         clearTimeout(tmrDelayForItem);
                     }
-                    if (ContentItem.item && !isUnChanged(ContentItem.item)) {
+                    if (_item && !isUnChanged(_item)) {
                         tmrDelayForItem = setTimeout(function () {
-                            insertAndUpdate();
+                            insertAndUpdate(_item);
                         }, 1000);
                     }
                 }

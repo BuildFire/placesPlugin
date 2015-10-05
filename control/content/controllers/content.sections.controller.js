@@ -59,12 +59,13 @@
                     handle: '> .cursor-grab',
                     disabled: !(ContentSections.info.data.content.sortBy === Orders.ordersMap.Manually),
                     stop: function (e, ui) {
+                        debugger;
                         var endIndex = ui.item.sortable.dropindex,
                             maxRank = 0,
-                            draggedItem = ContentSections.items[endIndex];
+                            draggedItem = ContentSections.sections[endIndex];
                         if (draggedItem) {
-                            var prev = ContentSections.items[endIndex - 1],
-                                next = ContentSections.items[endIndex + 1];
+                            var prev = ContentSections.sections[endIndex - 1],
+                                next = ContentSections.sections[endIndex + 1];
                             var isRankChanged = false;
                             if (next) {
                                 if (prev) {
@@ -86,8 +87,8 @@
                                     if (err) {
                                         console.error('Error during updating rank');
                                     } else {
-                                        if (ContentSections.data.content.rankOfLastItem < maxRank) {
-                                            ContentSections.data.content.rankOfLastItem = maxRank;
+                                        if (ContentSections.info.data.content.rankOfLastItem < maxRank) {
+                                            ContentSections.info.data.content.rankOfLastItem = maxRank;
                                         }
                                     }
                                 });

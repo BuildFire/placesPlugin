@@ -71,7 +71,23 @@
                 .when('/items/:sectionId', {
                     templateUrl: 'templates/items.html',
                     controllerAs: 'ContentItems',
-                    controller: 'ContentItemsCtrl'
+                    controller: 'ContentItemsCtrl',
+                    resolve: {
+                        PlaceInfo: ['$q', 'DB', 'COLLECTIONS', 'OrdersItems', 'Location', '$route', function ($q, DB, COLLECTIONS, OrdersItems, Location, $route) {
+                            var deferred = $q.defer();
+                            var PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
+
+                            PlaceInfo.get().then(function (result) {
+                                console.log('234',result);
+                                deferred.resolve(result);
+                            }, function(){
+                                Location.goToHome();
+                            });
+
+
+                            return deferred.promise;
+                        }]
+                    }
                 })
                 .when('/section', {
                     templateUrl: 'templates/section.html',
@@ -82,11 +98,6 @@
                     templateUrl: 'templates/section.html',
                     controllerAs: 'ContentSection',
                     controller: 'ContentSectionCtrl'
-                })
-                .when('/test', {
-                    templateUrl: 'templates/modals/section.html',
-                    controllerAs: 'ContentSectionPopup',
-                    controller: 'ContentSectionPopupCtrl'
                 })
                 .otherwise('/');
         }])
