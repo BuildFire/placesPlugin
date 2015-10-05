@@ -85,20 +85,23 @@
                             var placeLocationMarkers = [];
                             if (scope.locationData && scope.locationData.items && scope.locationData.items.length) {
                                 for (var _index = 0; _index < scope.locationData.items.length; _index++) {
-                                    var _place = scope.locationData.items[_index];
-                                    var marker = new google.maps.Marker({
-                                        position: {lat: _place.data.address.lat, lng: _place.data.address.lng},
-                                        map: map,
-                                        icon: placeLocationIcon,
-                                        shape: shape,
-                                        title: _place.data.itemTitle,
-                                        zIndex: _index
-                                    });
-                                    marker.addListener('click', function () {
-                                        var _this = this;
-                                        scope.markerCallback(_this.zIndex);
-                                    });
-                                    placeLocationMarkers.push(marker);
+                                    var _place = scope.locationData.items[_index]
+                                        , marker = '';
+                                    if (_place.data && _place.data.address && _place.data.address.lat && _place.data.address.lng) {
+                                        marker = new google.maps.Marker({
+                                            position: {lat: _place.data.address.lat, lng: _place.data.address.lng},
+                                            map: map,
+                                            icon: placeLocationIcon,
+                                            shape: shape,
+                                            title: _place.data.itemTitle,
+                                            zIndex: _index
+                                        });
+                                        marker.addListener('click', function () {
+                                            var _this = this;
+                                            scope.markerCallback(_this.zIndex);
+                                        });
+                                        placeLocationMarkers.push(marker);
+                                    }
                                 }
                             }
                             var markerCluster = new MarkerClusterer(map, placeLocationMarkers);

@@ -47,7 +47,7 @@
                 else
                     getGeoLocation(); // get data if localStorage is not supported
 
-/// load items
+                /// load items
                 function loadItems(carouselItems) {
                     // create an instance and pass it the items if you don't have items yet just pass []
                     if (view)
@@ -252,14 +252,15 @@
                 /**
                  * Buildfire.datastore.onUpdate method calls when Data is changed.
                  */
-                Buildfire.datastore.onUpdate(function (event) {
+                var clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
                     if (event.tag === "placeInfo") {
                         if (event.data) {
-                            /*WidgetSections.info = event;
+                            WidgetSections.info = event;
+                            WidgetSections.selectedItem = null;
+                            WidgetSections.selectedItemDistance = null;
                             WidgetSections.currentView = WidgetSections.info.data.settings.defaultView;
                             initCarousel(WidgetSections.info.data.settings.defaultView);
-                            refreshSections();*/
-                            Location.goToHome();
+                            refreshSections();
                         }
                     }
                     else if (event.tag === "items") {
@@ -282,6 +283,8 @@
                     }
                     else {
                         view = null;
+                        WidgetSections.selectedItem = null;
+                        WidgetSections.selectedItemDistance = null;
                         currentLayout = '';
                         refreshSections();
                     }
@@ -413,6 +416,13 @@
                     message: {
                         path: PATHS.HOME
                     }
+                });
+
+                /**
+                 * will called when controller scope has been destroyed.
+                 */
+                $scope.$on("$destroy", function () {
+                    clearOnUpdateListener.clear();
                 });
 
             }]);
