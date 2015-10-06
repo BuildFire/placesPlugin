@@ -23,6 +23,7 @@
                     }
                     , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
                     , Sections = new DB(COLLECTIONS.Sections)
+                    , Items = new DB(COLLECTIONS.Items)
                     , records = []
                     , _infoData = {
                         data: {
@@ -352,6 +353,30 @@
                             if (result) {
                                 Sections.delete(item.id).then(function (data) {
                                     ContentSections.sections.splice(_index, 1);
+
+                                    var itemOptions = {
+                                        filter: {'$and': [{"$json.itemTitle": {"$regex": '/*'}}, {"$json.sections": {"$all": [item.id]}}]}
+                                    };
+                                    Items.find(itemOptions).then(function (items) {
+                                        console.log(items);
+                                        items.forEach(function (_item) {
+                                            if (_item.data.sections.length == 1) {
+                                                console.log('deleting');
+                                                Items.delete(_item.id, function () {
+                                                }, function () {
+                                                });
+                                            }
+                                            else {
+                                                console.log('updating');
+                                                _item.data.sections.splice(_item.data.sections.indexOf(item.id),1);
+                                                Items.update(_item.id,_item.data, function () {
+                                                }, function () {
+                                                });
+                                            }
+                                        });
+                                    }, function () {
+                                    });
+
                                 }, function (err) {
                                     console.error('Error while deleting an item-----', err);
                                 });

@@ -177,6 +177,7 @@
                         ContentItems.isBusy = false;
                     });
                 };
+                ContentItems.getMore();
 
                 /**
                  * ContentItems.removeListItem() used to delete an item from section list
