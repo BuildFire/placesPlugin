@@ -31,8 +31,8 @@
                 })
                 .when('/items/:sectionId', {
                     templateUrl: 'templates/section.html',
-                    controllerAs: 'WidgetSection',
-                    controller: 'WidgetSectionCtrl'
+                    controllerAs: 'WidgetSections',
+                    controller: 'WidgetSectionsCtrl'
                 })
                 .when('/items', {
                     templateUrl: 'templates/section.html',

@@ -79,6 +79,17 @@
                 PlaceInfo.get().then(success, error);
                 if ($routeParams.sectionId)
                     Sections.getById($routeParams.sectionId).then(secSuccess, secError);
+
+                var sectionSuccess = function (result) {
+                        if (result) {
+                            console.log('section sections',result);
+                            WidgetSection.sections = result;
+                        }
+                    }
+                    , sectionError = function (err) {
+                        console.error('Error while getting data', err);
+                    };
+                Sections.find({}).then(sectionSuccess, sectionError);
             };
 
             var clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
@@ -90,7 +101,7 @@
                 console.log('ONUpdate------in section controller----', event);
             });
 
-            //syn with widget side
+                     //syn with widget side
             Messaging.sendMessageToControl({
                 name: EVENTS.ROUTE_CHANGE,
                 message: {
@@ -103,6 +114,66 @@
              * init() function invocation to fetch previously saved user's data from datastore.
              */
             init();
+
+
+            WidgetSection.toggleSectionSelection = function (ind, event) {
+                var id = WidgetSection.sections[ind].id;
+                if (WidgetSection.selectedSections.indexOf(id) < 0) {
+                    WidgetSection.selectedSections.push(id);
+                    $(event.target).addClass('active');
+                }
+                else {
+                    WidgetSection.selectedSections.splice(WidgetSection.selectedSections.indexOf(id), 1);
+                    $(event.target).removeClass('active');
+                }
+            };
+
+
+            function filterChanged() {
+                var itemFilter;
+                console.log('filter changed', WidgetSection.selectedSections);
+                if (WidgetSection.selectedSections.length) {
+                    itemFilter = {
+                        'filter': {'$json.sections': {'$in': WidgetSections.selectedSections}}
+                    };
+                }
+                else {
+                    itemFilter = {filter: {"$json.itemTitle": {"$regex": '/*'}}};
+                }
+                Items.find(itemFilter).then(function (res) {
+
+                    res.forEach(function (_item) {
+                        _item.data.distance = 0; // default distance value
+                        _item.data.distanceText = 'Fetching..';
+                    });
+
+                    WidgetSection.items = res;
+                }, function () {
+
+                });
+
+
+            }
+
+            WidgetSection.resetSectionFilter = function () {
+                if (WidgetSection.selectedSections.length == 0) {
+
+                    return;
+                }
+                //WidgetSection.showSections = false;
+                WidgetSection.selectedSections = [];
+                filterChanged();
+                $('.active.section-filter').removeClass('active');
+            };
+
+            WidgetSection.sortFilter = function (item) {
+
+                if (WidgetSection.locationData.currentCoordinates == null || item.data.distanceText == 'Fetching..') {
+                    return true;
+                }
+                //console.log(Number(item.data.distanceText.split(' ')[0]),$scope.distanceSlider);
+                return (Number(item.data.distanceText.split(' ')[0]) >= $scope.distanceSlider.min && Number(item.data.distanceText.split(' ')[0]) <= $scope.distanceSlider.max);
+            };
 
             /**
              * will called when controller scope has been destroyed.

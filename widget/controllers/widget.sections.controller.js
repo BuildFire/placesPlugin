@@ -1,8 +1,8 @@
 (function (angular) {
     angular
         .module('placesWidget')
-        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance',
-            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance) {
+        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance','$routeParams','$timeout',
+            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance,$routeParams,$timeout) {
 
                 AppConfig.changeBackgroundTheme();
                 var WidgetSections = this;
@@ -235,10 +235,11 @@
                 };
 
                 function filterChanged() {
-                    if (selectedSectionsWatcherInit) {
+                    /*if (selectedSectionsWatcherInit) {
                         selectedSectionsWatcherInit = false;
                         return;
-                    }
+                    }*/
+                    //alert('filter called');
                     var itemFilter;
                     console.log('filter changed', WidgetSections.selectedSections);
                     if (WidgetSections.selectedSections.length) {
@@ -371,23 +372,28 @@
                             console.error('Error while getting data', err);
                         };
                     PlaceInfo.get().then(success, error);
+
+                    if($routeParams.sectionId)
+                    {
+                        // have to get sections explicitly in item list view
+                        Sections.find({}).then(function success(result) {
+                            WidgetSections.sections = result;
+                            WidgetSections.selectedSections = [$routeParams.sectionId];
+                            $timeout(function () {
+                                $("a[section-id=" + $routeParams.sectionId + "]").addClass('active');
+                            },1000);
+
+                        }, function () {
+
+                        });
+                    }
+
                 };
 
                 /**
                  * init() function invocation to fetch previously saved user's data from datastore.
                  */
                 init();
-
-
-                $scope.distanceSliderChange = function () {
-                    console.log('slider chnged', $scope.distanceSlider);
-                    /* //remove items from collection which are out of range
-                     for (var i = WidgetSections.items.length - 1; i >= 0; i--) {
-                     if (WidgetSections.items[i].data.distance <= 0 || WidgetSections.items[i].data.distance > $scope.distanceSlider.max || WidgetSections.items[i].data.distance < $scope.distanceSlider.min) {
-                     WidgetSections.items.splice(i, 1);
-                     }
-                     }*/
-                };
 
                 WidgetSections.itemsOrder = function (item) {
                     //console.error(WidgetSections.info.data.content.sortByItems);
