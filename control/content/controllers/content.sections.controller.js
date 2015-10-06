@@ -28,7 +28,7 @@
                         data: {
                             content: {
                                 images: [],
-                                descriptionHTML: '',
+                                descriptionHTML: '<p>&nbsp;<br></p>',
                                 description: '<p>&nbsp;<br></p>',
                                 sortBy: Orders.ordersMap.Newest,
                                 rankOfLastItem: '',
@@ -160,7 +160,6 @@
                         AppConfig.setSettings(_info.data);
                         if (_info.id)
                             AppConfig.setAppId(_info.id);
-                        console.info('-----------saved---------Data-------', _info);
                     }, function (err) {
                         console.error('Error-------', err);
                     });
@@ -221,7 +220,6 @@
 
                 Buildfire.deeplink.createLink('section:7');
                 Buildfire.deeplink.getData(function (data) {
-                    console.log('DeepLInk calleed', data);
                     if (data) alert('deep link data: ' + data);
                 });
 
@@ -277,7 +275,6 @@
                     $csv.import(headerRow).then(function (rows) {
                         //ContentSections.loading = true;
                         if (rows && rows.length) {
-                            console.log(ContentSections.info);
                             var rank = ContentSections.info.data.content.rankOfLastItem || 0;
                             for (var index = 0; index < rows.length; index++) {
                                 rank += 10;
@@ -415,15 +412,11 @@
                     if (!name) {
                         console.info('There was a problem sorting your data');
                     } else {
-                        /* reset Search options */
+                        var sortOrder = Orders.getOrder(name || Orders.ordersMap.Default);
                         ContentSections.noMore = false;
                         searchOptions.skip = 0;
-                        /* Reset skip to ensure search begins from scratch*/
-
                         ContentSections.isBusy = false;
-                        var sortOrder = Orders.getOrder(name || Orders.ordersMap.Default);
                         ContentSections.info.data.content.sortBy = name;
-                        ContentSections.info.data.content.sortByValue = sortOrder.value;
                         ContentSections.sections = [];
                         ContentSections.getMore();
                         ContentSections.itemSortableOptions.disabled = !(ContentSections.info.data.content.sortBy === Orders.ordersMap.Manually);

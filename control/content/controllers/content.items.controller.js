@@ -50,7 +50,7 @@
                 ContentItems.section = $routeParams.sectionId;
                 ContentItems.isBusy = false;
                 /* tells if data is being fetched*/
-                ContentItems.items = [];
+                ContentItems.items = null;
                 ContentItems.info = angular.copy(placeInfoData);
                 ContentItems.masterInfoData = null;
                 ContentItems.sortOptions = OrdersItems.options;
@@ -109,7 +109,7 @@
 
                 function saveInfoData(_info) {
                     PlaceInfo.save(_info.data).then(function (data) {
-                        updateMasterInfoData(data);
+                        updateMasterInfoData(_info);
                     }, function (err) {
                         console.error('Error-------', err);
                     });
@@ -137,19 +137,12 @@
                     if (!name) {
                         console.info('There was a problem sorting your data');
                     } else {
-                        ContentItems.items = [];
-
-                        /* reset Search options */
+                        var sortOrder = OrdersItems.getOrder(name || OrdersItems.ordersMap.Default);
+                        ContentItems.items = null;
                         ContentItems.noMore = false;
                         searchOptions.skip = 0;
-                        /* Reset skip to ensure search begins from scratch*/
-
                         ContentItems.isBusy = false;
-                        var sortOrder = OrdersItems.getOrder(name || OrdersItems.ordersMap.Default);
-                        console.error(name, sortOrder);
                         ContentItems.info.data.content.sortByItems = name;
-                        ContentItems.info.data.content.sortByItemsValue = sortOrder.value;
-                        updateMasterInfoData(ContentItems.info);
                         ContentItems.getMore();
                         ContentItems.itemSortableOptions.disabled = !(ContentItems.info.data.content.sortByItems === OrdersItems.ordersMap.Manually);
                     }
@@ -170,7 +163,6 @@
                     updateSearchOptions();
                     ContentItems.isBusy = true;
                     Items.find(searchOptions).then(function success(result) {
-                        console.log('???????????', result);
                         if (result.length <= _limit) {// to indicate there are more
                             ContentItems.noMore = true;
                         }
@@ -222,7 +214,7 @@
                     searchOptions.skip = 0;
                     /*reset the skip value*/
                     ContentItems.isBusy = false;
-                    ContentItems.items = [];
+                    ContentItems.items = null;
                     value = value.trim();
                     if (!value) {
                         value = '/*';
@@ -239,7 +231,7 @@
                             Items.update(result.id, result.data).then(function () {
                                 //ContentItems.items[ind].data.sections = result.data.sections;
                                 _skip = 0;
-                                ContentItems.items = [];
+                                ContentItems.items = null;
                                 ContentItems.getMore();
                             }, function () {
                                 console.error('err happened');
@@ -257,8 +249,6 @@
                 ContentItems.done = function () {
                     Location.goToHome();
                 };
-
-                ContentItems.getMore();
 
                 //syn with widget
                 Messaging.sendMessageToWidget({
