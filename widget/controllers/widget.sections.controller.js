@@ -18,7 +18,8 @@
                 //console.log('Widget Section Ctrl Loaded', WidgetSections.info);
                 WidgetSections.locationData = {
                     items: null,
-                    currentCoordinates: [-117.1920427, 32.7708401] // default san diego
+                    //currentCoordinates: [-117.1920427, 32.7708401] // default san diego
+                    currentCoordinates: null
                 };
 
                 function getGeoLocation() {
@@ -27,7 +28,7 @@
                             $scope.$apply(function () {
                                 WidgetSections.sortOnClosest = true;// will be true if user allows location
                                 WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
-                                localStorage.setItem('userLocation', JSON.stringify(WidgetSections.locationData.currentCoordinates));
+                                localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
                             });
                         });
                     }
@@ -35,7 +36,7 @@
                 }
 
                 if (typeof(Storage) !== "undefined") {
-                    var userLocation = localStorage.getItem('userLocation');
+                    var userLocation = localStorage.getItem('user_location');
                     if (userLocation) {
                         WidgetSections.sortOnClosest = true;// will be true if user allows location
                         WidgetSections.locationData.currentCoordinates = JSON.parse(userLocation);
@@ -46,6 +47,12 @@
                 else
                     getGeoLocation(); // get data if localStorage is not supported
 
+                /// load items
+                function loadItems(carouselItems) {
+                    // create an instance and pass it the items if you don't have items yet just pass []
+                    if (view)
+                        view.loadItems(carouselItems);
+                }
 
                 var _skip = 0,
                     view = null,
@@ -182,26 +189,26 @@
 
 
                 var initCarousel = function (_defaultView) {
-                    var resetCarousel = function (_layout) {
-                        if (currentLayout !== _layout && view && WidgetSections.info.data.content.images) {
-                            currentLayout = _layout;
-                            if (WidgetSections.info.data.content.images.length)
-                                view._destroySlider();
-                            view = null;
-                        }
-                        else {
-                            if (view) {
-                                view.loadItems(WidgetSections.info.data.content.images);
-                            }
-                        }
-                    };
-
                     switch (_defaultView) {
                         case DEFAULT_VIEWS.LIST:
-                            resetCarousel(WidgetSections.info.data.design.secListLayout);
+                            if (currentLayout !== WidgetSections.info.data.design.secListLayout) {
+                                currentLayout = WidgetSections.info.data.design.secListLayout;
+                            }
+                            if (WidgetSections.info && WidgetSections.info.data.content.images.length) {
+                                loadItems(WidgetSections.info.data.content.images);
+                            } else {
+                                loadItems([]);
+                            }
                             break;
                         case DEFAULT_VIEWS.MAP:
-                            resetCarousel(WidgetSections.info.data.design.mapLayout);
+                            if (currentLayout !== WidgetSections.info.data.design.mapLayout) {
+                                currentLayout = WidgetSections.info.data.design.mapLayout;
+                            }
+                            if (WidgetSections.selectedItem && WidgetSections.selectedItem.data.images.length) {
+                                loadItems(WidgetSections.selectedItem.data.images);
+                            } else {
+                                loadItems([]);
+                            }
                             break;
                     }
                 };
@@ -245,12 +252,13 @@
                 /**
                  * Buildfire.datastore.onUpdate method calls when Data is changed.
                  */
-                Buildfire.datastore.onUpdate(function (event) {
+                var clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
                     if (event.tag === "placeInfo") {
                         if (event.data) {
                             WidgetSections.info = event;
+                            WidgetSections.selectedItem = null;
+                            WidgetSections.selectedItemDistance = null;
                             WidgetSections.currentView = WidgetSections.info.data.settings.defaultView;
-                            initCarousel(WidgetSections.info.data.settings.defaultView);
                             refreshSections();
                         }
                     }
@@ -274,18 +282,21 @@
                     }
                     else {
                         view = null;
+                        WidgetSections.selectedItem = null;
+                        WidgetSections.selectedItemDistance = null;
                         currentLayout = '';
                         refreshSections();
                     }
                 });
 
-                $rootScope.$on("Carousel:LOADED", function () {
+                $scope.$on("Carousel:LOADED", function () {
                     if (!view) {
-                        view = new Buildfire.components.carousel.view("#carousel", []);
+                        view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
                     }
-                    if (WidgetSections.info && WidgetSections.info.data.content && WidgetSections.info.data.content.images) {
-                        view.loadItems(WidgetSections.info.data.content.images);
-                    } else {
+                    if (view && WidgetSections.info && WidgetSections.info.data && WidgetSections.info.data.settings.defaultView) {
+                        initCarousel(WidgetSections.info.data.settings.defaultView)
+                    }
+                    else {
                         view.loadItems([]);
                     }
                 });
@@ -302,17 +313,17 @@
 
                                 if (WidgetSections.info.data.settings.showDistanceIn == 'miles')
                                     $scope.distanceSlider = {
-                                        min: 50,
-                                        max: 50,
+                                        min: 0,
+                                        max: 200,
                                         ceil: 200, //upper limit
-                                        floor: 50
+                                        floor: 0
                                     };
                                 else
                                     $scope.distanceSlider = {
-                                        min: 80,
-                                        max: 80,
+                                        min: 0,
+                                        max: 320,
                                         ceil: 320, //upper limit
-                                        floor: 80
+                                        floor: 0
                                     };
                             }
                             WidgetSections.currentView = WidgetSections.info ? WidgetSections.info.data.settings.defaultView : null;
@@ -361,8 +372,9 @@
 
                 WidgetSections.selectedMarker = function (itemIndex) {
                     WidgetSections.selectedItem = WidgetSections.locationData.items[itemIndex];
+                    initCarousel(WidgetSections.info.data.settings.defaultView);
                     GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, [WidgetSections.selectedItem], '').then(function (result) {
-                        if (result.rows.length && result.rows[0].elements.length && result.rows[0].elements[0].distance.text) {
+                        if (result.rows.length && result.rows[0].elements.length && result.rows[0].elements[0].distance && result.rows[0].elements[0].distance.text) {
                             WidgetSections.selectedItemDistance = result.rows[0].elements[0].distance.text;
                         } else {
                             WidgetSections.selectedItemDistance = null;
@@ -378,23 +390,23 @@
                     return WidgetSections.items;
                 }, function () {
 
-                    if (initItems) {
+                    if (initItems || WidgetSections.locationData.currentCoordinates == null) {
                         initItems = false;
                         return;
                     }
+                    if (WidgetSections.items && WidgetSections.items.length) {
+                        GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, WidgetSections.items, WidgetSections.info.data.settings.showDistanceIn).then(function (result) {
+                            console.log('distance result', result);
+                            for (var _ind = 0; _ind < WidgetSections.items.length; _ind++) {
+                                WidgetSections.items[_ind].data.distanceText = (result.rows[0].elements[_ind].status != 'OK') ? 'NA' : result.rows[0].elements[_ind].distance.text;
+                                WidgetSections.items[_ind].data.distance = (result.rows[0].elements[_ind].status != 'OK') ? -1 : result.rows[0].elements[_ind].distance.value;
+                            }
 
-                    GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, WidgetSections.items, WidgetSections.info.data.settings.showDistanceIn).then(function (result) {
-                        console.log('distance result', result);
 
-                        for (var _ind = 0; _ind < WidgetSections.items.length; _ind++) {
-                            WidgetSections.items[_ind].data.distanceText = (result.rows[0].elements[_ind].status != 'OK') ? 'NA' : result.rows[0].elements[_ind].distance.text;
-                            WidgetSections.items[_ind].data.distance = (result.rows[0].elements[_ind].status != 'OK') ? -1 : result.rows[0].elements[_ind].distance.value;
-                        }
-
-
-                    }, function (err) {
-                        console.error('distance err', err);
-                    });
+                        }, function (err) {
+                            console.error('distance err', err);
+                        });
+                    }
                 });
 
                 //syn with widget side
@@ -403,6 +415,13 @@
                     message: {
                         path: PATHS.HOME
                     }
+                });
+
+                /**
+                 * will called when controller scope has been destroyed.
+                 */
+                $scope.$on("$destroy", function () {
+                    clearOnUpdateListener.clear();
                 });
 
             }]);

@@ -68,7 +68,7 @@
                 PlaceInfo.get().then(success, error);
             };
 
-            Buildfire.datastore.onUpdate(function (event) {
+            var clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
                 console.log('ONUpdate------in section controller----', event);
             });
 
@@ -85,5 +85,12 @@
              * init() function invocation to fetch previously saved user's data from datastore.
              */
             init();
+
+            /**
+             * will called when controller scope has been destroyed.
+             */
+            $scope.$on("$destroy", function () {
+                clearOnUpdateListener.clear();
+            });
         }]);
 })(window.angular, window);

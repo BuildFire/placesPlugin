@@ -30,7 +30,7 @@
 		<div class="col-md-4 pull-left padding-left-zero">
 			<div class="dropdown pull-left col-md-12 padding-zero" dropdown>
 				<button ng-disabled="disabled" class="btn btn-default text-left dropdown-toggle" data-toggle="dropdown" dropdown-toggle aria-expanded="true">
-					<span class="pull-left">{{ContentSections.info.data.content.sortByValue || 'Newest'}}</span>
+					<span class="pull-left">{{ContentSections.info.data.content.sortBy || 'Newest'}}</span>
 					<span class="chevron icon-chevron-down pull-right"></span>
 				</button>
 				<ul class="dropdown-menu extended" role="menu">
@@ -55,7 +55,7 @@
 <div class="item clearfix row">
 	<div class="main col-md-9 pull-right padding-left-zero row">
 		<div class="pull-left inner-main col-md-8 padding-zero">
-			<a href="#/section" class="btn btn-success stretch">Add New Section</a>
+			<a ng-href="#/section" class="btn btn-success stretch">Add New Section</a>
 		</div>
 	</div>
 </div>

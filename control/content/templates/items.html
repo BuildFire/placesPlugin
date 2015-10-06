@@ -6,7 +6,7 @@
         <div class="col-md-4 pull-left padding-left-zero">
             <div class="dropdown pull-left col-md-12 padding-zero" dropdown>
                 <button class="btn btn-default text-left dropdown-toggle" data-toggle="dropdown" dropdown-toggle aria-expanded="true">
-                    <span class="pull-left">{{ContentItems.info.data.content.sortByValue || 'Newest'}}y</span>
+                    <span class="pull-left">{{ContentItems.info.data.content.sortByItems || 'Newest'}}</span>
                     <span class="chevron icon-chevron-down pull-right"></span>
                 </button>
                 <ul class="dropdown-menu extended" role="menu">
@@ -34,10 +34,10 @@
     <div class="main col-md-9 pull-right padding-left-zero row">
         <div class="pull-left inner-main col-md-3">
             <a ng-click="ContentItems.done()"
-            href="javaScript:void(0);"class="btn btn-success stretch">Sections</a>
+            href="javaScript:void(0);" class="btn btn-success stretch">Sections</a>
         </div>
         <div class="pull-left inner-main col-md-8 padding-zero">
-            <a href="#/item/{{ContentItems.section}}" class="btn btn-success stretch">Add New Item</a>
+            <a ng-href="#/item/{{ContentItems.section}}" class="btn btn-success stretch">Add New Item</a>
         </div>
       <!--  <div class="col-md-4 pull-right">
             <a ng-click="ContentItems.searchListItem(search)" class="btn btn-primary pull-right stretch">Search</a>
@@ -53,10 +53,10 @@
              infinite-scroll-disabled="ContentItems.noMore"
              infinite-scroll-container="'#scroll-infinite'">
             <div ui-sortable="ContentItems.itemSortableOptions" ng-model="ContentItems.items">
-                <div class="well text-center margin-bottom-zero border-none" ng-if="ContentItems.items.length <1">
+                <div class="well text-center margin-bottom-zero border-none" ng-hide="ContentItems.items">
                     <p class="margin-zero">No items found.</p>
                 </div>
-                <div class="d-item double-line square-icon clearfix" ng-if="ContentItems.items.length"
+                <div class="d-item double-line square-icon clearfix" ng-show="ContentItems.items"
                      ng-repeat="item in ContentItems.items">
                     <span class="icon icon-menu pull-left cursor-grab"  ng-class="{ 'disabled': ContentItems.itemSortableOptions.disabled }"></span>
 

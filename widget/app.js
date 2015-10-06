@@ -86,7 +86,13 @@
                 }
             };
             buildfire.deeplink.getData(function (data) {
-                console.log('DEEPLINK data Recieved-----------------',data);
+                if (data) {
+                    console.log('data---',data);
+                    Location.go("#/item/" + JSON.parse(data).id);
+                }
+
             });
         }]);
+
+
 })(window.angular, window.buildfire);
