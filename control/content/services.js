@@ -57,8 +57,8 @@
                 {id: 1, name: "Manually", value: "Manually", key: "rank", order: 1},
                 {id: 1, name: "Newest", value: "Newest", key: "dateCreated", order: -1},
                 {id: 1, name: "Oldest", value: "Oldest", key: "dateCreated", order: 1},
-                {id: 1, name: "SectionA-Z", value: "Section A-Z", key: "title", order: 1},
-                {id: 1, name: "SectionZ-A", value: "Section Z-A", key: "title", order: -1}
+                {id: 1, name: "Item Name A-Z", value: "Item Name A-Z", key: "title", order: 1},
+                {id: 1, name: "Item Name Z-A", value: "Item Name Z-A", key: "title", order: -1}
             ];
             return {
                 ordersMap: ordersMap,
