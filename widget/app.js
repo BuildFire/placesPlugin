@@ -44,6 +44,11 @@
                     controllerAs: 'WidgetItem',
                     controller: 'WidgetItemCtrl'
                 })
+                .when('/item', {
+                    templateUrl: 'templates/item.html',
+                    controllerAs: 'WidgetItem',
+                    controller: 'WidgetItemCtrl'
+                })
                 .otherwise('/');
         }])
         .run(['Location','Messaging','EVENTS','PATHS', function (Location,Messaging,EVENTS,PATHS) {
