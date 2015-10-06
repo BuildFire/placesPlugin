@@ -111,6 +111,26 @@
 
                 };
 
+                function getItemsDistance(_items){
+
+                    if (WidgetSections.locationData.currentCoordinates == null) {
+                        return;
+                    }
+                    if (_items && _items.length) {
+                        GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, _items, WidgetSections.info.data.settings.showDistanceIn).then(function (result) {
+                            console.log('distance result', result);
+                            for (var _ind = 0; _ind < WidgetSections.items.length; _ind++) {
+                                _items[_ind].data.distanceText = (result.rows[0].elements[_ind].status != 'OK') ? 'NA' : result.rows[0].elements[_ind].distance.text;
+                                _items[_ind].data.distance = (result.rows[0].elements[_ind].status != 'OK') ? -1 : result.rows[0].elements[_ind].distance.value;
+                            }
+
+
+                        }, function (err) {
+                            console.error('distance err', err);
+                        });
+                    }
+                }
+
                 /**
                  * WidgetSections.items holds the array of items.
                  * @type {Array}
@@ -353,13 +373,13 @@
 
 
                 $scope.distanceSliderChange = function () {
-                    console.log('slider chnged');
-                    //remove items from collection which are out of range
+                    console.log('slider chnged',$scope.distanceSlider);
+                   /* //remove items from collection which are out of range
                     for (var i = WidgetSections.items.length - 1; i >= 0; i--) {
                         if (WidgetSections.items[i].data.distance <= 0 || WidgetSections.items[i].data.distance > $scope.distanceSlider.max || WidgetSections.items[i].data.distance < $scope.distanceSlider.min) {
                             WidgetSections.items.splice(i, 1);
                         }
-                    }
+                    }*/
                 };
 
                 WidgetSections.itemsOrder = function (item) {
@@ -385,29 +405,19 @@
                     });
                 };
 
-                var initItems = true;
+                WidgetSections.sortFilter = function (item) {
+
+                    if (WidgetSections.locationData.currentCoordinates == null || item.data.distanceText == 'Fetching..') {
+                        return true;
+                    }
+                    //console.log(Number(item.data.distanceText.split(' ')[0]),$scope.distanceSlider);
+                    return (Number(item.data.distanceText.split(' ')[0]) >= $scope.distanceSlider.min && Number(item.data.distanceText.split(' ')[0]) <= $scope.distanceSlider.max);
+                };
+
+
                 $scope.$watch(function () {
                     return WidgetSections.items;
-                }, function () {
-
-                    if (initItems || WidgetSections.locationData.currentCoordinates == null) {
-                        initItems = false;
-                        return;
-                    }
-                    if (WidgetSections.items && WidgetSections.items.length) {
-                        GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, WidgetSections.items, WidgetSections.info.data.settings.showDistanceIn).then(function (result) {
-                            console.log('distance result', result);
-                            for (var _ind = 0; _ind < WidgetSections.items.length; _ind++) {
-                                WidgetSections.items[_ind].data.distanceText = (result.rows[0].elements[_ind].status != 'OK') ? 'NA' : result.rows[0].elements[_ind].distance.text;
-                                WidgetSections.items[_ind].data.distance = (result.rows[0].elements[_ind].status != 'OK') ? -1 : result.rows[0].elements[_ind].distance.value;
-                            }
-
-
-                        }, function (err) {
-                            console.error('distance err', err);
-                        });
-                    }
-                });
+                }, getItemsDistance);
 
                 //syn with widget side
                 Messaging.sendMessageToControl({
