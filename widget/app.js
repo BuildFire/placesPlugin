@@ -53,7 +53,6 @@
         }])
         .run(['Location','Messaging','EVENTS','PATHS', function (Location,Messaging,EVENTS,PATHS) {
             Messaging.onReceivedMessage = function (event) {
-                console.log('RED&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&**************',event);
                 if (event) {
                     switch (event.name) {
                         case EVENTS.ROUTE_CHANGE:
@@ -71,9 +70,12 @@
                                     url = url + "home";
                                     break;
                                 case PATHS.SECTION:
-                                    url = url + "items";
                                     if (id) {
+                                        url = url + "items";
                                         url = url + "/" + id;
+                                    }
+                                    else{
+                                        url=url+"home";
                                     }
                                     break;
                                 default :
