@@ -1,7 +1,8 @@
 (function (angular, window) {
     angular
         .module('placesWidget')
-        .controller('WidgetItemCtrl', ['$scope', 'COLLECTIONS', 'DB', '$routeParams', 'Buildfire', '$rootScope', 'GeoDistance', 'Messaging', 'Location', 'EVENTS', 'PATHS', function ($scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS) {
+        .controller('WidgetItemCtrl', ['$scope', 'COLLECTIONS', 'DB', '$routeParams', 'Buildfire', '$rootScope', 'GeoDistance', 'Messaging', 'Location', 'EVENTS', 'PATHS', 'AppConfig', function ($scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS, AppConfig) {
+            AppConfig.changeBackgroundTheme();
             var WidgetItem = this
                 , view = null
                 , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
@@ -20,6 +21,8 @@
                 Items.getById($routeParams.itemId).then(
                     function (result) {
                         WidgetItem.item = result;
+                        if (result.data && result.data.backgroundImage)
+                            AppConfig.changeBackgroundTheme(result.data.backgroundImage);
                         if (WidgetItem.item.data && WidgetItem.item.data.images)
                             initCarousel(WidgetItem.item.data.images);
                         itemLat = (WidgetItem.item.data.address && WidgetItem.item.data.address.lat) ? WidgetItem.item.data.address.lat : null;
@@ -122,6 +125,7 @@
                         currentCoordinates: [event.data.address.lng, event.data.address.lat]
                     };
                     WidgetItem.item = event;
+                    AppConfig.changeBackgroundTheme(WidgetItem.item.data.backgroundImage);
                     $scope.$digest();
                     if (event.data.images)
                         initCarousel(event.data.images);

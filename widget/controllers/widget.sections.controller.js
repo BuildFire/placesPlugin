@@ -4,6 +4,7 @@
         .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance',
             function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance) {
 
+                AppConfig.changeBackgroundTheme();
                 var WidgetSections = this;
                 WidgetSections.showMenu = false;
                 WidgetSections.menuTab = 'Category';
@@ -111,7 +112,7 @@
 
                 };
 
-                function getItemsDistance(_items){
+                function getItemsDistance(_items) {
 
                     if (WidgetSections.locationData.currentCoordinates == null) {
                         return;
@@ -275,6 +276,9 @@
                 var clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
                     if (event.tag === "placeInfo") {
                         if (event.data) {
+                            if (event.data.design) {
+                                AppConfig.changeBackgroundTheme(event.data.design.secListBGImage);
+                            }
                             WidgetSections.info = event;
                             WidgetSections.selectedItem = null;
                             WidgetSections.selectedItemDistance = null;
@@ -331,6 +335,9 @@
                             if (result && result.data && result.id) {
                                 WidgetSections.info = result;
 
+                                if (result.data.design.secListBGImage) {
+                                    AppConfig.changeBackgroundTheme(result.data.design.secListBGImage);
+                                }
                                 if (WidgetSections.info.data.settings.showDistanceIn == 'miles')
                                     $scope.distanceSlider = {
                                         min: 0,
@@ -373,13 +380,13 @@
 
 
                 $scope.distanceSliderChange = function () {
-                    console.log('slider chnged',$scope.distanceSlider);
-                   /* //remove items from collection which are out of range
-                    for (var i = WidgetSections.items.length - 1; i >= 0; i--) {
-                        if (WidgetSections.items[i].data.distance <= 0 || WidgetSections.items[i].data.distance > $scope.distanceSlider.max || WidgetSections.items[i].data.distance < $scope.distanceSlider.min) {
-                            WidgetSections.items.splice(i, 1);
-                        }
-                    }*/
+                    console.log('slider chnged', $scope.distanceSlider);
+                    /* //remove items from collection which are out of range
+                     for (var i = WidgetSections.items.length - 1; i >= 0; i--) {
+                     if (WidgetSections.items[i].data.distance <= 0 || WidgetSections.items[i].data.distance > $scope.distanceSlider.max || WidgetSections.items[i].data.distance < $scope.distanceSlider.min) {
+                     WidgetSections.items.splice(i, 1);
+                     }
+                     }*/
                 };
 
                 WidgetSections.itemsOrder = function (item) {

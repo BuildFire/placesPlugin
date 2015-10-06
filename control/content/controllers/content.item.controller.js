@@ -200,7 +200,15 @@
                     ContentItem.item.data.backgroundImage = null;
                 };
                 ContentItem.addListImage = function () {
-                    var options = {showIcons: false, multiSelection: false};
+                    var options = {showIcons: false, multiSelection: false},
+                        listImgCB = function (error, result) {
+                            if (error) {
+                                console.error('Error:', error);
+                            } else {
+                                ContentItem.item.data.listImage = result.selectedFiles && result.selectedFiles[0] || null;
+                                $scope.$digest();
+                            }
+                        };
                     Buildfire.imageLib.showDialog(options, listImgCB);
                 };
                 ContentItem.removeListImage = function () {

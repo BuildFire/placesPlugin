@@ -2,6 +2,7 @@
     angular
         .module('placesWidget')
         .controller('WidgetSectionCtrl', ['$scope', '$window', 'AppConfig', 'Messaging', 'Buildfire', 'COLLECTIONS', 'Location', 'EVENTS', 'PATHS', '$timeout', 'DB', '$routeParams', function ($scope, $window, AppConfig, Messaging, Buildfire, COLLECTIONS, Location, EVENTS, PATHS, $timeout, DB, $routeParams) {
+            AppConfig.changeBackgroundTheme();
             var WidgetSection = this;
             WidgetSection.placeInfo = null;
             console.log('Section Controller called');
@@ -64,11 +65,28 @@
                     }
                     , error = function (err) {
                         console.error('Error while getting data', err);
+                    },
+                    secSuccess = function (result) {
+                        if (result && result.data && result.id) {
+                            WidgetSection.secInfo = result;
+                            if (result.data.itemListBGImage)
+                                AppConfig.changeBackgroundTheme(result.data.itemListBGImage);
+                        }
+                    }
+                    , secError = function (err) {
+                        console.error('Error while getting data', err);
                     };
                 PlaceInfo.get().then(success, error);
+                if ($routeParams.sectionId)
+                    Sections.getById($routeParams.sectionId).then(secSuccess, secError);
             };
 
             var clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
+                if (event.tag === "sections") {
+                    if (event.data) {
+                        AppConfig.changeBackgroundTheme(event.data.itemListBGImage);
+                    }
+                }
                 console.log('ONUpdate------in section controller----', event);
             });
 
