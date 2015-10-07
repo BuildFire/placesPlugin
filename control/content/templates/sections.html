@@ -67,20 +67,14 @@
 			 infinite-scroll="ContentSections.getMore()"
 			 infinite-scroll-disabled="ContentSections.noMore"
 			 infinite-scroll-container="'#scroll-infinite'">
-			<div ui-sortable="ContentSections.itemSortableOptions" ng-model="ContentSections.sections">
-				<!--<div class="well text-center margin-bottom-zero border-none" ng-if="ContentSections.sections.length <1">
-					<p class="margin-zero">No items found.</p>
-				</div>-->
-				<div class="d-item double-line square-icon clearfix">
-					<!--<div class="media-holder pull-left">
-						<img ng-src="{{item.data.mainImage | resizeImage : 50:50}}" ng-if="item.data.mainImage">
-					</div>-->
+			<div>
+				<div class="d-item double-line square-icon clearfix border-bottom-grey">
+
 					<div class="copy pull-right">
 						<div class="col-md-4 padding-zero pull-left">
 						<span
 								class="title ellipsis pull-left">All Items</span>
 							</div>
-						<!--<span class="title ellipsis pull-left">{{item.data.secSummary}}</span>-->
 						<div class="col-md-7 padding-right-zero pull-left">
 
 						</div>
@@ -89,6 +83,8 @@
 						</div>
 					</div>
 				</div>
+			</div>
+			<div ui-sortable="ContentSections.itemSortableOptions" ng-model="ContentSections.sections">
 				<div class="d-item double-line square-icon clearfix" ng-if="ContentSections.sections.length"
 					 ng-repeat="item in ContentSections.sections">
 					<span class="icon icon-menu pull-left cursor-grab"  ng-class="{ 'disabled': ContentSections.itemSortableOptions.disabled }"></span>

@@ -2,8 +2,8 @@
     'use strict';
     angular
         .module('placesContent')
-        .controller('ContentSectionsCtrl', ['$scope', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Modals',
-            function ($scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals) {
+        .controller('ContentSectionsCtrl', ['$scope', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Modals', 'PlaceInfoData',
+            function ($scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, PlaceInfoData) {
 
                 var header = {
                         mainImage: 'Section Image',
@@ -49,18 +49,31 @@
                         }
                     };
 
-
                 var ContentSections = this;
-                ContentSections.info = angular.copy(_infoData);
+                ContentSections.info = null;
                 ContentSections.masterInfo = null;
+
+                if (PlaceInfoData)
+                {
+                    updateMasterInfo(PlaceInfoData);
+                    ContentSections.info = PlaceInfoData;
+                }
+                else {
+                    updateMasterInfo(_infoData);
+                    ContentSections.info = _infoData;
+                }
+
+
                 ContentSections.isBusy = false;
                 ContentSections.sections = [];
                 ContentSections.sortOptions = Orders.options;
+
                 ContentSections.itemSortableOptions = {
                     handle: '> .cursor-grab',
                     disabled: !(ContentSections.info.data.content.sortBy === Orders.ordersMap.Manually),
                     stop: function (e, ui) {
-                        debugger;
+                        console.log(e);
+                        console.log(ui);
                         var endIndex = ui.item.sortable.dropindex,
                             maxRank = 0,
                             draggedItem = ContentSections.sections[endIndex];
@@ -84,14 +97,17 @@
                                 }
                             }
                             if (isRankChanged) {
-                                Sections.update(draggedItem.id, draggedItem.data, function (err) {
-                                    if (err) {
-                                        console.error('Error during updating rank');
-                                    } else {
-                                        if (ContentSections.info.data.content.rankOfLastItem < maxRank) {
-                                            ContentSections.info.data.content.rankOfLastItem = maxRank;
-                                        }
-                                    }
+
+                                Sections.update(draggedItem.id, draggedItem.data).then(function () {
+                                    Sections.find({}).then(function (result) {
+                                        console.log('updated sections', result);
+                                        //ContentSections.sections = result;
+                                        ContentSections.info.data.content.rankOfLastItem = maxRank;
+                                    }, function () {
+
+                                    });
+                                }, function () {
+
                                 });
                             }
                         }
@@ -115,6 +131,7 @@
                     var order;
                     if (ContentSections.info && ContentSections.info.data && ContentSections.info.data.content)
                         order = Orders.getOrder(ContentSections.info.data.content.sortBy || Orders.ordersMap.Default);
+
                     if (order) {
                         var sort = {};
                         sort[order.key] = order.order;
@@ -124,35 +141,6 @@
                     else {
                         return false;
                     }
-                };
-
-                var init = function () {
-                    var success = function (result) {
-                            console.info('Init success result:', result);
-                            if (Object.keys(result.data).length > 0) {
-                                ContentSections.info = result;
-                            }
-                            // initialize carousel data
-                            if (ContentSections.info && ContentSections.info.data.content && ContentSections.info.data.content.images) {
-                                ContentSections.editor.loadItems(ContentSections.info.data.content.images);
-                            }
-                            else {
-                                ContentSections.editor.loadItems([]);
-                            }
-                            updateMasterInfo(ContentSections.info);
-
-                            if (tmrDelayForMedia) {
-                                clearTimeout(tmrDelayForMedia)
-                            }
-                        }
-                        , error = function (err) {
-                            console.error('Error while getting data', err);
-                            if (tmrDelayForMedia) {
-                                clearTimeout(tmrDelayForMedia)
-                            }
-
-                        };
-                    PlaceInfo.get().then(success, error);
                 };
 
                 function saveData(_info) {
@@ -219,16 +207,11 @@
                     });
                 }
 
-                Buildfire.deeplink.createLink('section:7');
-                Buildfire.deeplink.getData(function (data) {
-                    if (data) alert('deep link data: ' + data);
-                });
+                /* Buildfire.deeplink.createLink('section:7');
+                 Buildfire.deeplink.getData(function (data) {
+                 if (data) alert('deep link data: ' + data);
+                 });*/
 
-                updateMasterInfo(ContentSections.info);
-                /**
-                 *  init() function invocation to fetch previously saved user's data from datastore.
-                 */
-                init();
 
                 // this method will be called when a new item added to the list
                 ContentSections.editor.onAddItems = function (items) {
@@ -361,15 +344,13 @@
                                         console.log(items);
                                         items.forEach(function (_item) {
                                             if (_item.data.sections.length == 1) {
-                                                console.log('deleting');
                                                 Items.delete(_item.id, function () {
                                                 }, function () {
                                                 });
                                             }
                                             else {
-                                                console.log('updating');
-                                                _item.data.sections.splice(_item.data.sections.indexOf(item.id),1);
-                                                Items.update(_item.id,_item.data, function () {
+                                                _item.data.sections.splice(_item.data.sections.indexOf(item.id), 1);
+                                                Items.update(_item.id, _item.data, function () {
                                                 }, function () {
                                                 });
                                             }
