@@ -1,58 +1,68 @@
 <div class="holder padding-zero">
-	<div class="places-plugin layout3">
-		<div class="media-center-banner clearfix border-bottom-grey">
-			<div class="plugin-slide text-center">
-				<div id="carousel" build-fire-carousel=""></div>
-			</div>
-		</div>
-		<div class="text-left padded padding-bottom-zero clearfix">
-			<p ng-if="WidgetSections.info.data.content.descriptionHTML"
-			   ng-bind-html="WidgetSections.info.data.content.descriptionHTML | safeHtml">
-				{{WidgetSections.info.data.content.descriptionHTML}}</p>
-		</div>
-		<div class="">
-			<div class="list-layout">
-				<div ng-show="WidgetSections.showSections">
-				<div class="list-item" ng-repeat="item in WidgetSections.sections">
-					<div class="list-item-media text-left overflow-hidden">
-						<div class="list-media-holder pull-left">
-							<img default-image ng-src="{{item.data.mainImage}}">
-						</div>
-						<div class="list-item-copy text-left padding-left-ten padding-right-ten">
-							<p class="ellipsis margin-zero text-primary margin-top-five"><a class="text-primary" ng-href="#/items/{{item.id}}">{{item.data.secTitle}}</a></p>
-							<p class="ellipsis margin-zero">{{item.data.secSummary}}</p>
-						</div>
-					</div>
-				</div></div>
-				<div ng-hide="WidgetSections.showSections">
-					<!--<div infinite-scroll-distance="0"
+    <div id="scroll-infinite" class="places-plugin layout3">
+        <div class="media-center-banner clearfix border-bottom-grey">
+            <div class="plugin-slide text-center">
+                <div id="carousel" build-fire-carousel=""></div>
+            </div>
+        </div>
+        <div class="text-left padded padding-bottom-zero clearfix">
+            <p ng-if="WidgetSections.info.data.content.descriptionHTML"
+               ng-bind-html="WidgetSections.info.data.content.descriptionHTML | safeHtml">
+                {{WidgetSections.info.data.content.descriptionHTML}}</p>
+        </div>
+        <div class="">
+            <div class="list-layout">
+                <div ng-show="WidgetSections.showSections">
+                    <div infinite-scroll-distance="0"
+                         infinite-scroll="WidgetSections.loadMoreSections()"
+                         infinite-scroll-disabled="WidgetSections.noMoreSections"
+                         infinite-scroll-container="'#scroll-infinite'">
+                        <div class="list-item" ng-repeat="item in WidgetSections.sections">
+                            <div class="list-item-media text-left overflow-hidden">
+                                <div class="list-media-holder pull-left">
+                                    <img default-image ng-src="{{item.data.mainImage}}">
+                                </div>
+                                <div class="list-item-copy text-left padding-left-ten padding-right-ten">
+                                    <p class="ellipsis margin-zero text-primary margin-top-five"><a class="text-primary"
+                                                                                                    ng-href="#/items/{{item.id}}">{{item.data.secTitle}}</a>
+                                    </p>
+
+                                    <p class="ellipsis margin-zero">{{item.data.secSummary}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-hide="WidgetSections.showSections">
+                    <!--<div infinite-scroll-distance="0"
                          infinite-scroll="WidgetSections.getMoreItems()"
                          infinite-scroll-disabled="WidgetSections.noMoreItems"
                          infinite-scroll-container="'#scroll-infinite'">-->
-					<div ng-hide="WidgetSections.items.length">
-						No Item(s) to show
-					</div>
-					<div class="plugin-banner has-info-bar clearfix" ng-repeat="item in WidgetSections.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
-						<div class="plugin-slide text-center">
-							<img default-image="" ng-src="{{item.data.listImage}}">
-						</div>
-						<div class="info-bar">
-							<div class="col-xs-8 text-left pull-left">
-								<p class="margin-bottom-zero ellipsis"><a ng-href="#/item/{{item.id}}">{{item.data.itemTitle}}</a>
-								</p>
+                    <div ng-hide="WidgetSections.items.length">
+                        No Item(s) to show
+                    </div>
+                    <div class="plugin-banner has-info-bar clearfix"
+                         ng-repeat="item in WidgetSections.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
+                        <div class="plugin-slide text-center">
+                            <img default-image="" ng-src="{{item.data.listImage}}">
+                        </div>
+                        <div class="info-bar">
+                            <div class="col-xs-8 text-left pull-left">
+                                <p class="margin-bottom-zero ellipsis"><a ng-href="#/item/{{item.id}}">{{item.data.itemTitle}}</a>
+                                </p>
 
-								<p class="margin-bottom-zero ellipsis">{{item.data.summary}}</p>
-							</div>
-							<div class="col-xs-4 text-right pull-right padding-left-zero">
-								<span class="icon icon-map-marker icon-sm" style="color:#fff;"></span>
-								<span class="miles">{{item.data.distanceText}}</span>
-							</div>
-						</div>
-					</div>
-					<!--</div>-->
-				</div>
-			</div>
-		</div>
-		<div ng-include="'templates/layouts/bottom-menu.html'"></div>
-	</div>
+                                <p class="margin-bottom-zero ellipsis">{{item.data.summary}}</p>
+                            </div>
+                            <div class="col-xs-4 text-right pull-right padding-left-zero">
+                                <span class="icon icon-map-marker icon-sm" style="color:#fff;"></span>
+                                <span class="miles">{{item.data.distanceText}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+        <div ng-include="'templates/layouts/bottom-menu.html'"></div>
+    </div>
 </div>

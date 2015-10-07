@@ -237,6 +237,14 @@
                     ContentSections.info.data.content.images[newIndex] = temp;
                     $scope.$digest();
                 };
+
+                // initialize carousel data
+                if (!ContentSections.info.data.content.images)
+                    ContentSections.editor.loadItems([]);
+                else
+                    ContentSections.editor.loadItems(ContentSections.info.data.content.images);
+
+
                 /**
                  * ContentSections.getTemplate() used to download csv template
                  */

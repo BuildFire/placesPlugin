@@ -1,8 +1,8 @@
 (function (angular) {
     angular
         .module('placesWidget')
-        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance','$routeParams','$timeout',
-            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance,$routeParams,$timeout) {
+        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance', '$routeParams', '$timeout',
+            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $routeParams, $timeout) {
 
                 AppConfig.changeBackgroundTheme();
                 var WidgetSections = this;
@@ -147,10 +147,11 @@
                  * loadMoreSections method loads the sections in list page.
                  */
                 WidgetSections.loadMoreSections = function () {
-                    console.log('widget load more called');
+                    //alert('widget load more called');
                     if (WidgetSections.isBusy && !WidgetSections.noMoreSections) {
                         return;
                     }
+                    //alert(1);
                     updateGetOptions();
                     WidgetSections.isBusy = true;
                     Sections.find(searchOptions).then(function success(result) {
@@ -164,7 +165,9 @@
                             searchOptions.skip = searchOptions.skip + _limit;
                             WidgetSections.noMoreSections = false;
                         }
+
                         WidgetSections.sections = WidgetSections.sections ? WidgetSections.sections.concat(result) : result;
+                        //alert(WidgetSections.sections.length);
                         WidgetSections.isBusy = false;
                     }, function fail() {
                         WidgetSections.isBusy = false;
@@ -235,11 +238,6 @@
                 };
 
                 function filterChanged() {
-                    /*if (selectedSectionsWatcherInit) {
-                        selectedSectionsWatcherInit = false;
-                        return;
-                    }*/
-                    //alert('filter called');
                     var itemFilter;
                     console.log('filter changed', WidgetSections.selectedSections);
                     if (WidgetSections.selectedSections.length) {
@@ -265,7 +263,6 @@
 
                 }
 
-                var selectedSectionsWatcherInit = true;
                 $scope.$watch(function () {
                     return WidgetSections.selectedSections;
                 }, filterChanged, true);
@@ -285,6 +282,16 @@
                             WidgetSections.selectedItemDistance = null;
                             WidgetSections.currentView = WidgetSections.info.data.settings.defaultView;
                             refreshSections();
+
+                            $timeout(function () {
+
+                                // set carousel in case of design layout change
+                                if ($("#carousel").html().trim() == '')
+                                    view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
+
+                                view.loadItems(event.data.content.images);
+                            },1500);
+
                         }
                     }
                     else if (event.tag === "items") {
@@ -373,15 +380,14 @@
                         };
                     PlaceInfo.get().then(success, error);
 
-                    if($routeParams.sectionId)
-                    {
+                    if ($routeParams.sectionId) {
                         // have to get sections explicitly in item list view
                         Sections.find({}).then(function success(result) {
                             WidgetSections.sections = result;
                             WidgetSections.selectedSections = [$routeParams.sectionId];
                             $timeout(function () {
                                 $("a[section-id=" + $routeParams.sectionId + "]").addClass('active');
-                            },1000);
+                            }, 1000);
 
                         }, function () {
 
