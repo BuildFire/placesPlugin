@@ -121,8 +121,8 @@
                                     break;
                                 case PATHS.SECTION:
                                     url = url + "items";
-                                    if (id) {
-                                        url = url + "/" + id;
+                                    if (secId) {
+                                        url = url + "/" + secId;
                                     }
                                     break;
                                 default :

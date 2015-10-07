@@ -6,6 +6,7 @@
 
                 AppConfig.changeBackgroundTheme();
                 var WidgetSections = this;
+                WidgetSections.sectionId=$routeParams.sectionId;
                 WidgetSections.showMenu = false;
                 WidgetSections.menuTab = 'Category';
                 WidgetSections.selectedSections = [];
@@ -432,13 +433,16 @@
                     return WidgetSections.items;
                 }, getItemsDistance);
 
-               /* //syn with widget side
-                Messaging.sendMessageToControl({
-                    name: EVENTS.ROUTE_CHANGE,
-                    message: {
-                        path: PATHS.HOME
-                    }
-                });*/
+                //syn with widget side
+                if($routeParams.sectionId){
+                    Messaging.sendMessageToControl({
+                        name: EVENTS.ROUTE_CHANGE,
+                        message: {
+                            path: PATHS.SECTION,
+                            secId:$routeParams.sectionId
+                        }
+                    });
+                }
 
                 /**
                  * will called when controller scope has been destroyed.

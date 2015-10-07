@@ -34,16 +34,6 @@
                     controllerAs: 'WidgetSections',
                     controller: 'WidgetSectionsCtrl'
                 })
-                .when('/items', {
-                    templateUrl: 'templates/section.html',
-                    controllerAs: 'WidgetSection',
-                    controller: 'WidgetSectionCtrl'
-                })
-                .when('/item/:itemId', {
-                    templateUrl: 'templates/item.html',
-                    controllerAs: 'WidgetItem',
-                    controller: 'WidgetItemCtrl'
-                })
                 .when('/item/:sectionId/:itemId', {
                     templateUrl: 'templates/item.html',
                     controllerAs: 'WidgetItem',
@@ -58,7 +48,7 @@
         }])
         .run(['Location', 'Messaging', 'EVENTS', 'PATHS', function (Location, Messaging, EVENTS, PATHS) {
             Messaging.onReceivedMessage = function (event) {
-                console.log('Messaging000000000000000000000-----------------------------------------------', event);
+                console.log('Messaging000000000000000000000------on Widget Side-----------------------------------------', event);
                 if (event) {
                     switch (event.name) {
                         case EVENTS.ROUTE_CHANGE:
@@ -72,17 +62,14 @@
                                     if (secId && id) {
                                         url = url+"/"+secId + "/" + id;
                                     }
-                                    else if (id) {
-                                        url = url + "/" + id;
-                                    }
                                     break;
                                 case PATHS.HOME:
                                     url = url + "home";
                                     break;
                                 case PATHS.SECTION:
-                                    if (id) {
+                                    if (secId) {
                                         url = url + "items";
-                                        url = url + "/" + id;
+                                        url = url + "/" + secId;
                                     }
                                     else {
                                         url = url + "home";
