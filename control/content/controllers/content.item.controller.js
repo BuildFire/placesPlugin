@@ -8,6 +8,7 @@
         .controller('ContentItemCtrl', ['$scope', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout', 'EVENTS', 'PATHS', 'Messaging',
             function ($scope, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout, EVENTS, PATHS, Messaging) {
 
+                console.log('Route PArams------------------------------',$routeParams);
                 var tmrDelayForItem = null
                     , Items = new DB(COLLECTIONS.Items)
                     , _data = {
@@ -279,7 +280,9 @@
                     name: EVENTS.ROUTE_CHANGE,
                     message: {
                         path: PATHS.ITEM,
-                        id: ContentItem.item ? ContentItem.item.id : ""
+                        //id: ContentItem.item ? ContentItem.item.id : "",
+                        id: $routeParams.itemId,
+                        secId: $routeParams.sectionId
                     }
                 });
 

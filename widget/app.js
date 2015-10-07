@@ -34,12 +34,7 @@
                     controllerAs: 'WidgetSections',
                     controller: 'WidgetSectionsCtrl'
                 })
-                .when('/items', {
-                    templateUrl: 'templates/section.html',
-                    controllerAs: 'WidgetSection',
-                    controller: 'WidgetSectionCtrl'
-                })
-                .when('/item/:itemId', {
+                .when('/item/:sectionId/:itemId', {
                     templateUrl: 'templates/item.html',
                     controllerAs: 'WidgetItem',
                     controller: 'WidgetItemCtrl'
@@ -51,31 +46,33 @@
                 })
                 .otherwise('/');
         }])
-        .run(['Location','Messaging','EVENTS','PATHS', function (Location,Messaging,EVENTS,PATHS) {
+        .run(['Location', 'Messaging', 'EVENTS', 'PATHS', function (Location, Messaging, EVENTS, PATHS) {
             Messaging.onReceivedMessage = function (event) {
+                console.log('Messaging000000000000000000000------on Widget Side-----------------------------------------', event);
                 if (event) {
                     switch (event.name) {
                         case EVENTS.ROUTE_CHANGE:
                             var path = event.message.path,
-                                id = event.message.id;
+                                id = event.message.id,
+                                secId = event.message.secId;
                             var url = "#/";
                             switch (path) {
                                 case PATHS.ITEM:
                                     url = url + "item";
-                                    if (id) {
-                                        url = url + "/" + id;
+                                    if (secId && id) {
+                                        url = url+"/"+secId + "/" + id;
                                     }
                                     break;
                                 case PATHS.HOME:
                                     url = url + "home";
                                     break;
                                 case PATHS.SECTION:
-                                    if (id) {
+                                    if (secId) {
                                         url = url + "items";
-                                        url = url + "/" + id;
+                                        url = url + "/" + secId;
                                     }
-                                    else{
-                                        url=url+"home";
+                                    else {
+                                        url = url + "home";
                                     }
                                     break;
                                 default :
@@ -89,7 +86,7 @@
             };
             buildfire.deeplink.getData(function (data) {
                 if (data) {
-                    console.log('data---',data);
+                    console.log('data---', data);
                     Location.go("#/item/" + JSON.parse(data).id);
                 }
 

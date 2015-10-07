@@ -244,7 +244,7 @@
                     name: EVENTS.ROUTE_CHANGE,
                     message: {
                         path: PATHS.SECTION,
-                        id: ContentItems.section
+                        secId: $routeParams.sectionId
                     }
                 });
 

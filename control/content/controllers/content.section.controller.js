@@ -231,8 +231,7 @@
                 Messaging.sendMessageToWidget({
                     name: EVENTS.ROUTE_CHANGE,
                     message: {
-                        path: PATHS.SECTION,
-                        id: ContentSection.section ? ContentSection.section.id : ""
+                        path: PATHS.HOME
                     }
                 });
 
