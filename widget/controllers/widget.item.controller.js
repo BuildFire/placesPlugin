@@ -137,7 +137,8 @@
                 name: EVENTS.ROUTE_CHANGE,
                 message: {
                     path: PATHS.ITEM,
-                    id: $routeParams.itemId
+                    id: $routeParams.itemId,
+                    secId:$routeParams.sectionId
                 }
             });
 

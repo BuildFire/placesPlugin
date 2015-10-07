@@ -432,13 +432,13 @@
                     return WidgetSections.items;
                 }, getItemsDistance);
 
-                //syn with widget side
+               /* //syn with widget side
                 Messaging.sendMessageToControl({
                     name: EVENTS.ROUTE_CHANGE,
                     message: {
                         path: PATHS.HOME
                     }
-                });
+                });*/
 
                 /**
                  * will called when controller scope has been destroyed.

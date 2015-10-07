@@ -44,6 +44,11 @@
                     controllerAs: 'WidgetItem',
                     controller: 'WidgetItemCtrl'
                 })
+                .when('/item/:sectionId/:itemId', {
+                    templateUrl: 'templates/item.html',
+                    controllerAs: 'WidgetItem',
+                    controller: 'WidgetItemCtrl'
+                })
                 .when('/item', {
                     templateUrl: 'templates/item.html',
                     controllerAs: 'WidgetItem',
@@ -51,18 +56,23 @@
                 })
                 .otherwise('/');
         }])
-        .run(['Location','Messaging','EVENTS','PATHS', function (Location,Messaging,EVENTS,PATHS) {
+        .run(['Location', 'Messaging', 'EVENTS', 'PATHS', function (Location, Messaging, EVENTS, PATHS) {
             Messaging.onReceivedMessage = function (event) {
+                console.log('Messaging000000000000000000000-----------------------------------------------', event);
                 if (event) {
                     switch (event.name) {
                         case EVENTS.ROUTE_CHANGE:
                             var path = event.message.path,
-                                id = event.message.id;
+                                id = event.message.id,
+                                secId = event.message.secId;
                             var url = "#/";
                             switch (path) {
                                 case PATHS.ITEM:
                                     url = url + "item";
-                                    if (id) {
+                                    if (secId && id) {
+                                        url = url+"/"+secId + "/" + id;
+                                    }
+                                    else if (id) {
                                         url = url + "/" + id;
                                     }
                                     break;
@@ -74,8 +84,8 @@
                                         url = url + "items";
                                         url = url + "/" + id;
                                     }
-                                    else{
-                                        url=url+"home";
+                                    else {
+                                        url = url + "home";
                                     }
                                     break;
                                 default :
@@ -89,7 +99,7 @@
             };
             buildfire.deeplink.getData(function (data) {
                 if (data) {
-                    console.log('data---',data);
+                    console.log('data---', data);
                     Location.go("#/item/" + JSON.parse(data).id);
                 }
 
