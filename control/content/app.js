@@ -62,7 +62,26 @@
                 .when('/items/:sectionId', {
                     templateUrl: 'templates/items.html',
                     controllerAs: 'ContentItems',
-                    controller: 'ContentItemsCtrl'
+                    controller: 'ContentItemsCtrl',
+                    resolve: {
+                        placesInfo: ['DB', 'COLLECTIONS', '$q', function (DB, COLLECTIONS, $q) {
+                            var PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
+                                , deferred = $q.defer()
+                                , success = function (result) {
+                                    if (Object.keys(result.data).length > 0) {
+                                        deferred.resolve(result);
+                                    }
+                                    else {
+                                        deferred.resolve(null);
+                                    }
+                                }
+                                , error = function (err) {
+                                    deferred.resolve(null);
+                                };
+                            PlaceInfo.get().then(success, error);
+                            return deferred.promise;
+                        }]
+                    }
                 })
                 .when('/section', {
                     templateUrl: 'templates/section.html',
@@ -78,18 +97,22 @@
         }])
         .run(['Location', 'Messaging', 'EVENTS', 'PATHS', function (Location, Messaging, EVENTS, PATHS) {
             // Handler to receive message from widget
-            /*Messaging.onReceivedMessage = function (event) {
-                console.log('Event rcv-----------------------------?????????????????????????????????---------------********************* in Control Panal side----', event);
+            Messaging.onReceivedMessage = function (event) {
+                console.log('Event rcv-----on Control Side------------------------?????????????????????????????????---------------********************* in Control Panal side----', event);
                 if (event) {
                     switch (event.name) {
                         case EVENTS.ROUTE_CHANGE:
                             var path = event.message.path,
-                                id = event.message.id;
+                                id = event.message.id,
+                                secId = event.message.secId;
                             var url = "#/";
                             switch (path) {
                                 case PATHS.ITEM:
                                     url = url + "item";
-                                    if (id) {
+                                    if (secId && id) {
+                                        url = url + "/" +secId+ "/" + id;
+                                    }
+                                    else if(id){
                                         url = url + "/" + id;
                                     }
                                     break;
@@ -110,7 +133,7 @@
                             break;
                     }
                 }
-            };*/
+            };
         }]);
 })
 (window.angular, window.buildfire);

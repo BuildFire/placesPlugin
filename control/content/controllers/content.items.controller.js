@@ -8,8 +8,8 @@
     /**
      * Inject dependency
      */
-        .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'DB', 'COLLECTIONS', 'Modals', 'Orders', 'OrdersItems', 'Messaging', 'EVENTS', 'PATHS', 'Location',
-            function ($scope, $routeParams, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location) {
+        .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'DB', 'COLLECTIONS', 'Modals', 'Orders', 'OrdersItems', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'placesInfo',
+            function ($scope, $routeParams, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo) {
 
                 /**
                  * Create instance of Sections and Items db collection
@@ -49,9 +49,8 @@
                 var ContentItems = this;
                 ContentItems.section = $routeParams.sectionId;
                 ContentItems.isBusy = false;
-                /* tells if data is being fetched*/
                 ContentItems.items = null;
-                ContentItems.info = angular.copy(placeInfoData);
+                ContentItems.info = null;
                 ContentItems.masterInfoData = null;
                 ContentItems.sortOptions = OrdersItems.options;
                 ContentItems.itemSortableOptions = {disabled: false};
@@ -60,6 +59,14 @@
                     skip: _skip,
                     limit: _limit + 1 // the plus one is to check if there are any more
                 };
+
+                if (placesInfo) {
+                    updateMasterInfoData(placesInfo);
+                    ContentItems.info = placesInfo;
+                } else {
+                    updateMasterInfoData(placeInfoData);
+                    ContentItems.info = angular.copy(placeInfoData);
+                }
 
                 var updateSearchOptions = function () {
                     var order;
@@ -93,20 +100,6 @@
                     return angular.equals(obj, ContentItems.masterInfoData);
                 }
 
-                function init() {
-                    var success = function (result) {
-                            console.info('Init placeInfoData success result:', result);
-                            if (Object.keys(result.data).length > 0) {
-                                ContentItems.info = result;
-                                updateMasterInfoData(ContentItems.info);
-                            }
-                        }
-                        , error = function (err) {
-                            console.error('Error while getting data', err);
-                        };
-                    PlaceInfo.get().then(success, error);
-                }
-
                 function saveInfoData(_info) {
                     PlaceInfo.save(_info.data).then(function (data) {
                         updateMasterInfoData(_info);
@@ -125,10 +118,6 @@
                         }, 1000);
                     }
                 }
-
-                updateMasterInfoData(ContentItems.info);
-
-                init();
 
                 /**
                  * ContentItems.toggleSortOrder() to change the sort by
