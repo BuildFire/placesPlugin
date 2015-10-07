@@ -22,7 +22,7 @@
         //injected ngRoute for routing
         //injected ui.bootstrap for angular bootstrap component
         //injected ui.sortable for manual ordering of list
-        .config(['$routeProvider', function ($routeProvider) {
+        .config(['$routeProvider','$httpProvider', function ($routeProvider,$httpProvider) {
             $routeProvider
                 .when('/', {
                     templateUrl: 'templates/sections.html',
@@ -94,6 +94,42 @@
                     controller: 'ContentSectionCtrl'
                 })
                 .otherwise('/');
+
+            var interceptor=['$q',function($q){
+                var counter=0;
+
+                return {
+
+                    request: function (config) {
+                        buildfire.spinner.show();
+                        //NProgress.start();
+
+                        counter++;
+                        return config;
+                    },
+                    response: function (response) {
+                        counter--;
+                        if(counter===0)
+                        {
+
+                            buildfire.spinner.hide();
+                        }
+                        return response;
+                    },
+                    responseError:function(rejection){
+                        counter--;
+                        if(counter===0)
+                        {
+
+                            buildfire.spinner.hide();
+                        }
+
+                        return $q.reject(rejection);
+                    }
+                };
+            }];
+
+            $httpProvider.interceptors.push(interceptor);
         }])
         .run(['Location', 'Messaging', 'EVENTS', 'PATHS', function (Location, Messaging, EVENTS, PATHS) {
             // Handler to receive message from widget
