@@ -27,7 +27,27 @@
                 .when('/', {
                     templateUrl: 'templates/sections.html',
                     controllerAs: 'ContentSections',
-                    controller: 'ContentSectionsCtrl'
+                    controller: 'ContentSectionsCtrl',
+                    resolve: {
+                        PlaceInfoData: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', function ($q, DB, COLLECTIONS, Orders, Location) {
+                            var deferred = $q.defer();
+                            var PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
+
+                            PlaceInfo.get().then(function success(result) {
+                                    if (result && result.id && result.data) {
+                                        deferred.resolve(result);
+                                    }
+                                    else {
+                                        deferred.resolve(null);
+                                    }
+                                },
+                                function fail(err) {
+                                    deferred.resolve(null);
+                                }
+                            );
+                            return deferred.promise;
+                        }]
+                    }
                 })
                 .when('/item/:sectionId', {
                     templateUrl: 'templates/item.html',
@@ -58,7 +78,7 @@
         }])
         .run(['Location', 'Messaging', 'EVENTS', 'PATHS', function (Location, Messaging, EVENTS, PATHS) {
             // Handler to receive message from widget
-            Messaging.onReceivedMessage = function (event) {
+            /*Messaging.onReceivedMessage = function (event) {
                 console.log('Event rcv-----------------------------?????????????????????????????????---------------********************* in Control Panal side----', event);
                 if (event) {
                     switch (event.name) {
@@ -90,7 +110,7 @@
                             break;
                     }
                 }
-            };
+            };*/
         }]);
 })
 (window.angular, window.buildfire);

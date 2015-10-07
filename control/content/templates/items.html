@@ -53,7 +53,7 @@
              infinite-scroll-disabled="ContentItems.noMore"
              infinite-scroll-container="'#scroll-infinite'">
             <div ui-sortable="ContentItems.itemSortableOptions" ng-model="ContentItems.items">
-                <div class="well text-center margin-bottom-zero border-none" ng-hide="ContentItems.items">
+                <div class="well text-center margin-bottom-zero border-none" ng-hide="ContentItems.items.length">
                     <p class="margin-zero">No items found.</p>
                 </div>
                 <div class="d-item double-line square-icon clearfix" ng-show="ContentItems.items"

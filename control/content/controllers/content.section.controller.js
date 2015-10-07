@@ -137,6 +137,7 @@
                                 updateItemData(_section);
                             }
                             else {
+                                _section.data.rank = (placeInfoData.data.content.rankOfLastItem || 0) + 10;
                                 _section.data.dateCreated = +new Date();
                                 addNewItem(_section);
                             }
