@@ -3,40 +3,52 @@ describe('Unit : Controller - ContentSectionsCtrl', function () {
 // load the controller's module
     beforeEach(module('placesContent'));
 
-    var
-        ContentSections, scope, PlaceInfo, DB, $timeout, COLLECTIONS, Orders, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire,Modals;
+    var ContentSections, scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, PlaceInfoData;
 
-    beforeEach(inject(function ($controller, _$rootScope_, _ContentSections_, _PlaceInfo_, _DB_, _$timeout_, _COLLECTIONS, _Orders_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _$csv_, _Buildfire_,_Modals_) {
+    beforeEach(inject(function ($controller, _$rootScope_, _DB_, _$timeout_, _COLLECTIONS_, _Orders_, _OrdersItems_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _$csv_, _Buildfire_, _Modals_) {
             scope = _$rootScope_.$new();
-            ContentSections = _ContentSections_;
-            PlaceInfo = _PlaceInfo_;
             DB = _DB_;
             $timeout = _$timeout_;
             COLLECTIONS = _COLLECTIONS_;
             Orders = _Orders_;
+            OrdersItems = _OrdersItems_;
             AppConfig = _AppConfig_;
             Messaging = _Messaging_;
             EVENTS = _EVENTS_;
             PATHS = _PATHS_;
             $csv = _$csv_;
             Modals = _Modals_;
-            Buildfire = _Buildfire_;
+            Buildfire = {
+                components: {
+                    carousel: {
+                        editor: function (a) {
+                           return {loadItems:function(){}}
+                        }
+                    },
+                    actionItems: {
+                        sortableList: {}
+                    }
+                }
+            };
+            //Buildfire = _Buildfire_;
+            //PlaceInfoData = _PlaceInfoData_;
 
             ContentSections = $controller('ContentSectionsCtrl', {
                 $scope: scope,
-                ContentHome: {id: '1', data: {content: {sortBy: 'title'}}},
-                PlaceInfo: PlaceInfo,
+                PlaceInfoData: {id: '1', data: {content: {sortBy: 'title'}}},
                 DB: DB,
                 $timeout: $timeout,
                 COLLECTIONS: COLLECTIONS,
                 Orders: Orders,
+                OrdersItems: OrdersItems,
                 AppConfig: AppConfig,
                 Messaging: Messaging,
                 EVENTS: EVENTS,
                 PATHS: PATHS,
                 $csv: $csv,
                 Modals: Modals,
-                Buildfire:Buildfire
+                Buildfire:Buildfire,
+                PlaceInfoData: PlaceInfoData
             });
         })
     )
@@ -67,12 +79,25 @@ describe('Unit : Controller - ContentSectionsCtrl', function () {
         it('it should pass if PATHS function is defined', function () {
             expect(PATHS).not.toBeUndefined();
         });
-     /*   it('it should pass if ContentHome.info function is defined', function () {
-            expect(ContentHome.info).not.toBeUndefined();
+        it('it should pass if ContentHome.info function is defined', function () {
+            expect(ContentSections.info).not.toBeUndefined();
         });
         it('it should pass if ContentHome.bodyWYSIWYGOptions is defined', function () {
-            expect(ContentHome.bodyWYSIWYGOptions).not.toBeUndefined();
-        });*/
+            expect(ContentSections.bodyWYSIWYGOptions).not.toBeUndefined();
+        });
+    });
+
+    xdescribe('ContentSections.getTemplate ', function () {
+        var spy;
+        beforeEach(inject( function(){
+            spy = spyOn($csv,'download').and.callFake(function() {
+
+            });
+
+        }));
+        it('it should pass if it calls $csv download', function () {
+            expect(spy).toHaveBeenCalled();
+        });
     });
 
     /*describe('Unit: ContentHome.rmCarouselImage', function () {
