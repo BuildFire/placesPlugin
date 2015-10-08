@@ -6,21 +6,26 @@
             </div>
         </div>
         <div class="padded text-left">
-            <p class="margin-bottom-zero" ng-if="WidgetSections.info.data.content.descriptionHTML"
-               ng-bind-html="WidgetSections.info.data.content.descriptionHTML | safeHtml">
-                {{WidgetSections.info.data.content.descriptionHTML}}</p>
+            <p class="margin-bottom-zero" ng-if="WidgetSections.placesInfo.data.content.descriptionHTML"
+               ng-bind-html="WidgetSections.placesInfo.data.content.descriptionHTML | safeHtml">
+                {{WidgetSections.placesInfo.data.content.descriptionHTML}}</p>
         </div>
         <div ng-show="WidgetSections.showSections">
-            <div ng-repeat="item in WidgetSections.sections">
-                <div class="plugin-banner clearfix border-bottom-grey">
-                    <div class="plugin-slide text-center">
-                        <img default-image ng-src="{{item.data.mainImage}}">
+            <div infinite-scroll-distance="0"
+                 infinite-scroll="WidgetSections.loadMoreSections()"
+                 infinite-scroll-disabled="WidgetSections.noMoreSections"
+                 infinite-scroll-container="'#scroll-infinite'">
+                <div ng-repeat="item in WidgetSections.sections">
+                    <div class="plugin-banner clearfix border-bottom-grey">
+                        <div class="plugin-slide text-center">
+                            <img default-image ng-src="{{item.data.mainImage}}">
+                        </div>
                     </div>
-                </div>
-                <div class="padded text-left">
-                    <a class="text-primary" ng-href="#/items/{{item.id}}">{{item.data.secTitle}}</a>
+                    <div class="padded text-left">
+                        <a class="text-primary" ng-href="#/items/{{item.id}}">{{item.data.secTitle}}</a>
 
-                    <p class="margin-zero">{{item.data.secSummary}}</p>
+                        <p class="margin-zero">{{item.data.secSummary}}</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -29,11 +34,11 @@
                  infinite-scroll="WidgetSections.getMoreItems()"
                  infinite-scroll-disabled="WidgetSections.noMoreItems"
                  infinite-scroll-container="'#scroll-infinite'">-->
-            <div ng-hide="WidgetSections.items.length">
+            <div ng-hide="WidgetSections.locationData.items.length">
                 No Item(s) to show
             </div>
             <div class="plugin-banner has-info-bar clearfix"
-                 ng-repeat="item in WidgetSections.items | orderBy: WidgetSections.itemsOrder">
+                 ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
                 <div class="plugin-slide text-center">
                     <img default-image="" ng-src="{{item.data.listImage}}">
                 </div>

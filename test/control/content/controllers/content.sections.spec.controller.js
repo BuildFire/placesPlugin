@@ -1,42 +1,58 @@
-describe('Unit : Controller - ContentSectionsCtrl', function () {
+xdescribe('Unit : Controller - ContentSectionsCtrl', function () {
 
 // load the controller's module
     beforeEach(module('placesContent'));
 
-    var
-        ContentSections, scope, PlaceInfo, DB, $timeout, COLLECTIONS, Orders, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire,Modals;
+    var $q, ContentSections, scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, PlaceInfoData;
 
-    beforeEach(inject(function ($controller, _$rootScope_, _ContentSections_, _PlaceInfo_, _DB_, _$timeout_, _COLLECTIONS, _Orders_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _$csv_, _Buildfire_,_Modals_) {
+    beforeEach(inject(function (_$q_, $controller, _$rootScope_, _DB_, _$timeout_, _COLLECTIONS_, _Orders_, _OrdersItems_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _$csv_, _Buildfire_, _Modals_) {
             scope = _$rootScope_.$new();
-            ContentSections = _ContentSections_;
-            PlaceInfo = _PlaceInfo_;
             DB = _DB_;
             $timeout = _$timeout_;
             COLLECTIONS = _COLLECTIONS_;
             Orders = _Orders_;
+            OrdersItems = _OrdersItems_;
             AppConfig = _AppConfig_;
             Messaging = _Messaging_;
             EVENTS = _EVENTS_;
             PATHS = _PATHS_;
             $csv = _$csv_;
             Modals = _Modals_;
-            Buildfire = _Buildfire_;
+            Buildfire = {
+                components: {
+                    carousel: {
+                        editor: function (a) {
+                            return {
+                                loadItems: function () {
+                                }
+                            }
+                        }
+                    },
+                    actionItems: {
+                        sortableList: {}
+                    }
+                }
+            };
+            $q = _$q_;
+            //Buildfire = _Buildfire_;
+            //PlaceInfoData = _PlaceInfoData_;
 
             ContentSections = $controller('ContentSectionsCtrl', {
                 $scope: scope,
-                ContentHome: {id: '1', data: {content: {sortBy: 'title'}}},
-                PlaceInfo: PlaceInfo,
+                PlaceInfoData: {id: '1', data: {content: {sortBy: 'title'}}},
                 DB: DB,
                 $timeout: $timeout,
                 COLLECTIONS: COLLECTIONS,
                 Orders: Orders,
+                OrdersItems: OrdersItems,
                 AppConfig: AppConfig,
                 Messaging: Messaging,
                 EVENTS: EVENTS,
                 PATHS: PATHS,
                 $csv: $csv,
                 Modals: Modals,
-                Buildfire:Buildfire
+                Buildfire: Buildfire,
+                PlaceInfoData: PlaceInfoData
             });
         })
     )
@@ -67,148 +83,270 @@ describe('Unit : Controller - ContentSectionsCtrl', function () {
         it('it should pass if PATHS function is defined', function () {
             expect(PATHS).not.toBeUndefined();
         });
-     /*   it('it should pass if ContentHome.info function is defined', function () {
-            expect(ContentHome.info).not.toBeUndefined();
+        it('it should pass if ContentHome.info function is defined', function () {
+            expect(ContentSections.info).not.toBeUndefined();
         });
         it('it should pass if ContentHome.bodyWYSIWYGOptions is defined', function () {
-            expect(ContentHome.bodyWYSIWYGOptions).not.toBeUndefined();
-        });*/
+            expect(ContentSections.bodyWYSIWYGOptions).not.toBeUndefined();
+        });
+        it('it should pass if ContentHome.itemSortableOptions is defined', function () {
+            expect(ContentSections.itemSortableOptions).not.toBeUndefined();
+        });
     });
 
-    /*describe('Unit: ContentHome.rmCarouselImage', function () {
-        var spy,removePopupModal;
-        beforeEach(inject( function(){
-
-
-
-
-            //Modals=jasmine.createSpyObj('Modals',['removePopupModal']);
-            spy = spyOn(Modals,'removePopupModal').and.callFake(function() {
-                var deferred = $q.defer();
-                deferred.resolve('Remote call result');
-                return deferred.promise;
+    describe('Bulk Upload', function () {
+        var spy;
+        beforeEach(inject(function () {
+            spy = spyOn($csv, 'download').and.callFake(function () {
             });
 
         }));
-
-        it('it should do nothing if index is invalid', function () {
-            ContentHome.info.data.content.images = [];
-            ContentHome.rmCarouselImage(-1);
-            expect( spy).not.toHaveBeenCalled();
+        it('ContentSections.getTemplate should be defined', function () {
+            expect(ContentSections.getTemplate).toBeDefined();
         });
-
-        it('it should work fine if index is valid', function () {
-            ContentHome.info.data.content.images = ['test'];
-            ContentHome.rmCarouselImage(0);
-            expect( spy).toHaveBeenCalled();//With({title:'test'});
-            //expect(ContentHome.info.data.content.images.length).toEqual(0);
-
+        it('ContentSections.getTemplate should pass if it calls $csv download', function () {
+            ContentSections.getTemplate();
+            expect(spy).toHaveBeenCalled();
+        });
+        it('ContentSections.exportCSV should be defined', function () {
+            expect(ContentSections.exportCSV).toBeDefined();
         });
 
     });
 
-    describe('Unit: ContentHome.removeListItem', function () {
-        var spy,removePopupModal;
-        beforeEach(inject( function(){
-
-
-
-
-            //Modals=jasmine.createSpyObj('Modals',['removePopupModal']);
-            spy = spyOn(Modals,'removePopupModal').and.callFake(function() {
-                var deferred = $q.defer();
-                deferred.resolve('Remote call result');
-                return deferred.promise;
+    describe('Search Sections Module', function () {
+        var spy;
+        beforeEach(inject(function () {
+            spy = spyOn(ContentSections, 'getMore').and.callFake(function () {
             });
 
         }));
-
-        it('it should do nothing if index is invalid', function () {
-            ContentHome.items = ['test'];
-            ContentHome.removeListItem(-1);
-            expect(spy).not.toHaveBeenCalled();
+        it('ContentSections.searchListSection should be defined', function () {
+            expect(ContentSections.searchListSection).toBeDefined();
         });
 
-        it('it should work fine if index is valid', function () {
-            ContentHome.items = ['test'];
-            ContentHome.removeListItem(0);
-            expect(spy).toHaveBeenCalled();//With({title:'test'});
-            //expect(ContentHome.info.data.content.images.length).toEqual(0);
-
-        });
-
-    });
-
-    describe('Unit: ContentHome.searchListItem', function () {
-        var spy,removePopupModal;
-        beforeEach(inject( function(){
-
-            spy = spyOn(ContentHome,'getMore').and.callFake(function() {
-            });
-
-        }));
-
-        it('it should call getMore when called', function () {
-            ContentHome.searchListItem('');
+        it('ContentSections.searchListSection should pass if it calls getMore', function () {
+            ContentSections.searchListSection('test');
             expect(spy).toHaveBeenCalled();
         });
 
     });
 
-    describe('Unit: ContentHome.toggleSortOrder', function () {
-        var spy,removePopupModal;
-        beforeEach(inject( function(){
-
-            spy = spyOn(ContentHome,'getMore').and.callFake(function() {
+    describe('Sort Sections Module', function () {
+        var spy;
+        beforeEach(inject(function () {
+            spy = spyOn(ContentSections, 'getMore').and.callFake(function () {
             });
 
         }));
+        it('ContentSections.toggleSortOrder should be defined', function () {
+            expect(ContentSections.toggleSortOrder).toBeDefined();
+        });
 
-        it('should be able to call getMore when called with proper arguments', function () {
-            ContentHome.toggleSortOrder('Newest');
+        it('ContentSections.toggleSortOrder should pass if it calls getMore if parameter name is passed correctly', function () {
+            ContentSections.toggleSortOrder('Manually');
             expect(spy).toHaveBeenCalled();
         });
 
-        it('should do nothing when arguments is falsy', function () {
-            ContentHome.toggleSortOrder('');
+        it('ContentSections.toggleSortOrder should pass if it doesnt call getMore if parameter name is not passed correctly', function () {
+            ContentSections.toggleSortOrder(null);
             expect(spy).not.toHaveBeenCalled();
         });
 
-
     });
 
-    describe('Unit: ContentHome.getMore', function () {
-        var spy,removePopupModal, MediaContent  = {find:function(){}};
-        beforeEach(inject( function(){
-
-            spy = spyOn(MediaContent,'find').and.callFake(function() {
+    describe('Delete Sections Module', function () {
+        var spy;
+        beforeEach(inject(function () {
+            spy = spyOn(Modals, 'removePopupModal').and.callFake(function () {
+                console.log('called');
                 var deferred = $q.defer();
                 deferred.resolve(['Remote call result']);
                 return deferred.promise;
             });
 
         }));
+        it('ContentSections.removeListSection should be defined', function () {
+            expect(ContentSections.removeListSection).toBeDefined();
+        });
 
-        xit('should be able to call MediaContent.find when called with proper arguments', function () {
-            ContentHome.isBusy = false;
-            ContentHome.getMore();
+        it('ContentSections.removeListSection should not do anything if parameter is undefined', function () {
+            ContentSections.removeListSection();
+            expect(spy).not.toHaveBeenCalled();
+        });
+
+        it('ContentSections.removeListSection should call popup function if parameter is correct', function () {
+            ContentSections.sections = [{}];
+            ContentSections.removeListSection(0);
             expect(spy).toHaveBeenCalled();
         });
 
-        it('should do nothing when isBusy(fetching)', function () {
-            ContentHome.isBusy = true;
-            ContentHome.getMore();
-            expect(spy).not.toHaveBeenCalled();
+    });
+
+
+    describe('Carousel', function () {
+
+        it('ContentSections.editor.onAddItems should pass if it initialises the ContentSections.info.data.content.images to blank array if it doesnt exyst', function () {
+            ContentSections.info.data.content.images = null;
+            ContentSections.editor.onAddItems(['test']);
+            expect(ContentSections.info.data.content.images.length).toEqual(1);
         });
 
-        it('should do nothing when noMore (all data loaded)', function () {
-            ContentHome.noMore = false;
-            ContentHome.getMore();
-            expect(spy).not.toHaveBeenCalled();
+        it('ContentSections.editor.onDeleteItem should pass if it deletes the item at given index', function () {
+            ContentSections.info.data.content.images = ['test'];
+            ContentSections.editor.onDeleteItem({}, 0);
+            expect(ContentSections.info.data.content.images.length).toEqual(0);
         });
 
+        it('ContentSections.editor.onItemChange should call popup function if parameter is correct', function () {
+            ContentSections.info.data.content.images = ['and'];
+            ContentSections.editor.onItemChange('test', 0);
+            expect(ContentSections.info.data.content.images[0]).toEqual('test');
+        });
 
-    });*/
+        it('ContentSections.editor.onOrderChange should pass if it changes the index of given item', function () {
+            ContentSections.info.data.content.images = ['and', 'test', 'if'];
+            ContentSections.editor.onOrderChange('test', 1, 2);
+            expect(ContentSections.info.data.content.images[2]).toEqual('test');
+        });
+
+    });
+
+
+    /*describe('Unit: ContentHome.rmCarouselImage', function () {
+     var spy,removePopupModal;
+     beforeEach(inject( function(){
+
+
+
+
+     //Modals=jasmine.createSpyObj('Modals',['removePopupModal']);
+     spy = spyOn(Modals,'removePopupModal').and.callFake(function() {
+     var deferred = $q.defer();
+     deferred.resolve('Remote call result');
+     return deferred.promise;
+     });
+
+     }));
+
+     it('it should do nothing if index is invalid', function () {
+     ContentHome.info.data.content.images = [];
+     ContentHome.rmCarouselImage(-1);
+     expect( spy).not.toHaveBeenCalled();
+     });
+
+     it('it should work fine if index is valid', function () {
+     ContentHome.info.data.content.images = ['test'];
+     ContentHome.rmCarouselImage(0);
+     expect( spy).toHaveBeenCalled();//With({title:'test'});
+     //expect(ContentHome.info.data.content.images.length).toEqual(0);
+
+     });
+
+     });
+
+     describe('Unit: ContentHome.removeListItem', function () {
+     var spy,removePopupModal;
+     beforeEach(inject( function(){
+
+
+
+
+     //Modals=jasmine.createSpyObj('Modals',['removePopupModal']);
+     spy = spyOn(Modals,'removePopupModal').and.callFake(function() {
+     var deferred = $q.defer();
+     deferred.resolve('Remote call result');
+     return deferred.promise;
+     });
+
+     }));
+
+     it('it should do nothing if index is invalid', function () {
+     ContentHome.items = ['test'];
+     ContentHome.removeListItem(-1);
+     expect(spy).not.toHaveBeenCalled();
+     });
+
+     it('it should work fine if index is valid', function () {
+     ContentHome.items = ['test'];
+     ContentHome.removeListItem(0);
+     expect(spy).toHaveBeenCalled();//With({title:'test'});
+     //expect(ContentHome.info.data.content.images.length).toEqual(0);
+
+     });
+
+     });
+
+     describe('Unit: ContentHome.searchListItem', function () {
+     var spy,removePopupModal;
+     beforeEach(inject( function(){
+
+     spy = spyOn(ContentHome,'getMore').and.callFake(function() {
+     });
+
+     }));
+
+     it('it should call getMore when called', function () {
+     ContentHome.searchListItem('');
+     expect(spy).toHaveBeenCalled();
+     });
+
+     });
+
+     describe('Unit: ContentHome.toggleSortOrder', function () {
+     var spy,removePopupModal;
+     beforeEach(inject( function(){
+
+     spy = spyOn(ContentHome,'getMore').and.callFake(function() {
+     });
+
+     }));
+
+     it('should be able to call getMore when called with proper arguments', function () {
+     ContentHome.toggleSortOrder('Newest');
+     expect(spy).toHaveBeenCalled();
+     });
+
+     it('should do nothing when arguments is falsy', function () {
+     ContentHome.toggleSortOrder('');
+     expect(spy).not.toHaveBeenCalled();
+     });
+
+
+     });
+
+     describe('Unit: ContentHome.getMore', function () {
+     var spy,removePopupModal, MediaContent  = {find:function(){}};
+     beforeEach(inject( function(){
+
+     spy = spyOn(MediaContent,'find').and.callFake(function() {
+     var deferred = $q.defer();
+     deferred.resolve(['Remote call result']);
+     return deferred.promise;
+     });
+
+     }));
+
+     xit('should be able to call MediaContent.find when called with proper arguments', function () {
+     ContentHome.isBusy = false;
+     ContentHome.getMore();
+     expect(spy).toHaveBeenCalled();
+     });
+
+     it('should do nothing when isBusy(fetching)', function () {
+     ContentHome.isBusy = true;
+     ContentHome.getMore();
+     expect(spy).not.toHaveBeenCalled();
+     });
+
+     it('should do nothing when noMore (all data loaded)', function () {
+     ContentHome.noMore = false;
+     ContentHome.getMore();
+     expect(spy).not.toHaveBeenCalled();
+     });
+
+
+     });*/
 
 })
 ;

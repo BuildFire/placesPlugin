@@ -6,9 +6,9 @@
             </div>
         </div>
         <div class="text-left padded padding-bottom-zero clearfix">
-            <p class="margin-bottom-zero" ng-if="WidgetSections.info.data.content.descriptionHTML"
-               ng-bind-html="WidgetSections.info.data.content.descriptionHTML | safeHtml">
-                {{WidgetSections.info.data.content.descriptionHTML}}</p>
+            <p class="margin-bottom-zero" ng-if="WidgetSections.placesInfo.data.content.descriptionHTML"
+               ng-bind-html="WidgetSections.placesInfo.data.content.descriptionHTML | safeHtml">
+                {{WidgetSections.placesInfo.data.content.descriptionHTML}}</p>
         </div>
 
         <div class="padded padding-top-zero">
@@ -39,10 +39,10 @@
                      infinite-scroll="WidgetSections.getMoreItems()"
                      infinite-scroll-disabled="WidgetSections.noMoreItems"
                      infinite-scroll-container="'#scroll-infinite'">-->
-                <div ng-hide="WidgetSections.items.length">
+                <div ng-hide="WidgetSections.locationData.items.length">
                     No Item(s) to show
                 </div>
-                <div class="plugin-banner has-info-bar clearfix" ng-repeat="item in WidgetSections.items | orderBy: WidgetSections.itemsOrder">
+                <div class="plugin-banner has-info-bar clearfix" ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
                     <div class="plugin-slide text-center">
                         <img default-image="" ng-src="{{item.data.listImage}}">
                     </div>

@@ -2,8 +2,8 @@
     'use strict';
     angular
         .module('placesContent')
-        .controller('ContentSectionsCtrl', ['$scope', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Modals',
-            function ($scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals) {
+        .controller('ContentSectionsCtrl', ['$scope', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Modals', 'placesInfo',
+            function ($scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, placesInfo) {
 
                 var header = {
                         mainImage: 'Section Image',
@@ -23,12 +23,13 @@
                     }
                     , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
                     , Sections = new DB(COLLECTIONS.Sections)
+                    , Items = new DB(COLLECTIONS.Items)
                     , records = []
                     , _infoData = {
                         data: {
                             content: {
                                 images: [],
-                                descriptionHTML: '',
+                                descriptionHTML: '<p>&nbsp;<br></p>',
                                 description: '<p>&nbsp;<br></p>',
                                 sortBy: Orders.ordersMap.Newest,
                                 rankOfLastItem: '',
@@ -48,23 +49,37 @@
                         }
                     };
 
-
                 var ContentSections = this;
-                ContentSections.info = angular.copy(_infoData);
+                ContentSections.info = null;
                 ContentSections.masterInfo = null;
+
+                if (placesInfo)
+                {
+                    updateMasterInfo(placesInfo);
+                    ContentSections.info = placesInfo;
+                }
+                else {
+                    updateMasterInfo(_infoData);
+                    ContentSections.info = _infoData;
+                }
+
+
                 ContentSections.isBusy = false;
                 ContentSections.sections = [];
                 ContentSections.sortOptions = Orders.options;
+
                 ContentSections.itemSortableOptions = {
                     handle: '> .cursor-grab',
                     disabled: !(ContentSections.info.data.content.sortBy === Orders.ordersMap.Manually),
                     stop: function (e, ui) {
+                        console.log(e);
+                        console.log(ui);
                         var endIndex = ui.item.sortable.dropindex,
                             maxRank = 0,
-                            draggedItem = ContentSections.items[endIndex];
+                            draggedItem = ContentSections.sections[endIndex];
                         if (draggedItem) {
-                            var prev = ContentSections.items[endIndex - 1],
-                                next = ContentSections.items[endIndex + 1];
+                            var prev = ContentSections.sections[endIndex - 1],
+                                next = ContentSections.sections[endIndex + 1];
                             var isRankChanged = false;
                             if (next) {
                                 if (prev) {
@@ -82,14 +97,17 @@
                                 }
                             }
                             if (isRankChanged) {
-                                Sections.update(draggedItem.id, draggedItem.data, function (err) {
-                                    if (err) {
-                                        console.error('Error during updating rank');
-                                    } else {
-                                        if (ContentSections.data.content.rankOfLastItem < maxRank) {
-                                            ContentSections.data.content.rankOfLastItem = maxRank;
-                                        }
-                                    }
+
+                                Sections.update(draggedItem.id, draggedItem.data).then(function () {
+                                    Sections.find({}).then(function (result) {
+                                        console.log('updated sections', result);
+                                        //ContentSections.sections = result;
+                                        ContentSections.info.data.content.rankOfLastItem = maxRank;
+                                    }, function () {
+
+                                    });
+                                }, function () {
+
                                 });
                             }
                         }
@@ -113,6 +131,7 @@
                     var order;
                     if (ContentSections.info && ContentSections.info.data && ContentSections.info.data.content)
                         order = Orders.getOrder(ContentSections.info.data.content.sortBy || Orders.ordersMap.Default);
+
                     if (order) {
                         var sort = {};
                         sort[order.key] = order.order;
@@ -124,42 +143,12 @@
                     }
                 };
 
-                var init = function () {
-                    var success = function (result) {
-                            console.info('Init success result:', result);
-                            if (Object.keys(result.data).length > 0) {
-                                ContentSections.info = result;
-                            }
-                            // initialize carousel data
-                            if (ContentSections.info && ContentSections.info.data.content && ContentSections.info.data.content.images) {
-                                ContentSections.editor.loadItems(ContentSections.info.data.content.images);
-                            }
-                            else {
-                                ContentSections.editor.loadItems([]);
-                            }
-                            updateMasterInfo(ContentSections.info);
-
-                            if (tmrDelayForMedia) {
-                                clearTimeout(tmrDelayForMedia)
-                            }
-                        }
-                        , error = function (err) {
-                            console.error('Error while getting data', err);
-                            if (tmrDelayForMedia) {
-                                clearTimeout(tmrDelayForMedia)
-                            }
-
-                        };
-                    PlaceInfo.get().then(success, error);
-                };
-
                 function saveData(_info) {
                     PlaceInfo.save(_info.data).then(function (data) {
                         updateMasterInfo(_info);
                         AppConfig.setSettings(_info.data);
                         if (_info.id)
                             AppConfig.setAppId(_info.id);
-                        console.info('-----------saved---------Data-------', _info);
                     }, function (err) {
                         console.error('Error-------', err);
                     });
@@ -218,17 +207,11 @@
                     });
                 }
 
-                Buildfire.deeplink.createLink('section:7');
-                Buildfire.deeplink.getData(function (data) {
-                    console.log('DeepLInk calleed', data);
-                    if (data) alert('deep link data: ' + data);
-                });
+                /* Buildfire.deeplink.createLink('section:7');
+                 Buildfire.deeplink.getData(function (data) {
+                 if (data) alert('deep link data: ' + data);
+                 });*/
 
-                updateMasterInfo(ContentSections.info);
-                /**
-                 *  init() function invocation to fetch previously saved user's data from datastore.
-                 */
-                init();
 
                 // this method will be called when a new item added to the list
                 ContentSections.editor.onAddItems = function (items) {
@@ -254,6 +237,14 @@
                     ContentSections.info.data.content.images[newIndex] = temp;
                     $scope.$digest();
                 };
+
+                // initialize carousel data
+                if (!ContentSections.info.data.content.images)
+                    ContentSections.editor.loadItems([]);
+                else
+                    ContentSections.editor.loadItems(ContentSections.info.data.content.images);
+
+
                 /**
                  * ContentSections.getTemplate() used to download csv template
                  */
@@ -264,9 +255,11 @@
                         secSummary: '',
                         itemListBGImage: ''
                     }];
+                    console.log(1);
                     var csv = $csv.jsonToCsv(angular.toJson(templateData), {
                         header: header
                     });
+                    console.log(2);
                     $csv.download(csv, "Template.csv");
                 };
                 /**
@@ -276,7 +269,6 @@
                     $csv.import(headerRow).then(function (rows) {
                         //ContentSections.loading = true;
                         if (rows && rows.length) {
-                            console.log(ContentSections.info);
                             var rank = ContentSections.info.data.content.rankOfLastItem || 0;
                             for (var index = 0; index < rows.length; index++) {
                                 rank += 10;
@@ -349,11 +341,35 @@
                         return;
                     }
                     var item = ContentSections.sections[_index];
+
                     if ("undefined" !== typeof item) {
+                        console.log(4);
                         Modals.removePopupModal({title: ''}).then(function (result) {
                             if (result) {
                                 Sections.delete(item.id).then(function (data) {
                                     ContentSections.sections.splice(_index, 1);
+
+                                    var itemOptions = {
+                                        filter: {'$and': [{"$json.itemTitle": {"$regex": '/*'}}, {"$json.sections": {"$all": [item.id]}}]}
+                                    };
+                                    Items.find(itemOptions).then(function (items) {
+                                        console.log(items);
+                                        items.forEach(function (_item) {
+                                            if (_item.data.sections.length == 1) {
+                                                Items.delete(_item.id, function () {
+                                                }, function () {
+                                                });
+                                            }
+                                            else {
+                                                _item.data.sections.splice(_item.data.sections.indexOf(item.id), 1);
+                                                Items.update(_item.id, _item.data, function () {
+                                                }, function () {
+                                                });
+                                            }
+                                        });
+                                    }, function () {
+                                    });
+
                                 }, function (err) {
                                     console.error('Error while deleting an item-----', err);
                                 });
@@ -414,15 +430,11 @@
                     if (!name) {
                         console.info('There was a problem sorting your data');
                     } else {
-                        /* reset Search options */
+                        var sortOrder = Orders.getOrder(name || Orders.ordersMap.Default);
                         ContentSections.noMore = false;
                         searchOptions.skip = 0;
-                        /* Reset skip to ensure search begins from scratch*/
-
                         ContentSections.isBusy = false;
-                        var sortOrder = Orders.getOrder(name || Orders.ordersMap.Default);
                         ContentSections.info.data.content.sortBy = name;
-                        ContentSections.info.data.content.sortByValue = sortOrder.value;
                         ContentSections.sections = [];
                         ContentSections.getMore();
                         ContentSections.itemSortableOptions.disabled = !(ContentSections.info.data.content.sortBy === Orders.ordersMap.Manually);

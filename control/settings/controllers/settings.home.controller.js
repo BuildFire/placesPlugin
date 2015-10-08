@@ -2,7 +2,7 @@
     'use strict';
     angular
         .module('placesSettings')
-        .controller('SettingsHomeCtrl', ['$scope', 'Orders', 'COLLECTIONS', 'DB', '$timeout', 'Buildfire', 'EVENTS', 'Messaging', function ($scope, Orders, COLLECTIONS, DB, $timeout, Buildfire, EVENTS, Messaging) {
+        .controller('SettingsHomeCtrl', ['$scope', 'Orders', 'COLLECTIONS', 'DB', '$timeout', 'placesInfo', function ($scope, Orders, COLLECTIONS, DB, $timeout, placesInfo) {
             var placeInfo = new DB(COLLECTIONS.PlaceInfo);
             var SettingsHome = this
                 , _data = {
@@ -27,30 +27,15 @@
                 }
                 , tmrDelay = null;
 
-            SettingsHome.placeInfo = {data: angular.copy(_data)};
-            SettingsHome._lastSaved = angular.copy(SettingsHome.placeInfo);
-
-            /**
-             * init() private function
-             * It is used to fetch previously saved user's data
-             */
-            var init = function () {
-                var success = function (result) {
-                        if (result && result.data && result.id) {
-                            SettingsHome.placeInfo = result;
-                            SettingsHome._lastSaved = angular.copy(SettingsHome.placeInfo);
-                        }
-                    }
-                    , error = function (err) {
-                        console.error('Error while getting data', err);
-                    };
-                placeInfo.get().then(success, error);
-            };
-
-            /**
-             * init() function invocation to fetch previously saved user's data from datastore.
-             */
-            init();
+            /* populate VM with resolve */
+            if (placesInfo) {
+                SettingsHome.placeInfo = placesInfo;
+                SettingsHome._lastSaved = angular.copy(SettingsHome.placeInfo);
+            }
+            else {
+                SettingsHome.placeInfo = {data: angular.copy(_data)};
+                SettingsHome._lastSaved = angular.copy(SettingsHome.placeInfo);
+            }
 
             /**
              * function isUnchanged(data)

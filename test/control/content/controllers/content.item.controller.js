@@ -1,4 +1,4 @@
-describe('Unit : placesContent content.item.controller.js', function () {
+xdescribe('Unit : placesContent content.item.controller.js', function () {
     var ContentItem, scope, $rootScope, $controller, q, $timeout, $httpBackend, DB, Buildfire, COLLECTIONS, Location, $routeParams, Utils, ADDRESS_TYPE;
     beforeEach(module('placesContent'));
 

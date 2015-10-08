@@ -1,23 +1,67 @@
 (function (angular, window) {
     angular
         .module('placesWidget')
-        .controller('WidgetItemCtrl', ['$scope', 'COLLECTIONS', 'DB', '$routeParams', 'Buildfire', '$rootScope', 'GeoDistance', 'Messaging', 'Location', 'EVENTS', 'PATHS', function ($scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS) {
-            var WidgetItem = this, view = null;
-            WidgetItem.placeInfo = null;
-            console.log('WidgetItemCtrl called');
+        .controller('WidgetItemCtrl', ['$scope', 'COLLECTIONS', 'DB', '$routeParams', 'Buildfire', '$rootScope', 'GeoDistance', 'Messaging', 'Location', 'EVENTS', 'PATHS', 'AppConfig', 'placesInfo', 'Orders', 'OrdersItems', function ($scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS, AppConfig, placesInfo, Orders, OrdersItems) {
+            console.log('Item Controller Loaded---------------------');
+            AppConfig.changeBackgroundTheme();
+            var WidgetItem = this
+                , view = null
+                , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
+                , Items = new DB(COLLECTIONS.Items)
+                , itemLat = ''
+                , itemLng = ''
+                , _infoData = {
+                    data: {
+                        content: {
+                            images: [],
+                            descriptionHTML: '<p>&nbsp;<br></p>',
+                            description: '<p>&nbsp;<br></p>',
+                            sortBy: Orders.ordersMap.Newest,
+                            rankOfLastItem: '',
+                            sortByItems: OrdersItems.ordersMap.Newest
+                        },
+                        design: {
+                            secListLayout: "sec-list-1-1",
+                            mapLayout: "map-1",
+                            itemListLayout: "item-list-1",
+                            itemDetailsLayout: "item-details-1",
+                            secListBGImage: ""
+                        },
+                        settings: {
+                            defaultView: "list",
+                            showDistanceIn: "miles"
+                        }
+                    }
+                };
+
+            if (placesInfo) {
+                WidgetItem.placeInfo = placesInfo;
+            }
+            else {
+                WidgetItem.placeInfo = _infoData;
+            }
+
+            WidgetItem.locationData = {
+                items: null,
+                currentCoordinates: null
+            };
             WidgetItem.item = {data: {}};
-            var PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
-            var Items = new DB(COLLECTIONS.Items);
+
             if ($routeParams.itemId) {
                 Items.getById($routeParams.itemId).then(
                     function (result) {
                         WidgetItem.item = result;
+                        if (result.data && result.data.backgroundImage)
+                            AppConfig.changeBackgroundTheme(result.data.backgroundImage);
                         if (WidgetItem.item.data && WidgetItem.item.data.images)
                             initCarousel(WidgetItem.item.data.images);
-                        WidgetItem.locationData = {
-                            items: null,
-                            currentCoordinates: [WidgetItem.item.data.address.lng, WidgetItem.item.data.address.lat]
-                        };
+                        itemLat = (WidgetItem.item.data.address && WidgetItem.item.data.address.lat) ? WidgetItem.item.data.address.lat : null;
+                        itemLng = (WidgetItem.item.data.address && WidgetItem.item.data.address.lng) ? WidgetItem.item.data.address.lng : null;
+                        if (itemLat && itemLng) {
+                            WidgetItem.locationData.currentCoordinates = [itemLng, itemLat];
+                        } else {
+                            WidgetItem.locationData.currentCoordinates = null;
+                        }
                     },
                     function (err) {
                         console.error('Error while getting item-', err);
@@ -50,11 +94,6 @@
 
             };
 
-            WidgetItem.locationData = {
-                items: null,
-                currentCoordinates: [77, 28]
-            };
-
             function getGeoLocation() {
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (position) {
@@ -79,24 +118,7 @@
             else
                 getGeoLocation(); // get data if localStorage is not supported
 
-
-            /**
-             * init() private function
-             * It is used to fetch previously saved user's data
-             */
-            var init = function () {
-                var success = function (result) {
-                        if (result && result.data && result.id) {
-                            WidgetItem.placeInfo = result;
-                        }
-                    }
-                    , error = function (err) {
-                        console.error('Error while getting data', err);
-                    };
-                PlaceInfo.get().then(success, error);
-            };
-
-            $rootScope.$on("Carousel:LOADED", function () {
+            $scope.$on("Carousel:LOADED", function () {
                 console.log('carousel added------', WidgetItem.item);
                 if (!view) {
                     console.log('if------', view);
@@ -109,13 +131,21 @@
                 }
             });
 
-            Buildfire.datastore.onUpdate(function (event) {
-                console.log('ON UPDATE called============', event);
+            var clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
                 if (event.tag == 'items' && event.data) {
+                    WidgetItem.locationData = {
+                        items: null,
+                        currentCoordinates: [event.data.address.lng, event.data.address.lat]
+                    };
                     WidgetItem.item = event;
+                    AppConfig.changeBackgroundTheme(WidgetItem.item.data.backgroundImage);
                     $scope.$digest();
                     if (event.data.images)
                         initCarousel(event.data.images);
+                }
+                else if (event.tag == 'placeInfo' && event.data) {
+                    WidgetItem.placeInfo = event;
+                    $scope.$digest();
                 }
             });
 
@@ -124,7 +154,8 @@
                 name: EVENTS.ROUTE_CHANGE,
                 message: {
                     path: PATHS.ITEM,
-                    id:$routeParams.itemId
+                    id: $routeParams.itemId,
+                    secId: $routeParams.sectionId
                 }
             });
 
@@ -135,8 +166,10 @@
             }
 
             /**
-             * init() function invocation to fetch previously saved user's data from datastore.
+             * will called when controller scope has been destroyed.
              */
-            init();
+            $scope.$on("$destroy", function () {
+                clearOnUpdateListener.clear();
+            });
         }]);
 })(window.angular, window);

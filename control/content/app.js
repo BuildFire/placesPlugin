@@ -22,56 +22,66 @@
         //injected ngRoute for routing
         //injected ui.bootstrap for angular bootstrap component
         //injected ui.sortable for manual ordering of list
-        .config(['$routeProvider', function ($routeProvider) {
+        .config(['$routeProvider','$httpProvider', function ($routeProvider,$httpProvider) {
             $routeProvider
                 .when('/', {
                     templateUrl: 'templates/sections.html',
                     controllerAs: 'ContentSections',
-                    controller: 'ContentSectionsCtrl'
-                })
-                .when('/item/:sectionId', {
-                    templateUrl: 'templates/item.html',
-                    controllerAs: 'ContentItem',
-                    controller: 'ContentItemCtrl',
+                    controller: 'ContentSectionsCtrl',
                     resolve: {
-                        item: function () {
-                            return null;
-                        }
-                    }
-                })
-                .when('/item/:sectionId/:itemId',
-                {
-                    templateUrl: 'templates/item.html',
-                    controllerAs: 'ContentItem',
-                    controller: 'ContentItemCtrl',
-                    resolve: {
-                        item: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', '$route', function ($q, DB, COLLECTIONS, Orders, Location, $route) {
+                        placesInfo: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', function ($q, DB, COLLECTIONS, Orders, Location) {
                             var deferred = $q.defer();
-                            var Items = new DB(COLLECTIONS.Items);
-                            var itemId = $route.current.params.itemId;
-                            if (itemId) {
-                                Items.getById(itemId).then(function success(result) {
-                                        if (result && result.data) {
-                                            console.log(';;;;;;;;;;;', result.data);
-                                            deferred.resolve(result);
-                                        }
-                                        else {
-                                            Location.goToHome();
-                                        }
-                                    },
-                                    function fail() {
-                                        Location.goToHome();
+                            var PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
+
+                            PlaceInfo.get().then(function success(result) {
+                                    if (result && result.id && result.data) {
+                                        deferred.resolve(result);
                                     }
-                                );
-                            }
+                                    else {
+                                        deferred.resolve(null);
+                                    }
+                                },
+                                function fail(err) {
+                                    deferred.resolve(null);
+                                }
+                            );
                             return deferred.promise;
                         }]
                     }
                 })
+                .when('/item/:sectionId', {
+                    templateUrl: 'templates/item.html',
+                    controllerAs: 'ContentItem',
+                    controller: 'ContentItemCtrl'
+                })
+                .when('/item/:sectionId/:itemId', {
+                    templateUrl: 'templates/item.html',
+                    controllerAs: 'ContentItem',
+                    controller: 'ContentItemCtrl'
+                })
                 .when('/items/:sectionId', {
                     templateUrl: 'templates/items.html',
                     controllerAs: 'ContentItems',
-                    controller: 'ContentItemsCtrl'
+                    controller: 'ContentItemsCtrl',
+                    resolve: {
+                        placesInfo: ['DB', 'COLLECTIONS', '$q', function (DB, COLLECTIONS, $q) {
+                            var PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
+                                , deferred = $q.defer()
+                                , success = function (result) {
+                                    if (Object.keys(result.data).length > 0) {
+                                        deferred.resolve(result);
+                                    }
+                                    else {
+                                        deferred.resolve(null);
+                                    }
+                                }
+                                , error = function (err) {
+                                    deferred.resolve(null);
+                                };
+                            PlaceInfo.get().then(success, error);
+                            return deferred.promise;
+                        }]
+                    }
                 })
                 .when('/section', {
                     templateUrl: 'templates/section.html',
@@ -83,28 +93,63 @@
                     controllerAs: 'ContentSection',
                     controller: 'ContentSectionCtrl'
                 })
-                .when('/test', {
-                    templateUrl: 'templates/modals/section.html',
-                    controllerAs: 'ContentSectionPopup',
-                    controller: 'ContentSectionPopupCtrl'
-                })
                 .otherwise('/');
+
+            var interceptor=['$q',function($q){
+                var counter=0;
+
+                return {
+
+                    request: function (config) {
+                        buildfire.spinner.show();
+                        //NProgress.start();
+
+                        counter++;
+                        return config;
+                    },
+                    response: function (response) {
+                        counter--;
+                        if(counter===0)
+                        {
+
+                            buildfire.spinner.hide();
+                        }
+                        return response;
+                    },
+                    responseError:function(rejection){
+                        counter--;
+                        if(counter===0)
+                        {
+
+                            buildfire.spinner.hide();
+                        }
+
+                        return $q.reject(rejection);
+                    }
+                };
+            }];
+
+            $httpProvider.interceptors.push(interceptor);
         }])
-        .run(['Location', 'Messaging','EVENTS','PATHS', function (Location, Messaging,EVENTS,PATHS) {
+        .run(['Location', 'Messaging', 'EVENTS', 'PATHS', function (Location, Messaging, EVENTS, PATHS) {
             // Handler to receive message from widget
             Messaging.onReceivedMessage = function (event) {
-                console.log('Event rcv-----------------------------?????????????????????????????????---------------********************* in Control Panal side----', event);
+                console.log('Event rcv-----on Control Side------------------------?????????????????????????????????---------------********************* in Control Panal side----', event);
                 if (event) {
                     switch (event.name) {
                         case EVENTS.ROUTE_CHANGE:
                             var path = event.message.path,
-                                id = event.message.id;
+                                id = event.message.id,
+                                secId = event.message.secId;
                             var url = "#/";
                             switch (path) {
                                 case PATHS.ITEM:
                                     url = url + "item";
-                                    if (id) {
-                                        url = url + "/" + id;
+                                    if (secId && id) {
+                                        url = url + "/" +secId+ "/" + id;
+                                    }
+                                    else if(secId){
+                                        url = url + "/" + secId;
                                     }
                                     break;
                                 case PATHS.HOME:
@@ -112,8 +157,8 @@
                                     break;
                                 case PATHS.SECTION:
                                     url = url + "items";
-                                    if (id) {
-                                        url = url + "/" + id;
+                                    if (secId) {
+                                        url = url + "/" + secId;
                                     }
                                     break;
                                 default :

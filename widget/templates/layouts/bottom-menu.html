@@ -1,7 +1,7 @@
 <div ng-class="WidgetSections.showMenu ? 'active' : ''" class="bottom fixed-bottom clearfix transition-third">
     <div>
         <div class="extra-links">
-            <a ng-click="WidgetSections.currentView = 'map'"  class="my-location" style="background:#09a3ee;">
+            <a ng-click="WidgetSections.currentView = 'map';WidgetSections.refreshLocation()"  class="my-location" style="background:#09a3ee;">
                 <span class="icon icon-aim"></span>
             </a>
             <a ng-click="WidgetSections.currentView = 'list'" ng-hide="WidgetSections.currentView == 'list'" class="view-type" style="background:#09a3ee;">
@@ -28,25 +28,26 @@
         </div>
         <div class="tab-content clearfix">
             <div ng-class="WidgetSections.menuTab == 'Category' ? 'active' : ''" class="category-tab tab">
-                <a ng-class="(WidgetSections.selectedSections.length == 0 && WidgetSections.showSections == false) ? 'active' : ''"
+                <a ng-show="WidgetSections.placesInfo.data.content.showAllItems" ng-class="(WidgetSections.selectedSections.length == 0 && WidgetSections.showSections == false) ? 'active' : ''"
                    ng-click="WidgetSections.resetSectionFilter()" class="list-item">All Locations</a>
                 <a ng-click="WidgetSections.toggleSectionSelection($index,$event)"
                    ng-repeat="item in WidgetSections.sections"
-                   class="list-item section-filter">{{item.data.secTitle}}</a>
+                   class="list-item section-filter"
+                   ng-class="WidgetSections.selectedSections.indexOf(item.id) > -1 ? 'active':''"
+                   section-id="{{item.id}}">{{item.data.secTitle}}</a>
             </div>
             <div ng-class="WidgetSections.menuTab == 'Sorting' ? 'active' : ''" class="sorting-tab tab padded">
                 <div class="distance">
                     <p class="text-primary">Distance</p>
-                    <p ng-show="WidgetSections.info.data.settings.showDistanceIn == 'miles'">50 to 200 miles</p>
-                    <p ng-hide="WidgetSections.info.data.settings.showDistanceIn == 'miles'">80 to 320 km</p>
+                    <p ng-show="WidgetSections.placesInfo.data.settings.showDistanceIn == 'miles'">0 to 200 miles</p>
+                    <p ng-hide="WidgetSections.placesInfo.data.settings.showDistanceIn == 'miles'">0 to 320 km</p>
                     <rzslider rz-slider-tpl-url="templates/layouts/slider-template.html"
                               rz-slider-floor="distanceSlider.floor"
                               rz-slider-ceil="distanceSlider.ceil"
                               rz-slider-model="distanceSlider.min"
                               rz-slider-high="distanceSlider.max"
                               rz-slider-step="5"
-                              rz-slider-hide-limit-labels="true"
-                              rz-slider-on-end="distanceSliderChange()"></rzslider>
+                              rz-slider-hide-limit-labels="true"></rzslider>
                 </div>
                 <div class="sort-items margin-top-twenty">
                     <p class="text-primary">Sort Items</p>

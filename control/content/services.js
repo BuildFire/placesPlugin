@@ -47,7 +47,7 @@
         .factory('OrdersItems', [function () {
             var ordersMap = {
                 Manually: "Manually",
-                Default: "Manually",
+                Default: "Newest",
                 Newest: "Newest",
                 Oldest: "Oldest",
                 ItemAZ: "Item A-Z",

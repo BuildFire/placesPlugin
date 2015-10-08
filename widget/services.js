@@ -44,6 +44,32 @@
                 }
             };
         }])
+        .factory('OrdersItems', [function () {
+            var ordersMap = {
+                Manually: "Manually",
+                Default: "Newest",
+                Newest: "Newest",
+                Oldest: "Oldest",
+                ItemAZ: "Item A-Z",
+                ItemZA: "Item Z-A"
+            };
+            var orders = [
+                {id: 1, name: "Manually", value: "Manually", key: "rank", order: 1},
+                {id: 1, name: "Newest", value: "Newest", key: "dateCreated", order: -1},
+                {id: 1, name: "Oldest", value: "Oldest", key: "dateCreated", order: 1},
+                {id: 1, name: "ItemA-Z", value: "Item A-Z", key: "itemTitle", order: 1},
+                {id: 1, name: "ItemZ-A", value: "Item Z-A", key: "itemTitle", order: -1}
+            ];
+            return {
+                ordersMap: ordersMap,
+                options: orders,
+                getOrder: function (name) {
+                    return orders.filter(function (order) {
+                        return order.name === name;
+                    })[0];
+                }
+            };
+        }])
         .factory('Orders', [function () {
             var ordersMap = {
                 Manually: "Manually",
@@ -59,6 +85,32 @@
                 {id: 1, name: "Oldest", value: "Oldest", key: "dateCreated", order: 1},
                 {id: 1, name: "Section Name A-Z", value: "Section Name A-Z", key: "secTitle", order: 1},
                 {id: 1, name: "Section Name Z-A", value: "Section Name Z-A", key: "secTitle", order: -1}
+            ];
+            return {
+                ordersMap: ordersMap,
+                options: orders,
+                getOrder: function (name) {
+                    return orders.filter(function (order) {
+                        return order.name === name;
+                    })[0];
+                }
+            };
+        }])
+        .factory('OrdersItems', [function () {
+            var ordersMap = {
+                Manually: "Manually",
+                Default: "Newest",
+                Newest: "Newest",
+                Oldest: "Oldest",
+                ItemAZ: "Item A-Z",
+                ItemZA: "Item Z-A"
+            };
+            var orders = [
+                {id: 1, name: "Manually", value: "Manually", key: "rank", order: 1},
+                {id: 1, name: "Newest", value: "Newest", key: "dateCreated", order: -1},
+                {id: 1, name: "Oldest", value: "Oldest", key: "dateCreated", order: 1},
+                {id: 1, name: "ItemA-Z", value: "Item A-Z", key: "itemTitle", order: 1},
+                {id: 1, name: "ItemZ-A", value: "Item Z-A", key: "itemTitle", order: -1}
             ];
             return {
                 ordersMap: ordersMap,
@@ -263,7 +315,7 @@
                 }
 
                 items.forEach(function (_dest) {
-                    if (_dest.data.address.lat && _dest.data.address.lng)
+                    if (_dest.data && _dest.data.address && _dest.data.address.lat && _dest.data.address.lng)
                         destinationsMap.push({lat: _dest.data.address.lat, lng: _dest.data.address.lng});
                     else
                         destinationsMap.push({lat: 0, lng: 0});

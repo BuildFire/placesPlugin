@@ -14,9 +14,10 @@ describe("DesignHomeCtrl", function () {
             $scope = $rootScope.$new();
             controller = $injector.get('$controller')('DesignHomeCtrl', {
                 $scope: $scope,
+                Orders: $injector.get('Orders'),
                 COLLECTIONS: $injector.get('COLLECTIONS'),
                 DB: $injector.get('DB'),
-                PlaceCenterInfo: {
+                placesInfo: {
                     id: '1', data: {
                         content: {
                             images: [],
@@ -45,9 +46,7 @@ describe("DesignHomeCtrl", function () {
                             controller._callback(null, {selectedFiles: ['test']});
                         }
                     }
-                },
-                EVENTS: $injector.get('EVENTS'),
-                Messaging: $injector.get('Messaging')
+                }
             });
             q = $q;
         });
@@ -63,8 +62,8 @@ describe("DesignHomeCtrl", function () {
             expect(controller.layouts.itemLayouts.length).toEqual(3);
         });
 
-        it('should initialize the itemLayouts to the default value', function () {
-            expect(controller.layouts.secListLayouts.length).toEqual(6);
+        it('should initialize the secListLayouts to the default value', function () {
+            expect(controller.layouts.secListLayouts.length).toEqual(3);
         });
 
         it('should initialize the itemLayouts to the default value', function () {
@@ -144,7 +143,7 @@ describe("DesignHomeCtrl", function () {
             };
             //controller.placeInfo = {};
             controller.placeInfo.data.design.secListBGImage = 'test';
-            controller.removeListBgImage();
+            //controller.removeListBgImage();
             $scope.$digest();
             expect(controller._lastSaved).not.toBeNull();
         });
@@ -159,7 +158,7 @@ describe("DesignHomeCtrl", function () {
 
             controller.removeListBgImage();
             $scope.$digest();
-            expect(controller.placeInfo.data.design.secListBGImage).toEqual('');
+            expect(controller.placeInfo.data.design.secListBGImage).toEqual(null);
         });
     });
 
