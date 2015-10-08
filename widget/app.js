@@ -137,9 +137,13 @@
                                     if (secId && id) {
                                         url = url+"/"+secId + "/" + id;
                                     }
+                                    else if(secId){
+                                        url = url + "/" + secId;
+                                    }
                                     break;
                                 case PATHS.HOME:
-                                    url = url + "home";
+                                    //url = url + "home";
+                                    Location.goToHome();
                                     break;
                                 case PATHS.SECTION:
                                     if (secId) {

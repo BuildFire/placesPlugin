@@ -2,7 +2,7 @@
     'use strict';
     angular
         .module('placesSettings')
-        .controller('SettingsHomeCtrl', ['$scope', 'Orders', 'COLLECTIONS', 'DB', '$timeout', 'Buildfire', 'EVENTS', 'Messaging', function ($scope, Orders, COLLECTIONS, DB, $timeout, Buildfire, EVENTS, Messaging) {
+        .controller('SettingsHomeCtrl', ['$scope', 'Orders', 'COLLECTIONS', 'DB', '$timeout', function ($scope, Orders, COLLECTIONS, DB, $timeout) {
             var placeInfo = new DB(COLLECTIONS.PlaceInfo);
             var SettingsHome = this
                 , _data = {
