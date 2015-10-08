@@ -2,7 +2,7 @@
     'use strict';
     angular
         .module('placesDesign')
-        .controller('DesignHomeCtrl', ['$scope', 'Orders', 'COLLECTIONS', 'DB', '$timeout', 'Buildfire', function ($scope, Orders, COLLECTIONS, DB, $timeout, Buildfire) {
+        .controller('DesignHomeCtrl', ['$scope', 'Orders', 'COLLECTIONS', 'DB', '$timeout', 'Buildfire', 'placesInfo', function ($scope, Orders, COLLECTIONS, DB, $timeout, Buildfire, placesInfo) {
             var DesignHome = this
                 , _data = {
                     content: {
@@ -27,8 +27,15 @@
                 , tmrDelay = null;
 
             /* populate VM with resolve */
-            DesignHome.placeInfo = {data: angular.copy(_data)};
-            DesignHome._lastSaved = angular.copy(DesignHome.placeInfo);
+            if (placesInfo) {
+                DesignHome.placeInfo = placesInfo;
+                DesignHome._lastSaved = angular.copy(DesignHome.placeInfo);
+            }
+            else {
+                DesignHome.placeInfo = {data: angular.copy(_data)};
+                DesignHome._lastSaved = angular.copy(DesignHome.placeInfo);
+            }
+
 
             /*Buildfire DB Service*/
 
@@ -40,28 +47,6 @@
                 secListLayouts: [{name: "sec-list-1-1"}, {name: "sec-list-2-1"}, {name: "sec-list-3-1"}],
                 mapLayouts: [{name: "map-1"}, {name: "map-2"}]
             };
-
-            /**
-             * init() private function
-             * It is used to fetch previously saved user's data
-             */
-            var init = function () {
-                var success = function (result) {
-                        if (result && result.data && result.id) {
-                            DesignHome.placeInfo = result;
-                            DesignHome._lastSaved = angular.copy(DesignHome.placeInfo);
-                        }
-                    }
-                    , error = function (err) {
-                        console.error('Error while getting data', err);
-                    };
-                PlaceCenter.get().then(success, error);
-            };
-
-            /**
-             * init() function invocation to fetch previously saved user's data from datastore.
-             */
-            init();
 
             DesignHome.changeLayout = function (layoutName, type) {
                 if (layoutName && DesignHome.placeInfo.data.design) {
