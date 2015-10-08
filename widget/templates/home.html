@@ -1,14 +1,14 @@
 <div>
-    <!--WidgetSections.info.data.settings.defaultView-->
+    <!--WidgetSections.placesInfo.data.settings.defaultView-->
     <div ng-switch="WidgetSections.currentView">
         <div ng-switch-when="list">
-            <div ng-if="WidgetSections.info.data.design.secListLayout"
-                 ng-include="'templates/layouts/' + WidgetSections.info.data.design.secListLayout+ '.html'">
+            <div ng-if="WidgetSections.placesInfo.data.design.secListLayout"
+                 ng-include="'templates/layouts/' + WidgetSections.placesInfo.data.design.secListLayout+ '.html'">
             </div>
         </div>
         <div ng-switch-when="map">
-            <div ng-if="WidgetSections.info.data.design.mapLayout"
-                 ng-include="'templates/layouts/' + WidgetSections.info.data.design.mapLayout+ '.html'">
+            <div ng-if="WidgetSections.placesInfo.data.design.mapLayout"
+                 ng-include="'templates/layouts/' + WidgetSections.placesInfo.data.design.mapLayout+ '.html'">
             </div>
         </div>
     </div>
