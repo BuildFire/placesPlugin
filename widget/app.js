@@ -27,12 +27,50 @@
                 .when('/', {
                     templateUrl: 'templates/home.html',
                     controllerAs: 'WidgetSections',
-                    controller: 'WidgetSectionsCtrl'
+                    controller: 'WidgetSectionsCtrl',
+                    resolve: {
+                        placesInfo: ['DB', 'COLLECTIONS', '$q', function (DB, COLLECTIONS, $q) {
+                            var PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
+                                , deferred = $q.defer()
+                                , success = function (result) {
+                                    if (Object.keys(result.data).length > 0) {
+                                        deferred.resolve(result);
+                                    }
+                                    else {
+                                        deferred.resolve(null);
+                                    }
+                                }
+                                , error = function (err) {
+                                    deferred.resolve(null);
+                                };
+                            PlaceInfo.get().then(success, error);
+                            return deferred.promise;
+                        }]
+                    }
                 })
                 .when('/items/:sectionId', {
                     templateUrl: 'templates/section.html',
                     controllerAs: 'WidgetSections',
-                    controller: 'WidgetSectionsCtrl'
+                    controller: 'WidgetSectionsCtrl',
+                    resolve: {
+                        placesInfo: ['DB', 'COLLECTIONS', '$q', function (DB, COLLECTIONS, $q) {
+                            var PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
+                                , deferred = $q.defer()
+                                , success = function (result) {
+                                    if (Object.keys(result.data).length > 0) {
+                                        deferred.resolve(result);
+                                    }
+                                    else {
+                                        deferred.resolve(null);
+                                    }
+                                }
+                                , error = function (err) {
+                                    deferred.resolve(null);
+                                };
+                            PlaceInfo.get().then(success, error);
+                            return deferred.promise;
+                        }]
+                    }
                 })
                 .when('/item/:sectionId/:itemId', {
                     templateUrl: 'templates/item.html',

@@ -2,8 +2,8 @@
     'use strict';
     angular
         .module('placesContent')
-        .controller('ContentSectionsCtrl', ['$scope', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Modals', 'PlaceInfoData',
-            function ($scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, PlaceInfoData) {
+        .controller('ContentSectionsCtrl', ['$scope', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Modals', 'placesInfo',
+            function ($scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, placesInfo) {
 
                 var header = {
                         mainImage: 'Section Image',
@@ -53,10 +53,10 @@
                 ContentSections.info = null;
                 ContentSections.masterInfo = null;
 
-                if (PlaceInfoData)
+                if (placesInfo)
                 {
-                    updateMasterInfo(PlaceInfoData);
-                    ContentSections.info = PlaceInfoData;
+                    updateMasterInfo(placesInfo);
+                    ContentSections.info = placesInfo;
                 }
                 else {
                     updateMasterInfo(_infoData);

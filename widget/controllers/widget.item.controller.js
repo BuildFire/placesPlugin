@@ -14,7 +14,6 @@
                 items: null,
                 currentCoordinates: null
             };
-            WidgetItem.placeInfo = null;
             WidgetItem.item = {data: {}};
 
             if ($routeParams.itemId) {
@@ -88,23 +87,6 @@
             else
                 getGeoLocation(); // get data if localStorage is not supported
 
-
-            /**
-             * init() private function
-             * It is used to fetch previously saved user's data
-             */
-            var init = function () {
-                var success = function (result) {
-                        if (result && result.data && result.id) {
-                            WidgetItem.placeInfo = result;
-                        }
-                    }
-                    , error = function (err) {
-                        console.error('Error while getting data', err);
-                    };
-                PlaceInfo.get().then(success, error);
-            };
-
             $scope.$on("Carousel:LOADED", function () {
                 console.log('carousel added------', WidgetItem.item);
                 if (!view) {
@@ -147,11 +129,6 @@
                     view.loadItems(images);
                 }
             }
-
-            /**
-             * init() function invocation to fetch previously saved user's data from datastore.
-             */
-            init();
 
             /**
              * will called when controller scope has been destroyed.
