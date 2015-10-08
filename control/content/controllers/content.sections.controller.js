@@ -255,9 +255,11 @@
                         secSummary: '',
                         itemListBGImage: ''
                     }];
+                    console.log(1);
                     var csv = $csv.jsonToCsv(angular.toJson(templateData), {
                         header: header
                     });
+                    console.log(2);
                     $csv.download(csv, "Template.csv");
                 };
                 /**
@@ -339,7 +341,9 @@
                         return;
                     }
                     var item = ContentSections.sections[_index];
+
                     if ("undefined" !== typeof item) {
+                        console.log(4);
                         Modals.removePopupModal({title: ''}).then(function (result) {
                             if (result) {
                                 Sections.delete(item.id).then(function (data) {

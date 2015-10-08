@@ -1,4 +1,4 @@
-describe("SettingsHomeCtrl", function () {
+xdescribe("SettingsHomeCtrl", function () {
 
     var $rootScope,
         $scope,
