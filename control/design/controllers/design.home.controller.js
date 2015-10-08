@@ -39,7 +39,7 @@
 
             /*Buildfire DB Service*/
 
-            var PlaceCenter = new DB(COLLECTIONS.PlaceInfo);
+            DesignHome._placeCenter = new DB(COLLECTIONS.PlaceInfo);
 
             DesignHome.layouts = {
                 itemListLayouts: [{name: "item-list-1"}, {name: "item-list-2"}],
@@ -89,7 +89,7 @@
                     }
                     if (newObj.id) {
                         tmrDelay = $timeout(function () {
-                            PlaceCenter.update(newObj.id, newObj.data).then(function (result) {
+                            DesignHome._placeCenter.update(newObj.id, newObj.data).then(function (result) {
                                 DesignHome._lastSaved = angular.copy(DesignHome.placeInfo);
                             }, function (err) {
                                 console.log(err);
@@ -98,7 +98,7 @@
                         }, 500);
                     } else {
                         tmrDelay = $timeout(function () {
-                            PlaceCenter.save(DesignHome.placeInfo.data).then(function success(result) {
+                            DesignHome._placeCenter.save(DesignHome.placeInfo.data).then(function success(result) {
                                 init();
                             }, function fail(err) {
                                 console.log(err);

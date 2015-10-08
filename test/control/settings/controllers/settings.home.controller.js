@@ -1,4 +1,4 @@
-xdescribe("SettingsHomeCtrl", function () {
+describe("SettingsHomeCtrl", function () {
 
     var $rootScope,
         $scope,
@@ -16,7 +16,7 @@ xdescribe("SettingsHomeCtrl", function () {
                 $scope: $scope,
                 COLLECTIONS: $injector.get('COLLECTIONS'),
                 DB: $injector.get('DB'),
-                PlaceInfo: {
+                placesInfo: {
                     id: '1', data: {
                         content: {
                             images: [],
@@ -39,9 +39,7 @@ xdescribe("SettingsHomeCtrl", function () {
                     }
                 },
                 $timeout: $injector.get('$timeout'),
-                Buildfire: $injector.get('Buildfire'),
-                EVENTS: $injector.get('EVENTS'),
-                Messaging: $injector.get('Messaging')
+                Buildfire: $injector.get('Buildfire')
             });
             q = $q;
         });
@@ -49,12 +47,12 @@ xdescribe("SettingsHomeCtrl", function () {
 
 
     describe('Initialization', function () {
-        it('should initialize the listLayouts to the default value', function () {
+        it('should initialize the placeInfo', function () {
             expect(controller.placeInfo).toBeDefined();
         });
 
-        it('should initialize the itemLayouts to the default value', function () {
-            expect(controller.change).toBeDefined();
+        it('should initialize the _lastSaved', function () {
+            expect(controller._lastSaved).toBeDefined();
         });
     });
 });

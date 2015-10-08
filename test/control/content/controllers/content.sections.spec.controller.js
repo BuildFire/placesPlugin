@@ -1,4 +1,4 @@
-describe('Unit : Controller - ContentSectionsCtrl', function () {
+xdescribe('Unit : Controller - ContentSectionsCtrl', function () {
 
 // load the controller's module
     beforeEach(module('placesContent'));
