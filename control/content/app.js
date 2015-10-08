@@ -29,7 +29,7 @@
                     controllerAs: 'ContentSections',
                     controller: 'ContentSectionsCtrl',
                     resolve: {
-                        PlaceInfoData: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', function ($q, DB, COLLECTIONS, Orders, Location) {
+                        placesInfo: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', function ($q, DB, COLLECTIONS, Orders, Location) {
                             var deferred = $q.defer();
                             var PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
 
