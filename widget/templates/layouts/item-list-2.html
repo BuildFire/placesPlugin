@@ -3,7 +3,7 @@
          infinite-scroll="WidgetSection.getMore()"
          infinite-scroll-container='"#scroll-infinite"'
          infinit-scroll-disabled="WidgetSection.noMore">
-        <div class="plugin-banner has-info-bar clearfix" ng-repeat="item in WidgetSections.items">
+        <div class="plugin-banner has-info-bar clearfix" ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
             <div class="plugin-slide text-center">
                 <img ng-if="item.data.listImage" ng-src="{{item.data.listImage}}">
             </div>
@@ -15,7 +15,7 @@
                 </div>
                 <div class="col-xs-4 text-right pull-right padding-left-zero">
                     <span class="icon icon-map-marker icon-sm"></span>
-                    <span class="miles"></span>
+                    <span class="miles">{{item.data.distanceText}}</span>
                 </div>
             </div>
         </div>

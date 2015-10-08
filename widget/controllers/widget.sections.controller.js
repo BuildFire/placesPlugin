@@ -1,8 +1,8 @@
 (function (angular) {
     angular
         .module('placesWidget')
-        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance', '$routeParams', '$timeout', 'placesInfo',
-            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $routeParams, $timeout, placesInfo) {
+        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance', '$routeParams', '$timeout', 'placesInfo', 'OrdersItems',
+            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $routeParams, $timeout, placesInfo, OrdersItems) {
 
                 AppConfig.changeBackgroundTheme();
                 var WidgetSections = this;
@@ -13,7 +13,7 @@
                 WidgetSections.showSections = true;
                 WidgetSections.placesInfo = null;
                 WidgetSections.currentView = null;
-                WidgetSections.items = null;
+                //WidgetSections.items = null;
                 WidgetSections.selectedItem = null;
                 WidgetSections.selectedItemDistance = null;
                 WidgetSections.sortOnClosest = false; // default value
@@ -92,12 +92,12 @@
 
                 var loadAllItemsOfSections = function () {
                     var itemFilter = {filter: {"$json.itemTitle": {"$regex": '/*'}}};
-                    WidgetSections.items = null;
+                    //WidgetSections.items = null;
                     WidgetSections.locationData.items = null;
                     updateGetOptions();
                     Items.find(itemFilter).then(function (res) {
-                        WidgetSections.items = res;
-                        WidgetSections.locationData.items = angular.copy(WidgetSections.items);
+                        //WidgetSections.items = res;
+                        WidgetSections.locationData.items = res;//angular.copy(WidgetSections.items);
                     }, function () {
 
                     });
@@ -145,12 +145,16 @@
 
 
                             $timeout(function () {
-                                var carousel = $("#carousel");
-// set carousel in case of design layout change
-                                if (carousel.html() && carousel.html().trim() == '')
+                                var carousel = $("#carousel").html();
+                                // set carousel in case of design layout change
+
+                                // $("#carousel").length checks if element is there on the page
+                                if ($("#carousel").length > 0 && carousel.trim() == '') {
                                     view = new Buildfire.components.carousel.view("#carousel", []); ///create new instance of buildfire carousel viewer
-                                if (view)
+                                }
+                                if (view) {
                                     view.loadItems(event.data.content.images);
+                                }
                             }, 1500);
                         }
                     }
@@ -168,10 +172,10 @@
                             }
                             WidgetSections.selectedItem = null;
                             WidgetSections.selectedItemDistance = null;
-                            WidgetSections.items = angular.copy(WidgetSections.locationData.items);
+                            //WidgetSections.items = angular.copy(WidgetSections.locationData.items);
                             $scope.$apply();
                         }
-                        WidgetSections.locationData.items = angular.copy(WidgetSections.items);
+                        //WidgetSections.locationData.items = angular.copy(WidgetSections.items);
                     }
                     else {
                         view = null;
@@ -240,9 +244,9 @@
                     Sections.find({}).then(function success(result) {
                         WidgetSections.sections = result;
                         WidgetSections.selectedSections = [$routeParams.sectionId];
-                        $timeout(function () {
-                            $("a[section-id=" + $routeParams.sectionId + "]").addClass('active');
-                        }, 1000);
+                        /* $timeout(function () {
+                         $("a[section-id=" + $routeParams.sectionId + "]").addClass('active');
+                         }, 1000);*/
 
                     }, function () {
 
@@ -285,7 +289,7 @@
                     if (_items && _items.length) {
                         GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, _items, WidgetSections.placesInfo.data.settings.showDistanceIn).then(function (result) {
                             console.log('distance result', result);
-                            for (var _ind = 0; _ind < WidgetSections.items.length; _ind++) {
+                            for (var _ind = 0; _ind < WidgetSections.locationData.items.length; _ind++) {
                                 _items[_ind].data.distanceText = (result.rows[0].elements[_ind].status != 'OK') ? 'NA' : result.rows[0].elements[_ind].distance.text;
                                 _items[_ind].data.distance = (result.rows[0].elements[_ind].status != 'OK') ? -1 : result.rows[0].elements[_ind].distance.value;
                             }
@@ -322,21 +326,22 @@
                             _item.data.distanceText = 'Fetching..';
                         });
 
-                        WidgetSections.items = res;
-                        WidgetSections.locationData.items = angular.copy(WidgetSections.items);
+                        WidgetSections.locationData.items = res;
+                        //WidgetSections.locationData.items = angular.copy(WidgetSections.items);
                     }, function () {
-
                     });
-
-
                 }
 
                 WidgetSections.itemsOrder = function (item) {
                     //console.error(WidgetSections.placesInfo.data.content.sortByItems);
                     if (WidgetSections.sortOnClosest)
                         return item.data.distance;
-                    else
-                        return item.data.itemTitle;
+                    else {
+                        var order = OrdersItems.getOrder(WidgetSections.placesInfo.data.content.sortByItems || OrdersItems.ordersMap.Default);
+                        console.log('shout', order);
+                        return order.order == 1 ? item[order.key] : item['-' + order.key];
+                    }
+                    //return item.data.itemTitle;
                 };
 
                 WidgetSections.selectedMarker = function (itemIndex) {
@@ -356,7 +361,7 @@
 
                 WidgetSections.sortFilter = function (item) {
 
-                    if (WidgetSections.locationData.currentCoordinates == null || item.data.distanceText == 'Fetching..') {
+                    if (WidgetSections.locationData.currentCoordinates == null || item.data.distanceText == 'Fetching..' || !item.data.distanceText) {
                         return true;
                     }
                     //console.log(Number(item.data.distanceText.split(' ')[0]),$scope.distanceSlider);
@@ -398,7 +403,6 @@
                         }
 
                         WidgetSections.sections = WidgetSections.sections ? WidgetSections.sections.concat(result) : result;
-                        //alert(WidgetSections.sections.length);
                         WidgetSections.isBusy = false;
                     }, function fail() {
                         WidgetSections.isBusy = false;
@@ -412,11 +416,11 @@
                     var id = WidgetSections.sections[ind].id;
                     if (WidgetSections.selectedSections.indexOf(id) < 0) {
                         WidgetSections.selectedSections.push(id);
-                        $(event.target).addClass('active');
+                        //$(event.target).addClass('active');
                     }
                     else {
                         WidgetSections.selectedSections.splice(WidgetSections.selectedSections.indexOf(id), 1);
-                        $(event.target).removeClass('active');
+                        //$(event.target).removeClass('active');
                         if (!WidgetSections.showSections && WidgetSections.selectedSections.length == 0) {
                             WidgetSections.showSections = true;
                         }
@@ -431,11 +435,11 @@
                     WidgetSections.showSections = false;
                     WidgetSections.selectedSections = [];
                     filterChanged();
-                    $('.active.section-filter').removeClass('active');
+                    //$('.active.section-filter').removeClass('active');
                 };
 
                 $scope.$watch(function () {
-                    return WidgetSections.items;
+                    return WidgetSections.locationData.items;
                 }, getItemsDistance);
 
                 $scope.$watch(function () {
