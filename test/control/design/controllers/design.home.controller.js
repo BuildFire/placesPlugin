@@ -1,4 +1,4 @@
-xdescribe("DesignHomeCtrl", function () {
+describe("DesignHomeCtrl", function () {
 
     var $rootScope,
         $scope,
@@ -63,8 +63,8 @@ xdescribe("DesignHomeCtrl", function () {
             expect(controller.layouts.itemLayouts.length).toEqual(3);
         });
 
-        it('should initialize the itemLayouts to the default value', function () {
-            expect(controller.layouts.secListLayouts.length).toEqual(6);
+        it('should initialize the secListLayouts to the default value', function () {
+            expect(controller.layouts.secListLayouts.length).toEqual(3);
         });
 
         it('should initialize the itemLayouts to the default value', function () {

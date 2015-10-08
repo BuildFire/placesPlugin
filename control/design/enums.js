@@ -15,18 +15,9 @@
                 OPTION_REQUIRES: "Requires options"
             }
         })
-        .constant('EVENTS', {
-            ROUTE_CHANGE: "ROUTE_CHANGE",
-            DESIGN_LAYOUT_CHANGE: "DESIGN_LAYOUT_CHANGE",
-            DESIGN_BGIMAGE_CHANGE: "DESIGN_BGIMAGE_CHANGE"
-        })
         .constant('COLLECTIONS', {
             PlaceInfo: "placeInfo",
             Sections: "sections",
             Items:"items"
         })
-        .constant('PATHS', {
-            MEDIA: "MEDIA",
-            HOME: "HOME"
-        });
 })(window.angular, undefined);
