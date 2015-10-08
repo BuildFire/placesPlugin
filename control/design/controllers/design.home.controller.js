@@ -2,7 +2,7 @@
     'use strict';
     angular
         .module('placesDesign')
-        .controller('DesignHomeCtrl', ['$scope', 'Orders', 'COLLECTIONS', 'DB', '$timeout', 'Buildfire', 'EVENTS', 'Messaging', function ($scope, Orders, COLLECTIONS, DB, $timeout, Buildfire, EVENTS, Messaging) {
+        .controller('DesignHomeCtrl', ['$scope', 'Orders', 'COLLECTIONS', 'DB', '$timeout', 'Buildfire', function ($scope, Orders, COLLECTIONS, DB, $timeout, Buildfire) {
             var DesignHome = this
                 , _data = {
                     content: {
@@ -38,7 +38,6 @@
                 itemListLayouts: [{name: "item-list-1"}, {name: "item-list-2"}],
                 itemLayouts: [{name: "item-details-1"}, {name: "item-details-2"}, {name: "item-details-3"}],
                 secListLayouts: [{name: "sec-list-1-1"}, {name: "sec-list-2-1"}, {name: "sec-list-3-1"}],
-                //secListLayouts: [{name: "sec-list-1-1"}, {name: "sec-list-1-2"}, {name: "sec-list-2-1"}, {name: "sec-list-2-2"}, {name: "sec-list-3-1"}, {name: "sec-list-3-2"}],
                 mapLayouts: [{name: "map-1"}, {name: "map-2"}]
             };
 
