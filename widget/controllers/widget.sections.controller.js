@@ -143,15 +143,15 @@
                             WidgetSections.currentView = WidgetSections.placesInfo.data.settings.defaultView;
                             refreshSections();
 
+
                             $timeout(function () {
-
-                                // set carousel in case of design layout change
-                                if ($("#carousel").html().trim() == '')
-                                    view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
-
-                                view.loadItems(event.data.content.images);
+                                var carousel = $("#carousel");
+// set carousel in case of design layout change
+                                if (carousel.html() && carousel.html().trim() == '')
+                                    view = new Buildfire.components.carousel.view("#carousel", []); ///create new instance of buildfire carousel viewer
+                                if (view)
+                                    view.loadItems(event.data.content.images);
                             }, 1500);
-
                         }
                     }
                     else if (event.tag === "items") {

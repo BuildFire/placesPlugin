@@ -1,31 +1,11 @@
 (function (angular, buildfire, location) {
     'use strict';
-    //created mediaCenterWidget module
-    var settings, appId;
-    var Settings = {
-        setSettings: function (newSettings) {
-            settings = newSettings;
-        },
-        setAppId: function (newId) {
-            appId = newId;
-        },
-        getSetting: function () {
-            return settings;
-        },
-        getAppId: function () {
-            return appId;
-        }
-    };
+    //created placesSettingsServices module
     angular
         .module('placesSettingsServices', ['placesEnums'])
         .provider('Buildfire', [function () {
             this.$get = function () {
                 return buildfire;
-            };
-        }])
-        .provider('Messaging', [function () {
-            this.$get = function () {
-                return buildfire.messaging;
             };
         }])
         .provider('ImageLib', [function () {
@@ -213,35 +193,5 @@
                 return deferred.promise;
             };
             return DB;
-        }])
-        .value('Settings', Settings)
-        .factory("AppConfig", ['$rootScope', 'Buildfire', 'Settings', function ($rootScope, Buildfire, Settings) {
-            return {
-                setSettings: function (newSettings) {
-                    Settings.setSettings(newSettings);
-                },
-                setAppId: function (newAppId) {
-                    Settings.setAppId(newAppId);
-                },
-                getSettings: function () {
-                    return Settings.getSetting();
-                },
-                getAppId: function () {
-                    return Settings.getAppId();
-                },
-                changeBackgroundTheme: function (url) {
-                    if (url) {
-                        $rootScope.currentBackgroundImage = {
-                            "background-image": "url(" + Buildfire.imageLib.resizeImage(url, {
-                                width: 342,
-                                height: 770
-                            }) + ")"
-                        };
-                        return;
-                    } else {
-                        $rootScope.currentBackgroundImage = "";
-                    }
-                }
-            };
         }]);
 })(window.angular, window.buildfire, window.location);
