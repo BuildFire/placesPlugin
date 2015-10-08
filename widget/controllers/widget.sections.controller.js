@@ -171,6 +171,7 @@
                             WidgetSections.items = angular.copy(WidgetSections.locationData.items);
                             $scope.$apply();
                         }
+                        WidgetSections.locationData.items = angular.copy(WidgetSections.items);
                     }
                     else {
                         view = null;
@@ -322,6 +323,7 @@
                         });
 
                         WidgetSections.items = res;
+                        WidgetSections.locationData.items = angular.copy(WidgetSections.items);
                     }, function () {
 
                     });
