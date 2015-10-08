@@ -148,8 +148,8 @@
                                     if (secId && id) {
                                         url = url + "/" +secId+ "/" + id;
                                     }
-                                    else if(id){
-                                        url = url + "/" + id;
+                                    else if(secId){
+                                        url = url + "/" + secId;
                                     }
                                     break;
                                 case PATHS.HOME:

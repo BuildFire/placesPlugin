@@ -1,14 +1,45 @@
 (function (angular, window) {
     angular
         .module('placesWidget')
-        .controller('WidgetItemCtrl', ['$scope', 'COLLECTIONS', 'DB', '$routeParams', 'Buildfire', '$rootScope', 'GeoDistance', 'Messaging', 'Location', 'EVENTS', 'PATHS', 'AppConfig', function ($scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS, AppConfig) {
+        .controller('WidgetItemCtrl', ['$scope', 'COLLECTIONS', 'DB', '$routeParams', 'Buildfire', '$rootScope', 'GeoDistance', 'Messaging', 'Location', 'EVENTS', 'PATHS', 'AppConfig', 'placesInfo', 'Orders', 'OrdersItems', function ($scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS, AppConfig, placesInfo, Orders, OrdersItems) {
+            console.log('Item Controller Loaded---------------------');
             AppConfig.changeBackgroundTheme();
             var WidgetItem = this
                 , view = null
                 , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
                 , Items = new DB(COLLECTIONS.Items)
                 , itemLat = ''
-                , itemLng = '';
+                , itemLng = ''
+                , _infoData = {
+                    data: {
+                        content: {
+                            images: [],
+                            descriptionHTML: '<p>&nbsp;<br></p>',
+                            description: '<p>&nbsp;<br></p>',
+                            sortBy: Orders.ordersMap.Newest,
+                            rankOfLastItem: '',
+                            sortByItems: OrdersItems.ordersMap.Newest
+                        },
+                        design: {
+                            secListLayout: "sec-list-1-1",
+                            mapLayout: "map-1",
+                            itemListLayout: "item-list-1",
+                            itemDetailsLayout: "item-details-1",
+                            secListBGImage: ""
+                        },
+                        settings: {
+                            defaultView: "list",
+                            showDistanceIn: "miles"
+                        }
+                    }
+                };
+
+            if (placesInfo) {
+                WidgetItem.placeInfo = placesInfo;
+            }
+            else {
+                WidgetItem.placeInfo = _infoData;
+            }
 
             WidgetItem.locationData = {
                 items: null,
@@ -112,6 +143,10 @@
                     if (event.data.images)
                         initCarousel(event.data.images);
                 }
+                else if (event.tag == 'placeInfo' && event.data) {
+                    WidgetItem.placeInfo = event;
+                    $scope.$digest();
+                }
             });
 
             //syn with widget side
@@ -120,7 +155,7 @@
                 message: {
                     path: PATHS.ITEM,
                     id: $routeParams.itemId,
-                    secId:$routeParams.sectionId
+                    secId: $routeParams.sectionId
                 }
             });
 
