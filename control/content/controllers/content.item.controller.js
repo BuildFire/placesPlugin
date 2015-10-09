@@ -5,10 +5,8 @@
     'use strict';
     angular
         .module('placesContent')
-        .controller('ContentItemCtrl', ['$scope', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout', 'EVENTS', 'PATHS', 'Messaging',
-            function ($scope, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout, EVENTS, PATHS, Messaging) {
-
-                console.log('Route PArams------------------------------',$routeParams);
+        .controller('ContentItemCtrl', ['$scope', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout', 'EVENTS', 'PATHS', 'Messaging', 'item',
+            function ($scope, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout, EVENTS, PATHS, Messaging, item) {
                 var tmrDelayForItem = null
                     , Items = new DB(COLLECTIONS.Items)
                     , _data = {
@@ -35,10 +33,17 @@
                 ContentItem.currentAddress = null;
                 ContentItem.validCoordinatesFailure = false;
                 ContentItem.currentCoordinates = null;
-                ContentItem.item = angular.copy({data: _data});
-                ContentItem.masterItem = angular.copy(ContentItem.item);
 
-                function init() {
+                if (item) {
+                    ContentItem.item = item;
+                    ContentItem.masterItem = angular.copy(ContentItem.item);
+                }
+                else {
+                    ContentItem.item = {data: _data};
+                    ContentItem.masterItem = angular.copy(ContentItem.item);
+                }
+
+                /*function init() {
                     if ($routeParams.itemId) {
                         Items.getById($routeParams.itemId).then(function success(result) {
                                 if (result && result.data) {
@@ -60,7 +65,7 @@
                         );
                     }
                 }
-
+*/
                 //option for wysiwyg
                 ContentItem.bodyWYSIWYGOptions = {
                     plugins: 'advlist autolink link image lists charmap print preview',
@@ -120,6 +125,18 @@
                     ContentItem.item.data.links[newIndex] = temp;
                     $scope.$digest();
                 };
+
+                /**
+                 * Initialize the carousel and links
+                 */
+                if (ContentItem.item.data.images)
+                    ContentItem.editor.loadItems(ContentItem.item.data.images);
+                if (ContentItem.item.data.links)
+                    ContentItem.linkEditor.loadItems(ContentItem.item.data.links);
+                if (ContentItem.item.data.address && ContentItem.item.data.address.aName) {
+                    ContentItem.currentAddress = ContentItem.item.data.address.aName;
+                    ContentItem.currentCoordinates = [ContentItem.item.data.address.lng, ContentItem.item.data.address.lat];
+                }
 
                 /**
                  * This updateMasterItem will update the ContentMedia.masterItem with passed item
@@ -183,7 +200,7 @@
                     }
                 }
 
-                init();
+                //init();
 
                 ContentItem.addBackgroundImage = function () {
                     var options = {showIcons: false, multiSelection: false}

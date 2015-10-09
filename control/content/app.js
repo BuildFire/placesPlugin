@@ -52,12 +52,37 @@
                 .when('/item/:sectionId', {
                     templateUrl: 'templates/item.html',
                     controllerAs: 'ContentItem',
-                    controller: 'ContentItemCtrl'
+                    controller: 'ContentItemCtrl',
+                    resolve: {
+                        item: function(){
+                            return null;
+                        }
+                    }
+
                 })
                 .when('/item/:sectionId/:itemId', {
                     templateUrl: 'templates/item.html',
                     controllerAs: 'ContentItem',
-                    controller: 'ContentItemCtrl'
+                    controller: 'ContentItemCtrl',
+                    resolve: {
+                        item: ['DB', 'COLLECTIONS', '$q', '$route', 'Location', function (DB, COLLECTIONS, $q, $route, Location) {
+                            var Items = new DB(COLLECTIONS.Items)
+                                , deferred = $q.defer()
+                                , success = function (result) {
+                                    if (Object.keys(result.data).length > 0) {
+                                        deferred.resolve(result);
+                                    }
+                                    else {
+                                        deferred.resolve(null);
+                                    }
+                                }
+                                , error = function (err) {
+                                    deferred.resolve(null);
+                                };
+                            Items.getById($route.current.params.itemId).then(success, error);
+                            return deferred.promise;
+                        }]
+                    }
                 })
                 .when('/items/:sectionId', {
                     templateUrl: 'templates/items.html',
@@ -85,7 +110,6 @@
                             var Sections = new DB(COLLECTIONS.Sections)
                                 , deferred = $q.defer()
                                 , success = function (result) {
-                                    console.log(result,'adssadf-???????????******&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
                                     if (Object.keys(result.data).length > 0) {
                                         deferred.resolve(result);
                                     }

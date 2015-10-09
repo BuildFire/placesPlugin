@@ -1,15 +1,14 @@
-xdescribe('Unit : placesContent content.item.controller.js', function () {
-    var ContentItem, scope, $rootScope, $controller, q, $timeout, $httpBackend, DB, Buildfire, COLLECTIONS, Location, $routeParams, Utils, ADDRESS_TYPE;
+describe('Unit : placesContent content.item.controller.js', function () {
+    var ContentItem, scope, $rootScope, $controller, q, $timeout, $httpBackend, DB, Buildfire, COLLECTIONS, Location, $routeParams, Utils;
     beforeEach(module('placesContent'));
 
-    beforeEach(inject(function (_$rootScope_, _$q_, _$controller_, _DB_, _$httpBackend_, _$timeout_, _Buildfire_, _COLLECTIONS_, _Location_, _ADDRESS_TYPE_, _Utils_, _$routeParams_) {
+    beforeEach(inject(function (_$rootScope_, _$q_, _$controller_, _DB_, _$httpBackend_, _$timeout_, _Buildfire_, _COLLECTIONS_, _Location_, _Utils_, _$routeParams_) {
         $rootScope = _$rootScope_;
         q = _$q_;
         scope = $rootScope.$new();
         $controller = _$controller_;
         $timeout = _$timeout_;
         $httpBackend = _$httpBackend_;
-        ADDRESS_TYPE = _ADDRESS_TYPE_;
         Utils = _Utils_;
         Buildfire = {
             components: {
@@ -58,9 +57,9 @@ xdescribe('Unit : placesContent content.item.controller.js', function () {
                         addressTitle: '',
                         sections: ['123124234'],
                         address: {
-                            lat: '',
-                            lng: '',
-                            aName: ''
+                            lat: '28',
+                            lng: '77',
+                            aName: 'Office'
                         },
                         links: [],
                         backgroundImage: ''
@@ -70,7 +69,6 @@ xdescribe('Unit : placesContent content.item.controller.js', function () {
                 COLLECTIONS: COLLECTIONS,
                 $routeScope: $rootScope,
                 $timeout: $timeout,
-                ADDRESS_TYPE: ADDRESS_TYPE,
                 $routeParams: {
                     sectionId: '123456'
                 },
@@ -93,7 +91,7 @@ xdescribe('Unit : placesContent content.item.controller.js', function () {
                     action: null,
                     imageUrl: "https://imagelibserver.s3.amazonaws.com/25935164-2add-11e5-9d04-02f7ca55c361/950a50c0-400a-11e5-9af5-3f5e0d725ccb.jpg"
                 }];
-                ContentItem.item.data.images = [];
+                ContentItem.item.data.images = null;
                 ContentItem.editor.onAddItems(items);
                 $rootScope.$digest();
                 expect(ContentItem.item.data.images.length).toEqual(1);
@@ -166,7 +164,7 @@ xdescribe('Unit : placesContent content.item.controller.js', function () {
                     action: null,
                     imageUrl: "https://imagelibserver.s3.amazonaws.com/25935164-2add-11e5-9d04-02f7ca55c361/950a50c0-400a-11e5-9af5-3f5e0d725ccb.jpg"
                 }];
-                ContentItem.item.data.links = [];
+                ContentItem.item.data.links = null;
                 ContentItem.linkEditor.onAddItems(items);
                 $rootScope.$digest();
                 expect(ContentItem.item.data.links.length).toEqual(1);
