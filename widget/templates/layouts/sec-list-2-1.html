@@ -34,8 +34,8 @@
                  infinite-scroll="WidgetSections.getMoreItems()"
                  infinite-scroll-disabled="WidgetSections.noMoreItems"
                  infinite-scroll-container="'#scroll-infinite'">-->
-            <div ng-hide="WidgetSections.locationData.items.length">
-                No Item(s) to show
+            <div  class="no-items-msg margin-left-fifteen margin-right-fifteen" ng-hide="WidgetSections.locationData.items.length">
+                No item(s) to show
             </div>
             <div class="plugin-banner has-info-bar clearfix"
                  ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">

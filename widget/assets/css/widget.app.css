@@ -34,3 +34,15 @@
 .location-share-msg{
     font-size: smaller;text-align: center;
 }
+
+.no-items-msg{
+    text-align: center;
+    padding: 15px;
+    background-color: #eef0f0;
+    border-radius: 4px;
+    border:1px solid #ddd;
+}
+
+.margin-fifteen{
+    margin: 15px;
+}

@@ -336,7 +336,6 @@
                     var item = ContentSections.sections[_index];
 
                     if ("undefined" !== typeof item) {
-                        console.log(4);
                         Modals.removePopupModal({title: ''}).then(function (result) {
                             if (result) {
                                 Sections.delete(item.id).then(function (data) {
