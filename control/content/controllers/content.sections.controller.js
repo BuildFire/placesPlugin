@@ -99,15 +99,8 @@
                             if (isRankChanged) {
 
                                 Sections.update(draggedItem.id, draggedItem.data).then(function () {
-                                    Sections.find({}).then(function (result) {
-                                        console.log('updated sections', result);
-                                        //ContentSections.sections = result;
-                                        ContentSections.info.data.content.rankOfLastItem = maxRank;
-                                    }, function () {
-
-                                    });
+                                    ContentSections.info.data.content.rankOfLastItem = maxRank;
                                 }, function () {
-
                                 });
                             }
                         }

@@ -8,8 +8,8 @@
     /**
      * Inject dependency
      */
-        .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'DB', 'COLLECTIONS', 'Modals', 'Orders', 'OrdersItems', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'placesInfo',
-            function ($scope, $routeParams, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo) {
+        .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'DB', 'COLLECTIONS', 'Modals', 'Orders', 'OrdersItems', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'placesInfo', 'sectionInfo',
+            function ($scope, $routeParams, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo, sectionInfo) {
 
                 /**
                  * Create instance of Sections and Items db collection
@@ -47,19 +47,7 @@
                     };
 
                 var ContentItems = this;
-                ContentItems.section = $routeParams.sectionId;
-                ContentItems.isBusy = false;
-                ContentItems.items = null;
-                ContentItems.info = null;
-                ContentItems.masterInfoData = null;
-                ContentItems.sortOptions = OrdersItems.options;
-                ContentItems.itemSortableOptions = {disabled: false};
-                var searchOptions = {
-                    filter: {'$and': [{"$json.itemTitle": {"$regex": '/*'}}, {"$json.sections": {"$all": [ContentItems.section]}}]},
-                    skip: _skip,
-                    limit: _limit + 1 // the plus one is to check if there are any more
-                };
-
+                ContentItems.sectionInfo = sectionInfo;
                 if (placesInfo) {
                     updateMasterInfoData(placesInfo);
                     ContentItems.info = placesInfo;
@@ -67,6 +55,61 @@
                     updateMasterInfoData(placeInfoData);
                     ContentItems.info = angular.copy(placeInfoData);
                 }
+                ContentItems.section = $routeParams.sectionId;
+                ContentItems.isBusy = false;
+                ContentItems.items = null;
+                ContentItems.masterInfoData = null;
+                ContentItems.sortOptions = OrdersItems.options;
+                ContentItems.itemSortableOptions = {
+                    handle: '> .cursor-grab',
+                    disabled: !(ContentItems.info.data.content.sortBy === Orders.ordersMap.Manually),
+                    stop: function (e, ui) {
+                        var endIndex = ui.item.sortable.dropindex,
+                            maxRank = 0,
+                            draggedItem = ContentItems.items[endIndex];
+                        if (draggedItem) {
+                            var prev = ContentItems.items[endIndex - 1],
+                                next = ContentItems.items[endIndex + 1];
+                            var isRankChanged = false;
+                            if (next) {
+                                if (prev) {
+                                    draggedItem.data.rank = ((prev.data.rank || 0) + (next.data.rank || 0)) / 2;
+                                    isRankChanged = true;
+                                } else {
+                                    draggedItem.data.rank = (next.data.rank || 0) / 2;
+                                    isRankChanged = true;
+                                }
+                            } else {
+                                if (prev) {
+                                    draggedItem.data.rank = (((prev.data.rank || 0) * 2) + 10) / 2;
+                                    maxRank = draggedItem.data.rank;
+                                    isRankChanged = true;
+                                }
+                            }
+                            if (isRankChanged) {
+                                Items.update(draggedItem.id, draggedItem.data).then(function (updataeditem) {
+                                    console.log('Updated item--------------------------------', updataeditem);
+                                    ContentItems.sectionInfo.data.rankOfLastItem = maxRank;
+                                    // Update the rankOfLastItem in a particular section
+                                    Sections.update(ContentItems.sectionInfo.id, ContentItems.sectionInfo.data).then(function (data) {
+                                            // Do Something on Success
+                                        },
+                                        function () {
+                                            console.error('Error while updating sections Collection data');
+                                        });
+                                }, function () {
+
+                                });
+                            }
+                        }
+                    }
+                };
+                var searchOptions = {
+                    filter: {'$and': [{"$json.itemTitle": {"$regex": '/*'}}, {"$json.sections": {"$all": [ContentItems.section]}}]},
+                    skip: _skip,
+                    limit: _limit + 1 // the plus one is to check if there are any more
+                };
+
 
                 var updateSearchOptions = function () {
                     var order;

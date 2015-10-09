@@ -22,7 +22,7 @@
         //injected ngRoute for routing
         //injected ui.bootstrap for angular bootstrap component
         //injected ui.sortable for manual ordering of list
-        .config(['$routeProvider','$httpProvider', function ($routeProvider,$httpProvider) {
+        .config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
             $routeProvider
                 .when('/', {
                     templateUrl: 'templates/sections.html',
@@ -80,6 +80,24 @@
                                 };
                             PlaceInfo.get().then(success, error);
                             return deferred.promise;
+                        }],
+                        sectionInfo: ['DB', 'COLLECTIONS', '$q', '$route', 'Location', function (DB, COLLECTIONS, $q, $route, Location) {
+                            var Sections = new DB(COLLECTIONS.Sections)
+                                , deferred = $q.defer()
+                                , success = function (result) {
+                                    console.log(result,'adssadf-???????????******&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
+                                    if (Object.keys(result.data).length > 0) {
+                                        deferred.resolve(result);
+                                    }
+                                    else {
+                                        Location.goToHome();
+                                    }
+                                }
+                                , error = function (err) {
+                                    Location.goToHome();
+                                };
+                            Sections.getById($route.current.params.sectionId).then(success, error);
+                            return deferred.promise;
                         }]
                     }
                 })
@@ -95,8 +113,8 @@
                 })
                 .otherwise('/');
 
-            var interceptor=['$q',function($q){
-                var counter=0;
+            var interceptor = ['$q', function ($q) {
+                var counter = 0;
 
                 return {
 
@@ -109,17 +127,15 @@
                     },
                     response: function (response) {
                         counter--;
-                        if(counter===0)
-                        {
+                        if (counter === 0) {
 
                             buildfire.spinner.hide();
                         }
                         return response;
                     },
-                    responseError:function(rejection){
+                    responseError: function (rejection) {
                         counter--;
-                        if(counter===0)
-                        {
+                        if (counter === 0) {
 
                             buildfire.spinner.hide();
                         }
@@ -146,9 +162,9 @@
                                 case PATHS.ITEM:
                                     url = url + "item";
                                     if (secId && id) {
-                                        url = url + "/" +secId+ "/" + id;
+                                        url = url + "/" + secId + "/" + id;
                                     }
-                                    else if(secId){
+                                    else if (secId) {
                                         url = url + "/" + secId;
                                     }
                                     break;
