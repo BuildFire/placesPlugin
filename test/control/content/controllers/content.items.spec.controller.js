@@ -64,7 +64,7 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
                         sortBy: '',
                         rankOfLastItem: ''
                     },
-                    id :'12312412'
+                    id: '12312412'
                 }
             });
         })
@@ -118,14 +118,86 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
                 deferred.resolve('Remote call result');
                 return deferred.promise;
             });
-            ;
-
         }));
         it('it should pass if ContentItems.editSections calls Items.update', function () {
             ContentItems.editSections();
             expect(Sections).toHaveBeenCalled();
         });
     });
-
+    describe('ContentItems.toggleSortOrder', function () {
+        it('it should pass if ContentItems.toggleSortOrder calls', function () {
+            ContentItems.toggleSortOrder('Newest');
+            $rootScope.$digest();
+            expect(ContentItems.info.data.content.sortByItems).toEqual('Newest');
+        });
+    });
+    describe('Function called ContentItems.itemSortableOptions.stop', function () {
+        it('it should pass if ContentItems.itemSortableOptions.stop calls has been called', function () {
+            var ui = {
+                item: {
+                    sortable: {
+                        dropindex: '0'
+                    }
+                }
+            };
+            ContentItems.items = [{
+                data: {
+                    listImage: '',
+                    itemTitle: '',
+                    images: [],
+                    summary: '',
+                    bodyContent: '',
+                    bodyContentHTML: '',
+                    addressTitle: '',
+                    sections: ['123124234'],
+                    address: {
+                        lat: '28',
+                        lng: '77',
+                        aName: 'Office'
+                    },
+                    links: [],
+                    backgroundImage: ''
+                }
+            },{
+                data: {
+                    listImage: '',
+                    itemTitle: '',
+                    images: [],
+                    summary: '',
+                    bodyContent: '',
+                    bodyContentHTML: '',
+                    addressTitle: '',
+                    sections: ['123124234'],
+                    address: {
+                        lat: '28',
+                        lng: '77',
+                        aName: 'Office'
+                    },
+                    links: [],
+                    backgroundImage: ''
+                }
+            },{
+                data: {
+                    listImage: '',
+                    itemTitle: '',
+                    images: [],
+                    summary: '',
+                    bodyContent: '',
+                    bodyContentHTML: '',
+                    addressTitle: '',
+                    sections: ['123124234'],
+                    address: {
+                        lat: '28',
+                        lng: '77',
+                        aName: 'Office'
+                    },
+                    links: [],
+                    backgroundImage: ''
+                }
+            }];
+            ContentItems.itemSortableOptions.stop({}, ui);
+            expect(ContentItems.itemSortableOptions.stop).toHaveBeenCalled();
+        });
+    });
 });
 

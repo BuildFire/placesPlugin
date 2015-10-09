@@ -166,10 +166,8 @@
                  * ContentItems.toggleSortOrder() to change the sort by
                  */
                 ContentItems.toggleSortOrder = function (name) {
-                    if (!name) {
-                        console.info('There was a problem sorting your data');
-                    } else {
-                        var sortOrder = OrdersItems.getOrder(name || OrdersItems.ordersMap.Default);
+                    if (name) {
+                        var sortOrder = OrdersItems.getOrder(name);
                         ContentItems.items = null;
                         ContentItems.noMore = false;
                         searchOptions.skip = 0;
