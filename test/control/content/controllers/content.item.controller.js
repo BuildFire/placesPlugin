@@ -77,11 +77,73 @@ describe('Unit : placesContent content.item.controller.js', function () {
         });
 
         describe('Units: units should be Defined', function () {
-            it('it should pass if ContentHome is defined', function () {
+            it('it should pass if ContentItem is defined', function () {
                 expect(ContentItem).toBeDefined();
             });
             it('it should pass if Buildfire is defined', function () {
                 expect(Buildfire).toBeDefined()
+            });
+            it('it should pass if ContentItem.clearData is defined', function () {
+                expect(ContentItem.clearData).toBeDefined()
+            });
+        });
+
+        describe('Function : ContentItem.clearData ', function () {
+            it('ContentItem.clearData should be called', function () {
+                ContentItem.currentAddress = null;
+                ContentItem.clearData();
+                $rootScope.$digest();
+                expect(ContentItem.currentCoordinates).toEqual(null);
+            });
+        });
+        describe('Function : ContentItem.removeBackgroundImage ', function () {
+            it('ContentItem.removeBackgroundImage should be called', function () {
+                ContentItem.item.data.backgroundImage = 'image.png';
+                ContentItem.removeBackgroundImage();
+                $rootScope.$digest();
+                expect(ContentItem.item.data.backgroundImage).toEqual(null);
+            });
+        });
+        describe('Function : ContentItem.removeListImage ', function () {
+            it('ContentItem.removeListImage should be called', function () {
+                ContentItem.item.data.listImage = 'image.png';
+                ContentItem.removeListImage();
+                $rootScope.$digest();
+                expect(ContentItem.item.data.listImage).toEqual(null);
+            });
+        });
+        describe('Function : ContentItem.setLocation ', function () {
+            it('ContentItem.removeListImage should be called', function () {
+                var data = {
+                    coordinates:['28','29'],
+                    location:'noida'
+                };
+                ContentItem.setLocation(data);
+                $rootScope.$digest();
+                expect(ContentItem.item.data.address).toEqual({lng: '28',
+                    lat: '29',
+                    aName: 'noida'});
+            });
+        });
+        describe('Function : ContentItem.setLocation ', function () {
+            it('ContentItem.removeListImage should be called', function () {
+                var data = {
+                    coordinates:['28','29'],
+                    location:'noida'
+                };
+                ContentItem.setLocation(data);
+                $rootScope.$digest();
+                expect(ContentItem.currentAddress).toEqual('noida');
+            });
+        });describe('Function : ContentItem.setLocation ', function () {
+            it('ContentItem.removeListImage should be called', function () {
+                var data = {
+                    coordinates:['28','29'],
+                    location:'noida'
+                };
+                ContentItem.setLocation(data);
+                $rootScope.$digest();
+                expect(ContentItem.currentCoordinates).toEqual(['28','29']);
             });
         });
 
