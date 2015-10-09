@@ -13,24 +13,74 @@
                 WidgetSections.showSections = true;
                 WidgetSections.placesInfo = null;
                 WidgetSections.currentView = null;
-                //WidgetSections.items = null;
                 WidgetSections.selectedItem = null;
                 WidgetSections.selectedItemDistance = null;
                 WidgetSections.sortOnClosest = false; // default value
-                //console.log('Widget Section Ctrl Loaded', WidgetSections.placesInfo);
+
                 WidgetSections.locationData = {
                     items: null,
                     //currentCoordinates: [-117.1920427, 32.7708401] // default san diego
                     currentCoordinates: null
                 };
 
+                /**
+                 * WidgetSections.noMoreItems checks for further data in Items
+                 * @type {boolean}
+                 */
+                WidgetSections.noMoreItems = false;
+
+                /**
+                 * loadMoreItems method loads the sections in list page.
+                 */
+                WidgetSections.loadMoreItems = function () {
+
+                    console.log('items load called');
+                    if (WidgetSections.noMoreItems){alert(-1);
+                        console.log('but no more items');
+                        return;
+                    }
+                    updateGetOptionsItems();
+                    console.log(searchOptionsItems);
+                    Items.find(searchOptionsItems).then(function success(result) {
+
+                        if (result.length <= _limit) {// to indicate there are more
+                            WidgetSections.noMoreItems = true;
+                        }
+                        else {
+                            result.pop();
+                            searchOptionsItems.skip = searchOptions.skip + _limit;
+                            WidgetSections.noMoreItems = false;
+                        }
+
+                        if(result.length) {
+                            result.forEach(function (_item) {
+                                _item.data.distance = 0; // default distance value
+                                _item.data.distanceText = 'Fetching..';
+                            });
+                        }
+
+                        console.log('result',result);
+                        console.log('WidgetSections.locationData.items BEFORE',WidgetSections.locationData.items);
+                        WidgetSections.locationData.items = WidgetSections.locationData.items ? WidgetSections.locationData.items.concat(result) : result;
+                        console.log('WidgetSections.locationData.items AFTER',WidgetSections.locationData.items);
+                    }, function fail() {
+                        console.error('error in item fetch');
+                    });
+                };
+
                 var _skip = 0,
+                    _skipItems = 0,
                     view = null,
                     currentLayout = '',
                     _limit = 5,
                     searchOptions = {
                         //filter: {"$json.secTitle": {"$regex": '/*'}},
                         skip: _skip,
+                        limit: _limit + 1 // the plus one is to check if there are any more
+                    }
+                    , searchOptionsItems = {
+                        filter: {"$json.itemTitle": {"$regex": '/*'}},
+                        skip: _skipItems,
                         limit: _limit + 1 // the plus one is to check if there are any more
                     }
                     , _placesInfoData = {
@@ -90,17 +140,45 @@
                     }
                 };
 
-                var loadAllItemsOfSections = function () {
-                    var itemFilter = {filter: {"$json.itemTitle": {"$regex": '/*'}}};
-                    //WidgetSections.items = null;
-                    WidgetSections.locationData.items = null;
-                    updateGetOptions();
-                    Items.find(itemFilter).then(function (res) {
-                        //WidgetSections.items = res;
-                        WidgetSections.locationData.items = res;//angular.copy(WidgetSections.items);
-                    }, function () {
+                /**
+                 * updateGetOptionsItems method checks whether sort options changed or not.
+                 * @returns {boolean}
+                 */
+                var updateGetOptionsItems = function () {
+                    var _sortBy = (WidgetSections.placesInfo && WidgetSections.placesInfo.data) ? WidgetSections.placesInfo.data.content.sortByItems : Orders.ordersMap.Default;
+                    var order = Orders.getOrder(_sortBy);
+                    if (order) {
+                        var sort = {};
+                        sort[order.key] = order.order;
+                        searchOptionsItems.sort = sort;
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                };
 
-                    });
+                var refreshItems  = function () {
+                    searchOptionsItems.skip = 0;
+                    WidgetSections.noMoreItems = false;
+                    WidgetSections.locationData.items = [];
+                };
+
+                var loadAllItemsOfSections = function () {
+                    //alert('called');
+                    var itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
+                    searchOptionsItems.filter = itemFilter;
+                    //WidgetSections.items = null;
+                    refreshItems();
+                    WidgetSections.loadMoreItems();
+
+                    //updateGetOptionsItems();
+                    /* Items.find(itemFilter).then(function (res) {
+                     //WidgetSections.items = res;
+                     WidgetSections.locationData.items = res;//angular.copy(WidgetSections.items);
+                     }, function () {
+
+                     });*/
                 };
 
                 var initCarousel = function (_defaultView) {
@@ -241,8 +319,12 @@
                 //syn with widget side
                 if ($routeParams.sectionId) { // this case means the controller is serving the section view
                     // have to get sections explicitly in item list view
+
+
+
                     Sections.find({}).then(function success(result) {
                         WidgetSections.sections = result;
+                        refreshItems();
                         WidgetSections.selectedSections = [$routeParams.sectionId];
                     }, function () {
 
@@ -308,23 +390,30 @@
                     var itemFilter;
                     console.log('filter changed', WidgetSections.selectedSections);
                     if (WidgetSections.selectedSections.length) {
-                        itemFilter = {
-                            'filter': {'$json.sections': {'$in': WidgetSections.selectedSections}}
-                        };
+                        /* itemFilter = {
+                         'filter': {'$json.sections': {'$in': WidgetSections.selectedSections}}
+                         };*/
+                        itemFilter = {'$json.sections': {'$in': WidgetSections.selectedSections}};
                     }
                     else {
-                        itemFilter = {filter: {"$json.itemTitle": {"$regex": '/*'}}};
+                        //itemFilter = {filter: {"$json.itemTitle": {"$regex": '/*'}}};
+                        itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
                     }
-                    Items.find(itemFilter).then(function (res) {
+                    searchOptionsItems.filter = itemFilter;
 
-                        res.forEach(function (_item) {
-                            _item.data.distance = 0; // default distance value
-                            _item.data.distanceText = 'Fetching..';
-                        });
-                        console.log('filter changed item list');
-                        WidgetSections.locationData.items = res;
-                    }, function () {
-                    });
+
+                    /* Items.find(itemFilter).then(function (res) {
+
+                     res.forEach(function (_item) {
+                     _item.data.distance = 0; // default distance value
+                     _item.data.distanceText = 'Fetching..';
+                     });
+                     console.log('filter changed item list');
+                     WidgetSections.locationData.items = res;
+                     }, function () {
+                     });*/
+                    refreshItems();
+                    WidgetSections.loadMoreItems();
                 }
 
                 WidgetSections.itemsOrder = function (item) {
@@ -362,6 +451,8 @@
                     }
                     return (Number(item.data.distanceText.split(' ')[0]) >= $scope.distanceSlider.min && Number(item.data.distanceText.split(' ')[0]) <= $scope.distanceSlider.max);
                 };
+
+
 
                 /**
                  * WidgetSections.sections holds the array of items.
@@ -402,7 +493,6 @@
                         console.error('error');
                     });
                 };
-                //WidgetSections.loadMore();
 
                 WidgetSections.toggleSectionSelection = function (ind) {
                     WidgetSections.showSections = false;
