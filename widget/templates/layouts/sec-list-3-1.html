@@ -37,11 +37,10 @@
                     <div  class="no-items-msg margin-fifteen" ng-hide="WidgetSections.locationData.items.length">
                         No item(s) to show
                     </div>
-                    <!--<div infinite-scroll-distance="0"
-                         infinite-scroll="WidgetSections.getMoreItems()"
+                    <div infinite-scroll-distance="0"
+                         infinite-scroll="WidgetSections.loadMoreItems()"
                          infinite-scroll-disabled="WidgetSections.noMoreItems"
-                         infinite-scroll-container="'#scroll-infinite'">-->
-
+                         infinite-scroll-container="'#scroll-infinite'">
                     <div class="plugin-banner has-info-bar clearfix"
                          ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
                         <div class="plugin-slide text-center">
@@ -60,7 +59,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--</div>-->
+                    </div>
                 </div>
             </div>
         </div>

@@ -35,10 +35,10 @@
                 </div>
             </div>
             <div ng-hide="WidgetSections.showSections">
-                <!--<div infinite-scroll-distance="0"
-                     infinite-scroll="WidgetSections.getMoreItems()"
+                <div infinite-scroll-distance="0"
+                     infinite-scroll="WidgetSections.loadMoreItems()"
                      infinite-scroll-disabled="WidgetSections.noMoreItems"
-                     infinite-scroll-container="'#scroll-infinite'">-->
+                     infinite-scroll-container="'#scroll-infinite'">
                 <div class="no-items-msg" ng-hide="WidgetSections.locationData.items.length">
                     No item(s) to show
                 </div>
@@ -59,7 +59,7 @@
                         </div>
                     </div>
                 </div>
-                <!--</div>-->
+                </div>
             </div>
         </div>
         <div ng-include="'templates/layouts/bottom-menu.html'"></div>
