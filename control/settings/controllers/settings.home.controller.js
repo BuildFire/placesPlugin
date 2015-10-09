@@ -3,7 +3,6 @@
     angular
         .module('placesSettings')
         .controller('SettingsHomeCtrl', ['$scope', 'Orders', 'COLLECTIONS', 'DB', '$timeout', 'placesInfo', function ($scope, Orders, COLLECTIONS, DB, $timeout, placesInfo) {
-            var placeInfo = new DB(COLLECTIONS.PlaceInfo);
             var SettingsHome = this
                 , _data = {
                     content: {
@@ -26,6 +25,8 @@
                     }
                 }
                 , tmrDelay = null;
+            SettingsHome._placeCenter = new DB(COLLECTIONS.PlaceInfo);
+
 
             /* populate VM with resolve */
             if (placesInfo) {
@@ -57,7 +58,7 @@
                     }
                     if (newObj.id) {
                         tmrDelay = $timeout(function () {
-                            placeInfo.update(newObj.id, newObj.data).then(function (result) {
+                            SettingsHome._placeCenter.update(newObj.id, newObj.data).then(function (result) {
                                 SettingsHome._lastSaved = angular.copy(SettingsHome.placeInfo);
                             }, function (err) {
                                 console.log(err);
@@ -66,7 +67,7 @@
                         }, 500);
                     } else {
                         tmrDelay = $timeout(function () {
-                            placeInfo.save(SettingsHome.placeInfo.data).then(function success(result) {
+                            SettingsHome._placeCenter.save(SettingsHome.placeInfo.data).then(function success(result) {
                                 init();
                             }, function fail(err) {
                                 console.log(err);

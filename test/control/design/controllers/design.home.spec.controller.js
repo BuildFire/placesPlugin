@@ -145,7 +145,7 @@ describe("DesignHomeCtrl", function () {
             controller.placeInfo.data.design.secListBGImage = 'test';
             //controller.removeListBgImage();
             $scope.$digest();
-            expect(controller._lastSaved).not.toBeNull();
+            expect(controller._lastSaved).toBeNull();
         });
 
         it('should revert the PlaceInfo to lastSaved when db change failed', function () {
