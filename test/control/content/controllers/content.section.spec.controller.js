@@ -144,7 +144,7 @@ describe('Unit : Controller - ContentSectionCtrl', function () {
         });
     });
 
-    xdescribe('ContentSection.delete', function () {
+    describe('ContentSection.delete', function () {
 
         var spy;
         beforeEach(inject(function () {

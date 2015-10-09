@@ -102,7 +102,7 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
         });
     });
 
-    xdescribe('ContentItems.editSections', function () {
+    describe('ContentItems.editSections', function () {
         var Sections;
         beforeEach(inject(function () {
             /* spy = spyOn(window.Sections, 'find').and.callFake(function () {

@@ -1,4 +1,4 @@
-xdescribe('placesDesign: App', function () {
+describe('placesDesign: App', function () {
     beforeEach(module('placesDesign'));
     var location, route, rootScope;
     beforeEach(inject(

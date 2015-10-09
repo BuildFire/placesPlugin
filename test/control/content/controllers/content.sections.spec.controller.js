@@ -1,4 +1,4 @@
-xdescribe('Unit : Controller - ContentSectionsCtrl', function () {
+describe('Unit : Controller - ContentSectionsCtrl', function () {
 
 // load the controller's module
     beforeEach(module('placesContent'));
@@ -182,9 +182,7 @@ xdescribe('Unit : Controller - ContentSectionsCtrl', function () {
 
     });
 
-
     describe('Carousel', function () {
-
         it('ContentSections.editor.onAddItems should pass if it initialises the ContentSections.info.data.content.images to blank array if it doesnt exyst', function () {
             ContentSections.info.data.content.images = null;
             ContentSections.editor.onAddItems(['test']);
@@ -208,10 +206,5 @@ xdescribe('Unit : Controller - ContentSectionsCtrl', function () {
             ContentSections.editor.onOrderChange('test', 1, 2);
             expect(ContentSections.info.data.content.images[2]).toEqual('test');
         });
-
     });
-
-
-
-})
-;
+});
