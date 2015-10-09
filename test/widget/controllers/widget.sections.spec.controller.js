@@ -75,19 +75,44 @@ describe('Unit : Controller - WidgetSectionsCtrl', function () {
         });
     });
 
-    describe('Filter Categories', function () {
-        it('WidgetSections.resetSectionFilter should pass if it blanks WidgetSections.selectedSections when Items are being shown', function () {
+    describe('Filter Categories - WidgetSections.resetSectionFilter', function () {
+        it('should pass if it blanks WidgetSections.selectedSections when Items are being shown', function () {
             WidgetSections.selectedSections = ['test'];
             WidgetSections.showSections = false;
             WidgetSections.resetSectionFilter();
             expect(WidgetSections.selectedSections.length).toEqual(0);
         });
 
-        it('WidgetSections.resetSectionFilter should make WidgetSections.showSections true when WidgetSections.selectedSections is empty and WidgetSections.showSections is false', function () {
+        it('should make WidgetSections.showSections true when WidgetSections.selectedSections is empty and WidgetSections.showSections is false', function () {
             WidgetSections.selectedSections = [];
             WidgetSections.showSections = false;
             WidgetSections.resetSectionFilter();
             expect(WidgetSections.showSections).toBeTruthy();
         });
     });
+
+    describe('WidgetSections.toggleSectionSelection', function () {
+
+        it('should pass if it sets WidgetSections.showSections to false', function () {
+            WidgetSections.showSections = true;
+            WidgetSections.sections = [{id:1}];
+            WidgetSections.toggleSectionSelection(0);
+            expect(WidgetSections.showSections).toBeFalsy();
+        });
+
+        it('should pass if it adds to WidgetSections.selectedSections if the section was not selected', function () {
+            WidgetSections.selectedSections = [];
+            WidgetSections.sections = [{id:1}];
+            WidgetSections.toggleSectionSelection(0);
+            expect(WidgetSections.selectedSections.length).toEqual(1);
+        });
+
+        it('should pass if it removes from WidgetSections.selectedSections if the section was selected', function () {
+            WidgetSections.selectedSections = [1];
+            WidgetSections.sections = [{id:1}];
+            WidgetSections.toggleSectionSelection(0);
+            expect(WidgetSections.selectedSections.length).toEqual(0);
+        });
+    });
+
 });

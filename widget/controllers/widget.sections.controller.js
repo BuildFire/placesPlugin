@@ -239,7 +239,7 @@
                 }
 
                 //syn with widget side
-                if ($routeParams.sectionId) {
+                if ($routeParams.sectionId) { // this case means the controller is serving the section view
                     // have to get sections explicitly in item list view
                     Sections.find({}).then(function success(result) {
                         WidgetSections.sections = result;
@@ -278,7 +278,7 @@
                 }
 
                 function getItemsDistance(_items) {
-
+                    console.log('WidgetSections.locationData.items', _items);
                     if (WidgetSections.locationData.currentCoordinates == null) {
                         return;
                     }
@@ -321,7 +321,7 @@
                             _item.data.distance = 0; // default distance value
                             _item.data.distanceText = 'Fetching..';
                         });
-
+                        console.log('filter changed item list');
                         WidgetSections.locationData.items = res;
                     }, function () {
                     });
@@ -339,6 +339,7 @@
                     }
                 };
 
+                /* Onclick event of items on the map view*/
                 WidgetSections.selectedMarker = function (itemIndex) {
                     WidgetSections.selectedItem = WidgetSections.locationData.items[itemIndex];
                     initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
@@ -353,16 +354,17 @@
                     });
                 };
 
+                /* Filters the items based on the range of distance slider */
                 WidgetSections.sortFilter = function (item) {
 
-                    if (WidgetSections.locationData.currentCoordinates == null || item.data.distanceText == 'Fetching..' || !item.data.distanceText) {
+                    if (WidgetSections.locationData.currentCoordinates == null || item.data.distanceText == 'Fetching..' || !item.data.distanceText || item.data.distanceText == 'NA') {
                         return true;
                     }
                     return (Number(item.data.distanceText.split(' ')[0]) >= $scope.distanceSlider.min && Number(item.data.distanceText.split(' ')[0]) <= $scope.distanceSlider.max);
                 };
 
                 /**
-                 * WidgetSections.items holds the array of items.
+                 * WidgetSections.sections holds the array of items.
                  * @type {Array}
                  */
                 WidgetSections.sections = [];
@@ -402,7 +404,7 @@
                 };
                 //WidgetSections.loadMore();
 
-                WidgetSections.toggleSectionSelection = function (ind, event) {
+                WidgetSections.toggleSectionSelection = function (ind) {
                     WidgetSections.showSections = false;
                     var id = WidgetSections.sections[ind].id;
                     if (WidgetSections.selectedSections.indexOf(id) < 0) {
