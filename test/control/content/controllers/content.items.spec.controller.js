@@ -94,8 +94,11 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
         it('it should pass if PATHS function is defined', function () {
             expect(PATHS).not.toBeUndefined();
         });
-        it('it should pass if PATHS function is defined', function () {
-            expect(PATHS).not.toBeUndefined();
+        it('it should pass if ContentItems.info is defined', function () {
+            expect(ContentItems.info).not.toBeUndefined();
+        });
+        it('it should pass if ContentItems.itemSortableOptions is defined', function () {
+            expect(ContentItems.itemSortableOptions).not.toBeUndefined();
         });
     });
 
