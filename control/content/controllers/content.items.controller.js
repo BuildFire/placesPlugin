@@ -218,7 +218,6 @@
                             //console.log(result);
 
                             Items.update(result.id, result.data).then(function () {
-                                //ContentItems.items[ind].data.sections = result.data.sections;
                                 _skip = 0;
                                 ContentItems.items = null;
                                 ContentItems.getMore();

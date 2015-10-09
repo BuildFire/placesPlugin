@@ -3,7 +3,7 @@ xdescribe('Unit : Controller - ContentSectionsCtrl', function () {
 // load the controller's module
     beforeEach(module('placesContent'));
 
-    var $q, ContentSections, scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, PlaceInfoData;
+    var $q, ContentSections, scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, placesInfo;
 
     beforeEach(inject(function (_$q_, $controller, _$rootScope_, _DB_, _$timeout_, _COLLECTIONS_, _Orders_, _OrdersItems_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _$csv_, _Buildfire_, _Modals_) {
             scope = _$rootScope_.$new();
@@ -39,7 +39,7 @@ xdescribe('Unit : Controller - ContentSectionsCtrl', function () {
 
             ContentSections = $controller('ContentSectionsCtrl', {
                 $scope: scope,
-                PlaceInfoData: {id: '1', data: {content: {sortBy: 'title'}}},
+                placesInfo: {id: '1', data: {content: {sortBy: 'title'}}},
                 DB: DB,
                 $timeout: $timeout,
                 COLLECTIONS: COLLECTIONS,
@@ -51,8 +51,7 @@ xdescribe('Unit : Controller - ContentSectionsCtrl', function () {
                 PATHS: PATHS,
                 $csv: $csv,
                 Modals: Modals,
-                Buildfire: Buildfire,
-                PlaceInfoData: PlaceInfoData
+                Buildfire: Buildfire
             });
         })
     )

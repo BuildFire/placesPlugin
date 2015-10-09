@@ -244,10 +244,6 @@
                     Sections.find({}).then(function success(result) {
                         WidgetSections.sections = result;
                         WidgetSections.selectedSections = [$routeParams.sectionId];
-                        /* $timeout(function () {
-                         $("a[section-id=" + $routeParams.sectionId + "]").addClass('active');
-                         }, 1000);*/
-
                     }, function () {
 
                     });
@@ -327,21 +323,20 @@
                         });
 
                         WidgetSections.locationData.items = res;
-                        //WidgetSections.locationData.items = angular.copy(WidgetSections.items);
                     }, function () {
                     });
                 }
 
                 WidgetSections.itemsOrder = function (item) {
-                    //console.error(WidgetSections.placesInfo.data.content.sortByItems);
                     if (WidgetSections.sortOnClosest)
                         return item.data.distance;
                     else {
                         var order = OrdersItems.getOrder(WidgetSections.placesInfo.data.content.sortByItems || OrdersItems.ordersMap.Default);
-                        console.log('shout', order);
-                        return order.order == 1 ? item[order.key] : item['-' + order.key];
+                        if (order.order == 1)
+                            return item.data[order.key]
+                        else
+                            return item.data['-' + order.key];
                     }
-                    //return item.data.itemTitle;
                 };
 
                 WidgetSections.selectedMarker = function (itemIndex) {
@@ -354,7 +349,6 @@
                             WidgetSections.selectedItemDistance = null;
                         }
                     }, function (err) {
-                        console.log('distance err', err);
                         WidgetSections.selectedItemDistance = null;
                     });
                 };
@@ -364,7 +358,6 @@
                     if (WidgetSections.locationData.currentCoordinates == null || item.data.distanceText == 'Fetching..' || !item.data.distanceText) {
                         return true;
                     }
-                    //console.log(Number(item.data.distanceText.split(' ')[0]),$scope.distanceSlider);
                     return (Number(item.data.distanceText.split(' ')[0]) >= $scope.distanceSlider.min && Number(item.data.distanceText.split(' ')[0]) <= $scope.distanceSlider.max);
                 };
 
@@ -383,11 +376,9 @@
                  * loadMoreSections method loads the sections in list page.
                  */
                 WidgetSections.loadMoreSections = function () {
-                    //alert('widget load more called');
                     if (WidgetSections.isBusy && !WidgetSections.noMoreSections) {
                         return;
                     }
-                    //alert(1);
                     updateGetOptions();
                     WidgetSections.isBusy = true;
                     Sections.find(searchOptions).then(function success(result) {
@@ -416,11 +407,9 @@
                     var id = WidgetSections.sections[ind].id;
                     if (WidgetSections.selectedSections.indexOf(id) < 0) {
                         WidgetSections.selectedSections.push(id);
-                        //$(event.target).addClass('active');
                     }
                     else {
                         WidgetSections.selectedSections.splice(WidgetSections.selectedSections.indexOf(id), 1);
-                        //$(event.target).removeClass('active');
                         if (!WidgetSections.showSections && WidgetSections.selectedSections.length == 0) {
                             WidgetSections.showSections = true;
                         }
@@ -434,8 +423,7 @@
                     }
                     WidgetSections.showSections = false;
                     WidgetSections.selectedSections = [];
-                    filterChanged();
-                    //$('.active.section-filter').removeClass('active');
+                    //filterChanged();
                 };
 
                 $scope.$watch(function () {
