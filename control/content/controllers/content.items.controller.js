@@ -162,6 +162,11 @@
                     }
                 }
 
+
+                ContentItems.deepLinkUrl=function(url){
+                    Modals.DeeplinkPopupModal(url);
+                };
+
                 /**
                  * ContentItems.toggleSortOrder() to change the sort by
                  */

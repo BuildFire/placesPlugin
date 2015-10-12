@@ -43,29 +43,6 @@
                     ContentItem.masterItem = angular.copy(ContentItem.item);
                 }
 
-                /*function init() {
-                    if ($routeParams.itemId) {
-                        Items.getById($routeParams.itemId).then(function success(result) {
-                                if (result && result.data) {
-                                    ContentItem.item = result;
-                                    updateMasterItem(ContentItem.item);
-                                }
-                                if (ContentItem.item.data.images)
-                                    ContentItem.editor.loadItems(ContentItem.item.data.images);
-                                if (ContentItem.item.data.links)
-                                    ContentItem.linkEditor.loadItems(ContentItem.item.data.links);
-                                if (ContentItem.item.data.address && ContentItem.item.data.address.aName) {
-                                    ContentItem.currentAddress = ContentItem.item.data.address.aName;
-                                    ContentItem.currentCoordinates = [ContentItem.item.data.address.lng, ContentItem.item.data.address.lat];
-                                }
-                            },
-                            function fail(err) {
-                                console.log('Error', err);
-                            }
-                        );
-                    }
-                }
-*/
                 //option for wysiwyg
                 ContentItem.bodyWYSIWYGOptions = {
                     plugins: 'advlist autolink link image lists charmap print preview',
@@ -174,9 +151,9 @@
                     }
                     else {
                         console.info('****************Item inserted***********************');
-                        _item.data.deepLinkUrl = Buildfire.deeplink.createLink({id: _item.id});
                         _item.data.dateCreated = new Date();
                         Items.insert(_item.data).then(function (data) {
+                            ContentItem.data.deepLinkUrl = Buildfire.deeplink.createLink({id: data.id});
                             ContentItem.item.id = data.id;
                             updateMasterItem(ContentItem.item);
                         }, function (err) {
