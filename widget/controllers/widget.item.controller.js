@@ -4,7 +4,6 @@
         .controller('WidgetItemCtrl', ['$scope', 'COLLECTIONS', 'DB', '$routeParams', 'Buildfire', '$rootScope', 'GeoDistance', 'Messaging', 'Location', 'EVENTS', 'PATHS', 'AppConfig', 'placesInfo', 'Orders', 'OrdersItems', 'item', function ($scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS, AppConfig, placesInfo, Orders, OrdersItems, item) {
             AppConfig.changeBackgroundTheme();
             var WidgetItem = this
-                , view = null
                 , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
                 , Items = new DB(COLLECTIONS.Items)
                 , itemLat = ''
@@ -70,7 +69,6 @@
             else {
                 WidgetItem.item = _itemData;
             }
-            WidgetItem.item = result;
             if (WidgetItem.item.data) {
                 if (WidgetItem.item.data.backgroundImage)
                     AppConfig.changeBackgroundTheme(WidgetItem.item.data.backgroundImage);
@@ -110,18 +108,18 @@
 
             $scope.$on("Carousel:LOADED", function () {
                 console.log('carousel added------', WidgetItem.item);
-                if (!view) {
-                    console.log('if------', view);
-                    view = new Buildfire.components.carousel.view("#carousel", []);
+                if (!WidgetItem.view) {
+                    console.log('if------', WidgetItem.view);
+                    WidgetItem.view = new Buildfire.components.carousel.view("#carousel", []);
                 }
-                if (WidgetItem.item && WidgetItem.item.data && WidgetItem.item.data.images && view) {
-                    view.loadItems(WidgetItem.item.data.images);
+                if (WidgetItem.item && WidgetItem.item.data && WidgetItem.item.data.images && WidgetItem.view) {
+                    WidgetItem.view.loadItems(WidgetItem.item.data.images);
                 } else {
-                    view.loadItems([]);
+                    WidgetItem.view.loadItems([]);
                 }
             });
 
-            var clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
+            WidgetItem.clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
                 if (event.tag == 'items' && event.data) {
                     WidgetItem.locationData = {
                         items: null,
@@ -150,8 +148,8 @@
             });
 
             function initCarousel(images) {
-                if (view) {
-                    view.loadItems(images);
+                if (WidgetItem.view) {
+                    WidgetItem.view.loadItems(images);
                 }
             }
 
@@ -159,7 +157,7 @@
              * will called when controller scope has been destroyed.
              */
             $scope.$on("$destroy", function () {
-                clearOnUpdateListener.clear();
+                WidgetItem.clearOnUpdateListener.clear();
             });
         }]);
 })(window.angular, window);
