@@ -99,7 +99,6 @@ describe('Unit : Controller - ContentSectionsCtrl', function () {
             spy = spyOn($csv, 'download').and.callFake(function () {
             });
             importSpy = spyOn($csv, 'import').and.callFake(function () {
-                console.log(789);
                 var deferred = $q.defer();
                 deferred.reject(null);
                 return deferred.promise;

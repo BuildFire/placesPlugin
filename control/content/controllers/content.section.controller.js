@@ -108,7 +108,6 @@
 
                 function addNewItem(_section) {
                     Sections.insert(_section.data).then(function (item) {
-                        ContentSection.section = item;
                         updateMasterSection(item);
                         placeInfoData.data.content.rankOfLastItem = item.data.rank;
                         PlaceInfo.save(placeInfoData.data).then(function (data) {
@@ -131,7 +130,7 @@
                     if (tmrDelayForMedia) {
                         clearTimeout(tmrDelayForMedia);
                     }
-                    if (!isUnChanged(_section)) {
+                    if (_section && !isUnChanged(_section)) {
                         tmrDelayForMedia = setTimeout(function () {
                             if (_section.id) {
                                 updateItemData(_section);
@@ -141,7 +140,7 @@
                                 _section.data.dateCreated = +new Date();
                                 addNewItem(_section);
                             }
-                        }, 1000);
+                        }, 500);
                     }
                 }
 
