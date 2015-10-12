@@ -15,7 +15,7 @@
                 <div ng-show="WidgetSections.showSections">
                     <div infinite-scroll-distance="0"
                          infinite-scroll="WidgetSections.loadMoreSections()"
-                         infinite-scroll-disabled="WidgetSections.noMoreSections"
+
                          infinite-scroll-container="'#scroll-infinite'">
                         <div class="list-item" ng-repeat="item in WidgetSections.sections">
                             <div class="list-item-media text-left overflow-hidden">
@@ -39,7 +39,7 @@
                     </div>
                     <div infinite-scroll-distance="0"
                          infinite-scroll="WidgetSections.loadMoreItems()"
-                         infinite-scroll-disabled="WidgetSections.noMoreItems"
+
                          infinite-scroll-container="'#scroll-infinite'">
                     <div class="plugin-banner has-info-bar clearfix"
                          ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">

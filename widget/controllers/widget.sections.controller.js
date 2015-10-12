@@ -24,6 +24,12 @@
                 };
 
                 /**
+                 * WidgetSections.isBusy checks if items are fetched
+                 * @type {boolean}
+                 */
+                WidgetSections.isBusyItems = false;
+
+                /**
                  * WidgetSections.noMoreItems checks for further data in Items
                  * @type {boolean}
                  */
@@ -35,15 +41,18 @@
                 WidgetSections.loadMoreItems = function () {
 
                     console.log('items load called');
-                    if (WidgetSections.noMoreItems){alert(-1);
+                    if (WidgetSections.noMoreItems || WidgetSections.isBusyItems) {
+                        //alert('full items');
                         console.log('but no more items');
                         return;
                     }
                     updateGetOptionsItems();
                     console.log(searchOptionsItems);
+                    WidgetSections.isBusyItems = true;
                     Items.find(searchOptionsItems).then(function success(result) {
-
+                        WidgetSections.isBusyItems = false;
                         if (result.length <= _limit) {// to indicate there are more
+                            //alert('full');
                             WidgetSections.noMoreItems = true;
                         }
                         else {
@@ -52,18 +61,19 @@
                             WidgetSections.noMoreItems = false;
                         }
 
-                        if(result.length) {
+                        if (result.length) {
                             result.forEach(function (_item) {
                                 _item.data.distance = 0; // default distance value
                                 _item.data.distanceText = 'Fetching..';
                             });
                         }
 
-                        console.log('result',result);
-                        console.log('WidgetSections.locationData.items BEFORE',WidgetSections.locationData.items);
+                        console.log('result', result);
+                        console.log('WidgetSections.locationData.items BEFORE', WidgetSections.locationData.items);
                         WidgetSections.locationData.items = WidgetSections.locationData.items ? WidgetSections.locationData.items.concat(result) : result;
-                        console.log('WidgetSections.locationData.items AFTER',WidgetSections.locationData.items);
+                        console.log('WidgetSections.locationData.items AFTER', WidgetSections.locationData.items);
                     }, function fail() {
+                        WidgetSections.isBusyItems = false;
                         console.error('error in item fetch');
                     });
                 };
@@ -158,10 +168,13 @@
                     }
                 };
 
-                var refreshItems  = function () {
+                var refreshItems = function () {
+                    //alert('refresh called');
                     searchOptionsItems.skip = 0;
                     WidgetSections.noMoreItems = false;
-                    WidgetSections.locationData.items = [];
+                    WidgetSections.isBusyItems = false;
+                    if (WidgetSections.locationData.items)
+                        WidgetSections.locationData.items.length = 0;
                 };
 
                 var loadAllItemsOfSections = function () {
@@ -212,9 +225,13 @@
                 var clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
                     if (event.tag === "placeInfo") {
                         if (event.data) {
+                            if (event.data.settings.showDistanceIn != WidgetSections.placesInfo.data.settings.showDistanceIn)
+                                $window.location.reload();
+
                             if (event.data.design) {
                                 AppConfig.changeBackgroundTheme(event.data.design.secListBGImage);
                             }
+
                             WidgetSections.placesInfo = event;
                             WidgetSections.selectedItem = null;
                             WidgetSections.selectedItemDistance = null;
@@ -319,7 +336,6 @@
                 //syn with widget side
                 if ($routeParams.sectionId) { // this case means the controller is serving the section view
                     // have to get sections explicitly in item list view
-
 
 
                     Sections.find({}).then(function success(result) {
@@ -433,7 +449,7 @@
                     WidgetSections.selectedItem = WidgetSections.locationData.items[itemIndex];
                     initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
                     GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, [WidgetSections.selectedItem], '').then(function (result) {
-                       console.log(result);
+                        console.log(result);
                         if (result.rows.length && result.rows[0].elements.length && result.rows[0].elements[0].distance && result.rows[0].elements[0].distance.text) {
                             WidgetSections.selectedItemDistance = result.rows[0].elements[0].distance.text;
                         } else {
@@ -454,7 +470,6 @@
                 };
 
 
-
                 /**
                  * WidgetSections.sections holds the array of items.
                  * @type {Array}
@@ -470,7 +485,8 @@
                  * loadMoreSections method loads the sections in list page.
                  */
                 WidgetSections.loadMoreSections = function () {
-                    if (WidgetSections.isBusy && !WidgetSections.noMoreSections) {
+                    if (WidgetSections.isBusy || WidgetSections.noMoreSections) {
+                        console.log('fetch sections cancelled');
                         return;
                     }
                     updateGetOptions();
@@ -515,6 +531,7 @@
                         return;
                     }
                     WidgetSections.showSections = false;
+                    refreshItems();
                     WidgetSections.selectedSections = [];
                     //filterChanged();
                 };

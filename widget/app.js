@@ -16,7 +16,7 @@
         //injected ui.bootstrap for angular bootstrap component
         //injected ui.sortable for manual ordering of list
         //ngClipboard to provide copytoclipboard feature
-        .config(['$routeProvider','$httpProvider', function ($routeProvider,$httpProvider) {
+        .config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
 
             /**
              * Disable the pull down refresh
@@ -122,8 +122,8 @@
                 })
                 .otherwise('/');
 
-            var interceptor=['$q',function($q){
-                var counter=0;
+            var interceptor = ['$q', function ($q) {
+                var counter = 0;
                 return {
 
                     request: function (config) {
@@ -133,16 +133,14 @@
                     },
                     response: function (response) {
                         counter--;
-                        if(counter===0)
-                        {
+                        if (counter === 0) {
                             buildfire.spinner.hide();
                         }
                         return response;
                     },
-                    responseError:function(rejection){
+                    responseError: function (rejection) {
                         counter--;
-                        if(counter===0)
-                        {
+                        if (counter === 0) {
                             buildfire.spinner.hide();
                         }
 
@@ -154,7 +152,7 @@
             $httpProvider.interceptors.push(interceptor);
 
         }])
-        .run(['Location', 'Messaging', 'EVENTS', 'PATHS', function (Location, Messaging, EVENTS, PATHS) {
+        .run(['Location', 'Messaging', 'EVENTS', 'PATHS', '$location', function (Location, Messaging, EVENTS, PATHS, $location) {
             Messaging.onReceivedMessage = function (event) {
                 console.log('Messaging000000000000000000000------on Widget Side-----------------------------------------', event);
                 if (event) {
@@ -168,9 +166,9 @@
                                 case PATHS.ITEM:
                                     url = url + "item";
                                     if (secId && id) {
-                                        url = url+"/"+secId + "/" + id;
+                                        url = url + "/" + secId + "/" + id;
                                     }
-                                    else if(secId){
+                                    else if (secId) {
                                         url = url + "/" + secId;
                                     }
                                     break;
@@ -203,6 +201,14 @@
                 }
 
             });
+
+            buildfire.navigation.onBackButtonClick = function () {
+                var path = $location.path();
+                if (path.indexOf('/items/') == 0)
+                    Location.goToHome();
+                else if (path.indexOf('/item/') == 0)
+                    Location.go('#/items/' + path.split('/')[2]);
+            }
         }]);
 
 
