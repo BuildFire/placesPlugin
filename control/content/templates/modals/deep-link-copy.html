@@ -1,0 +1,20 @@
+<div class="header clearfix border-bottom-grey">
+    <h4 class="margin-zero">Deep link</h4>
+    <span class="icon icon-cross2 close-modal" onclick="DeepLinkPopup.close()"></span>
+</div>
+<div class="padded clearfix">
+
+    <textarea ng-model="DeepLinkPopup.deeplink">
+
+    </textarea>
+    </div>
+</div>
+<div class="bottom border-top-grey clearfix">
+    <div class="col-md-6 pull-left text-center">
+        <a class="text-primary default-background-hover transition-third"
+           ng-click="DeepLinkPopup.close()">Close</a>
+    </div>
+  <!--  <div class="col-md-6 pull-right text-center border-left-grey">
+        <a class="text-success default-background-hover transition-third" ng-click="ok()">Save</a>
+    </div>-->
+</div>

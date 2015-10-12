@@ -115,4 +115,76 @@ describe('Unit : Controller - WidgetSectionsCtrl', function () {
         });
     });
 
+    describe('WidgetSections.selectedMarker', function () {
+
+        var spy;
+        beforeEach(inject(function () {
+            spy = spyOn(GeoDistance, 'getDistance').and.callFake(function () {
+                console.log('called');
+                var deferred = $q.defer();
+                deferred.resolve({});
+                return deferred.promise;
+            });
+
+        }));
+
+        it('should pass if it calls GeoDistance.getDistance', function () {
+            WidgetSections.locationData.items = [{}];
+            WidgetSections.selectedMarker(0);
+            expect(spy).toHaveBeenCalled();
+        });
+
+        it('should pass if it nullifies WidgetSections.selectedItemDistance if the response from service is empty', function () {
+            WidgetSections.locationData.items = [{}];
+            WidgetSections.selectedMarker(0);
+            expect(WidgetSections.selectedItemDistance).toBeNull();
+        });
+
+
+    });
+
+    xdescribe('WidgetSections.selectedMarker', function () {
+
+        var spy;
+        beforeEach(inject(function () {
+            spy = spyOn(GeoDistance, 'getDistance').and.callFake(function () {
+                console.log('called');
+                var deferred = $q.defer();
+                deferred.resolve({rows: [{elements: [{distance: {text: 'test'}}]}]});
+                return deferred.promise;
+            });
+        }));
+
+        it('should pass if it nullifies WidgetSections.selectedItemDistance if the response from service is empty', function () {
+
+            WidgetSections.locationData.items = [{}];
+            WidgetSections.selectedMarker(0);
+            console.log(WidgetSections.selectedItemDistance);
+            expect(WidgetSections.selectedItemDistance).toEqual('test');
+        });
+    });
+
+
+    xdescribe('WidgetSections.loadMoreSections', function () {
+
+       /* var spy;
+        beforeEach(inject(function () {
+            spy = spyOn(GeoDistance, 'getDistance').and.callFake(function () {
+                console.log('called');
+                var deferred = $q.defer();
+                deferred.resolve({rows: [{elements: [{distance: {text: 'test'}}]}]});
+                return deferred.promise;
+            });
+        }));
+*/
+        it('should pass if it nullifies WidgetSections.selectedItemDistance if the response from service is empty', function () {
+
+            WidgetSections.locationData.items = [{}];
+            WidgetSections.selectedMarker(0);
+            console.log(WidgetSections.selectedItemDistance);
+            expect(WidgetSections.selectedItemDistance).toEqual('test');
+        });
+    });
+
+
 });
