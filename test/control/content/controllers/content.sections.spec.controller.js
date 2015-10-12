@@ -94,11 +94,16 @@ describe('Unit : Controller - ContentSectionsCtrl', function () {
     });
 
     describe('Bulk Upload', function () {
-        var spy;
+        var spy, importSpy;
         beforeEach(inject(function () {
             spy = spyOn($csv, 'download').and.callFake(function () {
             });
-
+            importSpy = spyOn($csv, 'import').and.callFake(function () {
+                console.log(789);
+                var deferred = $q.defer();
+                deferred.reject(null);
+                return deferred.promise;
+            });
         }));
         it('ContentSections.getTemplate should be defined', function () {
             expect(ContentSections.getTemplate).toBeDefined();
@@ -109,6 +114,11 @@ describe('Unit : Controller - ContentSectionsCtrl', function () {
         });
         it('ContentSections.exportCSV should be defined', function () {
             expect(ContentSections.exportCSV).toBeDefined();
+        });
+
+        it('ContentSections.openImportCSVDialog should make ContentSections.csvDataInvalid true in import error callback', function () {
+            ContentSections.openImportCSVDialog();
+            expect(ContentSections.csvDataInvalid).toBeUndefined();
         });
 
     });
@@ -207,4 +217,98 @@ describe('Unit : Controller - ContentSectionsCtrl', function () {
             expect(ContentSections.info.data.content.images[2]).toEqual('test');
         });
     });
+
+    describe('Infinite scroll', function () {
+
+        it('should make isBusy true when data is not being fetched', function () {
+            ContentSections.isBusy = false;
+            ContentSections.getMore();
+            expect(ContentSections.isBusy).toBeTruthy();
+        });
+
+        it('should do nothing when all data is fetched i.e. noMore is true', function () {
+            ContentSections.isBusy = false;
+            ContentSections.noMore = true;
+            ContentSections.getMore();
+            expect(ContentSections.isBusy).toBeFalsy();
+        });
+
+
+    });
+});
+
+
+describe('Unit : Controller - ContentSectionsCtrl - First time plugin setup - No placeInfo data', function () {
+
+// load the controller's module
+    beforeEach(module('placesContent'));
+
+    var $q, ContentSections, scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, placesInfo;
+
+    beforeEach(inject(function (_$q_, $controller, _$rootScope_, _DB_, _$timeout_, _COLLECTIONS_, _Orders_, _OrdersItems_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _$csv_, _Buildfire_, _Modals_) {
+            scope = _$rootScope_.$new();
+            DB = _DB_;
+            $timeout = _$timeout_;
+            COLLECTIONS = _COLLECTIONS_;
+            Orders = _Orders_;
+            OrdersItems = _OrdersItems_;
+            AppConfig = _AppConfig_;
+            Messaging = _Messaging_;
+            EVENTS = _EVENTS_;
+            PATHS = _PATHS_;
+            $csv = _$csv_;
+            Modals = _Modals_;
+            Buildfire = {
+                components: {
+                    carousel: {
+                        editor: function (a) {
+                            return {
+                                loadItems: function () {
+                                }
+                            }
+                        }
+                    },
+                    actionItems: {
+                        sortableList: {}
+                    }
+                }
+            };
+            $q = _$q_;
+            //Buildfire = _Buildfire_;
+            //PlaceInfoData = _PlaceInfoData_;
+
+            ContentSections = $controller('ContentSectionsCtrl', {
+                $scope: scope,
+                placesInfo: null,
+                DB: DB,
+                $timeout: $timeout,
+                COLLECTIONS: COLLECTIONS,
+                Orders: Orders,
+                OrdersItems: OrdersItems,
+                AppConfig: AppConfig,
+                Messaging: Messaging,
+                EVENTS: EVENTS,
+                PATHS: PATHS,
+                $csv: $csv,
+                Modals: Modals,
+                Buildfire: Buildfire
+            });
+        })
+    )
+    ;
+
+
+    describe('PlaceInfo Resolve', function () {
+
+        beforeEach(inject(function () {
+            ContentSections.placesInfo = null;
+
+        }));
+        it('ContentSections.info.data.content.rankOfLastItem should be undefined', function () {
+            console.log(ContentSections.info.data.content);
+            expect(ContentSections.info.data.content.rankOfLastItem).toEqual('');
+        });
+
+    });
+
 });

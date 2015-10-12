@@ -172,7 +172,7 @@
             $httpProvider.interceptors.push(interceptor);
 
         }])
-        .run(['Location', 'Messaging', 'EVENTS', 'PATHS', function (Location, Messaging, EVENTS, PATHS) {
+        .run(['Location', 'Messaging', 'EVENTS', 'PATHS', '$location', function (Location, Messaging, EVENTS, PATHS, $location) {
             Messaging.onReceivedMessage = function (event) {
                 console.log('Messaging000000000000000000000------on Widget Side-----------------------------------------', event);
                 if (event) {
@@ -221,6 +221,14 @@
                 }
 
             });
+
+            buildfire.navigation.onBackButtonClick = function () {
+                var path = $location.path();
+                if (path.indexOf('/items/') == 0)
+                    Location.goToHome();
+                else if (path.indexOf('/item/') == 0)
+                    Location.go('#/items/' + path.split('/')[2]);
+            }
         }]);
 
 

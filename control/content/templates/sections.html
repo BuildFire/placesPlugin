@@ -79,18 +79,17 @@
                         </div>
                         <div class="col-md-7 padding-right-zero pull-left">
 
-                        </div>
-                        <div class="pull-right">
-                            <switch ng-model="ContentSections.info.data.content.showAllItems" class="green"></switch>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div ui-sortable="ContentSections.itemSortableOptions" ng-model="ContentSections.sections">
-                <div class="d-item double-line square-icon clearfix" ng-if="ContentSections.sections.length"
-                     ng-repeat="item in ContentSections.sections">
-                    <span class="icon icon-menu pull-left cursor-grab"
-                          ng-class="{ 'disabled': ContentSections.itemSortableOptions.disabled }"></span>
+						</div>
+						<div class="pull-right">
+                   <switch ng-model="ContentSections.info.data.content.showAllItems" class="green"></switch>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div ui-sortable="ContentSections.itemSortableOptions" ng-model="ContentSections.sections">
+				<div class="d-item double-line square-icon clearfix" ng-if="ContentSections.sections.length"
+					 ng-repeat="item in ContentSections.sections">
+					<span class="icon icon-menu pull-left cursor-grab"  ng-class="{ 'disabled': ContentSections.itemSortableOptions.disabled }"></span>
 
                     <div class="media-holder pull-left">
                         <img ng-src="{{item.data.mainImage | resizeImage : 50:50}}" ng-if="item.data.mainImage">

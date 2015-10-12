@@ -13,7 +13,7 @@
         <div ng-show="WidgetSections.showSections">
             <div infinite-scroll-distance="0"
                  infinite-scroll="WidgetSections.loadMoreSections()"
-                 infinite-scroll-disabled="WidgetSections.noMoreSections"
+
                  infinite-scroll-container="'#scroll-infinite'">
                 <div ng-repeat="item in WidgetSections.sections">
                     <div class="plugin-banner clearfix border-bottom-grey">
@@ -32,7 +32,7 @@
         <div ng-hide="WidgetSections.showSections">
             <div infinite-scroll-distance="0"
                  infinite-scroll="WidgetSections.loadMoreItems()"
-                 infinite-scroll-disabled="WidgetSections.noMoreItems"
+
                  infinite-scroll-container="'#scroll-infinite'">
             <div  class="no-items-msg margin-left-fifteen margin-right-fifteen" ng-hide="WidgetSections.locationData.items.length">
                 No item(s) to show

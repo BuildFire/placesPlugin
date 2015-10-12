@@ -76,8 +76,6 @@
                     handle: '> .cursor-grab',
                     disabled: !(ContentSections.info.data.content.sortBy === Orders.ordersMap.Manually),
                     stop: function (e, ui) {
-                        console.log(e);
-                        console.log(ui);
                         var endIndex = ui.item.sortable.dropindex,
                             maxRank = 0,
                             draggedItem = ContentSections.sections[endIndex];
@@ -292,6 +290,7 @@
                             }
                         }
                         else {
+
                             //ContentHome.loading = false;
                             $scope.$apply();
                         }
@@ -382,10 +381,12 @@
                  * ContentSections.getMore is used to load the items
                  */
                 ContentSections.getMore = function () {
-                    if (ContentSections.isBusy && !ContentSections.noMore) {
+                    //if (ContentSections.isBusy && !ContentSections.noMore) {
+                    if (ContentSections.isBusy || ContentSections.noMore) {
                         return;
                     }
                     updateSearchOptions();
+                    console.log('searching for ', searchOptions);
                     ContentSections.isBusy = true;
                     Sections.find(searchOptions).then(function success(result) {
                         if (result.length <= _limit) {// to indicate there are more
@@ -409,7 +410,7 @@
                 ContentSections.searchListSection = function (value) {
                     searchOptions.skip = 0;
                     /*reset the skip value*/
-
+                    ContentSections.noMore = false;
                     ContentSections.isBusy = false;
                     ContentSections.sections = [];
                     value = value.trim();
