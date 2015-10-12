@@ -1,8 +1,7 @@
 (function (angular, window) {
     angular
         .module('placesWidget')
-        .controller('WidgetItemCtrl', ['$scope', 'COLLECTIONS', 'DB', '$routeParams', 'Buildfire', '$rootScope', 'GeoDistance', 'Messaging', 'Location', 'EVENTS', 'PATHS', 'AppConfig', 'placesInfo', 'Orders', 'OrdersItems', function ($scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS, AppConfig, placesInfo, Orders, OrdersItems) {
-            console.log('Item Controller Loaded---------------------');
+        .controller('WidgetItemCtrl', ['$scope', 'COLLECTIONS', 'DB', '$routeParams', 'Buildfire', '$rootScope', 'GeoDistance', 'Messaging', 'Location', 'EVENTS', 'PATHS', 'AppConfig', 'placesInfo', 'Orders', 'OrdersItems', 'item', function ($scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS, AppConfig, placesInfo, Orders, OrdersItems, item) {
             AppConfig.changeBackgroundTheme();
             var WidgetItem = this
                 , view = null
@@ -32,44 +31,8 @@
                             showDistanceIn: "miles"
                         }
                     }
-                };
-
-            if (placesInfo) {
-                WidgetItem.placeInfo = placesInfo;
-            }
-            else {
-                WidgetItem.placeInfo = _infoData;
-            }
-
-            WidgetItem.locationData = {
-                items: null,
-                currentCoordinates: null
-            };
-            WidgetItem.item = {data: {}};
-
-            if ($routeParams.itemId) {
-                Items.getById($routeParams.itemId).then(
-                    function (result) {
-                        WidgetItem.item = result;
-                        if (result.data && result.data.backgroundImage)
-                            AppConfig.changeBackgroundTheme(result.data.backgroundImage);
-                        if (WidgetItem.item.data && WidgetItem.item.data.images)
-                            initCarousel(WidgetItem.item.data.images);
-                        itemLat = (WidgetItem.item.data.address && WidgetItem.item.data.address.lat) ? WidgetItem.item.data.address.lat : null;
-                        itemLng = (WidgetItem.item.data.address && WidgetItem.item.data.address.lng) ? WidgetItem.item.data.address.lng : null;
-                        if (itemLat && itemLng) {
-                            WidgetItem.locationData.currentCoordinates = [itemLng, itemLat];
-                        } else {
-                            WidgetItem.locationData.currentCoordinates = null;
-                        }
-                    },
-                    function (err) {
-                        console.error('Error while getting item-', err);
-                    }
-                );
-            }
-            else {
-                WidgetItem.item = {
+                }
+                , _itemData = {
                     data: {
                         listImage: "",
                         itemTitle: "",
@@ -87,12 +50,39 @@
                         links: [], //  this will contain action links
                         backgroundImage: ""
                     }
-                }
+                };
+
+            if (placesInfo) {
+                WidgetItem.placeInfo = placesInfo;
+            }
+            else {
+                WidgetItem.placeInfo = _infoData;
             }
 
-            WidgetItem.calculateDistance = function () {
-
+            WidgetItem.locationData = {
+                items: null,
+                currentCoordinates: null
             };
+
+            if (item) {
+                WidgetItem.item = item;
+            }
+            else {
+                WidgetItem.item = _itemData;
+            }
+            WidgetItem.item = result;
+            if (WidgetItem.item.data) {
+                if (WidgetItem.item.data.backgroundImage)
+                    AppConfig.changeBackgroundTheme(WidgetItem.item.data.backgroundImage);
+                if (WidgetItem.item.data.images)
+                    initCarousel(WidgetItem.item.data.images);
+                itemLat = (WidgetItem.item.data.address && WidgetItem.item.data.address.lat) ? WidgetItem.item.data.address.lat : null;
+                itemLng = (WidgetItem.item.data.address && WidgetItem.item.data.address.lng) ? WidgetItem.item.data.address.lng : null;
+                if (itemLat && itemLng) {
+                    WidgetItem.locationData.currentCoordinates = [itemLng, itemLat];
+                }
+
+            }
 
             function getGeoLocation() {
                 if (navigator.geolocation) {

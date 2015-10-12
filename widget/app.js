@@ -93,6 +93,23 @@
                                 };
                             PlaceInfo.get().then(success, error);
                             return deferred.promise;
+                        }],
+                        item: ['DB', 'COLLECTIONS', '$q', '$route', 'Location', function (DB, COLLECTIONS, $q, $route, Location) {
+                            var Items = new DB(COLLECTIONS.Items)
+                                , deferred = $q.defer()
+                                , success = function (result) {
+                                    if (Object.keys(result.data).length > 0) {
+                                        deferred.resolve(result);
+                                    }
+                                    else {
+                                        deferred.resolve(null);
+                                    }
+                                }
+                                , error = function (err) {
+                                    deferred.resolve(null);
+                                };
+                            Items.getById($route.current.params.itemId).then(success, error);
+                            return deferred.promise;
                         }]
                     }
                 })
@@ -117,7 +134,10 @@
                                 };
                             PlaceInfo.get().then(success, error);
                             return deferred.promise;
-                        }]
+                        }],
+                        item: function () {
+                            return null;
+                        }
                     }
                 })
                 .otherwise('/');
