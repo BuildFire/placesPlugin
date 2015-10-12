@@ -80,7 +80,7 @@
                         </div>
                         <div class="pull-right  padding-top-fix">
                     <span class="btn-icon btn-link-icon btn-primary transition-third"
-                          onclick="window.openDialog('deepLink.html', null, 'sm', null)"></span>
+                          ng-click="ContentItems.deepLinkUrl(item.data.deepLinkUrl)"></span>
                     <span class="btn-icon btn-delete-icon btn-danger transition-third"
                           ng-click="ContentItems.removeListItem($index)"></span>
                         </div>

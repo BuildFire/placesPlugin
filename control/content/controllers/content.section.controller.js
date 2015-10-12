@@ -109,10 +109,10 @@
                 function addNewItem(_section) {
                     Sections.insert(_section.data).then(function (item) {
                         ContentSection.section = item;
+                        ContentSection.section.data.deepLinkUrl = Buildfire.deeplink.createLink({id: item.id});
                         updateMasterSection(item);
                         placeInfoData.data.content.rankOfLastItem = item.data.rank;
                         PlaceInfo.save(placeInfoData.data).then(function (data) {
-                            console.info("Updated MediaCenter rank");
                         }, function (err) {
                             resetItem();
                             console.error('Error while getting----------', err);

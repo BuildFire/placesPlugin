@@ -29,7 +29,29 @@
                     });
                     return removePopupDeferred.promise;
                 },
-                editSectionModal: function (sections,info) {
+                DeeplinkPopupModal: function (info) {
+                    var DeeplinkPopupDeferred = $q.defer();
+                    var DeeplinkPopupModal = $modal
+                        .open({
+                            templateUrl: 'templates/modals/deep-link-copy.html',
+                            controller: 'DeepLinkPopupCtrl',
+                            controllerAs: 'DeepLinkPopup',
+                            size: 'sm',
+                            resolve: {
+                                Info: function () {
+                                    return info;
+                                }
+                            }
+                        });
+                    DeeplinkPopupModal.result.then(function (imageInfo) {
+                        DeeplinkPopupDeferred.resolve(imageInfo);
+                    }, function (err) {
+                        //do something on cancel
+                        DeeplinkPopupDeferred.reject(err);
+                    });
+                    return DeeplinkPopupDeferred.promise;
+                },
+                editSectionModal: function (sections, info) {
                     var editSectionDeferred = $q.defer();
                     var editSectionPopupModal = $modal
                         .open({
@@ -57,11 +79,6 @@
             };
         }])
         .controller('RemovePopupCtrl', ['$scope', '$modalInstance', 'Info', function ($scope, $modalInstance, Info) {
-           /* var RemovePopup = this;
-            RemovePopup.info = {};
-            if (Info) {
-                RemovePopup.info = Info;
-            }*/
             $scope.ok = function () {
                 $modalInstance.close('yes');
             };
@@ -69,7 +86,19 @@
                 $modalInstance.dismiss('no');
             };
         }])
-        .controller('ContentSectionPopupCtrl', ['$scope', '$modalInstance', 'Info','Sections', function ($scope, $modalInstance, Info,Sections) {
+        .controller('DeepLinkPopupCtrl', ['$scope', '$modalInstance', 'Info', function ($scope, $modalInstance, Info) {
+            var DeepLinkPopup = this;
+            if (Info) {
+                DeepLinkPopup.deepLinkUrl = Info;
+            }
+            DeepLinkPopup.ok = function () {
+                $modalInstance.close('yes');
+            };
+            DeepLinkPopup.cancel = function () {
+                $modalInstance.dismiss('no');
+            };
+        }])
+        .controller('ContentSectionPopupCtrl', ['$scope', '$modalInstance', 'Info', 'Sections', function ($scope, $modalInstance, Info, Sections) {
 
 
             if (Info) {
@@ -78,14 +107,14 @@
             if (Sections) {
                 $scope.sections = Sections;
 
-                angular.forEach($scope.sections,function(value){
+                angular.forEach($scope.sections, function (value) {
                     value.data.selected = ($scope.info.data.sections.indexOf(value.id) >= 0);
                 });
             }
             $scope.ok = function () {
                 $scope.info.data.sections = [];
-                angular.forEach($scope.sections,function(value){
-                    if(value.data.selected)
+                angular.forEach($scope.sections, function (value) {
+                    if (value.data.selected)
                         $scope.info.data.sections.push(value.id);
                 });
                 $modalInstance.close($scope.info);

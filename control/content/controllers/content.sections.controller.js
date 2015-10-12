@@ -53,8 +53,7 @@
                 ContentSections.info = null;
                 ContentSections.masterInfo = null;
 
-                if (placesInfo)
-                {
+                if (placesInfo) {
                     updateMasterInfo(placesInfo);
                     ContentSections.info = placesInfo;
                 }
@@ -67,6 +66,11 @@
                 ContentSections.isBusy = false;
                 ContentSections.sections = [];
                 ContentSections.sortOptions = Orders.options;
+
+                ContentSections.deepLinkUrl = function (url) {
+                    console.log(url,'---------url----------------------------------------------------');
+                    Modals.DeeplinkPopupModal(url);
+                };
 
                 ContentSections.itemSortableOptions = {
                     handle: '> .cursor-grab',
