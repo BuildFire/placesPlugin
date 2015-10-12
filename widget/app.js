@@ -16,7 +16,7 @@
         //injected ui.bootstrap for angular bootstrap component
         //injected ui.sortable for manual ordering of list
         //ngClipboard to provide copytoclipboard feature
-        .config(['$routeProvider','$httpProvider', function ($routeProvider,$httpProvider) {
+        .config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
 
             /**
              * Disable the pull down refresh
@@ -93,6 +93,23 @@
                                 };
                             PlaceInfo.get().then(success, error);
                             return deferred.promise;
+                        }],
+                        item: ['DB', 'COLLECTIONS', '$q', '$route', 'Location', function (DB, COLLECTIONS, $q, $route, Location) {
+                            var Items = new DB(COLLECTIONS.Items)
+                                , deferred = $q.defer()
+                                , success = function (result) {
+                                    if (Object.keys(result.data).length > 0) {
+                                        deferred.resolve(result);
+                                    }
+                                    else {
+                                        deferred.resolve(null);
+                                    }
+                                }
+                                , error = function (err) {
+                                    deferred.resolve(null);
+                                };
+                            Items.getById($route.current.params.itemId).then(success, error);
+                            return deferred.promise;
                         }]
                     }
                 })
@@ -117,13 +134,16 @@
                                 };
                             PlaceInfo.get().then(success, error);
                             return deferred.promise;
-                        }]
+                        }],
+                        item: function () {
+                            return null;
+                        }
                     }
                 })
                 .otherwise('/');
 
-            var interceptor=['$q',function($q){
-                var counter=0;
+            var interceptor = ['$q', function ($q) {
+                var counter = 0;
                 return {
 
                     request: function (config) {
@@ -133,16 +153,14 @@
                     },
                     response: function (response) {
                         counter--;
-                        if(counter===0)
-                        {
+                        if (counter === 0) {
                             buildfire.spinner.hide();
                         }
                         return response;
                     },
-                    responseError:function(rejection){
+                    responseError: function (rejection) {
                         counter--;
-                        if(counter===0)
-                        {
+                        if (counter === 0) {
                             buildfire.spinner.hide();
                         }
 
@@ -168,9 +186,9 @@
                                 case PATHS.ITEM:
                                     url = url + "item";
                                     if (secId && id) {
-                                        url = url+"/"+secId + "/" + id;
+                                        url = url + "/" + secId + "/" + id;
                                     }
-                                    else if(secId){
+                                    else if (secId) {
                                         url = url + "/" + secId;
                                     }
                                     break;
