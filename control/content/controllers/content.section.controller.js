@@ -7,7 +7,7 @@
         .controller('ContentSectionCtrl', ['$scope', '$routeParams', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Location', 'placesInfo', 'sectionInfo',
             function ($scope, $routeParams, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Location, placesInfo, sectionInfo) {
                 /**
-                 * Sections is an instance of Sections db collection
+                 * ContentSection._Sections is an instance of Sections db collection
                  * @type {DB}
                  *
                  * PlaceSettings will get the Place initialized settings
@@ -15,7 +15,6 @@
                  */
                 var ContentSection = this
                     , tmrDelayForMedia = null
-                    , Sections = new DB(COLLECTIONS.Sections)
                     , _sectionData = {
                         data: {
                             mainImage: '',
@@ -51,6 +50,7 @@
                             }
                         }
                     };
+                ContentSection._Sections = new DB(COLLECTIONS.Sections);
                 var placeInfoData;
                 if (placesInfo) {
                     placeInfoData = placesInfo;
@@ -93,7 +93,7 @@
                  * This updateItemData method will call the Builfire update method to update the ContentMedia.item
                  */
                 function updateItemData(_section) {
-                    Sections.update(_section.id, _section.data).then(function (data) {
+                    ContentSection._Sections.update(_section.id, _section.data).then(function (data) {
                         updateMasterSection(_section);
                     }, function (err) {
                         resetItem();
@@ -106,7 +106,7 @@
                  */
 
                 function addNewItem(_section) {
-                    Sections.insert(_section.data).then(function (item) {
+                    ContentSection._Sections.insert(_section.data).then(function (item) {
                         ContentSection.section.id = item.id;
                         ContentSection.section.data.deepLinkUrl = Buildfire.deeplink.createLink({id: item.id});
                         updateMasterSection(item);
@@ -193,19 +193,6 @@
                  */
                 ContentSection.done = function () {
                     Location.goToHome();
-                };
-
-                /**
-                 * will delete the current item from MediaContent collection
-                 */
-                ContentSection.delete = function () {
-                    if (ContentSection.section.id) {
-                        Sections.delete(ContentSection.section.id).then(function (data) {
-                            Location.goToHome();
-                        }, function (err) {
-                            console.error('Error while deleting an item-----', err);
-                        });
-                    }
                 };
 
                 //syn with widget
