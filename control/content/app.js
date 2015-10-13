@@ -54,7 +54,7 @@
                     controllerAs: 'ContentItem',
                     controller: 'ContentItemCtrl',
                     resolve: {
-                        item: function(){
+                        item: function () {
                             return null;
                         }
                     }
@@ -128,12 +128,70 @@
                 .when('/section', {
                     templateUrl: 'templates/section.html',
                     controllerAs: 'ContentSection',
-                    controller: 'ContentSectionCtrl'
+                    controller: 'ContentSectionCtrl',
+                    resolve: {
+                        placesInfo: ['DB', 'COLLECTIONS', '$q', function (DB, COLLECTIONS, $q) {
+                            var PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
+                                , deferred = $q.defer()
+                                , success = function (result) {
+                                    if (Object.keys(result.data).length > 0) {
+                                        deferred.resolve(result);
+                                    }
+                                    else {
+                                        deferred.resolve(null);
+                                    }
+                                }
+                                , error = function (err) {
+                                    deferred.resolve(null);
+                                };
+                            PlaceInfo.get().then(success, error);
+                            return deferred.promise;
+                        }],
+                        sectionInfo: function () {
+                            return null;
+                        }
+                    }
                 })
                 .when('/section/:sectionId', {
                     templateUrl: 'templates/section.html',
                     controllerAs: 'ContentSection',
-                    controller: 'ContentSectionCtrl'
+                    controller: 'ContentSectionCtrl',
+                    resolve: {
+                        placesInfo: ['DB', 'COLLECTIONS', '$q', function (DB, COLLECTIONS, $q) {
+                            var PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
+                                , deferred = $q.defer()
+                                , success = function (result) {
+                                    if (Object.keys(result.data).length > 0) {
+                                        deferred.resolve(result);
+                                    }
+                                    else {
+                                        deferred.resolve(null);
+                                    }
+                                }
+                                , error = function (err) {
+                                    deferred.resolve(null);
+                                };
+                            PlaceInfo.get().then(success, error);
+                            return deferred.promise;
+                        }],
+                        sectionInfo: ['DB', 'COLLECTIONS', '$q', '$route', 'Location', function (DB, COLLECTIONS, $q, $route, Location) {
+                            var Sections = new DB(COLLECTIONS.Sections)
+                                , deferred = $q.defer()
+                                , success = function (result) {
+                                    if (Object.keys(result.data).length > 0) {
+                                        deferred.resolve(result);
+                                    }
+                                    else {
+                                        Location.goToHome();
+                                    }
+                                }
+                                , error = function (err) {
+                                    Location.goToHome();
+                                };
+                            Sections.getById($route.current.params.sectionId).then(success, error);
+                            return deferred.promise;
+                        }]
+                    }
                 })
                 .otherwise('/');
 

@@ -4,8 +4,8 @@
 (function (angular, tinymce) {
     'use strict';
     angular.module('placesContent')
-        .controller('ContentSectionCtrl', ['$scope', '$routeParams', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Location',
-            function ($scope, $routeParams, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Location) {
+        .controller('ContentSectionCtrl', ['$scope', '$routeParams', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Location', 'placesInfo', 'sectionInfo',
+            function ($scope, $routeParams, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Location, placesInfo, sectionInfo) {
                 /**
                  * Sections is an instance of Sections db collection
                  * @type {DB}
@@ -28,7 +28,7 @@
                     }
                     , selectImageOptions = {showIcons: false, multiSelection: false}
                     , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
-                    , placeInfoData = {
+                    , _placeInfoData = {
                         data: {
                             content: {
                                 images: [],
@@ -51,11 +51,23 @@
                             }
                         }
                     };
+                var placeInfoData;
+                if (placesInfo) {
+                    placeInfoData = placesInfo;
+                }
+                else {
+                    placeInfoData = _placeInfoData;
+                }
 
 
-                ContentSection.section = angular.copy(_sectionData);
-                ContentSection.masterSection = null;
-
+                if (sectionInfo) {
+                    ContentSection.section = sectionInfo;
+                    updateMasterSection(ContentSection.section);
+                }
+                else {
+                    ContentSection.section = _sectionData;
+                    updateMasterSection(ContentSection.section);
+                }
                 function updateMasterSection(item) {
                     ContentSection.masterSection = angular.copy(item);
                 }
@@ -65,19 +77,6 @@
                  */
                 function resetItem() {
                     ContentSection.section = angular.copy(ContentSection.masterSection);
-                }
-
-                function init() {
-                    var success = function (result) {
-                            console.info('Init placeInfoData success result:', result);
-                            if (Object.keys(result.data).length > 0) {
-                                placeInfoData = result;
-                            }
-                        }
-                        , error = function (err) {
-                            console.error('Error while getting data', err);
-                        };
-                    PlaceInfo.get().then(success, error);
                 }
 
 
@@ -108,7 +107,7 @@
 
                 function addNewItem(_section) {
                     Sections.insert(_section.data).then(function (item) {
-                        //ContentSection.section = item;
+                        ContentSection.section.id = item.id;
                         ContentSection.section.data.deepLinkUrl = Buildfire.deeplink.createLink({id: item.id});
                         updateMasterSection(item);
                         placeInfoData.data.content.rankOfLastItem = item.data.rank;
@@ -141,28 +140,10 @@
                                 _section.data.dateCreated = +new Date();
                                 addNewItem(_section);
                             }
-                        }, 500);
+                        }, 1000);
                     }
                 }
 
-                updateMasterSection(ContentSection.section);
-
-                init();
-
-                if ($routeParams.sectionId) {
-                    Sections.getById($routeParams.sectionId).then(function (result) {
-                            if (result && result.data) {
-                                ContentSection.section = result;
-                            }
-                            else {
-                                Location.goToHome();
-                            }
-                        },
-                        function fail() {
-                            Location.goToHome();
-                        }
-                    );
-                }
                 /**
                  * callback function of Main image icon selection click
                  */
