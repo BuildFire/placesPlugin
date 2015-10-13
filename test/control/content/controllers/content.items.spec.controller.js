@@ -3,10 +3,11 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
 // load the controller's module
     beforeEach(module('placesContent'));
 
-    var $q, ContentItems, scope, $routeParams, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo;
+    var $q, ContentItems, scope, $routeParams, $rootScope, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo;
 
     beforeEach(inject(function (_$q_, _$routeParams_, $controller, _$rootScope_, _DB_, _COLLECTIONS_, _Modals_, _Orders_, _OrdersItems_, _Messaging_, _EVENTS_, _PATHS_, _Location_) {
             scope = _$rootScope_.$new();
+            $rootScope = _$rootScope_;
             DB = _DB_;
             COLLECTIONS = _COLLECTIONS_;
             Orders = _Orders_;
@@ -158,7 +159,7 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
                     links: [],
                     backgroundImage: ''
                 }
-            },{
+            }, {
                 data: {
                     listImage: '',
                     itemTitle: '',
@@ -176,7 +177,7 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
                     links: [],
                     backgroundImage: ''
                 }
-            },{
+            }, {
                 data: {
                     listImage: '',
                     itemTitle: '',
