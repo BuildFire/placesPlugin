@@ -79,6 +79,7 @@
             };
         }])
         .controller('RemovePopupCtrl', ['$scope', '$modalInstance', 'Info', function ($scope, $modalInstance, Info) {
+            console.log('RemovePopup Controller called-----');
             $scope.ok = function () {
                 $modalInstance.close('yes');
             };

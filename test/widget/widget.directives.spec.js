@@ -1,6 +1,3 @@
-
-
-
 describe('Unit: Default Image Directive', function () {
 
     var $rootScope, $scope, $compile, el, $body = $('body'), simpleHtml = '<img ng-src="" default-image="" />';
@@ -28,9 +25,37 @@ describe('Unit: Default Image Directive', function () {
     });
 
 });
+describe('Unit: buildFireCarousel Directive', function () {
+
+    var $rootScope, $scope, $compile, el, simpleHtml = '<div id="carousel" build-fire-carousel="" ></divid>';
 
 
-xdescribe('Unit: Google Map Directive', function () {
+    beforeEach(function () {
+        module('placesWidget');
+
+        inject(function ($injector) {
+            $rootScope = $injector.get('$rootScope');
+            $scope = $rootScope.$new();
+            //$scope.images = [];
+            $compile = $injector.get('$compile');
+            el = $compile(angular.element(simpleHtml))($scope);
+        });
+
+        $rootScope.$broadcast('Carousel:LOADED');
+        $rootScope.$digest();
+
+    });
+
+
+    it('should Carousel:LOADED brodcasted', function () {
+
+        expect($rootScope.$broadcast).toHaveBeenCalledWith('Carousel:LOADED');
+    });
+
+});
+
+
+describe('Unit: Google Map Directive', function () {
 
     var $rootScope, $scope, $compile, el, $body = $('body'), simpleHtml = '<div google-map location-data="[27,112]" marker-callback=""></div>';
 

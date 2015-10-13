@@ -132,7 +132,6 @@
                 });
                 return deferred.promise;
             };
-
             DB.prototype.find = function (options) {
                 var that = this;
                 var deferred = $q.defer();

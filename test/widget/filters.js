@@ -36,6 +36,7 @@ describe('Unit: cropImage filter', function () {
         expect(result).toEqual("http://s7obnu.cloudimage.io/s/crop/88x124/");
     });
 });
+
 describe('Unit: safeHtml filter', function () {
     beforeEach(module('placesWidgetFilters'));
     var filter,$sce,$scope;
@@ -46,18 +47,14 @@ describe('Unit: safeHtml filter', function () {
         $scope=_$rootScope_;
     }));
 
-    /*it('it should pass if "safeHtml" filter returns text', function () {
-     var result;
-        var input='<div>Hello</div>';
-     result = filter('safeHtml')(input);
-        var tempRes=$sce.trustAsHtml(input);
-        $scope.$digest();
-     expect(result).toEqual(tempRes);
-     });*/
-
-    it('it should give black even if parameter is blank', function () {
+    it('safeHtml filter should returns an empty string if html value not provided', function () {
         var result;
-        result = filter('safeHtml')();
-        expect(result).toEqual("");
+        result = filter('safeHtml')(null);
+        expect(result).toEqual('');
+    });
+    it('safeHtml filter should returns an empty string if html value provided', function () {
+        var result;
+        result = filter('safeHtml')("<p>&nbsp;<br>Sandeep kumar</p>");
+        expect(typeof result).toEqual('object');
     });
 });
