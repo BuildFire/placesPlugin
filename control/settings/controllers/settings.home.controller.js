@@ -2,15 +2,17 @@
     'use strict';
     angular
         .module('placesSettings')
-        .controller('SettingsHomeCtrl', ['$scope', 'Orders', 'COLLECTIONS', 'DB', '$timeout', 'placesInfo', function ($scope, Orders, COLLECTIONS, DB, $timeout, placesInfo) {
+        .controller('SettingsHomeCtrl', ['$scope', 'Orders', 'COLLECTIONS', 'DB', '$timeout', 'OrdersItems', 'placesInfo', function ($scope, Orders, COLLECTIONS, DB, $timeout, OrdersItems, placesInfo) {
             var SettingsHome = this
                 , _data = {
                     content: {
                         images: [],
-                        descriptionHTML: '',
-                        description: '',
-                        sortBy: Orders.ordersMap.Newest,
-                        rankOfLastItem: ''
+                        descriptionHTML: '<p>&nbsp;<br></p>',
+                        description: '<p>&nbsp;<br></p>',
+                        sortBy: Orders.ordersMap.Manually,
+                        rankOfLastItem: '',
+                        sortByItems: OrdersItems.ordersMap.Newest,
+                        showAllItems: 'true'
                     },
                     design: {
                         secListLayout: "sec-list-1-1",

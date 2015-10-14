@@ -27,15 +27,17 @@
                     }
                     , selectImageOptions = {showIcons: false, multiSelection: false}
                     , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
+                    , updating = false
                     , _placeInfoData = {
                         data: {
                             content: {
                                 images: [],
-                                descriptionHTML: '',
+                                descriptionHTML: '<p>&nbsp;<br></p>',
                                 description: '<p>&nbsp;<br></p>',
-                                sortBy: Orders.ordersMap.Newest,
+                                sortBy: Orders.ordersMap.Manually,
                                 rankOfLastItem: '',
-                                sortByItems: OrdersItems.ordersMap.Newest
+                                sortByItems: OrdersItems.ordersMap.Newest,
+                                showAllItems: 'true'
                             },
                             design: {
                                 secListLayout: "sec-list-1-1",
@@ -94,8 +96,10 @@
                  */
                 function updateItemData(_section) {
                     ContentSection._Sections.update(_section.id, _section.data).then(function (data) {
+                        updating = false;
                         updateMasterSection(_section);
                     }, function (err) {
+                        updating = false;
                         resetItem();
                         console.error('Error-------', err);
                     });
@@ -111,14 +115,52 @@
                         ContentSection.section.data.deepLinkUrl = Buildfire.deeplink.createLink({id: item.id});
                         updateMasterSection(item);
                         placeInfoData.data.content.rankOfLastItem = item.data.rank;
+                        updating = false;
                         PlaceInfo.save(placeInfoData.data).then(function (data) {
                         }, function (err) {
                             resetItem();
                             console.error('Error while getting----------', err);
                         });
                     }, function (err) {
+                        updating = false;
                         console.error('---------------Error while inserting data------------', err);
                     });
+                }
+
+
+                function insertAndUpdate(_item) {
+                    updating = true;
+                    if (_item.id) {
+                        console.info('****************Section exist***********************');
+                        ContentSection._Sections.update(_item.id, _item.data).then(function (data) {
+                            updating = false;
+                            updateMasterSection(_section);
+                        }, function (err) {
+                            resetItem();
+                            updating = false;
+                            console.log('Error while updating data---', err);
+                        });
+                    }
+                    else {
+                        console.info('****************Section inserted***********************');
+                        _item.data.dateCreated = new Date();
+                        ContentSection._Sections.insert(_item.data).then(function (item) {
+                            ContentSection.section.id = item.id;
+                            ContentSection.section.data.deepLinkUrl = Buildfire.deeplink.createLink({id: item.id});
+                            updateMasterSection(item);
+                            placeInfoData.data.content.rankOfLastItem = item.data.rank;
+                            updating = false;
+                            PlaceInfo.save(placeInfoData.data).then(function (data) {
+                            }, function (err) {
+                                resetItem();
+                                console.error('Error while getting----------', err);
+                            });
+                        }, function (err) {
+                            resetItem();
+                            updating = false;
+                            console.log('Error---', err);
+                        });
+                    }
                 }
 
 
@@ -127,19 +169,23 @@
                  * @param _section
                  */
                 function updateItemsWithDelay(_section) {
+                    if (updating) {
+                        return;
+                    }
                     if (tmrDelayForMedia) {
                         clearTimeout(tmrDelayForMedia);
                     }
                     if (_section && !isUnChanged(_section)) {
                         tmrDelayForMedia = setTimeout(function () {
-                            if (_section.id) {
-                                updateItemData(_section);
-                            }
-                            else {
-                                _section.data.rank = (placeInfoData.data.content.rankOfLastItem || 0) + 10;
-                                _section.data.dateCreated = +new Date();
-                                addNewItem(_section);
-                            }
+                            /* if (_section.id) {
+                             updateItemData(_section);
+                             }
+                             else {
+                             _section.data.rank = (placeInfoData.data.content.rankOfLastItem || 0) + 10;
+                             _section.data.dateCreated = +new Date();
+                             addNewItem(_section);
+                             }*/
+                            insertAndUpdate(_section)
                         }, 1000);
                     }
                 }

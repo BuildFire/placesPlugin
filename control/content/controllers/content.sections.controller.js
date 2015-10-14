@@ -31,9 +31,10 @@
                                 images: [],
                                 descriptionHTML: '<p>&nbsp;<br></p>',
                                 description: '<p>&nbsp;<br></p>',
-                                sortBy: Orders.ordersMap.Newest,
+                                sortBy: Orders.ordersMap.Manually,
                                 rankOfLastItem: '',
-                                sortByItems: OrdersItems.ordersMap.Newest
+                                sortByItems: OrdersItems.ordersMap.Newest,
+                                showAllItems: 'true'
                             },
                             design: {
                                 secListLayout: "sec-list-1-1",
@@ -50,6 +51,7 @@
                     };
 
                 var ContentSections = this;
+                ContentSections.showAllItems = true;
                 ContentSections.info = null;
                 ContentSections.masterInfo = null;
 
@@ -68,7 +70,7 @@
                 ContentSections.sortOptions = Orders.options;
 
                 ContentSections.deepLinkUrl = function (url) {
-                    console.log(url,'---------url----------------------------------------------------');
+                    console.log(url, '---------url----------------------------------------------------');
                     Modals.DeeplinkPopupModal(url);
                 };
 
