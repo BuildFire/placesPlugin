@@ -22,10 +22,11 @@
                         <div class="plugin-slide text-center">
                             <img default-image ng-src="{{item.data.mainImage}}">
                         </div>
-                        <div class="info-bar">
+                        <div class="info-bar sec-list-dark-overlay" style="color:#fff !important;">
                             <div class="col-xs-12 text-left pull-left">
-                                <p class="margin-bottom-zero ellipsis"><a class="text-primary"
-                                                                          href="#/items/{{item.id}}">{{item.data.secTitle}}</a>
+                                <p class="margin-bottom-zero ellipsis">
+                                    <a class="text-primary" style="color:#fff !important;"
+                                       href="#/items/{{item.id}}">{{item.data.secTitle}}</a>
                                 </p>
 
                                 <p class="margin-bottom-zero ellipsis">{{item.data.secSummary}}</p>
@@ -39,26 +40,27 @@
                      infinite-scroll="WidgetSections.loadMoreItems()"
 
                      infinite-scroll-container="'#scroll-infinite'">
-                <div class="no-items-msg" ng-hide="WidgetSections.locationData.items.length">
-                    No item(s) to show
-                </div>
-                <div class="plugin-banner has-info-bar clearfix" ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
-                    <div class="plugin-slide text-center">
-                        <img default-image="" ng-src="{{item.data.listImage}}">
+                    <div class="no-items-msg" ng-hide="WidgetSections.locationData.items.length">
+                        No item(s) to show
                     </div>
-                    <div class="info-bar">
-                        <div class="col-xs-8 text-left pull-left">
-                            <p class="margin-bottom-zero ellipsis"><a ng-href="#/item/{{item.id}}">{{item.data.itemTitle}}</a>
-                            </p>
+                    <div class="plugin-banner has-info-bar clearfix"
+                         ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
+                        <div class="plugin-slide text-center">
+                            <img default-image="" ng-src="{{item.data.listImage}}">
+                        </div>
+                        <div class="info-bar">
+                            <div class="col-xs-8 text-left pull-left">
+                                <p class="margin-bottom-zero ellipsis"><a ng-href="#/item/{{item.id}}">{{item.data.itemTitle}}</a>
+                                </p>
 
-                            <p class="margin-bottom-zero ellipsis">{{item.data.summary}}</p>
-                        </div>
-                        <div class="col-xs-4 text-right pull-right padding-left-zero">
-                            <span class="icon icon-map-marker icon-sm" style="color:#fff;"></span>
-                            <span class="miles">{{item.data.distanceText}}</span>
+                                <p class="margin-bottom-zero ellipsis">{{item.data.summary}}</p>
+                            </div>
+                            <div class="col-xs-4 text-right pull-right padding-left-zero">
+                                <span class="icon icon-map-marker icon-sm" style="color:#fff;"></span>
+                                <span class="miles">{{item.data.distanceText}}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </div>
             </div>
         </div>
