@@ -1,6 +1,15 @@
 <h4>Add/Edit Section Content</h4><br>
 <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
+        <span>Section Title</span>
+    </div>
+    <div class="main col-md-9 pull-right">
+        <input type="text" class="form-control" ng-model="ContentSection.section.data.secTitle" placeholder="Title"/>
+    </div>
+</div>
+<hr class="none">
+<div class="item clearfix row">
+    <div class="labels col-md-3 padding-right-zero pull-left">
         <span>Main Image</span>
     </div>
     <div class="main col-md-9 pull-right">
@@ -17,15 +26,6 @@
                 <label class="secondary">1024x1024</label>
             </div>
         </div>
-    </div>
-</div>
-<hr class="none">
-<div class="item clearfix row">
-    <div class="labels col-md-3 padding-right-zero pull-left">
-        <span>Section Title</span>
-    </div>
-    <div class="main col-md-9 pull-right">
-        <input type="text" class="form-control" ng-model="ContentSection.section.data.secTitle" placeholder="Title"/>
     </div>
 </div>
 <hr class="none">
@@ -66,6 +66,3 @@
         </div>
     </div>
 </div>
-
-
-
