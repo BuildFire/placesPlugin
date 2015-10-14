@@ -25,7 +25,8 @@
                         },
                         links: [],
                         backgroundImage: ''
-                    };
+                    }
+                    ,updating=false;
 
                 $scope.itemShow = 'Content';
 
@@ -141,11 +142,14 @@
                 }
 
                 function insertAndUpdate(_item) {
+                    updating=true;
                     if (_item.id) {
                         console.info('****************Item exist***********************');
                         Items.update(_item.id, _item.data).then(function (data) {
+                            updating=false;
                             console.log('Data updated successfully---', data);
                         }, function (err) {
+                            updating=false;
                             console.log('Error while updating data---', err);
                         });
                     }
@@ -155,8 +159,10 @@
                         Items.insert(_item.data).then(function (data) {
                             ContentItem.data.deepLinkUrl = Buildfire.deeplink.createLink({id: data.id});
                             ContentItem.item.id = data.id;
+                            updating=false;
                             updateMasterItem(ContentItem.item);
                         }, function (err) {
+                            updating=false;
                             console.log('Error---', err);
                         });
                     }
@@ -167,6 +173,8 @@
                  * @param _item
                  */
                 function updateItemsWithDelay(_item) {
+                    if(updating)
+                    return;
                     if (tmrDelayForItem) {
                         clearTimeout(tmrDelayForItem);
                     }
