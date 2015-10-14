@@ -16,12 +16,18 @@
         //injected ui.bootstrap for angular bootstrap component
         //injected ui.sortable for manual ordering of list
         //ngClipboard to provide copytoclipboard feature
-        .config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
+        .config(['$routeProvider', '$httpProvider','$compileProvider', function ($routeProvider, $httpProvider, $compileProvider) {
 
             /**
              * Disable the pull down refresh
              */
                 //buildfire.datastore.disableRefresh();
+
+
+            /**
+             * To make href urls safe on mobile
+             */
+            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|cdvfile):/);
 
             $routeProvider
                 .when('/', {
