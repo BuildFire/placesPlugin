@@ -19,18 +19,19 @@
                      infinite-scroll-container="'#scroll-infinite'">
                     <div ng-repeat="item in WidgetSections.sections" class="plugin-banner has-info-bar clearfix"
                          style="min-height: 10px">
+                        <a href="#/items/{{item.id}}">
                         <div class="plugin-slide text-center">
                             <img default-image ng-src="{{item.data.mainImage}}">
                         </div>
                         <div class="info-bar">
                             <div class="col-xs-12 text-left pull-left">
-                                <p class="margin-bottom-zero ellipsis"><a class="text-primary"
-                                                                          href="#/items/{{item.id}}">{{item.data.secTitle}}</a>
+                                <p class="margin-bottom-zero ellipsis"><span class="text-primary">{{item.data.secTitle}}</span>
                                 </p>
 
-                                <p class="margin-bottom-zero ellipsis">{{item.data.secSummary}}</p>
+                                <p class="margin-bottom-zero ellipsis" style="color:#5f5f5f">{{item.data.secSummary}}</p>
                             </div>
                         </div>
+                        </a>
                     </div>
                 </div>
             </div>
