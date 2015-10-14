@@ -2,7 +2,7 @@
     'use strict';
     angular
         .module('placesSettings')
-        .controller('SettingsHomeCtrl', ['$scope', 'Orders', 'COLLECTIONS', 'DB', '$timeout', 'placesInfo', function ($scope, Orders, COLLECTIONS, DB, $timeout, placesInfo) {
+        .controller('SettingsHomeCtrl', ['$scope', 'Orders', 'COLLECTIONS', 'DB', '$timeout', 'OrdersItems', 'placesInfo', function ($scope, Orders, COLLECTIONS, DB, $timeout, OrdersItems, placesInfo) {
             var SettingsHome = this
                 , _data = {
                     content: {

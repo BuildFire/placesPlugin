@@ -2,7 +2,7 @@
     'use strict';
     angular
         .module('placesDesign')
-        .controller('DesignHomeCtrl', ['$scope', 'Orders', 'COLLECTIONS', 'DB', '$timeout', 'Buildfire', 'placesInfo', function ($scope, Orders, COLLECTIONS, DB, $timeout, Buildfire, placesInfo) {
+        .controller('DesignHomeCtrl', ['$scope', 'Orders', 'COLLECTIONS', 'DB', '$timeout', 'OrdersItems', 'Buildfire', 'placesInfo', function ($scope, Orders, COLLECTIONS, DB, $timeout, OrdersItems,Buildfire, placesInfo) {
             var DesignHome = this
                 , _data = {
                     content: {
