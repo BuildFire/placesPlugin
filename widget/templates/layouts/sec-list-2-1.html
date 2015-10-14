@@ -18,7 +18,7 @@
                 <div ng-repeat="item in WidgetSections.sections">
                     <div class="plugin-banner clearfix border-bottom-grey">
                         <div class="plugin-slide text-center">
-                            <img default-image ng-src="{{item.data.mainImage}}">
+                            <img ng-if="item.data.mainImage" default-image ng-src="{{item.data.mainImage}}">
                         </div>
                     </div>
                     <div class="padded text-left">
