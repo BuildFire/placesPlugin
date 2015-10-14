@@ -19,6 +19,32 @@
                 }
             };
         }])
+        .factory('OrdersItems', [function () {
+            var ordersMap = {
+                Manually: "Manually",
+                Default: "Newest",
+                Newest: "Newest",
+                Oldest: "Oldest",
+                ItemAZ: "Item A-Z",
+                ItemZA: "Item Z-A"
+            };
+            var orders = [
+                {id: 1, name: "Manually", value: "Manually", key: "rank", order: 1},
+                {id: 1, name: "Newest", value: "Newest", key: "dateCreated", order: -1},
+                {id: 1, name: "Oldest", value: "Oldest", key: "dateCreated", order: 1},
+                {id: 1, name: "ItemA-Z", value: "Item A-Z", key: "itemTitle", order: 1},
+                {id: 1, name: "ItemZ-A", value: "Item Z-A", key: "itemTitle", order: -1}
+            ];
+            return {
+                ordersMap: ordersMap,
+                options: orders,
+                getOrder: function (name) {
+                    return orders.filter(function (order) {
+                        return order.name === name;
+                    })[0];
+                }
+            };
+        }])
         .factory('Orders', [function () {
             var ordersMap = {
                 Manually: "Manually",
