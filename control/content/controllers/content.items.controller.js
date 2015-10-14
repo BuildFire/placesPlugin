@@ -255,7 +255,7 @@
                     if (!value) {
                         value = '/*';
                     }
-                    searchOptions.filter = {'$and': [{"$json.itemTitle": {"$regex": value}}, {"$json.sections": {"$all": [ContentItems.section]}}]};// {"$json.secTitle": {"$regex": value}};
+                    searchOptions.filter = {'$and': [{"$json.itemTitle": {"$regex": value, "$options": "i"}}, {"$json.sections": {"$all": [ContentItems.section]}}]};// {"$json.secTitle": {"$regex": value}};
                     ContentItems.getMore();
                 };
 

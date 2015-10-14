@@ -419,7 +419,7 @@
                     if (!value) {
                         value = '/*';
                     }
-                    searchOptions.filter = {"$json.secTitle": {"$regex": value}};
+                    searchOptions.filter = {"$json.secTitle": {"$regex": value, "$options": "i"}};
                     ContentSections.getMore();
                 };
                 /**
