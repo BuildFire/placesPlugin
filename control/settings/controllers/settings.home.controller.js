@@ -7,10 +7,12 @@
                 , _data = {
                     content: {
                         images: [],
-                        descriptionHTML: '',
-                        description: '',
-                        sortBy: Orders.ordersMap.Newest,
-                        rankOfLastItem: ''
+                        descriptionHTML: '<p>&nbsp;<br></p>',
+                        description: '<p>&nbsp;<br></p>',
+                        sortBy: Orders.ordersMap.Manually,
+                        rankOfLastItem: '',
+                        sortByItems: OrdersItems.ordersMap.Newest,
+                        showAllItems: 'true'
                     },
                     design: {
                         secListLayout: "sec-list-1-1",
