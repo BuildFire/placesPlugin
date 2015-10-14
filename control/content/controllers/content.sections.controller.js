@@ -50,6 +50,7 @@
                     };
 
                 var ContentSections = this;
+                ContentSections.showAllItems = true;
                 ContentSections.info = null;
                 ContentSections.masterInfo = null;
 
@@ -68,7 +69,7 @@
                 ContentSections.sortOptions = Orders.options;
 
                 ContentSections.deepLinkUrl = function (url) {
-                    console.log(url,'---------url----------------------------------------------------');
+                    console.log(url, '---------url----------------------------------------------------');
                     Modals.DeeplinkPopupModal(url);
                 };
 
