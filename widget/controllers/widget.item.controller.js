@@ -58,17 +58,20 @@
                 WidgetItem.placeInfo = _infoData;
             }
 
-            WidgetItem.locationData = {
-                items: null,
-                currentCoordinates: null
-            };
-
             if (item) {
                 WidgetItem.item = item;
             }
             else {
                 WidgetItem.item = _itemData;
             }
+            WidgetItem.itemData = {
+                items: null,
+                currentCoordinates: null
+            };
+            WidgetItem.locationData = {
+                items: null,
+                currentCoordinates: null
+            };
             if (WidgetItem.item.data) {
                 if (WidgetItem.item.data.backgroundImage)
                     AppConfig.changeBackgroundTheme(WidgetItem.item.data.backgroundImage);
@@ -77,7 +80,7 @@
                 itemLat = (WidgetItem.item.data.address && WidgetItem.item.data.address.lat) ? WidgetItem.item.data.address.lat : null;
                 itemLng = (WidgetItem.item.data.address && WidgetItem.item.data.address.lng) ? WidgetItem.item.data.address.lng : null;
                 if (itemLat && itemLng) {
-                    WidgetItem.locationData.currentCoordinates = [itemLng, itemLat];
+                    WidgetItem.itemData.currentCoordinates = [itemLng, itemLat];
                 }
 
             }
@@ -85,6 +88,7 @@
             function getGeoLocation() {
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (position) {
+                        console.log('uesr Location---------', position);
                         $scope.$apply(function () {
                             WidgetItem.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
                             localStorage.setItem('userLocation', JSON.stringify(WidgetItem.locationData.currentCoordinates));
@@ -96,6 +100,7 @@
             }
 
             if (typeof(Storage) !== "undefined") {
+                console.log('data from local storage----', localStorage.getItem('userLocation'));
                 var userLocation = localStorage.getItem('userLocation');
                 if (userLocation) {
                     WidgetItem.locationData.currentCoordinates = JSON.parse(userLocation);
@@ -119,23 +124,28 @@
                 }
             });
 
+            calDistance(WidgetItem.locationData.currentCoordinates, [WidgetItem.item], WidgetItem.placeInfo.data.settings.showDistanceIn);
+
             WidgetItem.clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
-                if (event.tag == 'items' && event.data) {
-                    WidgetItem.locationData = {
-                        items: null,
-                        currentCoordinates: [event.data.address.lng, event.data.address.lat]
-                    };
-                    WidgetItem.item = event;
-                    AppConfig.changeBackgroundTheme(WidgetItem.item.data.backgroundImage);
-                    $scope.$digest();
-                    if (event.data.images)
-                        initCarousel(event.data.images);
+                    if (event.tag == 'items' && event.data) {
+                        WidgetItem.item = event;
+                        AppConfig.changeBackgroundTheme(WidgetItem.item.data.backgroundImage);
+                        if (event.data.address && event.data.address.lng && event.data.address.lat) {
+                            WidgetItem.itemData.currentCoordinates = [event.data.address.lng, event.data.address.lat];
+                            calDistance(WidgetItem.locationData.currentCoordinates, [event], WidgetItem.placeInfo.data.settings.showDistanceIn);
+                        }
+                        if (event.data.images)
+                            initCarousel(event.data.images);
+                        $scope.$digest();
+                    }
+                    else if (event.tag == 'placeInfo' && event.data) {
+                        if (event.data.settings)
+                            calDistance(WidgetItem.locationData.currentCoordinates, [WidgetItem.item], event.data.settings.showDistanceIn);
+                        WidgetItem.placeInfo = event;
+                        $scope.$digest();
+                    }
                 }
-                else if (event.tag == 'placeInfo' && event.data) {
-                    WidgetItem.placeInfo = event;
-                    $scope.$digest();
-                }
-            });
+            );
 
             //syn with widget side
             Messaging.sendMessageToControl({
@@ -153,11 +163,25 @@
                 }
             }
 
+            function calDistance(origin, destination, distanceUnit) {
+                GeoDistance.getDistance(origin, destination, distanceUnit).then(function (data) {
+                        console.log('data in distance cal------success----', data);
+                        if (data && data.rows[0] && data.rows[0].elements[0] && data.rows[0].elements[0].distance) {
+                            WidgetItem.distance = data.rows[0].elements[0].distance.text;
+                        }
+                    },
+                    function (err) {
+                        console.error('error while calculating distance---------------------', err);
+                    });
+            }
+
             /**
              * will called when controller scope has been destroyed.
              */
             $scope.$on("$destroy", function () {
                 WidgetItem.clearOnUpdateListener.clear();
             });
-        }]);
+        }
+        ])
+    ;
 })(window.angular, window);

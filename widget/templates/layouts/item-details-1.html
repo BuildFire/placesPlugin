@@ -10,9 +10,9 @@
 
                     <p class="margin-bottom-zero ellipsis">{{WidgetItem.item.data.summary}}</p>
                 </div>
-                <div class="col-xs-4 text-right pull-right padding-left-zero">
+                <div class="col-xs-4 text-right pull-right padding-left-zero" ng-if="WidgetItem.distance">
                     <span class="icon icon-map-marker icon-sm"></span>
-                    <span class="miles">324 mi</span>
+                    <span class="miles">{{WidgetItem.distance}}</span>
                 </div>
             </div>
         </div>
@@ -22,7 +22,7 @@
 
                 <p class="text-primary ellipsis margin-zero"><a class="margin-bottom-zero text-primary ellipsis">{{WidgetItem.item.data.address.aName}}</a></p>
             </div>
-            <div ng-if="WidgetItem.locationData.currentCoordinates" style="height: 60px;width: 100px;" google-map location-data="WidgetItem.locationData" class="col-xs-4 text-right pull-right padding-right-zero">
+            <div ng-if="WidgetItem.locationData.currentCoordinates" style="height: 60px;width: 100px;" google-map location-data="WidgetItem.itemData" class="col-xs-4 text-right pull-right padding-right-zero">
             </div>
         </div>
         <div class="padded padding-top-ten padding-bottom-ten">

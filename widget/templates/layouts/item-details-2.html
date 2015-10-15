@@ -10,15 +10,15 @@
 
                     <p class="margin-bottom-zero ellipsis">{{WidgetItem.item.data.summary}}</p>
                 </div>
-                <div class="col-xs-4 text-right pull-right padding-left-zero">
+                <div class="col-xs-4 text-right pull-right padding-left-zero" ng-if="WidgetItem.distance">
                     <span class="icon icon-map-marker icon-sm"></span>
-                    <span class="miles">324 mi</span>
+                    <span class="miles">{{WidgetItem.distance}}</span>
                 </div>
             </div>
         </div>
         <div class="plugin-banner has-info-bar clearfix">
             <div ng-if="WidgetItem.locationData.currentCoordinates" class="plugin-slide map-holder">
-                <p google-map location-data="WidgetItem.locationData"
+                <p google-map location-data="WidgetItem.itemData"
                    style="height: 193px;width: 342px;position:relative; top:0px; color:#fff; text-align:center;">Map
                     goes in here</p>
             </div>
