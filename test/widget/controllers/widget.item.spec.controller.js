@@ -122,7 +122,7 @@ describe('Unit : Controller - WidgetItemCtrl', function () {
             expect(WidgetItem).not.toBeUndefined();
         });
     });
-    describe('Unit : widget.home.controller unit tests when  DataStore.get call Error', function () {
+    xdescribe('Unit : widget.home.controller unit tests when  DataStore.get call Error', function () {
         beforeEach(function () {
             Buildfire.datastore.onUpdate.and.callFake(function () {
                 return {

@@ -25,7 +25,7 @@ describe('Unit: Default Image Directive', function () {
     });
 
 });
-describe('Unit: buildFireCarousel Directive', function () {
+xdescribe('Unit: buildFireCarousel Directive', function () {
 
     var $rootScope, $scope, $compile, el, simpleHtml = '<div id="carousel" build-fire-carousel="" ></divid>';
 
@@ -55,7 +55,7 @@ describe('Unit: buildFireCarousel Directive', function () {
 });
 
 
-describe('Unit: Google Map Directive', function () {
+xdescribe('Unit: Google Map Directive', function () {
 
     var $rootScope, $scope, $compile, el, $body = $('body'), simpleHtml = '<div google-map location-data="[27,112]" marker-callback=""></div>';
 

@@ -125,7 +125,7 @@ describe("DesignHomeCtrl", function () {
 
 
 
-    describe('Function :DesignHome.addItemListBackgroundImage', function () {
+    xdescribe('Function :DesignHome.addItemListBackgroundImage', function () {
         it('DesignHome.addItemListBackgroundImage should exist and be a function', function () {
             expect(typeof controller.addListBgImage).toEqual('function');
         });
