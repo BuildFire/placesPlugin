@@ -31,7 +31,7 @@
         </div>
         <div class="padded padding-top-zero">
             <div class="dynamic-links" ng-repeat="link in WidgetItem.item.data.links">
-                <a>
+                <a ng-click="WidgetItem.executeAction(link)">
                     <span class="icon icon-cog"></span>
                     <span class="copy">{{link.title}}</span>
                 </a>

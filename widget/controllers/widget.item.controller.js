@@ -85,6 +85,11 @@
 
             }
 
+
+            WidgetItem.executeAction = function (actionItem) {
+                Buildfire.actionItems.execute(actionItem);
+            };
+
             function getGeoLocation() {
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (position) {
