@@ -23,12 +23,12 @@
     </div>
     <div class="padding-top-fifteen padding-bottom-ten text-center">
         <div class="plugin-thumbnail-slider clearfix">
-            <p>{{WidgetItem.item.data.addressTitle+" "+WidgetItem.item.data.address.aName}}</p>
-            <div class="thumbnail-slider text-center"
+            <p>{{WidgetItem.item.data.address.aName}}</p>
+            <div ng-if="WidgetItem.item.data.images.length" class="thumbnail-slider text-center"
                  style="height: 100px; width: 100%;white-space: nowrap; overflow-x: auto;">
                 <div class="thumbnail-slide" style="display: inline-block"
                      ng-repeat="image in WidgetItem.item.data.images">
-                    <img class="border-radius-four padding-left-ten" ng-src="{{image.iconUrl | cropImage : 140 : 100}}">
+                    <img class="border-radius-four padding-left-ten" ng-src="{{image.iconUrl | cropImage : 160 : 90}}">
                 </div>
             </div>
         </div>

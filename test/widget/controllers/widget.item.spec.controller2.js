@@ -43,7 +43,7 @@ describe('Unit : Controller - WidgetItemCtrl2', function () {
     )
     ;
 
-    describe('Units: units should be Defined', function () {
+    xdescribe('Units: units should be Defined', function () {
         it('it should pass if WidgetSections is defined', function () {
             expect(WidgetItem).not.toBeUndefined();
         });
