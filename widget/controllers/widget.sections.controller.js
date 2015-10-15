@@ -183,7 +183,7 @@
                     searchOptionsItems.filter = itemFilter;
                     //WidgetSections.items = null;
                     refreshItems();
-                    WidgetSections.loadMoreItems();
+                    //WidgetSections.loadMoreItems();
 
                     //updateGetOptionsItems();
                     /* Items.find(itemFilter).then(function (res) {
@@ -430,7 +430,7 @@
                      }, function () {
                      });*/
                     refreshItems();
-                    WidgetSections.loadMoreItems();
+                   // WidgetSections.loadMoreItems();
                 }
 
                 WidgetSections.itemsOrder = function (item) {

@@ -1,8 +1,8 @@
 <div class="holder padding-zero has-bottom has-bottom-viewing" id="scroll-infinite">
     <div class="places-plugin item-list2" infinite-scroll-distance="0"
-         infinite-scroll="WidgetSection.getMore()"
+         infinite-scroll="WidgetSections.loadMoreItems()"
          infinite-scroll-container='"#scroll-infinite"'
-         infinit-scroll-disabled="WidgetSection.noMore">
+         infinit-scroll-disabled="WidgetSections.noMore">
         <div class="plugin-banner has-info-bar clearfix" ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
             <a ng-href="#/item/{{WidgetSections.sectionId}}/{{item.id}}">
             <div class="plugin-slide text-center">
