@@ -44,32 +44,6 @@
                 }
             };
         }])
-        .factory('OrdersItems', [function () {
-            var ordersMap = {
-                Manually: "Manually",
-                Default: "Newest",
-                Newest: "Newest",
-                Oldest: "Oldest",
-                ItemAZ: "Item A-Z",
-                ItemZA: "Item Z-A"
-            };
-            var orders = [
-                {id: 1, name: "Manually", value: "Manually", key: "rank", order: 1},
-                {id: 1, name: "Newest", value: "Newest", key: "dateCreated", order: -1},
-                {id: 1, name: "Oldest", value: "Oldest", key: "dateCreated", order: 1},
-                {id: 1, name: "ItemA-Z", value: "Item A-Z", key: "itemTitle", order: 1},
-                {id: 1, name: "ItemZ-A", value: "Item Z-A", key: "itemTitle", order: -1}
-            ];
-            return {
-                ordersMap: ordersMap,
-                options: orders,
-                getOrder: function (name) {
-                    return orders.filter(function (order) {
-                        return order.name === name;
-                    })[0];
-                }
-            };
-        }])
         .factory('Orders', [function () {
             var ordersMap = {
                 Manually: "Manually",
@@ -158,37 +132,6 @@
                 });
                 return deferred.promise;
             };
-            DB.prototype.insert = function (items) {
-                var that = this;
-                var deferred = $q.defer();
-                if (typeof items == 'undefined') {
-                    return deferred.reject(new Error(MESSAGES.ERROR.DATA_NOT_DEFINED));
-                }
-                if (Array.isArray(items)) {
-                    Buildfire.datastore.bulkInsert(items, that._tagName, function (err, result) {
-                        if (err) {
-                            return deferred.reject(err);
-                        }
-                        else if (result) {
-                            return deferred.resolve(result);
-                        } else {
-                            return deferred.reject(new Error(MESSAGES.ERROR.NOT_FOUND));
-                        }
-                    });
-                } else {
-                    Buildfire.datastore.insert(items, that._tagName, false, function (err, result) {
-                        if (err) {
-                            return deferred.reject(err);
-                        }
-                        else if (result) {
-                            return deferred.resolve(result);
-                        } else {
-                            return deferred.reject(new Error(MESSAGES.ERROR.NOT_FOUND));
-                        }
-                    });
-                }
-                return deferred.promise;
-            };
             DB.prototype.find = function (options) {
                 var that = this;
                 var deferred = $q.defer();
@@ -207,63 +150,7 @@
                 });
                 return deferred.promise;
             };
-            DB.prototype.update = function (id, item) {
-                var that = this;
-                var deferred = $q.defer();
-                if (typeof id == 'undefined') {
-                    return deferred.reject(new Error(MESSAGES.ERROR.ID_NOT_DEFINED));
-                }
-                if (typeof item == 'undefined') {
-                    return deferred.reject(new Error(MESSAGES.ERROR.DATA_NOT_DEFINED));
-                }
-                Buildfire.datastore.update(id, item, that._tagName, function (err, result) {
-                    if (err) {
-                        return deferred.reject(err);
-                    }
-                    else if (result) {
-                        return deferred.resolve(result);
-                    } else {
-                        return deferred.reject(new Error(MESSAGES.ERROR.NOT_FOUND));
-                    }
-                });
-                return deferred.promise;
-            };
-            DB.prototype.save = function (item) {
-                var that = this;
-                var deferred = $q.defer();
-                if (typeof item == 'undefined') {
-                    return deferred.reject(new Error(MESSAGES.ERROR.DATA_NOT_DEFINED));
-                }
-                Buildfire.datastore.save(item, that._tagName, function (err, result) {
-                    if (err) {
-                        return deferred.reject(err);
-                    }
-                    else if (result) {
-                        return deferred.resolve(result);
-                    } else {
-                        return deferred.reject(new Error(MESSAGES.ERROR.NOT_FOUND));
-                    }
-                });
-                return deferred.promise;
-            };
-            DB.prototype.delete = function (id) {
-                var that = this;
-                var deferred = $q.defer();
-                if (typeof id == 'undefined') {
-                    return deferred.reject(new Error(MESSAGES.ERROR.ID_NOT_DEFINED));
-                }
-                Buildfire.datastore.delete(id, that._tagName, function (err, result) {
-                    if (err) {
-                        return deferred.reject(err);
-                    }
-                    else if (result) {
-                        return deferred.resolve(result);
-                    } else {
-                        return deferred.reject(new Error(MESSAGES.ERROR.NOT_FOUND));
-                    }
-                });
-                return deferred.promise;
-            };
+
             return DB;
         }])
         .value('Settings', Settings)

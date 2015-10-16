@@ -4,10 +4,10 @@
 (function (angular, tinymce) {
     'use strict';
     angular.module('placesContent')
-        .controller('ContentSectionCtrl', ['$scope', '$routeParams', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Location',
-            function ($scope, $routeParams, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Location) {
+        .controller('ContentSectionCtrl', ['$scope', '$routeParams', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Location', 'placesInfo', 'sectionInfo',
+            function ($scope, $routeParams, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Location, placesInfo, sectionInfo) {
                 /**
-                 * Sections is an instance of Sections db collection
+                 * ContentSection._Sections is an instance of Sections db collection
                  * @type {DB}
                  *
                  * PlaceSettings will get the Place initialized settings
@@ -15,7 +15,6 @@
                  */
                 var ContentSection = this
                     , tmrDelayForMedia = null
-                    , Sections = new DB(COLLECTIONS.Sections)
                     , _sectionData = {
                         data: {
                             mainImage: '',
@@ -28,15 +27,17 @@
                     }
                     , selectImageOptions = {showIcons: false, multiSelection: false}
                     , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
-                    , placeInfoData = {
+                    , updating = false
+                    , _placeInfoData = {
                         data: {
                             content: {
                                 images: [],
-                                descriptionHTML: '',
+                                descriptionHTML: '<p>&nbsp;<br></p>',
                                 description: '<p>&nbsp;<br></p>',
-                                sortBy: Orders.ordersMap.Newest,
+                                sortBy: Orders.ordersMap.Manually,
                                 rankOfLastItem: '',
-                                sortByItems: OrdersItems.ordersMap.Newest
+                                sortByItems: OrdersItems.ordersMap.Newest,
+                                showAllItems: 'true'
                             },
                             design: {
                                 secListLayout: "sec-list-1-1",
@@ -51,11 +52,24 @@
                             }
                         }
                     };
+                ContentSection._Sections = new DB(COLLECTIONS.Sections);
+                var placeInfoData;
+                if (placesInfo) {
+                    placeInfoData = placesInfo;
+                }
+                else {
+                    placeInfoData = _placeInfoData;
+                }
 
 
-                ContentSection.section = angular.copy(_sectionData);
-                ContentSection.masterSection = null;
-
+                if (sectionInfo) {
+                    ContentSection.section = sectionInfo;
+                    updateMasterSection(ContentSection.section);
+                }
+                else {
+                    ContentSection.section = _sectionData;
+                    updateMasterSection(ContentSection.section);
+                }
                 function updateMasterSection(item) {
                     ContentSection.masterSection = angular.copy(item);
                 }
@@ -65,19 +79,6 @@
                  */
                 function resetItem() {
                     ContentSection.section = angular.copy(ContentSection.masterSection);
-                }
-
-                function init() {
-                    var success = function (result) {
-                            console.info('Init placeInfoData success result:', result);
-                            if (Object.keys(result.data).length > 0) {
-                                placeInfoData = result;
-                            }
-                        }
-                        , error = function (err) {
-                            console.error('Error while getting data', err);
-                        };
-                    PlaceInfo.get().then(success, error);
                 }
 
 
@@ -94,9 +95,11 @@
                  * This updateItemData method will call the Builfire update method to update the ContentMedia.item
                  */
                 function updateItemData(_section) {
-                    Sections.update(_section.id, _section.data).then(function (data) {
+                    ContentSection._Sections.update(_section.id, _section.data).then(function (data) {
+                        updating = false;
                         updateMasterSection(_section);
                     }, function (err) {
+                        updating = false;
                         resetItem();
                         console.error('Error-------', err);
                     });
@@ -107,19 +110,57 @@
                  */
 
                 function addNewItem(_section) {
-                    Sections.insert(_section.data).then(function (item) {
-                        ContentSection.section = item;
+                    ContentSection._Sections.insert(_section.data).then(function (item) {
+                        ContentSection.section.id = item.id;
+                        ContentSection.section.data.deepLinkUrl = Buildfire.deeplink.createLink({id: item.id});
                         updateMasterSection(item);
                         placeInfoData.data.content.rankOfLastItem = item.data.rank;
+                        updating = false;
                         PlaceInfo.save(placeInfoData.data).then(function (data) {
-                            console.info("Updated MediaCenter rank");
                         }, function (err) {
                             resetItem();
                             console.error('Error while getting----------', err);
                         });
                     }, function (err) {
+                        updating = false;
                         console.error('---------------Error while inserting data------------', err);
                     });
+                }
+
+
+                function insertAndUpdate(_item) {
+                    updating = true;
+                    if (_item.id) {
+                        console.info('****************Section exist***********************');
+                        ContentSection._Sections.update(_item.id, _item.data).then(function (data) {
+                            updating = false;
+                            updateMasterSection(_section);
+                        }, function (err) {
+                            resetItem();
+                            updating = false;
+                            console.log('Error while updating data---', err);
+                        });
+                    }
+                    else {
+                        console.info('****************Section inserted***********************');
+                        _item.data.dateCreated = new Date();
+                        ContentSection._Sections.insert(_item.data).then(function (item) {
+                            ContentSection.section.id = item.id;
+                            ContentSection.section.data.deepLinkUrl = Buildfire.deeplink.createLink({id: item.id});
+                            updateMasterSection(item);
+                            placeInfoData.data.content.rankOfLastItem = item.data.rank;
+                            updating = false;
+                            PlaceInfo.save(placeInfoData.data).then(function (data) {
+                            }, function (err) {
+                                resetItem();
+                                console.error('Error while getting----------', err);
+                            });
+                        }, function (err) {
+                            resetItem();
+                            updating = false;
+                            console.log('Error---', err);
+                        });
+                    }
                 }
 
 
@@ -128,41 +169,27 @@
                  * @param _section
                  */
                 function updateItemsWithDelay(_section) {
+                    if (updating) {
+                        return;
+                    }
                     if (tmrDelayForMedia) {
                         clearTimeout(tmrDelayForMedia);
                     }
-                    if (!isUnChanged(_section)) {
+                    if (_section && !isUnChanged(_section)) {
                         tmrDelayForMedia = setTimeout(function () {
-                            if (_section.id) {
-                                updateItemData(_section);
-                            }
-                            else {
-                                _section.data.rank = (placeInfoData.data.content.rankOfLastItem || 0) + 10;
-                                _section.data.dateCreated = +new Date();
-                                addNewItem(_section);
-                            }
+                            /* if (_section.id) {
+                             updateItemData(_section);
+                             }
+                             else {
+                             _section.data.rank = (placeInfoData.data.content.rankOfLastItem || 0) + 10;
+                             _section.data.dateCreated = +new Date();
+                             addNewItem(_section);
+                             }*/
+                            insertAndUpdate(_section)
                         }, 1000);
                     }
                 }
 
-                updateMasterSection(ContentSection.section);
-
-                init();
-
-                if ($routeParams.sectionId) {
-                    Sections.getById($routeParams.sectionId).then(function (result) {
-                            if (result && result.data) {
-                                ContentSection.section = result;
-                            }
-                            else {
-                                Location.goToHome();
-                            }
-                        },
-                        function fail() {
-                            Location.goToHome();
-                        }
-                    );
-                }
                 /**
                  * callback function of Main image icon selection click
                  */
@@ -212,19 +239,6 @@
                  */
                 ContentSection.done = function () {
                     Location.goToHome();
-                };
-
-                /**
-                 * will delete the current item from MediaContent collection
-                 */
-                ContentSection.delete = function () {
-                    if (ContentSection.section.id) {
-                        Sections.delete(ContentSection.section.id).then(function (data) {
-                            Location.goToHome();
-                        }, function (err) {
-                            console.error('Error while deleting an item-----', err);
-                        });
-                    }
                 };
 
                 //syn with widget

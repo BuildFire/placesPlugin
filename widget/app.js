@@ -16,12 +16,18 @@
         //injected ui.bootstrap for angular bootstrap component
         //injected ui.sortable for manual ordering of list
         //ngClipboard to provide copytoclipboard feature
-        .config(['$routeProvider','$httpProvider', function ($routeProvider,$httpProvider) {
+        .config(['$routeProvider', '$httpProvider','$compileProvider', function ($routeProvider, $httpProvider, $compileProvider) {
 
             /**
              * Disable the pull down refresh
              */
                 //buildfire.datastore.disableRefresh();
+
+
+            /**
+             * To make href urls safe on mobile
+             */
+            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|cdvfile):/);
 
             $routeProvider
                 .when('/', {
@@ -93,6 +99,23 @@
                                 };
                             PlaceInfo.get().then(success, error);
                             return deferred.promise;
+                        }],
+                        item: ['DB', 'COLLECTIONS', '$q', '$route', 'Location', function (DB, COLLECTIONS, $q, $route, Location) {
+                            var Items = new DB(COLLECTIONS.Items)
+                                , deferred = $q.defer()
+                                , success = function (result) {
+                                    if (Object.keys(result.data).length > 0) {
+                                        deferred.resolve(result);
+                                    }
+                                    else {
+                                        deferred.resolve(null);
+                                    }
+                                }
+                                , error = function (err) {
+                                    deferred.resolve(null);
+                                };
+                            Items.getById($route.current.params.itemId).then(success, error);
+                            return deferred.promise;
                         }]
                     }
                 })
@@ -117,13 +140,16 @@
                                 };
                             PlaceInfo.get().then(success, error);
                             return deferred.promise;
-                        }]
+                        }],
+                        item: function () {
+                            return null;
+                        }
                     }
                 })
                 .otherwise('/');
 
-            var interceptor=['$q',function($q){
-                var counter=0;
+            var interceptor = ['$q', function ($q) {
+                var counter = 0;
                 return {
 
                     request: function (config) {
@@ -133,16 +159,14 @@
                     },
                     response: function (response) {
                         counter--;
-                        if(counter===0)
-                        {
+                        if (counter === 0) {
                             buildfire.spinner.hide();
                         }
                         return response;
                     },
-                    responseError:function(rejection){
+                    responseError: function (rejection) {
                         counter--;
-                        if(counter===0)
-                        {
+                        if (counter === 0) {
                             buildfire.spinner.hide();
                         }
 
@@ -154,7 +178,7 @@
             $httpProvider.interceptors.push(interceptor);
 
         }])
-        .run(['Location', 'Messaging', 'EVENTS', 'PATHS', function (Location, Messaging, EVENTS, PATHS) {
+        .run(['Location', 'Messaging', 'EVENTS', 'PATHS', '$location', function (Location, Messaging, EVENTS, PATHS, $location) {
             Messaging.onReceivedMessage = function (event) {
                 console.log('Messaging000000000000000000000------on Widget Side-----------------------------------------', event);
                 if (event) {
@@ -168,9 +192,9 @@
                                 case PATHS.ITEM:
                                     url = url + "item";
                                     if (secId && id) {
-                                        url = url+"/"+secId + "/" + id;
+                                        url = url + "/" + secId + "/" + id;
                                     }
-                                    else if(secId){
+                                    else if (secId) {
                                         url = url + "/" + secId;
                                     }
                                     break;
@@ -203,6 +227,14 @@
                 }
 
             });
+
+            buildfire.navigation.onBackButtonClick = function () {
+                var path = $location.path();
+                if (path.indexOf('/items/') == 0)
+                    Location.goToHome();
+                else if (path.indexOf('/item/') == 0)
+                    Location.go('#/items/' + path.split('/')[2]);
+            }
         }]);
 
 

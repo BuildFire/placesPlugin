@@ -5,10 +5,8 @@
     'use strict';
     angular
         .module('placesContent')
-        .controller('ContentItemCtrl', ['$scope', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout', 'EVENTS', 'PATHS', 'Messaging',
-            function ($scope, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout, EVENTS, PATHS, Messaging) {
-
-                console.log('Route PArams------------------------------',$routeParams);
+        .controller('ContentItemCtrl', ['$scope', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout', 'EVENTS', 'PATHS', 'Messaging', 'item',
+            function ($scope, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout, EVENTS, PATHS, Messaging, item) {
                 var tmrDelayForItem = null
                     , Items = new DB(COLLECTIONS.Items)
                     , _data = {
@@ -27,7 +25,8 @@
                         },
                         links: [],
                         backgroundImage: ''
-                    };
+                    }
+                    ,updating=false;
 
                 $scope.itemShow = 'Content';
 
@@ -35,30 +34,14 @@
                 ContentItem.currentAddress = null;
                 ContentItem.validCoordinatesFailure = false;
                 ContentItem.currentCoordinates = null;
-                ContentItem.item = angular.copy({data: _data});
-                ContentItem.masterItem = angular.copy(ContentItem.item);
 
-                function init() {
-                    if ($routeParams.itemId) {
-                        Items.getById($routeParams.itemId).then(function success(result) {
-                                if (result && result.data) {
-                                    ContentItem.item = result;
-                                    updateMasterItem(ContentItem.item);
-                                }
-                                if (ContentItem.item.data.images)
-                                    ContentItem.editor.loadItems(ContentItem.item.data.images);
-                                if (ContentItem.item.data.links)
-                                    ContentItem.linkEditor.loadItems(ContentItem.item.data.links);
-                                if (ContentItem.item.data.address && ContentItem.item.data.address.aName) {
-                                    ContentItem.currentAddress = ContentItem.item.data.address.aName;
-                                    ContentItem.currentCoordinates = [ContentItem.item.data.address.lng, ContentItem.item.data.address.lat];
-                                }
-                            },
-                            function fail(err) {
-                                console.log('Error', err);
-                            }
-                        );
-                    }
+                if (item) {
+                    ContentItem.item = item;
+                    ContentItem.masterItem = angular.copy(ContentItem.item);
+                }
+                else {
+                    ContentItem.item = {data: _data};
+                    ContentItem.masterItem = angular.copy(ContentItem.item);
                 }
 
                 //option for wysiwyg
@@ -122,6 +105,18 @@
                 };
 
                 /**
+                 * Initialize the carousel and links
+                 */
+                if (ContentItem.item.data.images)
+                    ContentItem.editor.loadItems(ContentItem.item.data.images);
+                if (ContentItem.item.data.links)
+                    ContentItem.linkEditor.loadItems(ContentItem.item.data.links);
+                if (ContentItem.item.data.address && ContentItem.item.data.address.aName) {
+                    ContentItem.currentAddress = ContentItem.item.data.address.aName;
+                    ContentItem.currentCoordinates = [ContentItem.item.data.address.lng, ContentItem.item.data.address.lat];
+                }
+
+                /**
                  * This updateMasterItem will update the ContentMedia.masterItem with passed item
                  * @param item
                  */
@@ -147,22 +142,27 @@
                 }
 
                 function insertAndUpdate(_item) {
+                    updating=true;
                     if (_item.id) {
                         console.info('****************Item exist***********************');
                         Items.update(_item.id, _item.data).then(function (data) {
+                            updating=false;
                             console.log('Data updated successfully---', data);
                         }, function (err) {
+                            updating=false;
                             console.log('Error while updating data---', err);
                         });
                     }
                     else {
                         console.info('****************Item inserted***********************');
-                        _item.data.deepLinkUrl = Buildfire.deeplink.createLink({id: _item.id});
                         _item.data.dateCreated = new Date();
                         Items.insert(_item.data).then(function (data) {
+                            ContentItem.data.deepLinkUrl = Buildfire.deeplink.createLink({id: data.id});
                             ContentItem.item.id = data.id;
+                            updating=false;
                             updateMasterItem(ContentItem.item);
                         }, function (err) {
+                            updating=false;
                             console.log('Error---', err);
                         });
                     }
@@ -173,6 +173,8 @@
                  * @param _item
                  */
                 function updateItemsWithDelay(_item) {
+                    if(updating)
+                    return;
                     if (tmrDelayForItem) {
                         clearTimeout(tmrDelayForItem);
                     }
@@ -183,7 +185,7 @@
                     }
                 }
 
-                init();
+                //init();
 
                 ContentItem.addBackgroundImage = function () {
                     var options = {showIcons: false, multiSelection: false}

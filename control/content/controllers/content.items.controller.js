@@ -8,13 +8,14 @@
     /**
      * Inject dependency
      */
-        .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'DB', 'COLLECTIONS', 'Modals', 'Orders', 'OrdersItems', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'placesInfo',
-            function ($scope, $routeParams, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo) {
+        .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'DB', 'COLLECTIONS', 'Modals', 'Orders', 'OrdersItems', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'placesInfo', 'sectionInfo',
+            function ($scope, $routeParams, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo, sectionInfo) {
 
                 /**
                  * Create instance of Sections and Items db collection
                  * @type {DB}
                  */
+                var searchOptions;
                 var Sections = new DB(COLLECTIONS.Sections)
                     , Items = new DB(COLLECTIONS.Items)
                     , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
@@ -26,11 +27,12 @@
                         data: {
                             content: {
                                 images: [],
-                                descriptionHTML: '',
+                                descriptionHTML: '<p>&nbsp;<br></p>',
                                 description: '<p>&nbsp;<br></p>',
-                                sortBy: Orders.ordersMap.Newest,
+                                sortBy: Orders.ordersMap.Manually,
                                 rankOfLastItem: '',
-                                sortByItems: OrdersItems.ordersMap.Newest
+                                sortByItems: OrdersItems.ordersMap.Newest,
+                                showAllItems: 'true'
                             },
                             design: {
                                 secListLayout: "sec-list-1-1",
@@ -47,19 +49,8 @@
                     };
 
                 var ContentItems = this;
-                ContentItems.section = $routeParams.sectionId;
-                ContentItems.isBusy = false;
-                ContentItems.items = null;
-                ContentItems.info = null;
-                ContentItems.masterInfoData = null;
-                ContentItems.sortOptions = OrdersItems.options;
-                ContentItems.itemSortableOptions = {disabled: false};
-                var searchOptions = {
-                    filter: {'$and': [{"$json.itemTitle": {"$regex": '/*'}}, {"$json.sections": {"$all": [ContentItems.section]}}]},
-                    skip: _skip,
-                    limit: _limit + 1 // the plus one is to check if there are any more
-                };
-
+                if (sectionInfo != 'allItems')
+                    ContentItems.sectionInfo = sectionInfo;
                 if (placesInfo) {
                     updateMasterInfoData(placesInfo);
                     ContentItems.info = placesInfo;
@@ -67,6 +58,74 @@
                     updateMasterInfoData(placeInfoData);
                     ContentItems.info = angular.copy(placeInfoData);
                 }
+                ContentItems.section = $routeParams.sectionId;
+                ContentItems.isBusy = false;
+                ContentItems.items = null;
+                ContentItems.masterInfoData = null;
+                ContentItems.sortOptions = OrdersItems.options;
+                ContentItems.itemSortableOptions = {
+                    handle: '> .cursor-grab',
+                    disabled: !(ContentItems.info.data.content.sortBy === Orders.ordersMap.Manually),
+                    stop: function (e, ui) {
+                        var endIndex = ui.item.sortable.dropindex,
+                            maxRank = 0,
+                            draggedItem = ContentItems.items[endIndex];
+                        if (draggedItem) {
+                            var prev = ContentItems.items[endIndex - 1],
+                                next = ContentItems.items[endIndex + 1];
+                            var isRankChanged = false;
+                            if (next) {
+                                if (prev) {
+                                    draggedItem.data.rank = ((prev.data.rank || 0) + (next.data.rank || 0)) / 2;
+                                    isRankChanged = true;
+                                } else {
+                                    draggedItem.data.rank = (next.data.rank || 0) / 2;
+                                    isRankChanged = true;
+                                }
+                            } else {
+                                if (prev) {
+                                    draggedItem.data.rank = (((prev.data.rank || 0) * 2) + 10) / 2;
+                                    maxRank = draggedItem.data.rank;
+                                    isRankChanged = true;
+                                }
+                            }
+                            if (isRankChanged) {
+                                Items.update(draggedItem.id, draggedItem.data).then(function (updataeditem) {
+                                    console.log('Updated item--------------------------------', updataeditem);
+                                    if (ContentItems.sectionInfo) {
+                                        ContentItems.sectionInfo.data.rankOfLastItem = maxRank;
+                                        // Update the rankOfLastItem in a particular section
+                                        Sections.update(ContentItems.sectionInfo.id, ContentItems.sectionInfo.data).then(function (data) {
+                                                // Do Something on Success
+                                            },
+                                            function () {
+                                                console.error('Error while updating sections Collection data');
+                                            });
+                                    }
+                                }, function () {
+
+                                });
+
+                            }
+                        }
+                    }
+                };
+                if(ContentItems.sectionInfo){
+                    searchOptions = {
+                        filter: {'$and': [{"$json.itemTitle": {"$regex": '/*'}}, {"$json.sections": {"$all": [ContentItems.section]}}]},
+                        skip: _skip,
+                        limit: _limit + 1 // the plus one is to check if there are any more
+                    };
+                }
+                else{
+                    searchOptions = {
+                        filter: {'$and': [{"$json.itemTitle": {"$regex": '/*'}}, {"$json.sections": {"$all": []}}]},
+                        skip: _skip,
+                        limit: _limit + 1 // the plus one is to check if there are any more
+                    };
+                }
+
+
 
                 var updateSearchOptions = function () {
                     var order;
@@ -119,14 +178,17 @@
                     }
                 }
 
+
+                ContentItems.deepLinkUrl = function (url) {
+                    Modals.DeeplinkPopupModal(url);
+                };
+
                 /**
                  * ContentItems.toggleSortOrder() to change the sort by
                  */
                 ContentItems.toggleSortOrder = function (name) {
-                    if (!name) {
-                        console.info('There was a problem sorting your data');
-                    } else {
-                        var sortOrder = OrdersItems.getOrder(name || OrdersItems.ordersMap.Default);
+                    if (name) {
+                        var sortOrder = OrdersItems.getOrder(name);
                         ContentItems.items = null;
                         ContentItems.noMore = false;
                         searchOptions.skip = 0;
@@ -208,7 +270,14 @@
                     if (!value) {
                         value = '/*';
                     }
-                    searchOptions.filter = {'$and': [{"$json.itemTitle": {"$regex": value}}, {"$json.sections": {"$all": [ContentItems.section]}}]};// {"$json.secTitle": {"$regex": value}};
+                    searchOptions.filter = {
+                        '$and': [{
+                            "$json.itemTitle": {
+                                "$regex": value,
+                                "$options": "i"
+                            }
+                        }, {"$json.sections": {"$all": [ContentItems.section]}}]
+                    };// {"$json.secTitle": {"$regex": value}};
                     ContentItems.getMore();
                 };
 
@@ -218,7 +287,6 @@
                             //console.log(result);
 
                             Items.update(result.id, result.data).then(function () {
-                                //ContentItems.items[ind].data.sections = result.data.sections;
                                 _skip = 0;
                                 ContentItems.items = null;
                                 ContentItems.getMore();

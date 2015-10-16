@@ -55,4 +55,28 @@ describe("SettingsHomeCtrl", function () {
             expect(controller._lastSaved).toBeDefined();
         });
     });
+    describe('watcher of controller.placeInfo', function () {
+
+        it('should change the lastSaved when PlaceInfo is changed succesfully on db', function () {
+            controller._lastSaved = null;
+            controller._placeCenter.update = function () {
+                var deferred = q.defer();
+                deferred.resolve('Remote call result');
+                return deferred.promise;
+            };
+            controller.placeInfo.data.settings.defaultView = 'list';
+            $scope.$digest();
+            expect(controller._lastSaved).toBeNull();
+        });
+
+        it('should revert the PlaceInfo to lastSaved when db change failed', function () {
+            controller._placeCenter.update = function () {
+                var deferred = q.defer();
+                deferred.reject('Remote call result');
+                return deferred.promise;
+            };
+            $scope.$digest();
+            expect(controller.placeInfo.data.settings.defaultView).toEqual('list');
+        });
+    });
 });

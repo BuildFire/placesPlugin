@@ -5,7 +5,7 @@
                 <div id="carousel" build-fire-carousel=""></div>
             </div>
         </div>
-        <div class="text-left padded padding-bottom-zero clearfix">
+        <div class="text-left padding-bottom-zero clearfix">
             <p ng-if="WidgetSections.placesInfo.data.content.descriptionHTML"
                ng-bind-html="WidgetSections.placesInfo.data.content.descriptionHTML | safeHtml">
                 {{WidgetSections.placesInfo.data.content.descriptionHTML}}</p>
@@ -15,32 +15,33 @@
                 <div ng-show="WidgetSections.showSections">
                     <div infinite-scroll-distance="0"
                          infinite-scroll="WidgetSections.loadMoreSections()"
-                         infinite-scroll-disabled="WidgetSections.noMoreSections"
+
                          infinite-scroll-container="'#scroll-infinite'">
                         <div class="list-item" ng-repeat="item in WidgetSections.sections">
+                            <a ng-href="#/items/{{item.id}}">
                             <div class="list-item-media text-left overflow-hidden">
-                                <div class="list-media-holder pull-left">
-                                    <img default-image ng-src="{{item.data.mainImage}}">
+                                <div ng-if="item.data.mainImage"  class="list-media-holder pull-left">
+                                    <img default-image ng-src="{{item.data.mainImage | cropImage :110 :60}}">
                                 </div>
                                 <div class="list-item-copy text-left padding-left-ten padding-right-ten">
-                                    <p class="ellipsis margin-zero text-primary margin-top-five"><a class="text-primary"
-                                                                                                    ng-href="#/items/{{item.id}}">{{item.data.secTitle}}</a>
+                                    <p class="ellipsis margin-zero text-primary margin-top-five"><span class="text-primary">{{item.data.secTitle}}</span>
                                     </p>
 
-                                    <p class="ellipsis margin-zero">{{item.data.secSummary}}</p>
+                                    <p class="ellipsis margin-zero" style="color:#5f5f5f">{{item.data.secSummary}}</p>
                                 </div>
                             </div>
+                            </a>
                         </div>
                     </div>
                 </div>
                 <div ng-hide="WidgetSections.showSections">
-                    <!--<div infinite-scroll-distance="0"
-                         infinite-scroll="WidgetSections.getMoreItems()"
-                         infinite-scroll-disabled="WidgetSections.noMoreItems"
-                         infinite-scroll-container="'#scroll-infinite'">-->
-                    <div ng-hide="WidgetSections.locationData.items.length">
-                        No Item(s) to show
+                    <div  class="no-items-msg margin-fifteen" ng-hide="WidgetSections.locationData.items.length">
+                        No item(s) to show
                     </div>
+                    <div infinite-scroll-distance="0"
+                         infinite-scroll="WidgetSections.loadMoreItems()"
+
+                         infinite-scroll-container="'#scroll-infinite'">
                     <div class="plugin-banner has-info-bar clearfix"
                          ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
                         <div class="plugin-slide text-center">
@@ -59,7 +60,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--</div>-->
+                    </div>
                 </div>
             </div>
         </div>

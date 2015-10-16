@@ -23,7 +23,6 @@ module.exports = function (config) {
             './bower_components/angular-bootstrap/ui-bootstrap.min.js',
             './bower_components/angular-ui-tinymce/src/tinymce.js',
             './bower_components/tinymce-dist/tinymce.min.js',
-            './bower_components/angular-sanitize/angular-sanitize.min.js',
             './test/assets/buildfire.js',
             './control/design/**/*.js',
             './control/content/**/*.js',
@@ -31,8 +30,6 @@ module.exports = function (config) {
             './widget/**/*.js',
             './test/**/*.js',
             //'http://localhost:63342/sdk/scripts/buildfire.js',
-            'http://localhost:63342/sdk/plugins/pluginMediaCenterManualEntries/widget/assets/js/owl.carousel.min.js',
-            'http://localhost:63342/sdk/scripts/buildfire/services/media/audioPlayer.js',
             'http://localhost:63342/sdk/scripts/buildfire/components/carousel/carousel.js'
         ],
 

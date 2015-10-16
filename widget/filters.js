@@ -28,24 +28,5 @@
                     return "";
                 }
             };
-        }])
-        .filter("jsDate", function () {
-            return function (x) {
-                return new Date(x);
-            };
-        })
-        .filter("timeCorrect", function () {
-            return function (x) {
-                if (!x)
-                    return '';
-                var num = Number(x.charAt(0));
-
-                if (isNaN(num))
-                    return '';
-
-                num = num - 3;
-                x = num.toString() + x.substring(1);
-                return x;
-            };
-        });
+        }]);
 })(window.angular, window.buildfire, window.location);

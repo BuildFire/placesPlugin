@@ -3,10 +3,11 @@ describe('Unit : Controller - ContentSectionCtrl', function () {
 // load the controller's module
     beforeEach(module('placesContent'));
 
-    var $q, ContentSection, scope, $routeParams, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Location;
+    var $q, ContentSection, scope,$rootScope, $routeParams, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Location;
 
     beforeEach(inject(function (_$q_, $controller, _$rootScope_, _DB_, _$timeout_, _COLLECTIONS_, _Orders_, _OrdersItems_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _$csv_, _Buildfire_, _Location_) {
             scope = _$rootScope_.$new();
+            $rootScope=_$rootScope_;
             DB = _DB_;
             $timeout = _$timeout_;
             COLLECTIONS = _COLLECTIONS_;
@@ -51,10 +52,42 @@ describe('Unit : Controller - ContentSectionCtrl', function () {
                 PATHS: PATHS,
                 $csv: $csv,
                 Location: Location,
+                placesInfo: {
+                    data: {
+                        content: {
+                            images: [],
+                            descriptionHTML: '',
+                            description: '<p>&nbsp;<br></p>',
+                            sortBy: Orders.ordersMap.Newest,
+                            rankOfLastItem: '',
+                            sortByItems: OrdersItems.ordersMap.Newest
+                        },
+                        design: {
+                            secListLayout: "sec-list-1-1",
+                            mapLayout: "map-1",
+                            itemListLayout: "item-list-1",
+                            itemDetailsLayout: "item-details-1",
+                            secListBGImage: ""
+                        },
+                        settings: {
+                            defaultView: "list",
+                            showDistanceIn: "miles"
+                        }
+                    }
+                },
+                sectionInfo: {
+                    data: {
+                        mainImage: '',
+                        secTitle: '',
+                        secSummary: '',
+                        itemListBGImage: '',
+                        sortBy: '',
+                        rankOfLastItem: ''
+                    }
+                },
                 Buildfire: {
                     imageLib: {
                         showDialog: function () {
-                            console.log('testing');
                             return (null, {selectedFiles: ['']});
                         }
                     }
@@ -92,7 +125,6 @@ describe('Unit : Controller - ContentSectionCtrl', function () {
     });
 
     describe('ContentSection.selectMainImage', function () {
-
 
         it('it should pass if it changes the mainImage on correct input', function () {
             ContentSection.selectMainImage();
@@ -144,26 +176,30 @@ describe('Unit : Controller - ContentSectionCtrl', function () {
         });
     });
 
-    xdescribe('ContentSection.delete', function () {
+    describe('watcher of controller.section', function () {
 
-        var spy;
-        beforeEach(inject(function () {
-            spy = spyOn(Location, 'goToHome').and.callFake(function () {
-            });
-
-        }));
-
-        it('it should not delete the section if id is falsy', function () {
-            var Sections = {
-                delete: function () {
-                    console.log('called testing');
-                    var deferred = $q.defer();
-                    deferred.resolve('Remote call result');
-                    return deferred.promise;
-                }
+        it('should change the lastSaved when PlaceInfo is changed succesfully on db', function () {
+            ContentSection.masterSection = null;
+            ContentSection._Sections.update = function () {
+                var deferred = q.defer();
+                deferred.resolve('Remote call result');
+                return deferred.promise;
             };
-            ContentSection.delete();
-            expect(spy).toHaveBeenCalled();
+            ContentSection.section.data.mainImage = 'mainImage.png';
+            $rootScope.$digest();
+            expect(ContentSection.masterSection).toBeNull();
+        });
+
+        it('should revert the PlaceInfo to lastSaved when db change failed', function () {
+            ContentSection._Sections.update = function () {
+                var deferred = q.defer();
+                deferred.reject('Remote call result');
+                return deferred.promise;
+            };
+
+            ContentSection.removeMainImage();
+            $rootScope.$digest();
+            expect(ContentSection.section.data.mainImage).toEqual('');
         });
     });
 

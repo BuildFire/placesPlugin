@@ -31,9 +31,10 @@
                                 images: [],
                                 descriptionHTML: '<p>&nbsp;<br></p>',
                                 description: '<p>&nbsp;<br></p>',
-                                sortBy: Orders.ordersMap.Newest,
+                                sortBy: Orders.ordersMap.Manually,
                                 rankOfLastItem: '',
-                                sortByItems: OrdersItems.ordersMap.Newest
+                                sortByItems: OrdersItems.ordersMap.Newest,
+                                showAllItems: 'true'
                             },
                             design: {
                                 secListLayout: "sec-list-1-1",
@@ -50,11 +51,11 @@
                     };
 
                 var ContentSections = this;
+                ContentSections.showAllItems = true;
                 ContentSections.info = null;
                 ContentSections.masterInfo = null;
 
-                if (placesInfo)
-                {
+                if (placesInfo) {
                     updateMasterInfo(placesInfo);
                     ContentSections.info = placesInfo;
                 }
@@ -68,12 +69,15 @@
                 ContentSections.sections = [];
                 ContentSections.sortOptions = Orders.options;
 
+                ContentSections.deepLinkUrl = function (url) {
+                    console.log(url, '---------url----------------------------------------------------');
+                    Modals.DeeplinkPopupModal(url);
+                };
+
                 ContentSections.itemSortableOptions = {
                     handle: '> .cursor-grab',
                     disabled: !(ContentSections.info.data.content.sortBy === Orders.ordersMap.Manually),
                     stop: function (e, ui) {
-                        console.log(e);
-                        console.log(ui);
                         var endIndex = ui.item.sortable.dropindex,
                             maxRank = 0,
                             draggedItem = ContentSections.sections[endIndex];
@@ -99,15 +103,8 @@
                             if (isRankChanged) {
 
                                 Sections.update(draggedItem.id, draggedItem.data).then(function () {
-                                    Sections.find({}).then(function (result) {
-                                        console.log('updated sections', result);
-                                        //ContentSections.sections = result;
-                                        ContentSections.info.data.content.rankOfLastItem = maxRank;
-                                    }, function () {
-
-                                    });
+                                    ContentSections.info.data.content.rankOfLastItem = maxRank;
                                 }, function () {
-
                                 });
                             }
                         }
@@ -295,6 +292,7 @@
                             }
                         }
                         else {
+
                             //ContentHome.loading = false;
                             $scope.$apply();
                         }
@@ -343,7 +341,6 @@
                     var item = ContentSections.sections[_index];
 
                     if ("undefined" !== typeof item) {
-                        console.log(4);
                         Modals.removePopupModal({title: ''}).then(function (result) {
                             if (result) {
                                 Sections.delete(item.id).then(function (data) {
@@ -386,10 +383,12 @@
                  * ContentSections.getMore is used to load the items
                  */
                 ContentSections.getMore = function () {
-                    if (ContentSections.isBusy && !ContentSections.noMore) {
+                    //if (ContentSections.isBusy && !ContentSections.noMore) {
+                    if (ContentSections.isBusy || ContentSections.noMore) {
                         return;
                     }
                     updateSearchOptions();
+                    console.log('searching for ', searchOptions);
                     ContentSections.isBusy = true;
                     Sections.find(searchOptions).then(function success(result) {
                         if (result.length <= _limit) {// to indicate there are more
@@ -413,14 +412,14 @@
                 ContentSections.searchListSection = function (value) {
                     searchOptions.skip = 0;
                     /*reset the skip value*/
-
+                    ContentSections.noMore = false;
                     ContentSections.isBusy = false;
                     ContentSections.sections = [];
                     value = value.trim();
                     if (!value) {
                         value = '/*';
                     }
-                    searchOptions.filter = {"$json.secTitle": {"$regex": value}};
+                    searchOptions.filter = {"$json.secTitle": {"$regex": value, "$options": "i"}};
                     ContentSections.getMore();
                 };
                 /**

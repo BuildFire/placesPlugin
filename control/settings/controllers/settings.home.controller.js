@@ -2,16 +2,17 @@
     'use strict';
     angular
         .module('placesSettings')
-        .controller('SettingsHomeCtrl', ['$scope', 'Orders', 'COLLECTIONS', 'DB', '$timeout', 'placesInfo', function ($scope, Orders, COLLECTIONS, DB, $timeout, placesInfo) {
-            var placeInfo = new DB(COLLECTIONS.PlaceInfo);
+        .controller('SettingsHomeCtrl', ['$scope', 'Orders', 'COLLECTIONS', 'DB', '$timeout', 'OrdersItems', 'placesInfo', function ($scope, Orders, COLLECTIONS, DB, $timeout, OrdersItems, placesInfo) {
             var SettingsHome = this
                 , _data = {
                     content: {
                         images: [],
-                        descriptionHTML: '',
-                        description: '',
-                        sortBy: Orders.ordersMap.Newest,
-                        rankOfLastItem: ''
+                        descriptionHTML: '<p>&nbsp;<br></p>',
+                        description: '<p>&nbsp;<br></p>',
+                        sortBy: Orders.ordersMap.Manually,
+                        rankOfLastItem: '',
+                        sortByItems: OrdersItems.ordersMap.Newest,
+                        showAllItems: 'true'
                     },
                     design: {
                         secListLayout: "sec-list-1-1",
@@ -26,6 +27,8 @@
                     }
                 }
                 , tmrDelay = null;
+            SettingsHome._placeCenter = new DB(COLLECTIONS.PlaceInfo);
+
 
             /* populate VM with resolve */
             if (placesInfo) {
@@ -57,7 +60,7 @@
                     }
                     if (newObj.id) {
                         tmrDelay = $timeout(function () {
-                            placeInfo.update(newObj.id, newObj.data).then(function (result) {
+                            SettingsHome._placeCenter.update(newObj.id, newObj.data).then(function (result) {
                                 SettingsHome._lastSaved = angular.copy(SettingsHome.placeInfo);
                             }, function (err) {
                                 console.log(err);
@@ -66,7 +69,7 @@
                         }, 500);
                     } else {
                         tmrDelay = $timeout(function () {
-                            placeInfo.save(SettingsHome.placeInfo.data).then(function success(result) {
+                            SettingsHome._placeCenter.save(SettingsHome.placeInfo.data).then(function success(result) {
                                 init();
                             }, function fail(err) {
                                 console.log(err);

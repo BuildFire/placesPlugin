@@ -1,16 +1,17 @@
 <div class="holder padding-zero has-bottom has-bottom-viewing" id="scroll-infinite">
     <div class="places-plugin item-list1" infinite-scroll-distance="0"
-         infinite-scroll="WidgetSection.getMore()"
+         infinite-scroll="WidgetSections.loadMoreItems()"
          infinite-scroll-container='"#scroll-infinite"'
-         infinit-scroll-disabled="WidgetSection.noMore">
+         infinit-scroll-disabled="WidgetSections.noMore">
         <div class="plugin-banner has-info-bar clearfix" ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
+            <a ng-href="#/item/{{WidgetSections.sectionId}}/{{item.id}}">
             <div class="plugin-slide text-center">
                 <img ng-if="item.data.listImage" ng-src="{{item.data.listImage}}">
                 <img ng-if="!item.data.listImage" src="assets/images/placeholder.jpg">
             </div>
             <div class="info-bar">
                 <div class="col-xs-8 text-left pull-left">
-                    <p class="margin-bottom-zero ellipsis"><a ng-href="#/item/{{WidgetSections.sectionId}}/{{item.id}}">{{item.data.itemTitle}}</a></p>
+                    <p class="margin-bottom-zero ellipsis"><span class="text-primary">{{item.data.itemTitle}}</span></p>
 
                     <p class="margin-bottom-zero ellipsis">{{item.data.summary}}</p>
                 </div>
@@ -19,6 +20,7 @@
                     <span class="miles">{{item.data.distanceText}}</span>
                 </div>
             </div>
+            </a>
         </div>
         <div ng-include="'templates/layouts/bottom-menu.html'"></div>
     </div>
