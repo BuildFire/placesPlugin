@@ -117,58 +117,58 @@ describe('Unit : Controller - WidgetItemCtrl', function () {
         })
     );
 
-    xdescribe('Units: units should be Defined', function () {
-        it('it should pass if WidgetSections is defined', function () {
-            expect(WidgetItem).not.toBeUndefined();
-        });
-    });
-    xdescribe('Unit : widget.home.controller unit tests when  DataStore.get call Error', function () {
-        beforeEach(function () {
-            Buildfire.datastore.onUpdate.and.callFake(function () {
-                return {
-                    tag: 'items',
-                    data: {
-                        listImage: "list.png",
-                        itemTitle: "",
-                        images: [],
-                        summary: '',
-                        bodyContent: '',
-                        bodyContentHTML: "",
-                        addressTitle: '',
-                        sections: [],//array of section id
-                        address: {
-                            lat: "",
-                            lng: "",
-                            aName: ""
-                        },
-                        links: [], //  this will contain action links
-                        backgroundImage: "abc.png"
-                    },
-                    id: '12344'
-                };
-            });
-            WidgetItem = $controller('WidgetItemCtrl', {
-                $scope: scope,
-                $routeParams: $routeParams,
-                DB: DB,
-                COLLECTIONS: COLLECTIONS,
-                Buildfire: Buildfire,
-                $rootScope: $rootScope,
-                Orders: Orders,
-                OrdersItems: OrdersItems,
-                Messaging: Messaging,
-                EVENTS: EVENTS,
-                PATHS: PATHS,
-                Location: Location,
-                AppConfig: AppConfig,
-                placesInfo: {data: {design: {}, settings: {showDistanceIn: true}, content: {sortBy: 'Newest'}}},
-                GeoDistance: GeoDistance,
-                item: null
-            });
-        });
-        it('WidgetItem.item should be null', function () {
-            $rootScope.$digest();
-            expect(WidgetItem.item).toEqual(null);
-        });
-    });
+    //xdescribe('Units: units should be Defined', function () {
+    //    it('it should pass if WidgetSections is defined', function () {
+    //        expect(WidgetItem).not.toBeUndefined();
+    //    });
+    //});
+    //xdescribe('Unit : widget.home.controller unit tests when  DataStore.get call Error', function () {
+    //    beforeEach(function () {
+    //        Buildfire.datastore.onUpdate.and.callFake(function () {
+    //            return {
+    //                tag: 'items',
+    //                data: {
+    //                    listImage: "list.png",
+    //                    itemTitle: "",
+    //                    images: [],
+    //                    summary: '',
+    //                    bodyContent: '',
+    //                    bodyContentHTML: "",
+    //                    addressTitle: '',
+    //                    sections: [],//array of section id
+    //                    address: {
+    //                        lat: "",
+    //                        lng: "",
+    //                        aName: ""
+    //                    },
+    //                    links: [], //  this will contain action links
+    //                    backgroundImage: "abc.png"
+    //                },
+    //                id: '12344'
+    //            };
+    //        });
+    //        WidgetItem = $controller('WidgetItemCtrl', {
+    //            $scope: scope,
+    //            $routeParams: $routeParams,
+    //            DB: DB,
+    //            COLLECTIONS: COLLECTIONS,
+    //            Buildfire: Buildfire,
+    //            $rootScope: $rootScope,
+    //            Orders: Orders,
+    //            OrdersItems: OrdersItems,
+    //            Messaging: Messaging,
+    //            EVENTS: EVENTS,
+    //            PATHS: PATHS,
+    //            Location: Location,
+    //            AppConfig: AppConfig,
+    //            placesInfo: {data: {design: {}, settings: {showDistanceIn: true}, content: {sortBy: 'Newest'}}},
+    //            GeoDistance: GeoDistance,
+    //            item: null
+    //        });
+    //    });
+    //    it('WidgetItem.item should be null', function () {
+    //        $rootScope.$digest();
+    //        expect(WidgetItem.item).toEqual(null);
+    //    });
+    //});
 });
