@@ -15,6 +15,7 @@
                  * Create instance of Sections and Items db collection
                  * @type {DB}
                  */
+                var searchOptions;
                 var Sections = new DB(COLLECTIONS.Sections)
                     , Items = new DB(COLLECTIONS.Items)
                     , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
@@ -48,7 +49,8 @@
                     };
 
                 var ContentItems = this;
-                ContentItems.sectionInfo = sectionInfo;
+                if (sectionInfo != 'allItems')
+                    ContentItems.sectionInfo = sectionInfo;
                 if (placesInfo) {
                     updateMasterInfoData(placesInfo);
                     ContentItems.info = placesInfo;
@@ -90,26 +92,39 @@
                             if (isRankChanged) {
                                 Items.update(draggedItem.id, draggedItem.data).then(function (updataeditem) {
                                     console.log('Updated item--------------------------------', updataeditem);
-                                    ContentItems.sectionInfo.data.rankOfLastItem = maxRank;
-                                    // Update the rankOfLastItem in a particular section
-                                    Sections.update(ContentItems.sectionInfo.id, ContentItems.sectionInfo.data).then(function (data) {
-                                            // Do Something on Success
-                                        },
-                                        function () {
-                                            console.error('Error while updating sections Collection data');
-                                        });
+                                    if (ContentItems.sectionInfo) {
+                                        ContentItems.sectionInfo.data.rankOfLastItem = maxRank;
+                                        // Update the rankOfLastItem in a particular section
+                                        Sections.update(ContentItems.sectionInfo.id, ContentItems.sectionInfo.data).then(function (data) {
+                                                // Do Something on Success
+                                            },
+                                            function () {
+                                                console.error('Error while updating sections Collection data');
+                                            });
+                                    }
                                 }, function () {
 
                                 });
+
                             }
                         }
                     }
                 };
-                var searchOptions = {
-                    filter: {'$and': [{"$json.itemTitle": {"$regex": '/*'}}, {"$json.sections": {"$all": [ContentItems.section]}}]},
-                    skip: _skip,
-                    limit: _limit + 1 // the plus one is to check if there are any more
-                };
+                if(ContentItems.sectionInfo){
+                    searchOptions = {
+                        filter: {'$and': [{"$json.itemTitle": {"$regex": '/*'}}, {"$json.sections": {"$all": [ContentItems.section]}}]},
+                        skip: _skip,
+                        limit: _limit + 1 // the plus one is to check if there are any more
+                    };
+                }
+                else{
+                    searchOptions = {
+                        filter: {'$and': [{"$json.itemTitle": {"$regex": '/*'}}, {"$json.sections": {"$all": []}}]},
+                        skip: _skip,
+                        limit: _limit + 1 // the plus one is to check if there are any more
+                    };
+                }
+
 
 
                 var updateSearchOptions = function () {
@@ -255,7 +270,14 @@
                     if (!value) {
                         value = '/*';
                     }
-                    searchOptions.filter = {'$and': [{"$json.itemTitle": {"$regex": value, "$options": "i"}}, {"$json.sections": {"$all": [ContentItems.section]}}]};// {"$json.secTitle": {"$regex": value}};
+                    searchOptions.filter = {
+                        '$and': [{
+                            "$json.itemTitle": {
+                                "$regex": value,
+                                "$options": "i"
+                            }
+                        }, {"$json.sections": {"$all": [ContentItems.section]}}]
+                    };// {"$json.secTitle": {"$regex": value}};
                     ContentItems.getMore();
                 };
 
