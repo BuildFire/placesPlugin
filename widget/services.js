@@ -174,7 +174,7 @@
                             "background-image": "url(" + Buildfire.imageLib.resizeImage(url, {
                                 width: 342,
                                 height: 770
-                            }) + ")"
+                            }) + ") !important"
                         };
                     } else {
                         $rootScope.currentBackgroundImage = "";

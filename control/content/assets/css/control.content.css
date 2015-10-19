@@ -1,12 +1,52 @@
+
+.main_view {
+    position: relative;
+    overflow: hidden;
+}
+
+.content {
+    position: relative;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.content.ng-enter,
+.content.ng-leave {
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    transition: all 1s ease;
+}
+
+.content.ng-enter {
+    left: -300%;
+}
+
+.content.ng-enter-active {
+    left: 0;
+}
+
+.content.ng-leave {
+    left: 0;
+}
+
+.content.ng-leave-active {
+    left: -200%;
+}
 .disabled {
     pointer-events: none;
     opacity: 0.5;
 }
+
 .edit_cell {
     width: 15px;
     cursor: pointer;
 }
-#scroll-infinite, #items-scroll-infinite{
+
+#scroll-infinite, #items-scroll-infinite {
     overflow-y: auto;
     max-height: 245px;
 }
@@ -24,14 +64,18 @@ Style for loader
     box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.1);
     z-index: 1001;
     border-radius: 50%;
-    left:0; right: 0; top: 0; bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
 }
+
 .item .alert-warning {
     background-color: #fcf8e3;
     border-color: #faebcc;
     color: #8a6d3b;
 }
 
-.padding-top-fix{
-    padding-top:18px;
+.padding-top-fix {
+    padding-top: 18px;
 }

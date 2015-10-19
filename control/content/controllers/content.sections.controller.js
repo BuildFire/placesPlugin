@@ -52,7 +52,6 @@
 
                 var ContentSections = this;
                 ContentSections.showAllItems = true;
-                ContentSections.info = null;
                 ContentSections.masterInfo = null;
 
                 if (placesInfo) {
@@ -70,7 +69,6 @@
                 ContentSections.sortOptions = Orders.options;
 
                 ContentSections.deepLinkUrl = function (url) {
-                    console.log(url, '---------url----------------------------------------------------');
                     Modals.DeeplinkPopupModal(url);
                 };
 
