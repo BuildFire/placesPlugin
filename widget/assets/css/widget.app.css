@@ -7,11 +7,11 @@
     background-attachment: fixed;
 }
 
-.map-layout1 .places-plugin .location-map .map-holder ,
+.map-layout1 .places-plugin .location-map .map-holder,
 .map-layout2 .places-plugin .location-map .map-holder {
     padding: 0 !important;
     z-index: 1 !important;
-    height: 89% ;
+    height: 89%;
     top: 0;
 }
 
@@ -25,24 +25,39 @@
     top: 60px !important;
 }
 
-#scroll-infinite{
+#scroll-infinite {
     overflow-y: auto;
     max-height: 570px;
 }
 
-
-.location-share-msg{
-    font-size: smaller;text-align: center;
+.location-share-msg {
+    font-size: smaller;
+    text-align: center;
 }
 
-.no-items-msg{
+.no-items-msg {
     text-align: center;
     padding: 15px;
     background-color: #eef0f0;
     border-radius: 4px;
-    border:1px solid #ddd;
+    border: 1px solid #ddd;
 }
 
-.margin-fifteen{
+.margin-fifteen {
     margin: 15px;
+}
+
+/*
+style for sec list dark overlay
+*/
+.sec-list-dark-overlay {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&amp;0+0,0.65+100 */
+    background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0.65))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%); /* IE10+ */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#a6000000', GradientType=0); /* IE6-9 */
+
 }

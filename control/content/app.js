@@ -125,6 +125,33 @@
                         }]
                     }
                 })
+                .when('/allitems', {
+                    templateUrl: 'templates/items.html',
+                    controllerAs: 'ContentItems',
+                    controller: 'ContentItemsCtrl',
+                    resolve: {
+                        placesInfo: ['DB', 'COLLECTIONS', '$q', function (DB, COLLECTIONS, $q) {
+                            var PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
+                                , deferred = $q.defer()
+                                , success = function (result) {
+                                    if (Object.keys(result.data).length > 0) {
+                                        deferred.resolve(result);
+                                    }
+                                    else {
+                                        deferred.resolve(null);
+                                    }
+                                }
+                                , error = function (err) {
+                                    deferred.resolve(null);
+                                };
+                            PlaceInfo.get().then(success, error);
+                            return deferred.promise;
+                        }],
+                        sectionInfo: function () {
+                            return 'allItems';
+                        }
+                    }
+                })
                 .when('/section', {
                     templateUrl: 'templates/section.html',
                     controllerAs: 'ContentSection',

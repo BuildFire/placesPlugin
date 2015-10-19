@@ -125,37 +125,37 @@ describe("DesignHomeCtrl", function () {
 
 
 
-    describe('Function :DesignHome.addItemListBackgroundImage', function () {
-        it('DesignHome.addItemListBackgroundImage should exist and be a function', function () {
-            expect(typeof controller.addListBgImage).toEqual('function');
-        });
-        it('it should Fail after DesignHome.addItemListBackgroundImage function call', function () {
-            Buildfire.imageLib.showDialog.and.callFake(function () {
-                var deferred = q.defer();
-                deferred.reject({
-                    code: '200',
-                    message: 'OK'
-                });
-                return deferred.promise;
-            });
-            controller.addListBgImage();
-            $rootScope.$digest();
-            expect(controller.placeInfo.data.design.secListBGImage).toEqual('');
-        });
-        it('it should pass if DesignHome.data.design.itemDetailsBgImage is match the result after DesignHome.addItemListBackgroundImage function call', function () {
-            ImageLibrary.showDialog.and.callFake(function () {
-                var deferred = q.defer();
-                deferred.resolve({
-                    "selectedFiles": ["https://imagelibserver.s3.amazonaws.com/25935164-2add-11e5-9d04-02f7ca55c361/950a50c0-400a-11e5-9af5-3f5e0d725ccb.jpg"],
-                    "selectedIcons": []
-                });
-                return deferred.promise;
-            });
-            controller.addListBgImage();
-            $rootScope.$digest();
-            expect(controller.placeInfo.data.design.secListBGImage).toEqual('https://imagelibserver.s3.amazonaws.com/25935164-2add-11e5-9d04-02f7ca55c361/950a50c0-400a-11e5-9af5-3f5e0d725ccb.jpg');
-        });
-    });
+    //xdescribe('Function :DesignHome.addItemListBackgroundImage', function () {
+    //    it('DesignHome.addItemListBackgroundImage should exist and be a function', function () {
+    //        expect(typeof controller.addListBgImage).toEqual('function');
+    //    });
+    //    it('it should Fail after DesignHome.addItemListBackgroundImage function call', function () {
+    //        Buildfire.imageLib.showDialog.and.callFake(function () {
+    //            var deferred = q.defer();
+    //            deferred.reject({
+    //                code: '200',
+    //                message: 'OK'
+    //            });
+    //            return deferred.promise;
+    //        });
+    //        controller.addListBgImage();
+    //        $rootScope.$digest();
+    //        expect(controller.placeInfo.data.design.secListBGImage).toEqual('');
+    //    });
+    //    it('it should pass if DesignHome.data.design.itemDetailsBgImage is match the result after DesignHome.addItemListBackgroundImage function call', function () {
+    //        ImageLibrary.showDialog.and.callFake(function () {
+    //            var deferred = q.defer();
+    //            deferred.resolve({
+    //                "selectedFiles": ["https://imagelibserver.s3.amazonaws.com/25935164-2add-11e5-9d04-02f7ca55c361/950a50c0-400a-11e5-9af5-3f5e0d725ccb.jpg"],
+    //                "selectedIcons": []
+    //            });
+    //            return deferred.promise;
+    //        });
+    //        controller.addListBgImage();
+    //        $rootScope.$digest();
+    //        expect(controller.placeInfo.data.design.secListBGImage).toEqual('https://imagelibserver.s3.amazonaws.com/25935164-2add-11e5-9d04-02f7ca55c361/950a50c0-400a-11e5-9af5-3f5e0d725ccb.jpg');
+    //    });
+    //});
 
     describe('watcher of controller.placeInfo', function () {
 

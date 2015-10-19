@@ -10,24 +10,28 @@
 
                     <p class="margin-bottom-zero ellipsis">{{WidgetItem.item.data.summary}}</p>
                 </div>
-                <div class="col-xs-4 text-right pull-right padding-left-zero">
+                <div class="col-xs-4 text-right pull-right padding-left-zero" ng-if="WidgetItem.distance">
                     <span class="icon icon-map-marker icon-sm"></span>
-                    <span class="miles">324 mi</span>
+                    <span class="miles">{{WidgetItem.distance}}</span>
                 </div>
             </div>
         </div>
-        <div class="plugin-banner has-info-bar location-map clearfix">
+        <div class="plugin-banner has-info-bar clearfix">
             <div ng-if="WidgetItem.locationData.currentCoordinates" class="plugin-slide map-holder">
-                <p google-map location-data="WidgetItem.locationData" style="height: 280px;width: 342px;position:relative; top:0px; color:#fff; text-align:center;">Map goes in here</p>
+                <p google-map location-data="WidgetItem.itemData"
+                   style="height: 193px;width: 342px;position:relative; top:0px; color:#fff; text-align:center;">Map
+                    goes in here</p>
             </div>
             <div class="info-bar bg-primary text-center">
-                <p class="margin-bottom-zero ellipsis col-xs-12">{{WidgetItem.item.data.addressTitle+" "+WidgetItem.item.data.address.aName}}</p>
+                <p class="margin-bottom-zero ellipsis col-xs-12" style="font-family: 'Muli', sans-serif;">
+                    {{WidgetItem.item.data.addressTitle+" "+WidgetItem.item.data.address.aName}}</p>
             </div>
         </div>
         <div class="padded text-center">
             <a class="text-primary">Contact info</a>
             <hr class="small">
-            <p class="text-left" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml">{{WidgetItem.item.data.bodyContent | safeHtml}}</p>
+            <p class="text-left" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml">
+                {{WidgetItem.item.data.bodyContent | safeHtml}}</p>
         </div>
     </div>
 </div>

@@ -183,7 +183,7 @@
                     searchOptionsItems.filter = itemFilter;
                     //WidgetSections.items = null;
                     refreshItems();
-                    WidgetSections.loadMoreItems();
+                    //WidgetSections.loadMoreItems();
 
                     //updateGetOptionsItems();
                     /* Items.find(itemFilter).then(function (res) {
@@ -236,6 +236,7 @@
                             WidgetSections.selectedItem = null;
                             WidgetSections.selectedItemDistance = null;
                             WidgetSections.currentView = WidgetSections.placesInfo.data.settings.defaultView;
+                            $scope.$digest();
                             refreshSections();
 
 
@@ -430,7 +431,7 @@
                      }, function () {
                      });*/
                     refreshItems();
-                    WidgetSections.loadMoreItems();
+                   // WidgetSections.loadMoreItems();
                 }
 
                 WidgetSections.itemsOrder = function (item) {

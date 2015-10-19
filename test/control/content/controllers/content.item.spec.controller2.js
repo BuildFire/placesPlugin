@@ -1,4 +1,5 @@
-describe('Unit : placesContent content.item.controller2.js', function () {
+/*
+xdescribe('Unit : placesContent content.item.controller2.js', function () {
     var ContentItem, scope, $rootScope, $controller, q, $timeout, $httpBackend, DB, Buildfire, COLLECTIONS, Location, $routeParams, Utils;
     beforeEach(module('placesContent'));
 
@@ -56,4 +57,4 @@ describe('Unit : placesContent content.item.controller2.js', function () {
             });
         });
     });
-});
+});*/

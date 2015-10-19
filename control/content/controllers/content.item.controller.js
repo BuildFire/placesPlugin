@@ -157,7 +157,7 @@
                         console.info('****************Item inserted***********************');
                         _item.data.dateCreated = new Date();
                         Items.insert(_item.data).then(function (data) {
-                            ContentItem.data.deepLinkUrl = Buildfire.deeplink.createLink({id: data.id});
+                            ContentItem.item.data.deepLinkUrl = Buildfire.deeplink.createLink({id: data.id});
                             ContentItem.item.id = data.id;
                             updating=false;
                             updateMasterItem(ContentItem.item);
