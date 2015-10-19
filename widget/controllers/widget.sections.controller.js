@@ -448,6 +448,7 @@
 
                 /* Onclick event of items on the map view*/
                 WidgetSections.selectedMarker = function (itemIndex) {
+                    console.log('selected dot',this);
                     WidgetSections.selectedItem = WidgetSections.locationData.items[itemIndex];
                     initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
                     GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, [WidgetSections.selectedItem], '').then(function (result) {
@@ -536,6 +537,10 @@
                     refreshItems();
                     WidgetSections.selectedSections = [];
                     //filterChanged();
+                };
+
+                WidgetSections.openInMap = function () {
+                  Location.go('https://maps.apple.com/maps?q=' + WidgetSections.selectedItem.data.address.aName);
                 };
 
                 $scope.$watch(function () {

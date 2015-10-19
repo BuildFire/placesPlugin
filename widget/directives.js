@@ -56,11 +56,15 @@
                                 }
                             }
 
+                            var selectedLocation = null;
+
                             var currentLocationIconImageUrl = '../resources/google_marker_blue_icon.png';
                             var placeLocationIconImageUrl = '../resources/google_marker_red_icon.png';
+                            var selectedLocationIconImageUrl = '../resources/google_marker_green_icon.png';
 
                             var currentLocationIcon = getCustomMarkerIcon(currentLocationIconImageUrl);
                             var placeLocationIcon = getCustomMarkerIcon(placeLocationIconImageUrl);
+                            var selectedLocationIcon = getCustomMarkerIcon(selectedLocationIconImageUrl);
 
                             // Shapes define the clickable region of the icon. The type defines an HTML
                             // <area> element 'poly' which traces out a polygon as a series of X,Y points.
@@ -98,6 +102,12 @@
                                         });
                                         marker.addListener('click', function () {
                                             var _this = this;
+                                            if (selectedLocation) {
+                                                selectedLocation.setIcon(placeLocationIcon);
+                                            }
+
+                                            _this.setIcon(selectedLocationIcon);
+                                            selectedLocation = _this;
                                             scope.markerCallback(_this.zIndex);
                                         });
                                         placeLocationMarkers.push(marker);
