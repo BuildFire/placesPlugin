@@ -431,7 +431,7 @@
                      }, function () {
                      });*/
                     refreshItems();
-                   // WidgetSections.loadMoreItems();
+                    WidgetSections.loadMoreItems();
                 }
 
                 WidgetSections.itemsOrder = function (item) {
