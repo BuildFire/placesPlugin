@@ -134,7 +134,7 @@
                         console.info('****************Section exist***********************');
                         ContentSection._Sections.update(_item.id, _item.data).then(function (data) {
                             updating = false;
-                            updateMasterSection(_section);
+                            updateMasterSection(_item);
                         }, function (err) {
                             resetItem();
                             updating = false;

@@ -236,6 +236,7 @@
                             WidgetSections.selectedItem = null;
                             WidgetSections.selectedItemDistance = null;
                             WidgetSections.currentView = WidgetSections.placesInfo.data.settings.defaultView;
+                            $scope.$digest();
                             refreshSections();
 
 
