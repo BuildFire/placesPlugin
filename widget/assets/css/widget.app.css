@@ -61,3 +61,7 @@ style for sec list dark overlay
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#a6000000', GradientType=0); /* IE6-9 */
 
 }
+
+.fix-map-layout2-info-bar{
+    margin-top: 54px;
+}

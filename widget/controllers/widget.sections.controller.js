@@ -83,6 +83,7 @@
                 var _skip = 0,
                     _skipItems = 0,
                     view = null,
+                    mapview = null,
                     currentLayout = '',
                     _limit = 5,
                     searchOptions = {
@@ -201,6 +202,17 @@
                      });*/
                 };
 
+                var initMapCarousel = function () {
+                    if(WidgetSections.selectedItem && WidgetSections.selectedItem.data && WidgetSections.selectedItem.data.images)
+                    {
+                        loadMapCarouselItems(WidgetSections.selectedItem.data.images);
+                    }
+                    else
+                    {
+                        loadMapCarouselItems([]);
+                    }
+                };
+
                 var initCarousel = function (_defaultView) {
                     switch (_defaultView) {
                         case DEFAULT_VIEWS.LIST:
@@ -222,7 +234,8 @@
                             } else {
                                 loadItems([]);
                             }
-                            break;
+
+                                break;
                     }
                 };
 
@@ -362,6 +375,13 @@
                         view.loadItems(carouselItems);
                 }
 
+                /// load items
+                function loadMapCarouselItems(carouselItems) {
+                    // create an instance and pass it the items if you don't have items yet just pass []
+                    if (mapview)
+                        mapview.loadItems(carouselItems);
+                }
+
                 function getItemsDistance(_items) {
                     console.log('WidgetSections.locationData.items', _items);
                     if (WidgetSections.locationData.currentCoordinates == null) {
@@ -435,9 +455,9 @@
 
                 /* Onclick event of items on the map view*/
                 WidgetSections.selectedMarker = function (itemIndex) {
-                    console.log('selected dot', this);
                     WidgetSections.selectedItem = WidgetSections.locationData.items[itemIndex];
                     initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
+
                     GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, [WidgetSections.selectedItem], '').then(function (result) {
                         console.log(result);
                         if (result.rows.length && result.rows[0].elements.length && result.rows[0].elements[0].distance && result.rows[0].elements[0].distance.text) {
@@ -448,6 +468,7 @@
                     }, function (err) {
                         WidgetSections.selectedItemDistance = null;
                     });
+                    initMapCarousel();
                 };
 
                 /* Filters the items based on the range of distance slider */
@@ -556,6 +577,12 @@
                     }
                     else {
                         view.loadItems([]);
+                    }
+                });
+
+                $scope.$on("Map Carousel:LOADED", function () {
+                    if (!mapview) {
+                        mapview = new Buildfire.components.carousel.view("#mapCarousel", []);  ///create new instance of buildfire carousel viewer
                     }
                 });
 

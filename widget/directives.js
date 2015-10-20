@@ -11,6 +11,16 @@
                 }
             };
         }])
+        .directive("mapBuildFireCarousel", ["$rootScope", '$timeout', function ($rootScope, $timeout) {
+            return {
+                restrict: 'A',
+                link: function (scope, elem, attrs) {
+                    $timeout(function () {
+                        $rootScope.$broadcast("Map Carousel:LOADED");
+                    }, 0);
+                }
+            };
+        }])
         .directive("googleMap", function () {
             return {
                 template: "<div></div>",

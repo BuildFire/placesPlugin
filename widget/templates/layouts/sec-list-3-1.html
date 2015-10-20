@@ -45,7 +45,7 @@
                     <div class="plugin-banner has-info-bar clearfix"
                          ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
                         <div class="plugin-slide text-center">
-                            <img default-image="" ng-src="{{item.data.listImage}}">
+                            <img default-image="" ng-src="{{item.data.listImage | resizeImage:342:274}}">
                         </div>
                         <div class="info-bar">
                             <div class="col-xs-8 text-left pull-left">
