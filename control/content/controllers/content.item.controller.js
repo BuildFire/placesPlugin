@@ -17,7 +17,7 @@
                         bodyContent: '<p>&nbsp;<br></p>',
                         bodyContentHTML: '',
                         addressTitle: '',
-                        sections: [$routeParams.sectionId],
+                        sections: ($routeParams.sectionId != 'allitems') ? [$routeParams.sectionId] : [],
                         address: {
                             lat: '',
                             lng: '',
@@ -26,7 +26,7 @@
                         links: [],
                         backgroundImage: ''
                     }
-                    ,updating=false;
+                    , updating = false;
 
                 $scope.itemShow = 'Content';
 
@@ -142,14 +142,14 @@
                 }
 
                 function insertAndUpdate(_item) {
-                    updating=true;
+                    updating = true;
                     if (_item.id) {
                         console.info('****************Item exist***********************');
                         Items.update(_item.id, _item.data).then(function (data) {
-                            updating=false;
+                            updating = false;
                             console.log('Data updated successfully---', data);
                         }, function (err) {
-                            updating=false;
+                            updating = false;
                             console.log('Error while updating data---', err);
                         });
                     }
@@ -159,10 +159,10 @@
                         Items.insert(_item.data).then(function (data) {
                             ContentItem.item.data.deepLinkUrl = Buildfire.deeplink.createLink({id: data.id});
                             ContentItem.item.id = data.id;
-                            updating=false;
+                            updating = false;
                             updateMasterItem(ContentItem.item);
                         }, function (err) {
-                            updating=false;
+                            updating = false;
                             console.log('Error---', err);
                         });
                     }
@@ -173,8 +173,8 @@
                  * @param _item
                  */
                 function updateItemsWithDelay(_item) {
-                    if(updating)
-                    return;
+                    if (updating)
+                        return;
                     if (tmrDelayForItem) {
                         clearTimeout(tmrDelayForItem);
                     }
@@ -221,7 +221,12 @@
                  * done will close the single item view
                  */
                 ContentItem.done = function () {
-                    Location.go('#/items/' + $routeParams.sectionId);
+                    if($routeParams.sectionId != 'allitems') {
+                        Location.go('#/items/' + $routeParams.sectionId);
+                    }
+                    else{
+                        Location.go('#/allitems')
+                    }
                 };
                 ContentItem.setLocation = function (data) {
                     ContentItem.item.data.address = {

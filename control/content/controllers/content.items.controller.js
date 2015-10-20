@@ -49,7 +49,7 @@
                     };
 
                 var ContentItems = this;
-                if (sectionInfo != 'allItems')
+                if (sectionInfo != 'allitems')
                     ContentItems.sectionInfo = sectionInfo;
                 if (placesInfo) {
                     updateMasterInfoData(placesInfo);
@@ -58,7 +58,12 @@
                     updateMasterInfoData(placeInfoData);
                     ContentItems.info = angular.copy(placeInfoData);
                 }
-                ContentItems.section = $routeParams.sectionId;
+                if($routeParams.sectionId){
+                    ContentItems.section = $routeParams.sectionId;
+                }
+                else{
+                    ContentItems.section='allitems';
+                }
                 ContentItems.isBusy = false;
                 ContentItems.items = null;
                 ContentItems.masterInfoData = null;
