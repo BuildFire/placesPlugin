@@ -18,22 +18,26 @@
         </div>
         <div class="border-top-grey border-bottom-grey clearfix">
             <div class="col-xs-8 text-left pull-left padding-right-zero margin-top-ten padding-bottom-five">
-                <p class="text-primary ellipsis margin-zero"><a class="margin-bottom-zero text-primary">{{WidgetItem.item.data.addressTitle}}</a></p>
+                <p class="text-primary ellipsis margin-zero"><a class="margin-bottom-zero text-primary">{{WidgetItem.item.data.addressTitle}}</a>
+                </p>
 
-                <p class="text-primary ellipsis margin-zero"><a class="margin-bottom-zero text-primary ellipsis">{{WidgetItem.item.data.address.aName}}</a></p>
+                <p class="text-primary ellipsis margin-zero"><a class="margin-bottom-zero text-primary ellipsis">{{WidgetItem.item.data.address.aName}}</a>
+                </p>
             </div>
-            <div ng-if="WidgetItem.locationData.currentCoordinates" style="height: 60px;width: 100px;" google-map location-data="WidgetItem.itemData" class="col-xs-4 text-right pull-right padding-right-zero">
+            <div ng-if="WidgetItem.locationData.currentCoordinates" style="height: 60px;width: 100px;" google-map
+                 location-data="WidgetItem.itemData" class="col-xs-4 text-right pull-right padding-right-zero">
             </div>
         </div>
         <div class="padded padding-top-ten padding-bottom-ten">
-            <p class="margin-zero" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml">{{WidgetItem.item.data.bodyContent | safeHtml}}</p>
+            <p class="margin-zero" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml">
+                {{WidgetItem.item.data.bodyContent | safeHtml}}</p>
 
         </div>
         <div class="padded padding-top-zero">
             <div class="dynamic-links" ng-repeat="link in WidgetItem.item.data.links">
                 <a ng-click="WidgetItem.executeAction(link)">
-                    <span class="icon icon-cog"></span>
-                    <span class="copy">{{link.title}}</span>
+                    <span class="icon icon-cog" style="color: #09A3EE !important;"></span>
+                    <span class="copy" style="color: #09A3EE !important;">{{link.title}}</span>
                 </a>
             </div>
         </div>
