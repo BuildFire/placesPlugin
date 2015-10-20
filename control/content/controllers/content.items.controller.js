@@ -49,7 +49,7 @@
                     };
 
                 var ContentItems = this;
-                if (sectionInfo != 'allItems')
+                if (sectionInfo != 'allitems')
                     ContentItems.sectionInfo = sectionInfo;
                 if (placesInfo) {
                     updateMasterInfoData(placesInfo);
@@ -58,7 +58,12 @@
                     updateMasterInfoData(placeInfoData);
                     ContentItems.info = angular.copy(placeInfoData);
                 }
-                ContentItems.section = $routeParams.sectionId;
+                if($routeParams.sectionId){
+                    ContentItems.section = $routeParams.sectionId;
+                }
+                else{
+                    ContentItems.section='allitems';
+                }
                 ContentItems.isBusy = false;
                 ContentItems.items = null;
                 ContentItems.masterInfoData = null;
@@ -119,7 +124,7 @@
                 }
                 else{
                     searchOptions = {
-                        filter: {'$and': [{"$json.itemTitle": {"$regex": '/*'}}, {"$json.sections": {"$all": []}}]},
+                        filter: {'$and': [{"$json.itemTitle": {"$regex": '/*'}}, {"$json.sections": {"$eq": []}}]},
                         skip: _skip,
                         limit: _limit + 1 // the plus one is to check if there are any more
                     };
