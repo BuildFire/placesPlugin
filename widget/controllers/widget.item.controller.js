@@ -129,7 +129,8 @@
                 }
             });
 
-            calDistance(WidgetItem.locationData.currentCoordinates, [WidgetItem.item], WidgetItem.placeInfo.data.settings.showDistanceIn);
+            if (WidgetItem.locationData && WidgetItem.locationData.currentCoordinates)
+                calDistance(WidgetItem.locationData.currentCoordinates, [WidgetItem.item], WidgetItem.placeInfo.data.settings.showDistanceIn);
 
             WidgetItem.clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
                     if (event.tag == 'items' && event.data) {

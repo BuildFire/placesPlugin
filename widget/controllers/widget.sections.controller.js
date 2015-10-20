@@ -1,8 +1,8 @@
 (function (angular) {
     angular
         .module('placesWidget')
-        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance', '$routeParams', '$timeout', 'placesInfo', 'OrdersItems',
-            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $routeParams, $timeout, placesInfo, OrdersItems) {
+        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance', '$routeParams', '$timeout', 'placesInfo', 'OrdersItems', '$filter',
+            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $routeParams, $timeout, placesInfo, OrdersItems, $filter) {
 
                 AppConfig.changeBackgroundTheme();
                 var WidgetSections = this;
@@ -47,7 +47,6 @@
                         return;
                     }
                     updateGetOptionsItems();
-                    console.log(searchOptionsItems);
                     WidgetSections.isBusyItems = true;
                     Items.find(searchOptionsItems).then(function success(result) {
                         WidgetSections.isBusyItems = false;
@@ -70,7 +69,9 @@
 
                         console.log('result', result);
                         console.log('WidgetSections.locationData.items BEFORE', WidgetSections.locationData.items);
-                        WidgetSections.locationData.items = WidgetSections.locationData.items ? WidgetSections.locationData.items.concat(result) : result;
+                        //WidgetSections.locationData.items = WidgetSections.locationData.items ? WidgetSections.locationData.items.concat(result) : result;
+                        var items = WidgetSections.locationData.items ? WidgetSections.locationData.items.concat(result) : result;
+                        WidgetSections.locationData.items = $filter('unique')(items, 'id');
                         console.log('WidgetSections.locationData.items AFTER', WidgetSections.locationData.items);
                     }, function fail() {
                         WidgetSections.isBusyItems = false;
@@ -81,6 +82,7 @@
                 var _skip = 0,
                     _skipItems = 0,
                     view = null,
+                    mapview = null,
                     currentLayout = '',
                     _limit = 5,
                     searchOptions = {
@@ -173,8 +175,13 @@
                     searchOptionsItems.skip = 0;
                     WidgetSections.noMoreItems = false;
                     WidgetSections.isBusyItems = false;
-                    if (WidgetSections.locationData.items)
-                        WidgetSections.locationData.items.length = 0;
+                    /*if (WidgetSections.locationData.items)
+                     WidgetSections.locationData.items.length = 0;*/
+
+                    if (WidgetSections.locationData.items) {
+                        WidgetSections.locationData.items = [];
+                    }
+
                 };
 
                 var loadAllItemsOfSections = function () {
@@ -192,6 +199,15 @@
                      }, function () {
 
                      });*/
+                };
+
+                var initMapCarousel = function () {
+                    if (WidgetSections.selectedItem && WidgetSections.selectedItem.data && WidgetSections.selectedItem.data.images) {
+                        loadMapCarouselItems(WidgetSections.selectedItem.data.images);
+                    }
+                    else {
+                        loadMapCarouselItems([]);
+                    }
                 };
 
                 var initCarousel = function (_defaultView) {
@@ -215,6 +231,7 @@
                             } else {
                                 loadItems([]);
                             }
+
                             break;
                     }
                 };
@@ -236,6 +253,7 @@
                             WidgetSections.selectedItem = null;
                             WidgetSections.selectedItemDistance = null;
                             WidgetSections.currentView = WidgetSections.placesInfo.data.settings.defaultView;
+                            $scope.$digest();
                             refreshSections();
 
 
@@ -333,27 +351,6 @@
                     getGeoLocation(); // get data if localStorage is not supported
                 }
 
-                //syn with widget side
-                if ($routeParams.sectionId) { // this case means the controller is serving the section view
-                    // have to get sections explicitly in item list view
-
-
-                    Sections.find({}).then(function success(result) {
-                        WidgetSections.sections = result;
-                        refreshItems();
-                        WidgetSections.selectedSections = [$routeParams.sectionId];
-                    }, function () {
-
-                    });
-
-                    Messaging.sendMessageToControl({
-                        name: EVENTS.ROUTE_CHANGE,
-                        message: {
-                            path: PATHS.SECTION,
-                            secId: $routeParams.sectionId
-                        }
-                    });
-                }
 
                 function getGeoLocation() {
                     if (navigator.geolocation) {
@@ -373,6 +370,13 @@
                     // create an instance and pass it the items if you don't have items yet just pass []
                     if (view)
                         view.loadItems(carouselItems);
+                }
+
+                /// load items
+                function loadMapCarouselItems(carouselItems) {
+                    // create an instance and pass it the items if you don't have items yet just pass []
+                    if (mapview)
+                        mapview.loadItems(carouselItems);
                 }
 
                 function getItemsDistance(_items) {
@@ -405,15 +409,15 @@
 
                 function filterChanged() {
                     var itemFilter;
-                    console.log('filter changed', WidgetSections.selectedSections);
+                    console.log('filter changed---------------', WidgetSections.selectedSections);
                     if (WidgetSections.selectedSections.length) {
-                        /* itemFilter = {
-                         'filter': {'$json.sections': {'$in': WidgetSections.selectedSections}}
-                         };*/
+                        console.log('Selected called');
                         itemFilter = {'$json.sections': {'$in': WidgetSections.selectedSections}};
                     }
+                    else if ($routeParams.sectionId == 'allitems') {
+                        itemFilter = {'$json.sections': {'$eq': WidgetSections.selectedSections}};
+                    }
                     else {
-                        //itemFilter = {filter: {"$json.itemTitle": {"$regex": '/*'}}};
                         itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
                     }
                     searchOptionsItems.filter = itemFilter;
@@ -430,7 +434,7 @@
                      }, function () {
                      });*/
                     refreshItems();
-                   // WidgetSections.loadMoreItems();
+                    WidgetSections.loadMoreItems();
                 }
 
                 WidgetSections.itemsOrder = function (item) {
@@ -449,6 +453,7 @@
                 WidgetSections.selectedMarker = function (itemIndex) {
                     WidgetSections.selectedItem = WidgetSections.locationData.items[itemIndex];
                     initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
+
                     GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, [WidgetSections.selectedItem], '').then(function (result) {
                         console.log(result);
                         if (result.rows.length && result.rows[0].elements.length && result.rows[0].elements[0].distance && result.rows[0].elements[0].distance.text) {
@@ -459,6 +464,7 @@
                     }, function (err) {
                         WidgetSections.selectedItemDistance = null;
                     });
+                    initMapCarousel();
                 };
 
                 /* Filters the items based on the range of distance slider */
@@ -534,7 +540,20 @@
                     WidgetSections.showSections = false;
                     refreshItems();
                     WidgetSections.selectedSections = [];
-                    //filterChanged();
+                    filterChanged();
+                };
+
+                WidgetSections.openInMap = function () {
+                    //Location.go('https://maps.apple.com/maps?q=' + WidgetSections.selectedItem.data.address.aName);
+                    if (buildfire.context.device && buildfire.context.device.platform == 'ios')
+                        window.open("maps://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lng + "," + WidgetSections.selectedItem.data.address.lat);
+                    else
+                        window.open("http://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lng + "," + WidgetSections.selectedItem.data.address.lat);
+
+                };
+
+                WidgetSections.refreshLocation = function () {
+                    getGeoLocation();
                 };
 
                 $scope.$watch(function () {
@@ -557,6 +576,12 @@
                     }
                 });
 
+                $scope.$on("Map Carousel:LOADED", function () {
+                    if (!mapview) {
+                        mapview = new Buildfire.components.carousel.view("#mapCarousel", []);  ///create new instance of buildfire carousel viewer
+                    }
+                });
+
                 /**
                  * will called when controller scope has been destroyed.
                  */
@@ -564,5 +589,37 @@
                     clearOnUpdateListener.clear();
                 });
 
+
+                if ($routeParams.sectionId) { // this case means the controller is serving the section view
+                    // have to get sections explicitly in item list view
+                    //alert('called');
+                    WidgetSections.sections = [];
+                    Sections.find({}).then(function success(result) {
+                        WidgetSections.sections = result;
+                        refreshItems();
+                        //WidgetSections.locationData.items = null;
+                        $timeout(function () {
+                            if ($routeParams.sectionId == 'allitems') {
+                                WidgetSections.selectedSections = [];
+                            }
+                            else {
+                                WidgetSections.selectedSections = [$routeParams.sectionId];
+                            }
+                        }, 1000);
+
+
+                    }, function () {
+
+                    });
+                    //syn with widget side
+
+                    Messaging.sendMessageToControl({
+                        name: EVENTS.ROUTE_CHANGE,
+                        message: {
+                            path: PATHS.SECTION,
+                            secId: $routeParams.sectionId
+                        }
+                    });
+                }
             }]);
 })(window.angular, undefined);

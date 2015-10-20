@@ -16,18 +16,20 @@
         //injected ui.bootstrap for angular bootstrap component
         //injected ui.sortable for manual ordering of list
         //ngClipboard to provide copytoclipboard feature
-        .config(['$routeProvider', '$httpProvider','$compileProvider', function ($routeProvider, $httpProvider, $compileProvider) {
+        .config(['$routeProvider', '$httpProvider', '$compileProvider', function ($routeProvider, $httpProvider, $compileProvider) {
 
             /**
              * Disable the pull down refresh
              */
-                //buildfire.datastore.disableRefresh();
+            //buildfire.datastore.disableRefresh();
 
 
             /**
              * To make href urls safe on mobile
              */
-            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|cdvfile):/);
+                //$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|cdvfile):/);
+
+            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|cdvfile|file):/);
 
             $routeProvider
                 .when('/', {
@@ -204,8 +206,7 @@
                                     break;
                                 case PATHS.SECTION:
                                     if (secId) {
-                                        url = url + "items";
-                                        url = url + "/" + secId;
+                                        url = url + "items" + "/" + secId;
                                     }
                                     else {
                                         url = url + "home";

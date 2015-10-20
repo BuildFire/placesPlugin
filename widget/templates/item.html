@@ -3,4 +3,11 @@
          ng-include="'templates/layouts/' + WidgetItem.placeInfo.data.design.itemDetailsLayout+ '.html'">
     </div>
 </div>
-
+<script>
+    function openInMap(lat,lng){
+        if (buildfire.context.device && buildfire.context.device.platform == 'ios')
+            window.open('maps://maps.google.com/maps?daddr=' + lng + ',' + lat);
+        else
+            window.open('http://maps.google.com/maps?daddr=' + lng + ',' + lat);
+    }
+</script>

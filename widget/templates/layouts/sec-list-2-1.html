@@ -18,8 +18,8 @@
                 <div ng-repeat="item in WidgetSections.sections">
                     <a ng-href="#/items/{{item.id}}">
                     <div class="plugin-banner clearfix border-bottom-grey">
-                        <div class="plugin-slide text-center">
-                            <img ng-if="item.data.mainImage" default-image ng-src="{{item.data.mainImage}}">
+                        <div class="plugin-slide text-center" ng-if="item.data.mainImage">
+                            <img ng-src="{{item.data.mainImage | resizeImage:342:274}}">
                         </div>
                     </div>
                     <div class="padded text-left">
@@ -42,7 +42,9 @@
             <div class="plugin-banner has-info-bar clearfix"
                  ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
                 <div class="plugin-slide text-center">
-                    <img default-image="" ng-src="{{item.data.listImage}}">
+                    <!--<img default-image="" ng-src="{{item.data.listImage | resizeImage:342:274}}">-->
+                    <img ng-if="item.data.listImage" ng-src="{{item.data.listImage | resizeImage:342:274}}">
+                    <img ng-if="!item.data.listImage" src="assets/images/placeholder.jpg">
                 </div>
                 <div class="info-bar">
                     <div class="col-xs-8 text-left pull-left">

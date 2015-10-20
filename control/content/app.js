@@ -60,6 +60,17 @@
                     }
 
                 })
+                .when('/item/allitems', {
+                    templateUrl: 'templates/item.html',
+                    controllerAs: 'ContentItem',
+                    controller: 'ContentItemCtrl',
+                    resolve: {
+                        item: function () {
+                            return null;
+                        }
+                    }
+
+                })
                 .when('/item/:sectionId/:itemId', {
                     templateUrl: 'templates/item.html',
                     controllerAs: 'ContentItem',
@@ -148,7 +159,7 @@
                             return deferred.promise;
                         }],
                         sectionInfo: function () {
-                            return 'allItems';
+                            return 'allitems';
                         }
                     }
                 })
@@ -282,8 +293,14 @@
                                     break;
                                 case PATHS.SECTION:
                                     url = url + "items";
-                                    if (secId) {
+                                    if (secId != 'allitems') {
                                         url = url + "/" + secId;
+                                    }
+                                    else if (secId == 'allitems') {
+                                        url = '#/allitems';
+                                    }
+                                    else {
+                                        Location.goToHome();
                                     }
                                     break;
                                 default :
