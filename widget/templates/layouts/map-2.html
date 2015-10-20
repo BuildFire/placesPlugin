@@ -1,9 +1,9 @@
 <div class="holder padding-zero has-bottom has-bottom-viewing map-layout2">
     <div class="places-plugin">
         <div class="plugin-banner clearfix">
-            <div class="plugin-slider text-center has-info-bar-double">
-                <div class="plugin-slide">
-                    <div id="carousel" build-fire-carousel=""></div>
+            <div  ng-class="{'fix-map-layout2-info-bar':WidgetSections.selectedItem && WidgetSections.selectedItem.data.images.length == 0}"  class="plugin-slider text-center has-info-bar-double">
+                <div ng-show="WidgetSections.selectedItem.data.images.length" class="plugin-slide">
+                    <div id="mapCarousel" map-build-fire-carousel=""></div>
                 </div>
             </div>
             <div ng-if="WidgetSections.selectedItem" class="info-bar bg-primary padding-top-five padding-bottom-five">
@@ -15,12 +15,12 @@
                 <div class="col-xs-3 padding-left-zero pull-right text-right margin-top-five">
                     <span class="icon icon-location location-circle primaryTheme"
                           style="background:#fff; color:#09a3ee;"></span><br>
-                    <span>{{WidgetSections.selectedItemDistance}}</span>
+                    <span style="font-size: small">{{WidgetSections.selectedItemDistance}}</span>
                 </div>
             </div>
         </div>
         <div class="location-map">
-            <div class="map-holder" ng-class="{'fix-map-layout2-top':WidgetSections.selectedItem}">
+            <div class="map-holder" ng-class="{'fix-map-layout2-top':WidgetSections.selectedItem && WidgetSections.selectedItem.data.images.length}">
                 <div google-map style="height: 100%; position: relative" location-data="WidgetSections.locationData" marker-callback="WidgetSections.selectedMarker"></div>
             </div>
         </div>
