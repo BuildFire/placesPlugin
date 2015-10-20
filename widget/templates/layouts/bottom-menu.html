@@ -31,7 +31,7 @@
                 <a ng-show="WidgetSections.placesInfo.data.content.showAllItems" ng-class="(WidgetSections.selectedSections.length == 0 && WidgetSections.showSections == false) ? 'active' : ''"
                    ng-click="WidgetSections.resetSectionFilter()" class="list-item">All Locations</a>
                 <a ng-click="WidgetSections.toggleSectionSelection($index)"
-                   ng-repeat="item in WidgetSections.sections"
+                   ng-repeat="item in WidgetSections.sections | unique : 'id'"
                    class="list-item section-filter"
                    ng-class="WidgetSections.selectedSections.indexOf(item.id) > -1 ? 'active':''"
                    section-id="{{item.id}}">{{item.data.secTitle}}</a>

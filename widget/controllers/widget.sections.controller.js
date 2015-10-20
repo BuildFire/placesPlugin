@@ -1,8 +1,8 @@
 (function (angular) {
     angular
         .module('placesWidget')
-        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance', '$routeParams', '$timeout', 'placesInfo', 'OrdersItems',
-            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $routeParams, $timeout, placesInfo, OrdersItems) {
+        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance', '$routeParams', '$timeout', 'placesInfo', 'OrdersItems', '$filter',
+            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $routeParams, $timeout, placesInfo, OrdersItems, $filter) {
 
                 AppConfig.changeBackgroundTheme();
                 var WidgetSections = this;
@@ -70,7 +70,9 @@
 
                         console.log('result', result);
                         console.log('WidgetSections.locationData.items BEFORE', WidgetSections.locationData.items);
-                        WidgetSections.locationData.items = WidgetSections.locationData.items ? WidgetSections.locationData.items.concat(result) : result;
+                        //WidgetSections.locationData.items = WidgetSections.locationData.items ? WidgetSections.locationData.items.concat(result) : result;
+                        var items = WidgetSections.locationData.items ? WidgetSections.locationData.items.concat(result) : result;
+                        WidgetSections.locationData.items = $filter('unique')(items, 'id');
                         console.log('WidgetSections.locationData.items AFTER', WidgetSections.locationData.items);
                     }, function fail() {
                         WidgetSections.isBusyItems = false;
@@ -173,8 +175,13 @@
                     searchOptionsItems.skip = 0;
                     WidgetSections.noMoreItems = false;
                     WidgetSections.isBusyItems = false;
-                    if (WidgetSections.locationData.items)
-                        WidgetSections.locationData.items.length = 0;
+                    /*if (WidgetSections.locationData.items)
+                     WidgetSections.locationData.items.length = 0;*/
+
+                    if (WidgetSections.locationData.items) {
+                        WidgetSections.locationData.items = [];
+                    }
+
                 };
 
                 var loadAllItemsOfSections = function () {
@@ -334,27 +341,7 @@
                     getGeoLocation(); // get data if localStorage is not supported
                 }
 
-                //syn with widget side
-                if ($routeParams.sectionId) { // this case means the controller is serving the section view
-                    // have to get sections explicitly in item list view
 
-
-                    Sections.find({}).then(function success(result) {
-                        WidgetSections.sections = result;
-                        refreshItems();
-                        WidgetSections.selectedSections = [$routeParams.sectionId];
-                    }, function () {
-
-                    });
-
-                    Messaging.sendMessageToControl({
-                        name: EVENTS.ROUTE_CHANGE,
-                        message: {
-                            path: PATHS.SECTION,
-                            secId: $routeParams.sectionId
-                        }
-                    });
-                }
 
                 function getGeoLocation() {
                     if (navigator.geolocation) {
@@ -414,6 +401,7 @@
                         itemFilter = {'$json.sections': {'$in': WidgetSections.selectedSections}};
                     }
                     else {
+                        console.log('all clear called');
                         //itemFilter = {filter: {"$json.itemTitle": {"$regex": '/*'}}};
                         itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
                     }
@@ -448,7 +436,7 @@
 
                 /* Onclick event of items on the map view*/
                 WidgetSections.selectedMarker = function (itemIndex) {
-                    console.log('selected dot',this);
+                    console.log('selected dot', this);
                     WidgetSections.selectedItem = WidgetSections.locationData.items[itemIndex];
                     initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
                     GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, [WidgetSections.selectedItem], '').then(function (result) {
@@ -536,11 +524,16 @@
                     WidgetSections.showSections = false;
                     refreshItems();
                     WidgetSections.selectedSections = [];
-                    //filterChanged();
+                    filterChanged();
                 };
 
                 WidgetSections.openInMap = function () {
-                  Location.go('https://maps.apple.com/maps?q=' + WidgetSections.selectedItem.data.address.aName);
+                    //Location.go('https://maps.apple.com/maps?q=' + WidgetSections.selectedItem.data.address.aName);
+                    if (buildfire.context.device && buildfire.context.device.platform == 'ios')
+                        window.open("maps://maps.google.com/maps?daddr=" + longitude+ "," + latitude);
+                    else
+                        window.open("http://maps.google.com/maps?daddr=" + longitude+ "," + latitude);
+
                 };
 
                 $scope.$watch(function () {
@@ -569,6 +562,31 @@
                 $scope.$on("$destroy", function () {
                     clearOnUpdateListener.clear();
                 });
+
+                //syn with widget side
+                if ($routeParams.sectionId) { // this case means the controller is serving the section view
+                    // have to get sections explicitly in item list view
+                    //alert('called');
+                    WidgetSections.sections = [];
+                    Sections.find({}).then(function success(result) {
+                        WidgetSections.sections = result;
+                        refreshItems();
+                        //WidgetSections.locationData.items = null;
+                        $timeout(function(){WidgetSections.selectedSections = [$routeParams.sectionId];},1000);
+
+
+                    }, function () {
+
+                    });
+
+                    Messaging.sendMessageToControl({
+                        name: EVENTS.ROUTE_CHANGE,
+                        message: {
+                            path: PATHS.SECTION,
+                            secId: $routeParams.sectionId
+                        }
+                    });
+                }
 
             }]);
 })(window.angular, undefined);

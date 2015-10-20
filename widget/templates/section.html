@@ -1,6 +1,15 @@
 <div>
-    <div ng-if="WidgetSections.placesInfo.data.design.itemListLayout"
-         ng-include="'templates/layouts/' + WidgetSections.placesInfo.data.design.itemListLayout+ '.html'">
+    <div ng-switch="WidgetSections.currentView">
+        <div ng-switch-when="list">
+            <div ng-if="WidgetSections.placesInfo.data.design.itemListLayout"
+                 ng-include="'templates/layouts/' + WidgetSections.placesInfo.data.design.itemListLayout+ '.html'">
+            </div>
+        </div>
+        <div ng-switch-when="map">
+            <div ng-if="WidgetSections.placesInfo.data.design.mapLayout"
+                 ng-include="'templates/layouts/' + WidgetSections.placesInfo.data.design.mapLayout+ '.html'">
+            </div>
+        </div>
     </div>
 </div>
 
