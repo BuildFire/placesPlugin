@@ -1,7 +1,7 @@
 <div class="holder padding-zero">
     <div class="places-plugin">
         <div class="media-center-banner plugin-banner clearfix border-bottom-grey">
-            <div ng-if="WidgetItem.locationData.currentCoordinates"
+            <div
                  class="plugin-slider has-info-bar has-info-bar-double text-center">
                 <div class="plugin-slide show-map" style="height: 180px;">
                     <span details-google-map="" location-data="WidgetItem.itemData"
@@ -23,7 +23,7 @@
     </div>
     <div class="padding-top-fifteen padding-bottom-ten text-center">
         <div class="plugin-thumbnail-slider clearfix">
-            <p>{{WidgetItem.item.data.address.aName}}</p>
+            <p ng-if="WidgetItem.item.data.address.aName">{{WidgetItem.item.data.address.aName}}</p>
             <div ng-if="WidgetItem.item.data.images.length" class="thumbnail-slider text-center"
                  style="height: 100px; width: 100%;white-space: nowrap; overflow-x: auto;">
                 <div class="thumbnail-slide" style="display: inline-block"

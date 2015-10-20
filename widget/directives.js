@@ -17,7 +17,7 @@
                 replace: true,
                 scope: {locationData: '=locationData', markerCallback: '=markerCallback'},
                 link: function (scope, elem, attrs) {
-                    elem.css('min-height','556px');
+                    elem.css('min-height', '556px');
                     scope.$watch('locationData', function (newValue, oldValue) {
                         if (newValue) {
                             var mapCenterLng = (scope.locationData.currentCoordinates.length && scope.locationData.currentCoordinates[0]) ? scope.locationData.currentCoordinates[0] : 78.8718;
@@ -129,8 +129,10 @@
                 link: function (scope, elem, attrs) {
                     scope.$watch('locationData', function (newValue, oldValue) {
                         if (newValue) {
-                            var mapCenterLng = (scope.locationData.currentCoordinates.length && scope.locationData.currentCoordinates[0]) ? scope.locationData.currentCoordinates[0] : 78.8718;
-                            var mapCenterLat = (scope.locationData.currentCoordinates.length && scope.locationData.currentCoordinates[1]) ? scope.locationData.currentCoordinates[1] : 21.7679;
+
+                            var mapCenterLng = (scope.locationData && scope.locationData.currentCoordinates && scope.locationData.currentCoordinates.length && scope.locationData.currentCoordinates[0]) ? scope.locationData.currentCoordinates[0] : -87.7679;
+                            var mapCenterLat = (scope.locationData && scope.locationData.currentCoordinates && scope.locationData.currentCoordinates.length && scope.locationData.currentCoordinates[1]) ? scope.locationData.currentCoordinates[1] : 41.8718;
+
 
                             // Create the map.
                             var map = new google.maps.Map(elem[0], {
@@ -140,6 +142,7 @@
                                 center: {lat: mapCenterLat, lng: mapCenterLng},
                                 mapTypeId: google.maps.MapTypeId.ROADMAP
                             });
+
 
                             var styleOptions = {
                                 name: "Report Error Hide Style"
@@ -190,19 +193,18 @@
                                     shape: shape
                                 });
 
-                                if(scope.showWindow.toString() != 'false'){
-                                var infowindow = new google.maps.InfoWindow({
-                                    content: "<a onclick='openInMap(" + scope.locationData.currentCoordinates[1] + "," + scope.locationData.currentCoordinates[0] + ")'>Get Directions</a>"
-                                });
+                                if (scope.showWindow.toString() != 'false') {
+                                    var infowindow = new google.maps.InfoWindow({
+                                        content: "<a onclick='openInMap(" + scope.locationData.currentCoordinates[1] + "," + scope.locationData.currentCoordinates[0] + ")'>Get Directions</a>"
+                                    });
                                     marker.addListener('click', function () {
                                         infowindow.open(map, marker);
                                     });
-                                infowindow.open(map, marker);
+                                    infowindow.open(map, marker);
                                 }
-                                else
-                                {
+                                else {
                                     marker.addListener('click', function () {
-                                        openInMap(scope.locationData.currentCoordinates[1],scope.locationData.currentCoordinates[0]);
+                                        openInMap(scope.locationData.currentCoordinates[1], scope.locationData.currentCoordinates[0]);
                                     });
                                 }
                             }
