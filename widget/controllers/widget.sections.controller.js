@@ -202,12 +202,10 @@
                 };
 
                 var initMapCarousel = function () {
-                    if(WidgetSections.selectedItem && WidgetSections.selectedItem.data && WidgetSections.selectedItem.data.images)
-                    {
+                    if (WidgetSections.selectedItem && WidgetSections.selectedItem.data && WidgetSections.selectedItem.data.images) {
                         loadMapCarouselItems(WidgetSections.selectedItem.data.images);
                     }
-                    else
-                    {
+                    else {
                         loadMapCarouselItems([]);
                     }
                 };
@@ -234,7 +232,7 @@
                                 loadItems([]);
                             }
 
-                                break;
+                            break;
                     }
                 };
 
@@ -417,8 +415,10 @@
                         itemFilter = {'$json.sections': {'$in': WidgetSections.selectedSections}};
                     }
                     else if ($routeParams.sectionId == 'allitems') {
-                        console.log('all clear called');
                         itemFilter = {'$json.sections': {'$eq': WidgetSections.selectedSections}};
+                    }
+                    else {
+                        itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
                     }
                     searchOptionsItems.filter = itemFilter;
 
@@ -434,7 +434,7 @@
                      }, function () {
                      });*/
                     refreshItems();
-                    // WidgetSections.loadMoreItems();
+                    WidgetSections.loadMoreItems();
                 }
 
                 WidgetSections.itemsOrder = function (item) {
