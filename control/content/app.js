@@ -293,8 +293,14 @@
                                     break;
                                 case PATHS.SECTION:
                                     url = url + "items";
-                                    if (secId) {
+                                    if (secId != 'allitems') {
                                         url = url + "/" + secId;
+                                    }
+                                    else if (secId == 'allitems') {
+                                        url = '#/allitems';
+                                    }
+                                    else {
+                                        Location.goToHome();
                                     }
                                     break;
                                 default :
