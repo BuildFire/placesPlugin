@@ -535,6 +535,10 @@
 
                 };
 
+                WidgetSections.refreshLocation = function () {
+                    getGeoLocation();
+                };
+
                 $scope.$watch(function () {
                     return WidgetSections.locationData.items;
                 }, getItemsDistance);

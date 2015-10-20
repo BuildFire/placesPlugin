@@ -24,8 +24,7 @@
                 <p class="text-primary ellipsis margin-zero"><a class="margin-bottom-zero text-primary ellipsis">{{WidgetItem.item.data.address.aName}}</a>
                 </p>
             </div>
-            <div ng-if="WidgetItem.locationData.currentCoordinates" style="height: 60px;width: 100px;" google-map
-                 location-data="WidgetItem.itemData" class="col-xs-4 text-right pull-right padding-right-zero">
+            <div ng-if="WidgetItem.locationData.currentCoordinates" style="height: 60px;width: 100px;" show-window="false"  details-google-map location-data="WidgetItem.itemData" class="col-xs-4 text-right pull-right padding-right-zero">
             </div>
         </div>
         <div class="padded padding-top-ten padding-bottom-ten">
