@@ -342,7 +342,6 @@
                 }
 
 
-
                 function getGeoLocation() {
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(function (position) {
@@ -530,9 +529,9 @@
                 WidgetSections.openInMap = function () {
                     //Location.go('https://maps.apple.com/maps?q=' + WidgetSections.selectedItem.data.address.aName);
                     if (buildfire.context.device && buildfire.context.device.platform == 'ios')
-                        window.open("maps://maps.google.com/maps?daddr=" + longitude+ "," + latitude);
+                        window.open("maps://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lng + "," + WidgetSections.selectedItem.data.address.lat);
                     else
-                        window.open("http://maps.google.com/maps?daddr=" + longitude+ "," + latitude);
+                        window.open("http://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lng + "," + WidgetSections.selectedItem.data.address.lat);
 
                 };
 
@@ -572,7 +571,9 @@
                         WidgetSections.sections = result;
                         refreshItems();
                         //WidgetSections.locationData.items = null;
-                        $timeout(function(){WidgetSections.selectedSections = [$routeParams.sectionId];},1000);
+                        $timeout(function () {
+                            WidgetSections.selectedSections = [$routeParams.sectionId];
+                        }, 1000);
 
 
                     }, function () {
