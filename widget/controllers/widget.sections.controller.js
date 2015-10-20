@@ -47,7 +47,6 @@
                         return;
                     }
                     updateGetOptionsItems();
-                    console.log(searchOptionsItems);
                     WidgetSections.isBusyItems = true;
                     Items.find(searchOptionsItems).then(function success(result) {
                         WidgetSections.isBusyItems = false;
@@ -392,17 +391,14 @@
 
                 function filterChanged() {
                     var itemFilter;
-                    console.log('filter changed', WidgetSections.selectedSections);
+                    console.log('filter changed---------------', WidgetSections.selectedSections);
                     if (WidgetSections.selectedSections.length) {
-                        /* itemFilter = {
-                         'filter': {'$json.sections': {'$in': WidgetSections.selectedSections}}
-                         };*/
+                        console.log('Selected called');
                         itemFilter = {'$json.sections': {'$in': WidgetSections.selectedSections}};
                     }
-                    else {
+                    else if ($routeParams.sectionId == 'allitems') {
                         console.log('all clear called');
-                        //itemFilter = {filter: {"$json.itemTitle": {"$regex": '/*'}}};
-                        itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
+                        itemFilter = {'$json.sections': {'$eq': WidgetSections.selectedSections}};
                     }
                     searchOptionsItems.filter = itemFilter;
 
@@ -418,7 +414,7 @@
                      }, function () {
                      });*/
                     refreshItems();
-                    WidgetSections.loadMoreItems();
+                    // WidgetSections.loadMoreItems();
                 }
 
                 WidgetSections.itemsOrder = function (item) {
@@ -566,7 +562,7 @@
                     clearOnUpdateListener.clear();
                 });
 
-                //syn with widget side
+
                 if ($routeParams.sectionId) { // this case means the controller is serving the section view
                     // have to get sections explicitly in item list view
                     //alert('called');
@@ -576,13 +572,19 @@
                         refreshItems();
                         //WidgetSections.locationData.items = null;
                         $timeout(function () {
-                            WidgetSections.selectedSections = [$routeParams.sectionId];
+                            if ($routeParams.sectionId == 'allitems') {
+                                WidgetSections.selectedSections = [];
+                            }
+                            else {
+                                WidgetSections.selectedSections = [$routeParams.sectionId];
+                            }
                         }, 1000);
 
 
                     }, function () {
 
                     });
+                    //syn with widget side
 
                     Messaging.sendMessageToControl({
                         name: EVENTS.ROUTE_CHANGE,
@@ -592,6 +594,5 @@
                         }
                     });
                 }
-
             }]);
 })(window.angular, undefined);
