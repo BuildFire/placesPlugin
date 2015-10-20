@@ -119,7 +119,7 @@
                 }
                 else{
                     searchOptions = {
-                        filter: {'$and': [{"$json.itemTitle": {"$regex": '/*'}}, {"$json.sections": {"$all": []}}]},
+                        filter: {'$and': [{"$json.itemTitle": {"$regex": '/*'}}, {"$json.sections": {"$eq": []}}]},
                         skip: _skip,
                         limit: _limit + 1 // the plus one is to check if there are any more
                     };
