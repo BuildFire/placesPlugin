@@ -19,7 +19,7 @@
                     <a ng-href="#/items/{{item.id}}">
                     <div class="plugin-banner clearfix border-bottom-grey">
                         <div class="plugin-slide text-center">
-                            <img ng-if="item.data.mainImage" default-image ng-src="{{item.data.mainImage}}">
+                            <img ng-if="item.data.mainImage" default-image ng-src="{{item.data.mainImage | resizeImage:342:274}}">
                         </div>
                     </div>
                     <div class="padded text-left">
