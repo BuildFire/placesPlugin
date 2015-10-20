@@ -3,7 +3,7 @@
         <div class="item-info clearfix" ng-if="WidgetSections.selectedItem" style="background:#fff;">
             <div class="col-xs-9 pull-left padding-left-zero">
                 <div class="pull-left">
-                    <img ng-src="{{WidgetSections.selectedItem.data.listImage | resizeImage:80:60}}">
+                    <img style="width: 80px !important;height: 60px !important;" ng-src="{{WidgetSections.selectedItem.data.listImage}}">
                 </div>
                 <div class="copy stretch pull-left margin-left-ten">
                     <p class="margin-bottom-zero ellipsis margin-top-ten text-primary"><a class="ellipsis text-primary">{{WidgetSections.selectedItem.data.itemTitle}}</a></p>
