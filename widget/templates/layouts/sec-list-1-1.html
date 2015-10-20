@@ -21,7 +21,7 @@
                          style="min-height: 10px">
                         <a href="#/items/{{item.id}}">
                             <div class="plugin-slide text-center">
-                                <img default-image ng-src="{{item.data.mainImage}}">
+                                <img default-image ng-src="{{item.data.mainImage | resizeImage:342:274}}">
                             </div>
                             <div class="info-bar sec-list-dark-overlay" >
                                 <div class="col-xs-12 text-left pull-left">
