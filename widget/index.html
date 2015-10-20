@@ -1,55 +1,54 @@
 <!DOCTYPE html>
 <html ng-app="placesWidget">
 <head lang="en">
-	<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-	<!-- CSS -->
-	<!--<link href="../../../styles/bootstrap.css" rel="stylesheet">-->
-	<link href="../../../styles/helper.css" rel="stylesheet">
-	<link href="../../../styles/siteIcons.css" rel="stylesheet">
-	<!--SDK js-->
-	<script src="../../../scripts/jquery/jquery-1.11.2.min.js"></script>
-	<script src="../../../scripts/buildfire.js"></script>
-	<script src="../../../scripts/angular/angular.min.js"></script>
-	<script src="../../../scripts/angular/angular-route.min.js"></script>
-	<script src="../../../scripts/angular/angular-animate.min.js"></script>
-	<script src="../../../scripts/angular/ui-bootstrap.min.js"></script>
-	<!-- JS -->
-	<script src="assets/js/jquery-ui.min.js"></script>
-	<script src="assets/js/ng-infinite-scroll.js"></script>
-	<!-- Owl Carousel -->
-	<script type="text/javascript" src="../../../scripts/owlCarousel/owlCarousel.js"></script>
-	<script src="../../../scripts/buildfire/components/carousel/carousel.js"></script>
-	<link rel="stylesheet" href="../../../scripts/owlCarousel/owlCarousel.css">
-	<!--google map api-->
-	<script src="https://maps.google.com/maps/api/js?v=3.exp&sensor=true&libraries=places&key=AIzaSyCRWyvs4UfQ9qjen_smzLFmpVqsjqTYdFI"></script>
-	<script src="assets/js/markerclusterer.js"></script>
-	<script src="assets/js/slider.js"></script>
+    <!-- CSS -->
+    <!--<link href="../../../styles/bootstrap.css" rel="stylesheet">-->
+    <link href="../../../styles/helper.css" rel="stylesheet">
+    <link href="../../../styles/siteIcons.css" rel="stylesheet">
+    <!--SDK js-->
+    <script src="../../../scripts/jquery/jquery-1.11.2.min.js"></script>
+    <script src="../../../scripts/buildfire.js"></script>
+    <script src="../../../scripts/angular/angular.min.js"></script>
+    <script src="../../../scripts/angular/angular-route.min.js"></script>
+    <script src="../../../scripts/angular/angular-animate.min.js"></script>
+    <script src="../../../scripts/angular/ui-bootstrap.min.js"></script>
+    <!-- JS -->
+    <script src="assets/js/jquery-ui.min.js"></script>
+    <script src="assets/js/ng-infinite-scroll.js"></script>
+    <!-- Owl Carousel -->
+    <script type="text/javascript" src="../../../scripts/owlCarousel/owlCarousel.js"></script>
+    <script src="../../../scripts/buildfire/components/carousel/carousel.js"></script>
+    <link rel="stylesheet" href="../../../scripts/owlCarousel/owlCarousel.css">
+    <!--google map api-->
+    <script src="https://maps.google.com/maps/api/js?v=3.exp&sensor=true&libraries=places&key=AIzaSyCRWyvs4UfQ9qjen_smzLFmpVqsjqTYdFI"></script>
+    <script src="assets/js/markerclusterer.js"></script>
+    <script src="assets/js/slider.js"></script>
 
-	<!--app js-->
-	<script src="app.js"></script>
-	<script src="enums.js"></script>
-	<script src="services.js"></script>
-	<script src="directives.js"></script>
-	<script src="filters.js"></script>
+    <!--app js-->
+    <script src="app.js"></script>
+    <script src="enums.js"></script>
+    <script src="services.js"></script>
+    <script src="directives.js"></script>
+    <script src="filters.js"></script>
 
-	<!--controllers js-->
-	<script src="controllers/widget.sections.controller.js"></script>
-	<script src="controllers/widget.item.controller.js"></script>
+    <!--controllers js-->
+    <script src="controllers/widget.sections.controller.js"></script>
+    <script src="controllers/widget.item.controller.js"></script>
 
 
-
-	<!-- App css-->
-	<link href="assets/css/widget.app.css" rel="stylesheet">
-	<!-- Slider css-->
-	<link href="assets/css/slider.css" rel="stylesheet">
+    <!-- App css-->
+    <link href="assets/css/widget.app.css" rel="stylesheet">
+    <!-- Slider css-->
+    <link href="assets/css/slider.css" rel="stylesheet">
 
 </head>
 <!--<body class="scrollable customBackground" ng-style="currentBackgroundImage">-->
 <body class="scrollable customBackground" ng-style="currentBackgroundImage">
 <div class="main_view">
 
-	<div class="content" ng-view=""></div>
+    <div class="content slide" ng-view=""></div>
 </div>
 </body>
 </html>
