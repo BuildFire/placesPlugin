@@ -409,6 +409,7 @@
 
                 function filterChanged() {
                     var itemFilter;
+                    WidgetSections.selectedItem = null;
                     console.log('filter changed---------------', WidgetSections.selectedSections);
                     if (WidgetSections.selectedSections.length) {
                         console.log('Selected called');
