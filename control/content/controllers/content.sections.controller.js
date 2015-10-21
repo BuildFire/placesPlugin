@@ -438,6 +438,15 @@
                     }
                 };
 
+                ContentSections.selectAllItemImage = function () {
+                    Modals.selectAllItemImageModal(ContentSections.info).then(function (data) {
+                        console.log('Select Image Popup----Success----------', data);
+                        ContentSections.info=data;
+                    }, function (err) {
+                        console.log('Select Image PopUp --Error-----------', err);
+                    });
+                };
+
                 //syn with widget
                 Messaging.sendMessageToWidget({
                     name: EVENTS.ROUTE_CHANGE,

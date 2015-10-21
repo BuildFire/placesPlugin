@@ -1,0 +1,33 @@
+<div class="header clearfix border-bottom-grey">
+    <h5 class="item-link-header">Add List Image for AllItems</h5>
+    <span class="icon icon-cross2 close-modal" ng-click="SelectImagePopup.cancel()"></span>
+</div>
+<div class="modal-body">
+    <div class="item clearfix row">
+        <div class="labels col-md-3 padding-right-zero pull-left">
+            <span>List Image</span>
+        </div>
+        <div class="main col-md-9 pull-right">
+            <div class="screens clearfix">
+                <div class="screen carouselicon pull-left text-center">
+                    <a class="border-grey border-radius-three default-background-hover"
+                       ng-click="SelectImagePopup.selectImage()">
+                        <span ng-if="!SelectImagePopup.PlaceInfo.data.content.allItemImage" class="add-icon hidden">+</span>
+                        <img ng-if="SelectImagePopup.PlaceInfo.data.content.allItemImage"
+                             ng-src="{{SelectImagePopup.PlaceInfo.data.content.allItemImage | resizeImage : 82:110}}">
+                    </a>
+                <span ng-if="SelectImagePopup.PlaceInfo.data.content.allItemImage" class="icon btn-delete-icon btn-danger transition-third"
+                      ng-click="SelectImagePopup.removeImage()"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="bottom border-top-grey clearfix">
+    <div class="col-md-6 pull-left text-center">
+        <a class="text-danger default-background-hover transition-third" ng-click="SelectImagePopup.cancel()">Cancel</a>
+    </div>
+    <div class="col-md-6 pull-right text-center border-left-grey">
+        <a class="text-success default-background-hover transition-third" ng-click="SelectImagePopup.ok()">Done</a>
+    </div>
+</div>

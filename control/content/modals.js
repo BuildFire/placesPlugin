@@ -75,7 +75,30 @@
                         editSectionDeferred.reject(err);
                     });
                     return editSectionDeferred.promise;
+                },
+                selectAllItemImageModal: function (PlaceInfo) {
+                    var selectImageDeferred = $q.defer();
+                    var selectImagePopupModal = $modal
+                        .open({
+                            templateUrl: 'templates/modals/add-image-allitems.html',
+                            controller: 'SelectImagePopupCtrl',
+                            controllerAs: 'SelectImagePopup',
+                            size: 'sm',
+                            resolve: {
+                                PlaceInfo: function () {
+                                    return PlaceInfo;
+                                }
+                            }
+                        });
+                    selectImagePopupModal.result.then(function (_placeInfo) {
+                        selectImageDeferred.resolve(_placeInfo);
+                    }, function (err) {
+                        //do something on cancel
+                        selectImageDeferred.reject(err);
+                    });
+                    return selectImageDeferred.promise;
                 }
+
             };
         }])
         .controller('RemovePopupCtrl', ['$scope', '$modalInstance', 'Info', function ($scope, $modalInstance, Info) {
@@ -97,6 +120,33 @@
             };
             DeepLinkPopup.cancel = function () {
                 $modalInstance.dismiss('no');
+            };
+        }])
+        .controller('SelectImagePopupCtrl', ['$scope', '$modalInstance', 'PlaceInfo', 'Buildfire', function ($scope, $modalInstance, PlaceInfo, Buildfire) {
+            var SelectImagePopup = this;
+            if (PlaceInfo) {
+                SelectImagePopup.PlaceInfo = PlaceInfo;
+            }
+            SelectImagePopup.selectImage = function () {
+                var options = {showIcons: false, multiSelection: false}
+                    , callback = function (error, result) {
+                        if (error) {
+                            console.error('Error:', error);
+                        } else {
+                            SelectImagePopup.PlaceInfo.data.content.allItemImage = result.selectedFiles && result.selectedFiles[0] || null;
+                            $scope.$digest();
+                        }
+                    };
+                Buildfire.imageLib.showDialog(options, callback);
+            };
+            SelectImagePopup.removeImage = function () {
+                SelectImagePopup.PlaceInfo.data.content.allItemImage = null;
+            };
+            SelectImagePopup.ok = function () {
+                $modalInstance.close(SelectImagePopup.PlaceInfo);
+            };
+            SelectImagePopup.cancel = function () {
+                $modalInstance.dismiss();
             };
         }])
         .controller('ContentSectionPopupCtrl', ['$scope', '$modalInstance', 'Info', 'Sections', function ($scope, $modalInstance, Info, Sections) {
