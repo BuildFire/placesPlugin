@@ -4,9 +4,9 @@
     /*left: 90%; /* dont scroll till data loaded*/
     width: 100%;
     height: 100%;
-    overflow-x:hidden;
-    overflow-y:auto;
-    background-color:white;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: white;
 
     -webkit-transition: -webkit-transform 0.5s ease-in-out;
     -moz-transition: -moz-transform 0.5s ease-in-out;
@@ -49,9 +49,14 @@
     cursor: pointer;
 }
 
-#scroll-infinite, #items-scroll-infinite {
+#scroll-infinite {
     overflow-y: auto;
     max-height: 245px;
+}
+
+#items-scroll-infinite {
+    overflow-y: auto;
+    max-height: 474px;
 }
 
 /*
