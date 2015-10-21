@@ -1,16 +1,24 @@
 <div ng-class="WidgetSections.showMenu ? 'active' : ''" class="bottom fixed-bottom clearfix transition-third">
     <div>
         <div class="extra-links">
-            <a ng-click="WidgetSections.currentView = 'map';WidgetSections.refreshLocation()"  class="my-location" style="background:#09a3ee;">
+            <a ng-click="WidgetSections.refreshLocation()"  class="my-location" style="background:#09a3ee;">
                 <span class="icon icon-aim"></span>
             </a>
-            <a ng-click="WidgetSections.currentView = 'list'" ng-hide="WidgetSections.currentView == 'list'" class="view-type" style="background:#09a3ee;">
+           <!-- <a ng-click="WidgetSections.currentView = 'list'" ng-hide="WidgetSections.currentView == 'list'" class="view-type" style="background:#09a3ee;">
                 <span class="icon icon-menu"></span>
-            </a>
+            </a>-->
         </div>
         <!-- ngIf: WidgetSections.selectedItem -->
     </div>
-    <div class="col-xs-12 pull-left text-center transition-third" style="background:#09a3ee;">
+    <div class="col-xs-6 pull-left text-center transition-third" style="background:#09a3ee;">
+        <a ng-show="WidgetSections.currentView == 'list'" ng-click="WidgetSections.currentView = 'map';" style="color:#fff !important;">
+            Map
+        </a>
+        <a  ng-show="WidgetSections.currentView == 'map'" ng-click="WidgetSections.currentView = 'list';" style="color:#fff !important;">
+            List
+        </a>
+    </div>
+    <div class="col-xs-6 pull-left text-center transition-third" style="background:#09a3ee;">
         <a ng-click="WidgetSections.showMenu = !WidgetSections.showMenu" style="color:#fff !important;">Filter</a>
     </div>
     <div class="col-xs-12 pull-left hidden-content">
