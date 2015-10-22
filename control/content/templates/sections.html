@@ -72,17 +72,26 @@
             <div>
                 <div class="d-item double-line square-icon clearfix border-bottom-grey">
 
-                    <div class="copy pull-right">
-                        <div class="col-md-4 padding-zero pull-left">
-                            <a class="text-primary" href="#/allitems"><span
-                                    class="title ellipsis pull-left">All Items</span>
-                            </a>
-                        </div>
-                        <div class="col-md-7 padding-right-zero pull-left">
+                    <div>
+                        <span class="icon icon-menu pull-left cursor-grab" style="visibility: hidden;"
+                              ng-class="{ 'disabled': ContentSections.itemSortableOptions.disabled }"></span>
 
+                        <div class="media-holder pull-left">
+                            <img ng-src="{{ContentSections.info.data.content.allItemImage | resizeImage : 50:50}}"
+                                 ng-if="ContentSections.info.data.content.allItemImage">
                         </div>
-                        <div class="pull-right">
-                            <switch ng-model="ContentSections.showAllItems" class="green"></switch>
+                        <div class="copy pull-right">
+                            <div class="col-md-4 padding-zero pull-left">
+                                <a class="text-primary" href="#/allitems"><span
+                                        class="title ellipsis pull-left">All Items</span>
+                                </a>
+                            </div>
+                            <div class="col-md-6 padding-right-zero pull-left">
+                                <a><span class="content ellipsis text-primary" ng-click="ContentSections.selectAllItemImage()">Edit</span></a>
+                            </div>
+                            <div class="pull-right padding-top-fix" style="margin-top: -12px !important;">
+                                <switch ng-model="ContentSections.showAllItems" class="green"></switch>
+                            </div>
                         </div>
                     </div>
                 </div>

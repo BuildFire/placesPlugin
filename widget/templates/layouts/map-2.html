@@ -1,7 +1,8 @@
 <div class="holder padding-zero has-bottom has-bottom-viewing map-layout2">
     <div class="places-plugin">
         <div class="plugin-banner clearfix">
-            <div  ng-class="{'fix-map-layout2-info-bar':WidgetSections.selectedItem && WidgetSections.selectedItem.data.images.length == 0}"  class="plugin-slider text-center has-info-bar-double">
+            <div ng-class="{'fix-map-layout2-info-bar':WidgetSections.selectedItem && WidgetSections.selectedItem.data.images.length == 0}"
+                 class="plugin-slider text-center has-info-bar-double">
                 <div ng-show="WidgetSections.selectedItem.data.images.length" class="plugin-slide">
                     <div id="mapCarousel" map-build-fire-carousel=""></div>
                 </div>
@@ -13,80 +14,19 @@
                     <p class="margin-bottom-zero ellipsis">{{WidgetSections.selectedItem.data.summary}}</p>
                 </div>
                 <div class="col-xs-3 padding-left-zero pull-right text-right margin-top-five">
-                    <span class="icon icon-location location-circle primaryTheme"
+                    <span ng-click="WidgetSections.openInMap()" class="icon icon-location location-circle primaryTheme"
                           style="background:#fff; color:#09a3ee;"></span><br>
                     <span style="font-size: small">{{WidgetSections.selectedItemDistance}}</span>
                 </div>
             </div>
         </div>
         <div class="location-map">
-            <div class="map-holder" ng-class="{'fix-map-layout2-top':WidgetSections.selectedItem && WidgetSections.selectedItem.data.images.length}">
-                <div google-map style="height: 100%; position: relative" location-data="WidgetSections.locationData" marker-callback="WidgetSections.selectedMarker"></div>
+            <div class="map-holder"
+                 ng-class="{'fix-map-layout2-top':WidgetSections.selectedItem && WidgetSections.selectedItem.data.images.length}">
+                <div google-map style="height: 100%; position: relative" location-data="WidgetSections.locationData"
+                     marker-callback="WidgetSections.selectedMarker"></div>
             </div>
         </div>
         <div ng-include="'templates/layouts/bottom-menu.html'"></div>
-        <!--<div ng-class="WidgetSections.showMenu == false ? '' : 'active'" class="bottom fixed-bottom clearfix transition-third">
-            <div>
-                <div class="extra-links">
-                    <a class="my-location" style="background:#09a3ee;">
-                        <span class="icon icon-aim"></span>
-                    </a>
-                    <a class="view-type" style="background:#09a3ee;">
-                        <span class="icon icon-menu"></span>
-                    </a>
-                </div>
-                <div ng-if="WidgetSections.selectedItem" class="col-xs-12 pull-left text-center viewing-label" style="background:rgba(255,255,255,0.8);">
-                    <p class="margin-zero ellipsis">Viewing: {{WidgetSections.selectedItem.data.address.aName}}</p>
-                </div>
-            </div>
-            <div class="col-xs-12 pull-left text-center transition-third" style="background:#09a3ee;">
-                &lt;!&ndash;<a ng-click="WidgetSections.currentView = 'map'" style="color:#fff;">Map</a>&ndash;&gt;
-                <a ng-click="WidgetSections.showMenu = !WidgetSections.showMenu" style="color:#fff;">Filter</a>
-                &lt;!&ndash;<a ng-click="WidgetSections.resetSectionFilter()" style="color:#fff;">See All</a>&ndash;&gt;
-            </div>
-            <div class="col-xs-12 pull-left hidden-content">
-                <div class="tabs clearfix">
-                    <div ng-class="WidgetSections.menuTab == 'Category' ? 'active' : ''"
-                         ng-click="WidgetSections.menuTab = 'Category'"
-                         class="tab tab-category col-xs-6 padding-zero text-center border-bottom-grey">
-                        <a>Category</a>
-                    </div>
-                    <div ng-class="WidgetSections.menuTab == 'Sorting' ? 'active' : ''"
-                         ng-click="WidgetSections.menuTab = 'Sorting'"
-                         class="tab tab-sorting col-xs-6 border-left-grey padding-zero border-bottom-grey text-center">
-                        <a>Sorting</a>
-                    </div>
-                </div>
-                <div class="tab-content clearfix">
-                    <div ng-class="WidgetSections.menuTab == 'Category' ? 'active' : ''" class="category-tab tab">
-                        <a ng-class="WidgetSections.selectedSections.length == 0 ? 'active' : ''"
-                           ng-click="WidgetSections.resetSectionFilter()" class="list-item">All Locations</a>
-                        <a ng-click="WidgetSections.toggleSectionSelection($index,$event)"
-                           ng-repeat="item in WidgetSections.sections"
-                           class="list-item section-filter">{{item.data.secTitle}}</a>
-                    </div>
-                    <div ng-class="WidgetSections.menuTab == 'Sorting' ? 'active' : ''" class="sorting-tab tab padded">
-                        <div class="distance">
-                            <p class="text-primary">Distance</p>
-                            <p>50 to 200 miles</p>
-                            <span>range slider placeholder</span>
-                        </div>
-                        <div class="sort-items margin-top-twenty">
-                            <p class="text-primary">Sort Items</p>
-
-                            <div class="toggle-btns border-radius-four overflow-hidden">
-                                <div class="col-xs-6 padding-zero text-center primaryBackgroundTheme"
-                                     style="background:#09a3ee;">
-                                    <a class="active">Default</a>
-                                </div>
-                                <div class="col-xs-6 padding-zero text-center">
-                                    <a>Closest to Me</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>-->
     </div>
 </div>

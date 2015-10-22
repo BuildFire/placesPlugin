@@ -21,7 +21,7 @@
                     , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
                     , tmrDelayForInfo = null
                     , _skip = 0
-                    , _limit = 5
+                    , _limit = 10
                     , _maxLimit = 19
                     , placeInfoData = {
                         data: {
