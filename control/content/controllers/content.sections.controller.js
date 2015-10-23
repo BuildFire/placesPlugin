@@ -6,12 +6,29 @@
             function ($scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, placesInfo) {
 
                 var header = {
-                        mainImage: 'Section Image',
                         secTitle: 'Section Title',
+                        mainImage: 'Section Image',
                         secSummary: "Section Summary",
-                        itemListBGImage: 'Item List Background Image'
+                        itemListBGImage: 'Item List Background Image',
+                        itemTitle: 'Item Title',
+                        summary: 'Item Summary',
+                        listImage: 'List Image',
+                        images: 'Carousel images',
+                        bodyContent: 'Body Content',
+                        addressTitle: 'Address Title',
+                        address: 'Address',
+                        webURL: 'Web URL',
+                        sendToEmail: 'Send to Email',
+                        smsTextNumber: 'SMS Text Number',
+                        phoneNumber: 'Phone Number',
+                        facebookURL: 'Facebook URL',
+                        twitterURL: 'Twitter URL',
+                        instagramURL: 'Instagram URL',
+                        googlePlusURL: 'Google+ URL',
+                        linkedinURL: 'Linkedin URL',
+                        mapAddress: 'Map Address'
                     }
-                    , headerRow = ["mainImage", "secTitle", "secSummary", "itemListBGImage"]
+                    , headerRow = ["secTitle", "mainImage", "secSummary", "itemListBGImage", "itemTitle", "summary", "listImage", "images", "bodyContent", "addressTitle", "address", "webURL", "sendToEmail", "smsTextNumber", "phoneNumber", "facebookURL", "twitterURL", "instagramURL", "googlePlusURL", "linkedinURL", "mapAddress"]
                     , tmrDelayForMedia = null
                     , _skip = 0
                     , _limit = 5
@@ -245,16 +262,31 @@
                  */
                 ContentSections.getTemplate = function () {
                     var templateData = [{
-                        mainImage: '',
                         secTitle: '',
+                        mainImage: '',
                         secSummary: '',
-                        itemListBGImage: ''
+                        itemListBGImage: '',
+                        itemTitle: '',
+                        summary: '',
+                        listImage: '',
+                        images: '',
+                        bodyContent: '',
+                        addressTitle: '',
+                        address: '',
+                        webURL: '',
+                        sendToEmail: '',
+                        smsTextNumber: '',
+                        phoneNumber: '',
+                        facebookURL: '',
+                        twitterURL: '',
+                        instagramURL: '',
+                        googlePlusURL: '',
+                        linkedinURL: '',
+                        mapAddress: ''
                     }];
-                    console.log(1);
                     var csv = $csv.jsonToCsv(angular.toJson(templateData), {
                         header: header
                     });
-                    console.log(2);
                     $csv.download(csv, "Template.csv");
                 };
                 /**
@@ -441,7 +473,7 @@
                 ContentSections.selectAllItemImage = function () {
                     Modals.selectAllItemImageModal(ContentSections.info).then(function (data) {
                         console.log('Select Image Popup----Success----------', data);
-                        ContentSections.info=data;
+                        ContentSections.info = data;
                     }, function (err) {
                         console.log('Select Image PopUp --Error-----------', err);
                     });
