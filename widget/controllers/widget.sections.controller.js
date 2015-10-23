@@ -353,6 +353,7 @@
 
 
                 function getGeoLocation() {
+                    console.log('navigator--------------------',navigator);
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(function (position) {
                             $scope.$apply(function () {
@@ -360,6 +361,9 @@
                                 WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
                                 localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
                             });
+                        },function(error){
+                            alert('Error occurred');
+                            console.log('Error while getting location',error);
                         });
                     }
                     // else - in this case, default coords will be used
@@ -549,6 +553,11 @@
                     getGeoLocation();
                 };
 
+
+
+                document.addEventListener("deviceready", function(){
+                    alert('Event fired');
+                    getGeoLocation()});
                 $scope.$watch(function () {
                     return WidgetSections.locationData.items;
                 }, getItemsDistance);
