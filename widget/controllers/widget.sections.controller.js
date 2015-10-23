@@ -560,7 +560,9 @@
 
 
 
-                document.addEventListener("deviceready", function(){ getGeoLocation()});
+                document.addEventListener("deviceready", function(){
+                    alert('Event fired');
+                    getGeoLocation()});
                 $scope.$watch(function () {
                     return WidgetSections.locationData.items;
                 }, getItemsDistance);
