@@ -361,6 +361,9 @@
                                 WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
                                 localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
                             });
+                        },function(error){
+                            alert('Error occurred');
+                            console.log('Error while getting location',error);
                         });
                     }
                     // else - in this case, default coords will be used
