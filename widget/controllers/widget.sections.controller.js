@@ -408,34 +408,22 @@
                 }
 
                 function filterChanged() {
-                    var itemFilter;
-                    WidgetSections.selectedItem = null;
-                    console.log('filter changed---------------', WidgetSections.selectedSections);
-                    if (WidgetSections.selectedSections.length) {
-                        console.log('Selected called');
-                        itemFilter = {'$json.sections': {'$in': WidgetSections.selectedSections}};
-                    }
-                    else if ($routeParams.sectionId == 'allitems') {
-                        itemFilter = {'$json.sections': {'$eq': WidgetSections.selectedSections}};
-                    }
-                    else {
-                        itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
-                    }
-                    searchOptionsItems.filter = itemFilter;
-
-
-                    /* Items.find(itemFilter).then(function (res) {
-
-                     res.forEach(function (_item) {
-                     _item.data.distance = 0; // default distance value
-                     _item.data.distanceText = 'Fetching..';
-                     });
-                     console.log('filter changed item list');
-                     WidgetSections.locationData.items = res;
-                     }, function () {
-                     });*/
-                    refreshItems();
-                    WidgetSections.loadMoreItems();
+                        var itemFilter;
+                        WidgetSections.selectedItem = null;
+                        console.log('filter changed---------------', WidgetSections.selectedSections);
+                        if (WidgetSections.selectedSections.length) {
+                            console.log('Selected called');
+                            itemFilter = {'$json.sections': {'$in': WidgetSections.selectedSections}};
+                        }
+                        else if ($routeParams.sectionId == 'allitems') {
+                            itemFilter = {'$json.sections': {'$eq': WidgetSections.selectedSections}};
+                        }
+                        else {
+                            itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
+                        }
+                        searchOptionsItems.filter = itemFilter;
+                        refreshItems();
+                        WidgetSections.loadMoreItems();
                 }
 
                 WidgetSections.itemsOrder = function (item) {
@@ -493,8 +481,12 @@
                  * loadMoreSections method loads the sections in list page.
                  */
                 WidgetSections.loadMoreSections = function () {
-                    if (WidgetSections.isBusy || WidgetSections.noMoreSections) {
+                  /*  if (WidgetSections.isBusy || WidgetSections.noMoreSections) {
                         console.log('fetch sections cancelled');
+                        return;
+                    }*/
+                    if (WidgetSections.noMoreSections) {
+                        console.log('fetch sections cancelled bcs all loaded up');
                         return;
                     }
                     updateGetOptions();
