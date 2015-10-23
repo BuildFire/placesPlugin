@@ -353,6 +353,7 @@
 
 
                 function getGeoLocation() {
+                    console.log('navigator--------------------',navigator);
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(function (position) {
                             $scope.$apply(function () {
@@ -557,6 +558,9 @@
                     getGeoLocation();
                 };
 
+
+
+                document.addEventListener("deviceready", function(){ getGeoLocation()});
                 $scope.$watch(function () {
                     return WidgetSections.locationData.items;
                 }, getItemsDistance);
