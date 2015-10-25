@@ -31,7 +31,7 @@
                     , headerRow = ["secTitle", "mainImage", "secSummary", "itemListBGImage", "itemTitle", "summary", "listImage", "images", "bodyContent", "addressTitle", "address", "webURL", "sendToEmail", "smsTextNumber", "phoneNumber", "facebookURL", "twitterURL", "instagramURL", "googlePlusURL", "linkedinURL", "mapAddress"]
                     , tmrDelayForMedia = null
                     , _skip = 0
-                    , _limit = 5
+                    , _limit = 10
                     , _maxLimit = 19
                     , searchOptions = {
                         filter: {"$json.secTitle": {"$regex": '/*'}},
