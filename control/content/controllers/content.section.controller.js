@@ -143,6 +143,7 @@
                     }
                     else {
                         console.info('****************Section inserted***********************');
+                        _item.data.rank = (placeInfoData.data.content.rankOfLastItem || 0) + 10;
                         _item.data.dateCreated = new Date();
                         ContentSection._Sections.insert(_item.data).then(function (item) {
                             ContentSection.section.id = item.id;

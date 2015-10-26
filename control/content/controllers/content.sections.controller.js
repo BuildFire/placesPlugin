@@ -6,15 +6,32 @@
             function ($scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, placesInfo) {
 
                 var header = {
-                        mainImage: 'Section Image',
                         secTitle: 'Section Title',
+                        mainImage: 'Section Image',
                         secSummary: "Section Summary",
-                        itemListBGImage: 'Item List Background Image'
+                        itemListBGImage: 'Item List Background Image',
+                        itemTitle: 'Item Title',
+                        summary: 'Item Summary',
+                        listImage: 'List Image',
+                        images: 'Carousel images',
+                        bodyContent: 'Body Content',
+                        addressTitle: 'Address Title',
+                        address: 'Address',
+                        webURL: 'Web URL',
+                        sendToEmail: 'Send to Email',
+                        smsTextNumber: 'SMS Text Number',
+                        phoneNumber: 'Phone Number',
+                        facebookURL: 'Facebook URL',
+                        twitterURL: 'Twitter URL',
+                        instagramURL: 'Instagram URL',
+                        googlePlusURL: 'Google+ URL',
+                        linkedinURL: 'Linkedin URL',
+                        mapAddress: 'Map Address'
                     }
-                    , headerRow = ["mainImage", "secTitle", "secSummary", "itemListBGImage"]
+                    , headerRow = ["secTitle", "mainImage", "secSummary", "itemListBGImage", "itemTitle", "summary", "listImage", "images", "bodyContent", "addressTitle", "address", "webURL", "sendToEmail", "smsTextNumber", "phoneNumber", "facebookURL", "twitterURL", "instagramURL", "googlePlusURL", "linkedinURL", "mapAddress"]
                     , tmrDelayForMedia = null
                     , _skip = 0
-                    , _limit = 5
+                    , _limit = 10
                     , _maxLimit = 19
                     , searchOptions = {
                         filter: {"$json.secTitle": {"$regex": '/*'}},
@@ -245,16 +262,31 @@
                  */
                 ContentSections.getTemplate = function () {
                     var templateData = [{
-                        mainImage: '',
                         secTitle: '',
+                        mainImage: '',
                         secSummary: '',
-                        itemListBGImage: ''
+                        itemListBGImage: '',
+                        itemTitle: '',
+                        summary: '',
+                        listImage: '',
+                        images: '',
+                        bodyContent: '',
+                        addressTitle: '',
+                        address: '',
+                        webURL: '',
+                        sendToEmail: '',
+                        smsTextNumber: '',
+                        phoneNumber: '',
+                        facebookURL: '',
+                        twitterURL: '',
+                        instagramURL: '',
+                        googlePlusURL: '',
+                        linkedinURL: '',
+                        mapAddress: ''
                     }];
-                    console.log(1);
                     var csv = $csv.jsonToCsv(angular.toJson(templateData), {
                         header: header
                     });
-                    console.log(2);
                     $csv.download(csv, "Template.csv");
                 };
                 /**
@@ -262,32 +294,124 @@
                  */
                 ContentSections.openImportCSVDialog = function () {
                     $csv.import(headerRow).then(function (rows) {
+                        console.log('Rows in Import CSV---------------------', rows);
                         //ContentSections.loading = true;
+                        var secArray = [],
+                            itemArray = [],
+                            itemSecMap = [];
                         if (rows && rows.length) {
-                            var rank = ContentSections.info.data.content.rankOfLastItem || 0;
-                            for (var index = 0; index < rows.length; index++) {
-                                rank += 10;
-                                rows[index].dateCreated = +new Date();
-                            }
-                            if (validateCsv(rows)) {
-                                Sections.insert(rows).then(function (data) {
-                                    //ContentSections.loading = false;
-                                    ContentSections.isBusy = false;
-                                    ContentSections.sections = [];
-                                    ContentSections.info.data.content.rankOfLastItem = rank;
-                                    ContentSections.getMore();
-                                }, function errorHandler(error) {
-                                    console.error(error);
+                            var rankSec = ContentSections.info.data.content.rankOfLastItem || 0;
+                            var rankItem = ContentSections.info.data.content.rankOfLastItem || 0;
+                            angular.forEach(rows, function (row) {
+                                rankSec += 10;
+                                rankItem += 10;
+                                if (validateCsv(rows)) {
+                                    Sections.insert({
+                                        secTitle: row.secTitle,
+                                        mainImage: row.mainImage,
+                                        secSummary: row.secSummary,
+                                        itemListBGImage: row.itemListBGImage,
+                                        dateCreated: +new Date(),
+                                        rank: rankSec
+                                    }).then(function (data) {
+                                        console.log('Sections inserted=--------------------', data);
+                                        //ContentSections.loading = false;
+                                        ContentSections.isBusy = false;
+                                        ContentSections.sections = [];
+                                        ContentSections.info.data.content.rankOfLastItem = rankSec;
+                                        ContentSections.getMore();
+                                        if (data && data.id) {
+                                            Items.insert({
+                                                itemTitle: row.itemTitle,
+                                                summary: row.summary,
+                                                listImage: row.listImage,
+                                                images: row.images,
+                                                bodyContent: row.bodyContent,
+                                                addressTitle: row.addressTitle,
+                                                address: row.address,
+                                                dateCreated: +new Date(),
+                                                rank: rankSec,
+                                                sections:[data.id]
+                                            }).then(function (data) {
+                                                console.log('Item inserted using Import CSV-----', data);
+                                            }, function (error) {
+                                                console.log('Error----------', error);
+                                            });
+                                        }
+                                    }, function errorHandler(error) {
+                                        console.error(error);
+                                        //ContentHome.loading = false;
+                                        $scope.$apply();
+                                    });
+                                } else {
                                     //ContentHome.loading = false;
-                                    $scope.$apply();
-                                });
-                            } else {
-                                //ContentHome.loading = false;
-                                ContentSections.csvDataInvalid = true;
-                                $timeout(function hideCsvDataError() {
-                                    ContentSections.csvDataInvalid = false;
-                                }, 2000);
-                            }
+                                    ContentSections.csvDataInvalid = true;
+                                    $timeout(function hideCsvDataError() {
+                                        ContentSections.csvDataInvalid = false;
+                                    }, 2000);
+                                }
+                            });
+                            /*for (var index = 0; index < rows.length; index++) {
+                             rankSec += 10;
+                             itemSecMap.push({sec: rows[index].secTitle, item: rows[index].itemTitle});
+                             secArray.push({
+                             secTitle: rows[index].secTitle,
+                             mainImage: rows[index].mainImage,
+                             secSummary: rows[index].secSummary,
+                             itemListBGImage: rows[index].itemListBGImage,
+                             dateCreated: +new Date(),
+                             rank: rankSec
+                             });
+                             itemArray.push({
+                             itemTitle: rows[index].itemTitle,
+                             summary: rows[index].summary,
+                             listImage: rows[index].listImage,
+                             images: rows[index].images,
+                             bodyContent: rows[index].bodyContent,
+                             addressTitle: rows[index].addressTitle,
+                             address: rows[index].address,
+                             webURL: rows[index].webURL,
+                             sendToEmail: rows[index].sendToEmail,
+                             smsTextNumber: rows[index].smsTextNumber,
+                             phoneNumber: rows[index].phoneNumber,
+                             facebookURL: rows[index].facebookURL,
+                             twitterURL: rows[index].twitterURL,
+                             instagramURL: rows[index].instagramURL,
+                             googlePlusURL: rows[index].googlePlusURL,
+                             linkedinURL: rows[index].linkedinURL,
+                             mapAddress: rows[index].mapAddress,
+                             dateCreated: +new Date(),
+                             rank: rankSec,
+                             sections:[]
+                             });
+                             }*/
+                            /* if (validateCsv(rows)) {
+                             Sections.insert(secArray).then(function (data) {
+                             console.log('Sections inserted=--------------------', data);
+                             //ContentSections.loading = false;
+                             ContentSections.isBusy = false;
+                             ContentSections.sections = [];
+                             ContentSections.info.data.content.rankOfLastItem = rankSec;
+                             ContentSections.getMore();
+                             if (data) {
+                             Items.insert(itemArray).then(function (data) {
+                             console.log('Item inserted using Import CSV-----', data);
+                             }, function (error) {
+                             console.log('Error----------', error);
+                             });
+                             }
+                             }, function errorHandler(error) {
+                             console.error(error);
+                             //ContentHome.loading = false;
+                             $scope.$apply();
+                             });
+                             } else {
+                             //ContentHome.loading = false;
+                             ContentSections.csvDataInvalid = true;
+                             $timeout(function hideCsvDataError() {
+                             ContentSections.csvDataInvalid = false;
+                             }, 2000);
+                             }*/
                         }
                         else {
 
@@ -441,7 +565,7 @@
                 ContentSections.selectAllItemImage = function () {
                     Modals.selectAllItemImageModal(ContentSections.info).then(function (data) {
                         console.log('Select Image Popup----Success----------', data);
-                        ContentSections.info=data;
+                        ContentSections.info = data;
                     }, function (err) {
                         console.log('Select Image PopUp --Error-----------', err);
                     });
