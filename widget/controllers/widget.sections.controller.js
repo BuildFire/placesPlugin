@@ -353,7 +353,7 @@
 
 
                 function getGeoLocation() {
-                    console.log('navigator--------------------',navigator);
+                    console.log('navigator--------------------*******************************************************', navigator);
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(function (position) {
                             $scope.$apply(function () {
@@ -361,9 +361,9 @@
                                 WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
                                 localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
                             });
-                        },function(error){
+                        }, function (error) {
                             alert('Error occurred');
-                            console.log('Error while getting location',error);
+                            console.log('Error while getting location', error);
                         });
                     }
                     // else - in this case, default coords will be used
@@ -412,22 +412,22 @@
                 }
 
                 function filterChanged() {
-                        var itemFilter;
-                        WidgetSections.selectedItem = null;
-                        console.log('filter changed---------------', WidgetSections.selectedSections);
-                        if (WidgetSections.selectedSections.length) {
-                            console.log('Selected called');
-                            itemFilter = {'$json.sections': {'$in': WidgetSections.selectedSections}};
-                        }
-                        else if ($routeParams.sectionId == 'allitems') {
-                            itemFilter = {'$json.sections': {'$eq': WidgetSections.selectedSections}};
-                        }
-                        else {
-                            itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
-                        }
-                        searchOptionsItems.filter = itemFilter;
-                        refreshItems();
-                        WidgetSections.loadMoreItems();
+                    var itemFilter;
+                    WidgetSections.selectedItem = null;
+                    console.log('filter changed---------------', WidgetSections.selectedSections);
+                    if (WidgetSections.selectedSections.length) {
+                        console.log('Selected called');
+                        itemFilter = {'$json.sections': {'$in': WidgetSections.selectedSections}};
+                    }
+                    else if ($routeParams.sectionId == 'allitems') {
+                        itemFilter = {'$json.sections': {'$eq': WidgetSections.selectedSections}};
+                    }
+                    else {
+                        itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
+                    }
+                    searchOptionsItems.filter = itemFilter;
+                    refreshItems();
+                    WidgetSections.loadMoreItems();
                 }
 
                 WidgetSections.itemsOrder = function (item) {
@@ -485,10 +485,10 @@
                  * loadMoreSections method loads the sections in list page.
                  */
                 WidgetSections.loadMoreSections = function () {
-                  /*  if (WidgetSections.isBusy || WidgetSections.noMoreSections) {
-                        console.log('fetch sections cancelled');
-                        return;
-                    }*/
+                    /*  if (WidgetSections.isBusy || WidgetSections.noMoreSections) {
+                     console.log('fetch sections cancelled');
+                     return;
+                     }*/
                     if (WidgetSections.noMoreSections) {
                         console.log('fetch sections cancelled bcs all loaded up');
                         return;
@@ -554,10 +554,11 @@
                 };
 
 
-
-                document.addEventListener("deviceready", function(){
-                    alert('Event fired');
-                    getGeoLocation()});
+                /*document.addEventListener("deviceready", );*/
+                $scope.$on('$viewContentLoaded', function () {
+                    alert('Event on IOS---fired');
+                    getGeoLocation()
+                });
                 $scope.$watch(function () {
                     return WidgetSections.locationData.items;
                 }, getItemsDistance);
