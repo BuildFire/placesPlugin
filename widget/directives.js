@@ -69,9 +69,9 @@
 
                             var selectedLocation = null;
 
-                            var currentLocationIconImageUrl = '../resources/google_marker_blue_icon.png';
-                            var placeLocationIconImageUrl = '../resources/google_marker_red_icon.png';
-                            var selectedLocationIconImageUrl = '../resources/google_marker_green_icon.png';
+                            var currentLocationIconImageUrl = 'assets/images/google_marker_blue_icon.png';
+                            var placeLocationIconImageUrl = 'assets/images/google_marker_red_icon.png';
+                            var selectedLocationIconImageUrl = 'assets/images/google_marker_green_icon.png';
 
                             var currentLocationIcon = getCustomMarkerIcon(currentLocationIconImageUrl);
                             var placeLocationIcon = getCustomMarkerIcon(placeLocationIconImageUrl);
@@ -92,7 +92,7 @@
                                         lng: scope.locationData.currentCoordinates[0]
                                     },
                                     map: map,
-                                    //icon: currentLocationIcon,
+                                    icon: currentLocationIcon,
                                     shape: shape
                                 });
                             }
@@ -106,7 +106,7 @@
                                         marker = new google.maps.Marker({
                                             position: {lat: _place.data.address.lat, lng: _place.data.address.lng},
                                             map: map,
-                                            //icon: placeLocationIcon,
+                                            icon: placeLocationIcon,
                                             shape: shape,
                                             title: _place.data.itemTitle,
                                             zIndex: _index
@@ -179,7 +179,7 @@
                                 }
                             }
 
-                            var placeLocationIconImageUrl = '../resources/google_marker_red_icon.png';
+                            var placeLocationIconImageUrl = 'assets/images/google_marker_red_icon.png';
 
                             var placeLocationIcon = getCustomMarkerIcon(placeLocationIconImageUrl);
 
@@ -199,7 +199,7 @@
                                         lng: scope.locationData.currentCoordinates[0]
                                     },
                                     map: map,
-                                    //icon: placeLocationIcon,
+                                    icon: placeLocationIcon,
                                     shape: shape
                                 });
 
