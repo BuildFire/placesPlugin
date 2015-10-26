@@ -356,7 +356,7 @@
                     console.log('navigator--------------------*******************************************************', navigator);
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(function (position) {
-                            conaole.log('Position----------------------',position);
+                            console.log('Position----------------------',position);
                             $scope.$apply(function () {
                                 WidgetSections.sortOnClosest = true;// will be true if user allows location
                                 WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
