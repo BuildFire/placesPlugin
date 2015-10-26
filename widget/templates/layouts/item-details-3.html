@@ -2,13 +2,14 @@
     <div class="places-plugin">
         <div class="media-center-banner plugin-banner clearfix border-bottom-grey">
             <div
-                 class="plugin-slider has-info-bar has-info-bar-double text-center">
+                    class="plugin-slider has-info-bar has-info-bar-double text-center">
                 <div class="plugin-slide show-map" style="height: 180px;">
                     <span details-google-map="" location-data="WidgetItem.itemData"
-                          show-window="true" style="height: 193px;width: 342px; position:relative;">Google Maps Here</span>
+                          show-window="true"
+                          style="height: 193px;width: 342px; position:relative;">Google Maps Here</span>
                 </div>
             </div>
-            <div class="info-bar bg-primary" style="top: 143px;height: 50px;">
+            <div class="info-bar bg-primary" style="top: 143px;height: 50px;color:#fff !important;">
                 <div class="col-xs-8 text-left pull-left">
                     <p class="margin-bottom-zero ellipsis">{{WidgetItem.item.data.itemTitle}}</p>
 
@@ -23,7 +24,9 @@
     </div>
     <div class="padding-top-fifteen padding-bottom-ten text-center">
         <div class="plugin-thumbnail-slider clearfix">
-            <p ng-if="WidgetItem.item.data.address.aName">{{WidgetItem.item.data.address.aName}}</p>
+            <p ng-if="WidgetItem.item.data.address.aName"><a ng-click="WidgetItem.openMap()" href="javaScript:void(0);">{{WidgetItem.item.data.address.aName}}</a>
+            </p>
+
             <div ng-if="WidgetItem.item.data.images.length" class="thumbnail-slider text-center"
                  style="height: 100px; width: 100%;white-space: nowrap; overflow-x: auto;">
                 <div class="thumbnail-slide" style="display: inline-block"

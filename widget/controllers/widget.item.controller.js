@@ -153,6 +153,14 @@
                 }
             );
 
+            WidgetItem.openMap = function () {
+                if (WidgetItem.item && WidgetItem.item.data && WidgetItem.item.data.address)
+                    if (buildfire.context.device && buildfire.context.device.platform == 'ios')
+                        window.open('maps://maps.google.com/maps?daddr=' + WidgetItem.item.data.address.lng + ',' + WidgetItem.item.data.address.lat, '_system');
+                    else
+                        window.open('http://maps.google.com/maps?daddr=' + WidgetItem.item.data.address.lng + ',' + WidgetItem.item.data.address.lat, '_system');
+            };
+
             //syn with widget side
             Messaging.sendMessageToControl({
                 name: EVENTS.ROUTE_CHANGE,
