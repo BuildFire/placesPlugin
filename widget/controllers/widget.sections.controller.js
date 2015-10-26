@@ -557,7 +557,6 @@
 
                 /*document.addEventListener("deviceready", );*/
                 $scope.$on('$viewContentLoaded', function () {
-                    alert('Event on IOS---fired');
                     getGeoLocation()
                 });
                 $scope.$watch(function () {
