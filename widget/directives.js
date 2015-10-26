@@ -92,7 +92,7 @@
                                         lng: scope.locationData.currentCoordinates[0]
                                     },
                                     map: map,
-                                    icon: currentLocationIcon,
+                                    //icon: currentLocationIcon,
                                     shape: shape
                                 });
                             }
@@ -106,7 +106,7 @@
                                         marker = new google.maps.Marker({
                                             position: {lat: _place.data.address.lat, lng: _place.data.address.lng},
                                             map: map,
-                                            icon: placeLocationIcon,
+                                            //icon: placeLocationIcon,
                                             shape: shape,
                                             title: _place.data.itemTitle,
                                             zIndex: _index
@@ -199,7 +199,7 @@
                                         lng: scope.locationData.currentCoordinates[0]
                                     },
                                     map: map,
-                                    icon: placeLocationIcon,
+                                    //icon: placeLocationIcon,
                                     shape: shape
                                 });
 
