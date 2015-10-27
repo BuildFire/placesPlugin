@@ -1,13 +1,17 @@
+<div class="overlay background"
+     ng-if="WidgetItem.item.data.backgroundImage && WidgetItem.deviceWidth != 0 && WidgetItem.deviceHeight != 0">
+    <img ng-src="{{WidgetItem.item.data.backgroundImage |cropImage : WidgetItem.deviceWidth : WidgetItem.deviceHeight}}">
+</div>
 <div>
     <div ng-if="WidgetItem.placeInfo.data.design.itemDetailsLayout"
          ng-include="'templates/layouts/' + WidgetItem.placeInfo.data.design.itemDetailsLayout+ '.html'">
     </div>
 </div>
 <script>
-    function openInMap(lat,lng){
+    function openInMap(lat, lng) {
         if (window.buildfire.context.device && window.buildfire.context.device.platform == 'ios')
-            window.buildfire.navigation.openWindow('maps://maps.google.com/maps?daddr=' + lng + ',' + lat,'_system');
+            window.buildfire.navigation.openWindow('maps://maps.google.com/maps?daddr=' + lng + ',' + lat, '_system');
         else
-            window.buildfire.navigation.openWindow('http://maps.google.com/maps?daddr=' + lng + ',' + lat,'_system');
+            window.buildfire.navigation.openWindow('http://maps.google.com/maps?daddr=' + lng + ',' + lat, '_system');
     }
 </script>
