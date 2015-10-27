@@ -103,9 +103,11 @@
                                 images: [],
                                 descriptionHTML: '<p>&nbsp;<br></p>',
                                 description: '<p>&nbsp;<br></p>',
-                                sortBy: 'Newest',
+                                sortBy: Orders.ordersMap.Manually,
                                 rankOfLastItem: '',
-                                sortByItems: 'Newest'
+                                sortByItems: OrdersItems.ordersMap.Newest,
+                                showAllItems: 'true',
+                                allItemImage: ''
                             },
                             design: {
                                 secListLayout: "sec-list-1-1",

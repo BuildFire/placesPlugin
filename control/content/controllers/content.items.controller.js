@@ -32,7 +32,8 @@
                                 sortBy: Orders.ordersMap.Manually,
                                 rankOfLastItem: '',
                                 sortByItems: OrdersItems.ordersMap.Newest,
-                                showAllItems: 'true'
+                                showAllItems: 'true',
+                                allItemImage: ''
                             },
                             design: {
                                 secListLayout: "sec-list-1-1",

@@ -51,7 +51,8 @@
                                 sortBy: Orders.ordersMap.Manually,
                                 rankOfLastItem: '',
                                 sortByItems: OrdersItems.ordersMap.Newest,
-                                showAllItems: 'true'
+                                showAllItems: 'true',
+                                allItemImage: ''
                             },
                             design: {
                                 secListLayout: "sec-list-1-1",
@@ -68,7 +69,6 @@
                     };
 
                 var ContentSections = this;
-                ContentSections.showAllItems = true;
                 ContentSections.masterInfo = null;
 
                 if (placesInfo) {

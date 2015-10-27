@@ -182,6 +182,7 @@
         }])
         .run(['Location', 'Messaging', 'EVENTS', 'PATHS', '$location', function (Location, Messaging, EVENTS, PATHS, $location) {
             Messaging.onReceivedMessage = function (event) {
+                console.log('Widget syn called-----',event);
                 if (event) {
                     switch (event.name) {
                         case EVENTS.ROUTE_CHANGE:

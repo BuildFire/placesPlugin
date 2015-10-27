@@ -15,6 +15,19 @@
                  infinite-scroll="WidgetSections.loadMoreSections()"
 
                  infinite-scroll-container="'#scroll-infinite'">
+                <div ng-if="WidgetSections.placesInfo.data.content.showAllItems">
+                    <a href="#/items/allitems">
+                        <div class="plugin-banner clearfix border-bottom-grey">
+                            <div class="plugin-slide text-center"
+                                 ng-if="WidgetSections.placesInfo.data.content.allItemImage">
+                                <img ng-src="{{WidgetSections.placesInfo.data.content.allItemImage | resizeImage:342:274}}">
+                            </div>
+                        </div>
+                        <div class="padded text-left">
+                            <span class="text-primary">All Items</span>
+                        </div>
+                    </a>
+                </div>
                 <div ng-repeat="item in WidgetSections.sections">
                     <a ng-href="#/items/{{item.id}}">
                         <div class="plugin-banner clearfix border-bottom-grey">
