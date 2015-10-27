@@ -52,6 +52,8 @@
                             }
                         }
                     };
+
+                var background = new Buildfire.components.images.thumbnail("#background");
                 ContentSection._Sections = new DB(COLLECTIONS.Sections);
                 var placeInfoData;
                 if (placesInfo) {
@@ -70,6 +72,24 @@
                     ContentSection.section = _sectionData;
                     updateMasterSection(ContentSection.section);
                 }
+
+                if (ContentSection.section.data && ContentSection.section.data.itemListBGImage) {
+                    background.loadbackground(ContentSection.section.data.itemListBGImage);
+                }
+
+                background.onChange = function (url) {
+                    ContentSection.section.data.itemListBGImage = url;
+                    if (!$scope.$$phase && !$scope.$root.$$phase) {
+                        $scope.$apply();
+                    }
+                };
+
+                background.onDelete = function (url) {
+                    ContentSection.section.data.itemListBGImage = "";
+                    if (!$scope.$$phase && !$scope.$root.$$phase) {
+                        $scope.$apply();
+                    }
+                };
                 function updateMasterSection(item) {
                     ContentSection.masterSection = angular.copy(item);
                 }
@@ -212,29 +232,7 @@
                 ContentSection.removeMainImage = function () {
                     ContentSection.section.data.mainImage = '';
                 };
-
-                /**
-                 * callback function of List BG image icon selection click
-                 */
-                ContentSection.selectListBGImage = function () {
-                    Buildfire.imageLib.showDialog(selectImageOptions, function (error, result) {
-                        if (error) {
-                            return console.error('Error:', error);
-                        }
-                        if (result.selectedFiles && result.selectedFiles.length) {
-                            ContentSection.section.data.itemListBGImage = result.selectedFiles[0];
-                            $scope.$digest();
-                        }
-                    });
-                };
-
-                /**
-                 * Will remove the List BG image url
-                 */
-                ContentSection.removeListBGImage = function () {
-                    ContentSection.section.data.itemListBGImage = '';
-                };
-
+                
                 /**
                  * done will close the single item view
                  */
