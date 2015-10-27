@@ -252,7 +252,7 @@
                  * Buildfire.datastore.onUpdate method calls when Data is changed.
                  */
                 var clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
-                    console.log(event);
+                    console.log('Event in ------------------',event);
                     if (event.tag === "placeInfo") {
                         if (event.data) {
                             if (event.data.settings.showDistanceIn != WidgetSections.placesInfo.data.settings.showDistanceIn)
@@ -420,14 +420,16 @@
                         itemFilter = {'$json.sections': {'$in': WidgetSections.selectedSections}};
                     }
                     else if ($routeParams.sectionId == 'allitems') {
-                        itemFilter = {'$json.sections': {'$eq': WidgetSections.selectedSections}};
+                        itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
+                        //itemFilter = {'$json.sections': {'$eq': WidgetSections.selectedSections}};
+                        //itemFilter = {};
                     }
                     else {
                         itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
                     }
                     searchOptionsItems.filter = itemFilter;
-                    refreshItems();
-                    WidgetSections.loadMoreItems();
+                    //refreshItems();
+                    //WidgetSections.loadMoreItems();
                 }
 
                 WidgetSections.itemsOrder = function (item) {
@@ -448,7 +450,7 @@
                     initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
 
                     GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, [WidgetSections.selectedItem], '').then(function (result) {
-                        console.log(result);
+                        console.log('Distance---------------------',result);
                         if (result.rows.length && result.rows[0].elements.length && result.rows[0].elements[0].distance && result.rows[0].elements[0].distance.text) {
                             WidgetSections.selectedItemDistance = result.rows[0].elements[0].distance.text;
                         } else {
