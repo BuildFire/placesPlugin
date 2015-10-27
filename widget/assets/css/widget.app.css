@@ -62,6 +62,19 @@ style for sec list dark overlay
 
 }
 
-.fix-map-layout2-info-bar{
+.fix-map-layout2-info-bar {
     margin-top: 54px;
+}
+
+/*background image css class*/
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+/* To overlay texts on background */
+.text-overlay {
+    position: relative
 }

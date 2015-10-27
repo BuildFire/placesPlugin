@@ -3,8 +3,6 @@
         .module('placesWidget')
         .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance', '$routeParams', '$timeout', 'placesInfo', 'OrdersItems', '$filter',
             function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $routeParams, $timeout, placesInfo, OrdersItems, $filter) {
-
-                AppConfig.changeBackgroundTheme();
                 var WidgetSections = this;
                 WidgetSections.sectionId = $routeParams.sectionId;
                 WidgetSections.showMenu = false;
@@ -90,7 +88,7 @@
                     view = null,
                     mapview = null,
                     currentLayout = '',
-                    _limit = 5,
+                    _limit = 10,
                     searchOptions = {
                         //filter: {"$json.secTitle": {"$regex": '/*'}},
                         skip: _skip,
@@ -124,6 +122,28 @@
                             }
                         }
                     };
+
+                /*declare the device width heights*/
+                WidgetSections.deviceHeight = window.innerHeight;
+                WidgetSections.deviceWidth = window.innerWidth;
+
+                /*initialize the device width heights*/
+                var initDeviceSize = function (callback) {
+                    WidgetSections.deviceHeight = window.innerHeight;
+                    WidgetSections.deviceWidth = window.innerWidth;
+                    if (callback) {
+                        if (WidgetSections.deviceWidth == 0 || WidgetSections.deviceHeight == 0) {
+                            setTimeout(function () {
+                                initDeviceSize(callback);
+                            }, 500);
+                        } else {
+                            callback();
+                            if (!$scope.$$phase && !$scope.$root.$$phase) {
+                                $scope.$apply();
+                            }
+                        }
+                    }
+                };
 
                 /**
                  * WidgetSections.isBusy is used for infinite scroll.
@@ -252,9 +272,9 @@
                             if (event.data.settings.showDistanceIn != WidgetSections.placesInfo.data.settings.showDistanceIn)
                                 $window.location.reload();
 
-                            if (event.data.design) {
-                                AppConfig.changeBackgroundTheme(event.data.design.secListBGImage);
-                            }
+                            /* if (event.data.design) {
+                             AppConfig.changeBackgroundTheme(event.data.design.secListBGImage);
+                             }*/
 
                             WidgetSections.placesInfo = event;
                             WidgetSections.selectedItem = null;
@@ -313,9 +333,9 @@
                     else {
                         WidgetSections.placesInfo = _placesInfoData;
                     }
-                    if (WidgetSections.placesInfo.data.design.secListBGImage) {
-                        AppConfig.changeBackgroundTheme(WidgetSections.placesInfo.data.design.secListBGImage);
-                    }
+                    /*if (WidgetSections.placesInfo.data.design.secListBGImage) {
+                     AppConfig.changeBackgroundTheme(WidgetSections.placesInfo.data.design.secListBGImage);
+                     }*/
                     if (WidgetSections.placesInfo.data.settings.showDistanceIn == 'miles')
                         $scope.distanceSlider = {
                             min: 0,

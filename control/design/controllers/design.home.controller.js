@@ -2,7 +2,7 @@
     'use strict';
     angular
         .module('placesDesign')
-        .controller('DesignHomeCtrl', ['$scope', 'Orders', 'COLLECTIONS', 'DB', '$timeout', 'OrdersItems', 'Buildfire', 'placesInfo', function ($scope, Orders, COLLECTIONS, DB, $timeout, OrdersItems,Buildfire, placesInfo) {
+        .controller('DesignHomeCtrl', ['$scope', 'Orders', 'COLLECTIONS', 'DB', '$timeout', 'OrdersItems', 'Buildfire', 'placesInfo', function ($scope, Orders, COLLECTIONS, DB, $timeout, OrdersItems, Buildfire, placesInfo) {
             var DesignHome = this
                 , _data = {
                     content: {
@@ -27,6 +27,7 @@
                     }
                 }
                 , tmrDelay = null;
+            var background = new Buildfire.components.images.thumbnail("#background");
 
             /* populate VM with resolve */
             if (placesInfo) {
@@ -36,6 +37,10 @@
             else {
                 DesignHome.placeInfo = {data: angular.copy(_data)};
                 DesignHome._lastSaved = angular.copy(DesignHome.placeInfo);
+            }
+
+            if (DesignHome.placeInfo.data && DesignHome.placeInfo.data.design && DesignHome.placeInfo.data.design.secListBGImage) {
+                background.loadbackground(DesignHome.placeInfo.data.design.secListBGImage);
             }
 
 
@@ -55,21 +60,21 @@
                     DesignHome.placeInfo.data.design[type + "Layout"] = layoutName;
                 }
             };
-            DesignHome.addListBgImage = function () {
-                var options = {showIcons: false, multiSelection: false}
-                    , callback = function (error, result) {
-                        if (error) {
-                            console.error('Error:', error);
-                        } else {
-                            DesignHome.placeInfo.data.design.secListBGImage = result.selectedFiles && result.selectedFiles[0] || null;
-                            $scope.$digest();
-                        }
-                    };
-                Buildfire.imageLib.showDialog(options, callback);
+
+            background.onChange = function (url) {
+                DesignHome.placeInfo.data.design.secListBGImage = url;
+                if (!$scope.$$phase && !$scope.$root.$$phase) {
+                    $scope.$apply();
+                }
             };
-            DesignHome.removeListBgImage = function () {
-                DesignHome.placeInfo.data.design.secListBGImage = null;
+
+            background.onDelete = function (url) {
+                DesignHome.placeInfo.data.design.secListBGImage = "";
+                if (!$scope.$$phase && !$scope.$root.$$phase) {
+                    $scope.$apply();
+                }
             };
+
 
             /**
              * function isUnchanged(data)
@@ -101,7 +106,6 @@
                     } else {
                         tmrDelay = $timeout(function () {
                             DesignHome._placeCenter.save(DesignHome.placeInfo.data).then(function success(result) {
-                                init();
                             }, function fail(err) {
                                 console.log(err);
                             });
