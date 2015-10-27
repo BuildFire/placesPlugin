@@ -219,6 +219,63 @@
                     });
                 }
 
+                function exporter() {
+                    var allSections = {}, json = [];
+                    Sections.find({filter: {"$json.secTitle": {"$regex": '/*'}}}).then(function (sections) {
+
+
+                        for (var _j = 0; _j < sections.length; _j++) {
+                            allSections[sections[_j].id] = {
+                                secTitle: sections[_j].data.secTitle,
+                                secSummary: sections[_j].data.secSummary,
+                                mainImage: sections[_j].data.mainImage,
+                                itemListBGImage: sections[_j].data.itemListBGImage
+                            };
+                        }
+
+                        console.log('allSections', allSections);
+
+                        Items.find({filter: {"$json.itemTitle": {"$regex": '/*'}}}).then(function (items) {
+                            console.log(items);
+                            for (var _ind = 0; _ind < items.length; _ind++) {
+                                items[_ind].data.address = items[_ind].data.address.aName;
+                                if (items[_ind].data.sections.length > 1) {
+                                    for (var _i = 0; _i < items[_ind].sections.length; _i++) {
+                                        items[_ind].data.secTitle = allSections[items[_ind].data.sections[_i]].secTitle;
+                                        items[_ind].data.secSummary = allSections[items[_ind].data.sections[_i]].secSummary;
+                                        items[_ind].data.mainImage = allSections[items[_ind].data.sections[_i]].mainImage;
+                                        items[_ind].data.itemListBGImage = allSections[items[_ind].data.sections[_i]].itemListBGImage;
+
+                                        json.push(items[_ind].data);
+                                    }
+
+                                }
+                                else {
+                                    if (allSections[items[_ind].data.sections[0]]) {
+                                        items[_ind].data.secTitle = allSections[items[_ind].data.sections[0]].secTitle;
+                                        items[_ind].data.secSummary = allSections[items[_ind].data.sections[0]].secSummary;
+                                        items[_ind].data.mainImage = allSections[items[_ind].data.sections[0]].mainImage;
+                                        items[_ind].data.itemListBGImage = allSections[items[_ind].data.sections[0]].itemListBGImage;
+                                    }
+                                    else
+                                        items[_ind].data.secTitle = 'Default Section';
+                                    json.push(items[_ind].data);
+                                }
+
+                            }
+                            console.log(json);
+                            var csv = $csv.jsonToCsv(angular.toJson(json), {
+                                header: header
+                            });
+                            $csv.download(csv, "Export.csv");
+                        }, function () {
+                        });
+
+                    }, function (error) {
+                        throw (error);
+                    });
+                }
+
                 /* Buildfire.deeplink.createLink('section:7');
                  Buildfire.deeplink.getData(function (data) {
                  if (data) alert('deep link data: ' + data);
@@ -331,7 +388,7 @@
                                                 address: row.address,
                                                 dateCreated: +new Date(),
                                                 rank: rankSec,
-                                                sections:[data.id]
+                                                sections: [data.id]
                                             }).then(function (data) {
                                                 console.log('Item inserted using Import CSV-----', data);
                                             }, function (error) {
@@ -428,28 +485,29 @@
                  * ContentSections.exportCSV() used to export people list data to CSV
                  */
                 ContentSections.exportCSV = function () {
-                    var search = angular.copy(searchOptions);
-                    search.skip = 0;
-                    search.limit = _maxLimit + 1;
-                    getRecords(search,
-                        []
-                        , function (data) {
-                            if (data && data.length) {
-                                var persons = [];
-                                angular.forEach(angular.copy(data), function (value) {
-                                    delete value.data.dateCreated;
-                                    persons.push(value.data);
-                                });
-                                var csv = $csv.jsonToCsv(angular.toJson(persons), {
-                                    header: header
-                                });
-                                $csv.download(csv, "Export.csv");
-                            }
-                            else {
-                                ContentSections.getTemplate();
-                            }
-                            records = [];
-                        });
+                    exporter();
+                    /* var search = angular.copy(searchOptions);
+                     search.skip = 0;
+                     search.limit = _maxLimit + 1;
+                     getRecords(search,
+                     []
+                     , function (data) {
+                     if (data && data.length) {
+                     var persons = [];
+                     angular.forEach(angular.copy(data), function (value) {
+                     delete value.data.dateCreated;
+                     persons.push(value.data);
+                     });
+                     var csv = $csv.jsonToCsv(angular.toJson(persons), {
+                     header: header
+                     });
+                     $csv.download(csv, "Export.csv");
+                     }
+                     else {
+                     ContentSections.getTemplate();
+                     }
+                     records = [];
+                     });*/
                 };
                 /**
                  * ContentSections.removeListSection() used to delete an item from section list
