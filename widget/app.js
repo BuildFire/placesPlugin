@@ -231,6 +231,7 @@
 
             buildfire.navigation.onBackButtonClick = function () {
                 var path = $location.path();
+                console.log(path);
                 if (path.indexOf('/items/') == 0)
                     Location.goToHome();
                 else if (path.indexOf('/item/') == 0)
