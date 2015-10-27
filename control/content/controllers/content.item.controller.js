@@ -28,6 +28,8 @@
                     }
                     , updating = false;
 
+                var background = new Buildfire.components.images.thumbnail("#background");
+
                 $scope.itemShow = 'Content';
 
                 var ContentItem = this;
@@ -43,6 +45,25 @@
                     ContentItem.item = {data: _data};
                     ContentItem.masterItem = angular.copy(ContentItem.item);
                 }
+
+                if (ContentItem.item.data && ContentItem.item.data.backgroundImage) {
+                    background.loadbackground(ContentItem.item.data.backgroundImage);
+                }
+
+                background.onChange = function (url) {
+                    ContentItem.item.data.backgroundImage = url;
+                    if (!$scope.$$phase && !$scope.$root.$$phase) {
+                        $scope.$apply();
+                    }
+                };
+
+                background.onDelete = function (url) {
+                    ContentItem.item.data.backgroundImage = "";
+                    if (!$scope.$$phase && !$scope.$root.$$phase) {
+                        $scope.$apply();
+                    }
+                };
+
 
                 //option for wysiwyg
                 ContentItem.bodyWYSIWYGOptions = {
@@ -221,10 +242,10 @@
                  * done will close the single item view
                  */
                 ContentItem.done = function () {
-                    if($routeParams.sectionId != 'allitems') {
+                    if ($routeParams.sectionId != 'allitems') {
                         Location.go('#/items/' + $routeParams.sectionId);
                     }
-                    else{
+                    else {
                         Location.go('#/allitems')
                     }
                 };

@@ -272,10 +272,6 @@
                             if (event.data.settings.showDistanceIn != WidgetSections.placesInfo.data.settings.showDistanceIn)
                                 $window.location.reload();
 
-                            /* if (event.data.design) {
-                             AppConfig.changeBackgroundTheme(event.data.design.secListBGImage);
-                             }*/
-
                             WidgetSections.placesInfo = event;
                             WidgetSections.selectedItem = null;
                             WidgetSections.selectedItemDistance = null;
@@ -624,6 +620,15 @@
                     // have to get sections explicitly in item list view
                     //alert('called');
                     WidgetSections.sections = [];
+                    Sections.getById($routeParams.sectionId).then(function (data) {
+                            WidgetSections.sectionInfo = data;
+                        }
+                        ,
+                        function (err) {
+                            // do somthing on err
+                        }
+                    )
+                    ;
                     Sections.find({}).then(function success(result) {
                         WidgetSections.sections = result;
                         refreshItems();
@@ -651,5 +656,7 @@
                         }
                     });
                 }
-            }]);
+            }
+        ])
+    ;
 })(window.angular, undefined);
