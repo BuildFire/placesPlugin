@@ -2,7 +2,6 @@
     angular
         .module('placesWidget')
         .controller('WidgetItemCtrl', ['$scope', 'COLLECTIONS', 'DB', '$routeParams', 'Buildfire', '$rootScope', 'GeoDistance', 'Messaging', 'Location', 'EVENTS', 'PATHS', 'AppConfig', 'placesInfo', 'Orders', 'OrdersItems', 'item', function ($scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS, AppConfig, placesInfo, Orders, OrdersItems, item) {
-            AppConfig.changeBackgroundTheme();
             var WidgetItem = this
                 , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
                 , Items = new DB(COLLECTIONS.Items)
@@ -117,7 +116,6 @@
                 getGeoLocation(); // get data if localStorage is not supported
 
             $scope.$on("Carousel:LOADED", function () {
-                console.log('carousel added------', WidgetItem.item);
                 if (!WidgetItem.view) {
                     console.log('if------', WidgetItem.view);
                     WidgetItem.view = new Buildfire.components.carousel.view("#carousel", []);
@@ -179,7 +177,6 @@
 
             function calDistance(origin, destination, distanceUnit) {
                 GeoDistance.getDistance(origin, destination, distanceUnit).then(function (data) {
-                        console.log('data in distance cal------success----', data);
                         if (data && data.rows[0] && data.rows[0].elements[0] && data.rows[0].elements[0].distance) {
                             WidgetItem.distance = data.rows[0].elements[0].distance.text;
                         }

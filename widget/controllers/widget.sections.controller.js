@@ -17,7 +17,6 @@
 
                 WidgetSections.locationData = {
                     items: null,
-                    //currentCoordinates: [-117.1920427, 32.7708401] // default san diego
                     currentCoordinates: null
                 };
 
@@ -73,7 +72,6 @@
 
                         console.log('result', result);
                         console.log('WidgetSections.locationData.items BEFORE', WidgetSections.locationData.items);
-                        //WidgetSections.locationData.items = WidgetSections.locationData.items ? WidgetSections.locationData.items.concat(result) : result;
                         var items = WidgetSections.locationData.items ? WidgetSections.locationData.items.concat(result) : result;
                         WidgetSections.locationData.items = $filter('unique')(items, 'id');
                         console.log('WidgetSections.locationData.items AFTER', WidgetSections.locationData.items);
@@ -201,9 +199,6 @@
                     searchOptionsItems.skip = 0;
                     WidgetSections.noMoreItems = false;
                     WidgetSections.isBusyItems = false;
-                    /*if (WidgetSections.locationData.items)
-                     WidgetSections.locationData.items.length = 0;*/
-
                     if (WidgetSections.locationData.items) {
                         WidgetSections.locationData.items = [];
                     }
@@ -211,20 +206,9 @@
                 };
 
                 var loadAllItemsOfSections = function () {
-                    //alert('called');
                     var itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
                     searchOptionsItems.filter = itemFilter;
-                    //WidgetSections.items = null;
                     refreshItems();
-                    //WidgetSections.loadMoreItems();
-
-                    //updateGetOptionsItems();
-                    /* Items.find(itemFilter).then(function (res) {
-                     //WidgetSections.items = res;
-                     WidgetSections.locationData.items = res;//angular.copy(WidgetSections.items);
-                     }, function () {
-
-                     });*/
                 };
 
                 var initMapCarousel = function () {
@@ -308,10 +292,8 @@
                             }
                             WidgetSections.selectedItem = null;
                             WidgetSections.selectedItemDistance = null;
-                            //WidgetSections.items = angular.copy(WidgetSections.locationData.items);
                             $scope.$apply();
                         }
-                        //WidgetSections.locationData.items = angular.copy(WidgetSections.items);
                     }
                     else {
                         view = null;
@@ -329,9 +311,6 @@
                     else {
                         WidgetSections.placesInfo = _placesInfoData;
                     }
-                    /*if (WidgetSections.placesInfo.data.design.secListBGImage) {
-                     AppConfig.changeBackgroundTheme(WidgetSections.placesInfo.data.design.secListBGImage);
-                     }*/
                     if (WidgetSections.placesInfo.data.settings.showDistanceIn == 'miles')
                         $scope.distanceSlider = {
                             min: 0,
@@ -376,18 +355,15 @@
 
 
                 function getGeoLocation() {
-                    console.log('navigator--------------------*******************************************************', navigator);
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(function (position) {
-                            console.log('Position----------------------', position);
                             $scope.$apply(function () {
                                 WidgetSections.sortOnClosest = true;// will be true if user allows location
                                 WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
                                 localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
                             });
                         }, function (error) {
-                            alert('Error occurred');
-                            console.log('Error while getting location', error);
+                            console.error('Error while getting location', error);
                         });
                     }
                     // else - in this case, default coords will be used
@@ -438,9 +414,7 @@
                 function filterChanged() {
                     var itemFilter;
                     WidgetSections.selectedItem = null;
-                    console.log('filter changed---------------', WidgetSections.selectedSections);
                     if (WidgetSections.selectedSections.length) {
-                        console.log('Selected called');
                         itemFilter = {'$json.sections': {'$in': WidgetSections.selectedSections}};
                     }
                     else if ($routeParams.sectionId == 'allitems') {
@@ -509,10 +483,6 @@
                  * loadMoreSections method loads the sections in list page.
                  */
                 WidgetSections.loadMoreSections = function () {
-                    /*  if (WidgetSections.isBusy || WidgetSections.noMoreSections) {
-                     console.log('fetch sections cancelled');
-                     return;
-                     }*/
                     if (WidgetSections.noMoreSections) {
                         console.log('fetch sections cancelled bcs all loaded up');
                         return;
@@ -565,7 +535,6 @@
                 };
 
                 WidgetSections.openInMap = function () {
-                    //Location.go('https://maps.apple.com/maps?q=' + WidgetSections.selectedItem.data.address.aName);
                     if (buildfire.context.device && buildfire.context.device.platform == 'ios')
                         window.open("maps://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lng + "," + WidgetSections.selectedItem.data.address.lat);
                     else
@@ -618,7 +587,6 @@
 
                 if ($routeParams.sectionId) { // this case means the controller is serving the section view
                     // have to get sections explicitly in item list view
-                    //alert('called');
                     WidgetSections.sections = [];
                     Sections.getById($routeParams.sectionId).then(function (data) {
                             WidgetSections.sectionInfo = data;
@@ -646,7 +614,7 @@
                     }, function () {
 
                     });
-                    //syn with widget side
+                    //syn with control side
 
                     Messaging.sendMessageToControl({
                         name: EVENTS.ROUTE_CHANGE,

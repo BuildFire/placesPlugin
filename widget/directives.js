@@ -202,17 +202,6 @@
                                     icon: placeLocationIcon,
                                     shape: shape
                                 });
-
-                                /*if (scope.showWindow.toString() != 'false') {
-                                 var infowindow = new google.maps.InfoWindow({
-                                 content: "<a onclick='openInMap(" + scope.locationData.currentCoordinates[1] + "," + scope.locationData.currentCoordinates[0] + ")'>Get Directions</a>"
-                                 });
-                                 marker.addListener('click', function () {
-                                 infowindow.open(map, marker);
-                                 });
-                                 infowindow.open(map, marker);
-                                 }
-                                 else {*/
                                 marker.addListener('click', function () {
                                     openInMap(scope.locationData.currentCoordinates[1], scope.locationData.currentCoordinates[0]);
                                 });

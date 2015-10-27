@@ -49,7 +49,6 @@
                     <div class="plugin-banner has-info-bar clearfix"
                          ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
                         <div class="plugin-slide text-center">
-                            <!--<img default-image="" ng-src="{{item.data.listImage | resizeImage:342:274}}">-->
                             <img ng-if="item.data.listImage" ng-src="{{item.data.listImage | resizeImage:342:274}}">
                             <img ng-if="!item.data.listImage" src="assets/images/placeholder.jpg">
                         </div>

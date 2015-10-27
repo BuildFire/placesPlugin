@@ -182,7 +182,6 @@
         }])
         .run(['Location', 'Messaging', 'EVENTS', 'PATHS', '$location', function (Location, Messaging, EVENTS, PATHS, $location) {
             Messaging.onReceivedMessage = function (event) {
-                console.log('Messaging000000000000000000000------on Widget Side-----------------------------------------', event);
                 if (event) {
                     switch (event.name) {
                         case EVENTS.ROUTE_CHANGE:
@@ -237,6 +236,4 @@
                     Location.go('#/items/' + path.split('/')[2]);
             }
         }]);
-
-
 })(window.angular, window.buildfire);

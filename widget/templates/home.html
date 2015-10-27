@@ -3,7 +3,6 @@
     <img ng-src="{{WidgetSections.placesInfo.data.design.secListBGImage |cropImage : WidgetSections.deviceWidth : WidgetSections.deviceHeight}}">
 </div>
 <div>
-    <!--WidgetSections.placesInfo.data.settings.defaultView-->
     <div ng-switch="WidgetSections.currentView">
         <div ng-switch-when="list">
             <div ng-if="WidgetSections.placesInfo.data.design.secListLayout"
@@ -17,4 +16,3 @@
         </div>
     </div>
 </div>
-
