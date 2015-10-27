@@ -35,6 +35,12 @@
                  */
                 WidgetSections.noMoreItems = false;
 
+                WidgetSections.showDescription = function () {
+                    if (WidgetSections.placesInfo.data.content.descriptionHTML == '<p>&nbsp;<br></p>' || WidgetSections.placesInfo.data.content.descriptionHTML == '<p><br data-mce-bogus="1"></p>')
+                        return false;
+                    else
+                        return true;
+                };
                 /**
                  * loadMoreItems method loads the sections in list page.
                  */
@@ -240,6 +246,7 @@
                  * Buildfire.datastore.onUpdate method calls when Data is changed.
                  */
                 var clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
+                    console.log(event);
                     if (event.tag === "placeInfo") {
                         if (event.data) {
                             if (event.data.settings.showDistanceIn != WidgetSections.placesInfo.data.settings.showDistanceIn)
@@ -356,7 +363,7 @@
                     console.log('navigator--------------------*******************************************************', navigator);
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(function (position) {
-                            console.log('Position----------------------',position);
+                            console.log('Position----------------------', position);
                             $scope.$apply(function () {
                                 WidgetSections.sortOnClosest = true;// will be true if user allows location
                                 WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];

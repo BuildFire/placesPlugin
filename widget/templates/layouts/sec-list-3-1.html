@@ -5,10 +5,8 @@
                 <div id="carousel" build-fire-carousel=""></div>
             </div>
         </div>
-        <div class="text-left padding-bottom-zero clearfix">
-            <p ng-if="WidgetSections.placesInfo.data.content.descriptionHTML"
-               ng-bind-html="WidgetSections.placesInfo.data.content.descriptionHTML | safeHtml">
-                {{WidgetSections.placesInfo.data.content.descriptionHTML}}</p>
+        <div class="text-left padding-bottom-zero clearfix" ng-if="WidgetSections.showDescription()">
+            <p ng-bind-html="WidgetSections.placesInfo.data.content.descriptionHTML | safeHtml"></p>
         </div>
         <div class="">
             <div class="list-layout">
