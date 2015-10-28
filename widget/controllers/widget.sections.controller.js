@@ -589,14 +589,8 @@
                     clearOnUpdateListener.clear();
                 });
 
-
                 if ($routeParams.sectionId) { // this case means the controller is serving the section view
-                    if ($routeParams.sectionId == 'allitems') {
-                        WidgetSections.selectedSections = [];
-                    }
-                    else {
-                        WidgetSections.selectedSections = [$routeParams.sectionId];
-                    }
+
                     // have to get sections explicitly in item list view
                     WidgetSections.sections = [];
                     Sections.getById($routeParams.sectionId).then(function (data) {
@@ -611,19 +605,26 @@
                     Sections.find({}).then(function success(result) {
                         WidgetSections.sections = result;
                         refreshItems();
-                       /* $timeout(function () {
-                        if ($routeParams.sectionId == 'allitems') {
-                            WidgetSections.selectedSections = [];
-                        }
-                        else {
-                            WidgetSections.selectedSections = [$routeParams.sectionId];
-                        }
-                        }, 500);*/
+                        /* $timeout(function () {
+                         if ($routeParams.sectionId == 'allitems') {
+                         WidgetSections.selectedSections = [];
+                         }
+                         else {
+                         WidgetSections.selectedSections = [$routeParams.sectionId];
+                         }
+                         }, 500);*/
 
 
                     }, function () {
 
                     });
+
+                    if ($routeParams.sectionId == 'allitems') {
+                        WidgetSections.selectedSections = [];
+                    }
+                    else {
+                        WidgetSections.selectedSections = [$routeParams.sectionId];
+                    }
                     //syn with control side
 
                     Messaging.sendMessageToControl({
