@@ -32,7 +32,8 @@
                                 sortBy: Orders.ordersMap.Manually,
                                 rankOfLastItem: '',
                                 sortByItems: OrdersItems.ordersMap.Newest,
-                                showAllItems: 'true'
+                                showAllItems: 'true',
+                                allItemImage: ''
                             },
                             design: {
                                 secListLayout: "sec-list-1-1",
@@ -66,7 +67,7 @@
                 }
                 ContentItems.isBusy = false;
                 ContentItems.items = null;
-                ContentItems.masterInfoData = null;
+                //ContentItems.masterInfoData = null;
                 ContentItems.sortOptions = OrdersItems.options;
                 ContentItems.itemSortableOptions = {
                     handle: '> .cursor-grab',
@@ -124,7 +125,7 @@
                 }
                 else {
                     searchOptions = {
-                        filter: {'$and': [{"$json.itemTitle": {"$regex": '/*'}}, {"$json.sections": {"$eq": []}}]},
+                        filter: {"$json.itemTitle": {"$regex": '/*'}},
                         skip: _skip,
                         limit: _limit + 1 // the plus one is to check if there are any more
                     };
@@ -160,6 +161,9 @@
                  * @returns {*|boolean}
                  */
                 function isUnChanged(obj) {
+                    console.clear();
+                    console.log('obj', obj);
+                    console.log('ContentItems.masterInfoData', ContentItems.masterInfoData);
                     return angular.equals(obj, ContentItems.masterInfoData);
                 }
 

@@ -1,14 +1,12 @@
-<div class="holder padding-zero">
+<div class="holder padding-zero text-overlay">
     <div id="scroll-infinite" class="places-plugin layout3">
         <div class="media-center-banner clearfix border-bottom-grey">
             <div class="plugin-slide text-center">
                 <div id="carousel" build-fire-carousel=""></div>
             </div>
         </div>
-        <div class="text-left padding-bottom-zero clearfix">
-            <p ng-if="WidgetSections.placesInfo.data.content.descriptionHTML"
-               ng-bind-html="WidgetSections.placesInfo.data.content.descriptionHTML | safeHtml">
-                {{WidgetSections.placesInfo.data.content.descriptionHTML}}</p>
+        <div class="text-left padding-bottom-zero clearfix" ng-if="WidgetSections.showDescription()">
+            <p ng-bind-html="WidgetSections.placesInfo.data.content.descriptionHTML | safeHtml"></p>
         </div>
         <div class="">
             <div class="list-layout">
@@ -17,6 +15,22 @@
                          infinite-scroll="WidgetSections.loadMoreSections()"
 
                          infinite-scroll-container="'#scroll-infinite'">
+                        <div class="list-item" ng-if="WidgetSections.placesInfo.data.content.showAllItems">
+                            <a href="#/items/allitems">
+                                <div class="list-item-media text-left overflow-hidden">
+                                    <div ng-if="WidgetSections.placesInfo.data.content.allItemImage"
+                                         class="list-media-holder pull-left">
+                                        <img default-image
+                                             ng-src="{{WidgetSections.placesInfo.data.content.allItemImage | cropImage :110 :60}}">
+                                    </div>
+                                    <div class="list-item-copy text-left padding-left-ten padding-right-ten">
+                                        <p class="ellipsis margin-zero text-primary margin-top-five"><span
+                                                class="text-primary">All Items</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                         <div class="list-item" ng-repeat="item in WidgetSections.sections">
                             <a ng-href="#/items/{{item.id}}">
                                 <div class="list-item-media text-left overflow-hidden">
@@ -69,5 +83,4 @@
         </div>
         <div ng-include="'templates/layouts/bottom-menu.html'"></div>
     </div>
-
 </div>

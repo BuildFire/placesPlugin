@@ -65,7 +65,7 @@
                             var PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
                                 , deferred = $q.defer()
                                 , success = function (result) {
-                                    if (Object.keys(result.data).length > 0) {
+                                    if (result && Object.keys(result.data).length > 0) {
                                         deferred.resolve(result);
                                     }
                                     else {
@@ -182,7 +182,7 @@
         }])
         .run(['Location', 'Messaging', 'EVENTS', 'PATHS', '$location', function (Location, Messaging, EVENTS, PATHS, $location) {
             Messaging.onReceivedMessage = function (event) {
-                console.log('Messaging000000000000000000000------on Widget Side-----------------------------------------', event);
+                console.log('Widget syn called-----', event);
                 if (event) {
                     switch (event.name) {
                         case EVENTS.ROUTE_CHANGE:
@@ -231,12 +231,13 @@
 
             buildfire.navigation.onBackButtonClick = function () {
                 var path = $location.path();
+                console.log(path);
                 if (path.indexOf('/items/') == 0)
                     Location.goToHome();
                 else if (path.indexOf('/item/') == 0)
                     Location.go('#/items/' + path.split('/')[2]);
+                else
+                    buildfire.navigation.navigateHome();
             }
         }]);
-
-
 })(window.angular, window.buildfire);

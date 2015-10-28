@@ -1,3 +1,4 @@
+/*
 describe("DesignHomeCtrl", function () {
 
     var $rootScope,
@@ -79,7 +80,7 @@ describe("DesignHomeCtrl", function () {
         });
     });
 
-    describe('changeLayout', function () {
+    xdescribe('changeLayout', function () {
         it('should change the value of placeInfo list when called for list', function () {
             controller.changeLayout('test', 'list');
             expect(controller.placeInfo.data.design["listLayout"]).toEqual('test');
@@ -187,4 +188,4 @@ describe("DesignHomeCtrl", function () {
         });
     });
 
-});
+});*/

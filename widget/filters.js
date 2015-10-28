@@ -33,7 +33,6 @@
             return function (collection, keyname) {
                 var output = [],
                     keys = [];
-console.log(collection);
                 angular.forEach(collection, function (item) {
                     var key = item[keyname];
                     if (keys.indexOf(key) === -1) {
@@ -41,7 +40,6 @@ console.log(collection);
                         output.push(item);
                     }
                 });
-                console.log(output);
                 return output;
             };
         });

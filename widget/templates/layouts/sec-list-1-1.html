@@ -1,22 +1,40 @@
-<div class="holder padding-zero has-bottom">
+<div class="holder padding-zero has-bottom text-overlay">
     <div id="scroll-infinite" class="places-plugin layout1">
         <div class="plugin-banner clearfix border-bottom-grey">
             <div class="plugin-slide text-center">
                 <div id="carousel" build-fire-carousel=""></div>
             </div>
         </div>
-        <div class="text-left padded padding-bottom-zero clearfix">
-            <p class="margin-bottom-zero" ng-if="WidgetSections.placesInfo.data.content.descriptionHTML"
-               ng-bind-html="WidgetSections.placesInfo.data.content.descriptionHTML | safeHtml">
-                {{WidgetSections.placesInfo.data.content.descriptionHTML}}</p>
+        <div class="text-left padded padding-bottom-zero clearfix"
+             ng-if="WidgetSections.showDescription()">
+            <p class="margin-bottom-zero"
+               ng-bind-html="WidgetSections.placesInfo.data.content.descriptionHTML | safeHtml"></p>
         </div>
-
         <div class="padding-top-zero">
             <div ng-show="WidgetSections.showSections">
                 <div infinite-scroll-distance="0"
                      infinite-scroll="WidgetSections.loadMoreSections()"
 
                      infinite-scroll-container="'#scroll-infinite'">
+                    <div ng-if="WidgetSections.placesInfo.data.content.showAllItems"
+                         class="plugin-banner has-info-bar clearfix"
+                         style="min-height: 10px">
+                        <a href="#/items/allitems">
+                            <div class="plugin-slide text-center">
+                                <img ng-if="WidgetSections.placesInfo.data.content.allItemImage"
+                                     ng-src="{{WidgetSections.placesInfo.data.content.allItemImage | resizeImage:342:274}}">
+                                <img ng-if="!WidgetSections.placesInfo.data.content.allItemImage"
+                                     src="assets/images/placeholder.jpg">
+                            </div>
+                            <div class="info-bar sec-list-dark-overlay">
+                                <div class="col-xs-12 text-left pull-left">
+                                    <p class="margin-bottom-zero ellipsis">
+                                        <span class="text-primary" style="color:#fff !important;">All Items</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                     <div ng-repeat="item in WidgetSections.sections" class="plugin-banner has-info-bar clearfix"
                          style="min-height: 10px">
                         <a href="#/items/{{item.id}}">
@@ -24,9 +42,10 @@
                                 <img ng-if="item.data.mainImage" ng-src="{{item.data.mainImage | resizeImage:342:274}}">
                                 <img ng-if="!item.data.mainImage" src="assets/images/placeholder.jpg">
                             </div>
-                            <div class="info-bar sec-list-dark-overlay" >
+                            <div class="info-bar sec-list-dark-overlay">
                                 <div class="col-xs-12 text-left pull-left">
-                                    <p class="margin-bottom-zero ellipsis"><span class="text-primary" style="color:#fff !important;">{{item.data.secTitle}}</span>
+                                    <p class="margin-bottom-zero ellipsis"><span class="text-primary"
+                                                                                 style="color:#fff !important;">{{item.data.secTitle}}</span>
                                     </p>
 
                                     <p class="margin-bottom-zero ellipsis" style="color:#fff !important;">
@@ -48,7 +67,6 @@
                     <div class="plugin-banner has-info-bar clearfix"
                          ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
                         <div class="plugin-slide text-center">
-                            <!--<img default-image="" ng-src="{{item.data.listImage | resizeImage:342:274}}">-->
                             <img ng-if="item.data.listImage" ng-src="{{item.data.listImage | resizeImage:342:274}}">
                             <img ng-if="!item.data.listImage" src="assets/images/placeholder.jpg">
                         </div>
@@ -70,5 +88,4 @@
         </div>
         <div ng-include="'templates/layouts/bottom-menu.html'"></div>
     </div>
-
 </div>

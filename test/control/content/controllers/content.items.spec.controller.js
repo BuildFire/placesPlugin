@@ -125,7 +125,7 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
     //        expect(Sections).toHaveBeenCalled();
     //    });
     //});
-    describe('ContentItems.toggleSortOrder', function () {
+    xdescribe('ContentItems.toggleSortOrder', function () {
         it('it should pass if ContentItems.toggleSortOrder calls', function () {
             ContentItems.toggleSortOrder('Newest');
             $rootScope.$digest();

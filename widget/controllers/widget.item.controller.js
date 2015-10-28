@@ -2,7 +2,6 @@
     angular
         .module('placesWidget')
         .controller('WidgetItemCtrl', ['$scope', 'COLLECTIONS', 'DB', '$routeParams', 'Buildfire', '$rootScope', 'GeoDistance', 'Messaging', 'Location', 'EVENTS', 'PATHS', 'AppConfig', 'placesInfo', 'Orders', 'OrdersItems', 'item', function ($scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS, AppConfig, placesInfo, Orders, OrdersItems, item) {
-            AppConfig.changeBackgroundTheme();
             var WidgetItem = this
                 , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
                 , Items = new DB(COLLECTIONS.Items)
@@ -14,9 +13,11 @@
                             images: [],
                             descriptionHTML: '<p>&nbsp;<br></p>',
                             description: '<p>&nbsp;<br></p>',
-                            sortBy: Orders.ordersMap.Newest,
+                            sortBy: Orders.ordersMap.Manually,
                             rankOfLastItem: '',
-                            sortByItems: OrdersItems.ordersMap.Newest
+                            sortByItems: OrdersItems.ordersMap.Newest,
+                            showAllItems: 'true',
+                            allItemImage: ''
                         },
                         design: {
                             secListLayout: "sec-list-1-1",
@@ -117,7 +118,6 @@
                 getGeoLocation(); // get data if localStorage is not supported
 
             $scope.$on("Carousel:LOADED", function () {
-                console.log('carousel added------', WidgetItem.item);
                 if (!WidgetItem.view) {
                     console.log('if------', WidgetItem.view);
                     WidgetItem.view = new Buildfire.components.carousel.view("#carousel", []);
@@ -153,6 +153,14 @@
                 }
             );
 
+            WidgetItem.openMap = function () {
+                if (WidgetItem.item && WidgetItem.item.data && WidgetItem.item.data.address)
+                    if (buildfire.context.device && buildfire.context.device.platform == 'ios')
+                        window.open('maps://maps.google.com/maps?daddr=' + WidgetItem.item.data.address.lng + ',' + WidgetItem.item.data.address.lat, '_system');
+                    else
+                        window.open('http://maps.google.com/maps?daddr=' + WidgetItem.item.data.address.lng + ',' + WidgetItem.item.data.address.lat, '_system');
+            };
+
             //syn with widget side
             Messaging.sendMessageToControl({
                 name: EVENTS.ROUTE_CHANGE,
@@ -171,7 +179,6 @@
 
             function calDistance(origin, destination, distanceUnit) {
                 GeoDistance.getDistance(origin, destination, distanceUnit).then(function (data) {
-                        console.log('data in distance cal------success----', data);
                         if (data && data.rows[0] && data.rows[0].elements[0] && data.rows[0].elements[0].distance) {
                             WidgetItem.distance = data.rows[0].elements[0].distance.text;
                         }

@@ -116,27 +116,8 @@
 </div>
 <div ng-show="itemShow=='Design'">
     <h4>Places Item Design</h4>
-
-    <div class="item clearfix row margin-top-thirty">
-        <div class="labels col-md-3 padding-right-zero pull-left">
-            <span>Background Image</span>
-        </div>
-        <div class="main col-md-9 pull-right">
-            <div class="screens clearfix">
-                <div class="screen text-center layouticon pull-left">
-                    <a class="border-grey border-radius-three default-background-hover"
-                       ng-click="ContentItem.addBackgroundImage()">
-                        <span ng-show="!ContentItem.item.data.backgroundImage" class="add-icon hidden">+</span>
-                        <img ng-show="ContentItem.item.data.backgroundImage"
-                             ng-src="{{ContentItem.item.data.backgroundImage | resizeImage : 82:110}}">
-                    </a>
-                <span ng-show="ContentItem.item.data.backgroundImage"
-                      class="icon btn-delete-icon btn-danger transition-third"
-                      ng-click="ContentItem.removeBackgroundImage()"></span>
-                </div>
-            </div>
-        </div>
-    </div>
+    <hr>
+    <div id="background"></div>
 </div>
 <hr class="none">
 <div class="item clearfix row">

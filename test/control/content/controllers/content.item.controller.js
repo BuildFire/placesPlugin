@@ -1,3 +1,4 @@
+/*
 describe('Unit : placesContent content.item.controller.js', function () {
     var ContentItem, scope, $rootScope, $controller, q, $timeout, $httpBackend, DB, Buildfire, COLLECTIONS, Location, $routeParams, Utils;
     beforeEach(module('placesContent'));
@@ -294,4 +295,4 @@ describe('Unit : placesContent content.item.controller.js', function () {
             });
         });
     });
-});
+});*/

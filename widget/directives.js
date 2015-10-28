@@ -69,9 +69,9 @@
 
                             var selectedLocation = null;
 
-                            var currentLocationIconImageUrl = '../resources/google_marker_blue_icon.png';
-                            var placeLocationIconImageUrl = '../resources/google_marker_red_icon.png';
-                            var selectedLocationIconImageUrl = '../resources/google_marker_green_icon.png';
+                            var currentLocationIconImageUrl = 'assets/images/google_marker_blue_icon.png';
+                            var placeLocationIconImageUrl = 'assets/images/google_marker_red_icon.png';
+                            var selectedLocationIconImageUrl = 'assets/images/google_marker_green_icon.png';
 
                             var currentLocationIcon = getCustomMarkerIcon(currentLocationIconImageUrl);
                             var placeLocationIcon = getCustomMarkerIcon(placeLocationIconImageUrl);
@@ -179,7 +179,7 @@
                                 }
                             }
 
-                            var placeLocationIconImageUrl = '../resources/google_marker_red_icon.png';
+                            var placeLocationIconImageUrl = 'assets/images/google_marker_red_icon.png';
 
                             var placeLocationIcon = getCustomMarkerIcon(placeLocationIconImageUrl);
 
@@ -202,17 +202,6 @@
                                     icon: placeLocationIcon,
                                     shape: shape
                                 });
-
-                                /*if (scope.showWindow.toString() != 'false') {
-                                 var infowindow = new google.maps.InfoWindow({
-                                 content: "<a onclick='openInMap(" + scope.locationData.currentCoordinates[1] + "," + scope.locationData.currentCoordinates[0] + ")'>Get Directions</a>"
-                                 });
-                                 marker.addListener('click', function () {
-                                 infowindow.open(map, marker);
-                                 });
-                                 infowindow.open(map, marker);
-                                 }
-                                 else {*/
                                 marker.addListener('click', function () {
                                     openInMap(scope.locationData.currentCoordinates[1], scope.locationData.currentCoordinates[0]);
                                 });

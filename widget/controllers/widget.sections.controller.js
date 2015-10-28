@@ -3,13 +3,20 @@
         .module('placesWidget')
         .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance', '$routeParams', '$timeout', 'placesInfo', 'OrdersItems', '$filter',
             function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $routeParams, $timeout, placesInfo, OrdersItems, $filter) {
-
-                AppConfig.changeBackgroundTheme();
                 var WidgetSections = this;
                 WidgetSections.sectionId = $routeParams.sectionId;
                 WidgetSections.showMenu = false;
                 WidgetSections.menuTab = 'Category';
-                WidgetSections.selectedSections = [];
+
+                //WidgetSections.selectedSections = [];
+                if ($routeParams.sectionId && $routeParams.sectionId != 'allitems') {
+                    WidgetSections.selectedSections = [$routeParams.sectionId];
+                }
+                else {
+                    WidgetSections.selectedSections = [];
+                }
+
+
                 WidgetSections.showSections = true;
                 WidgetSections.placesInfo = null;
                 WidgetSections.currentView = null;
@@ -19,7 +26,6 @@
 
                 WidgetSections.locationData = {
                     items: null,
-                    //currentCoordinates: [-117.1920427, 32.7708401] // default san diego
                     currentCoordinates: null
                 };
 
@@ -35,6 +41,12 @@
                  */
                 WidgetSections.noMoreItems = false;
 
+                WidgetSections.showDescription = function () {
+                    if (WidgetSections.placesInfo.data.content.descriptionHTML == '<p>&nbsp;<br></p>' || WidgetSections.placesInfo.data.content.descriptionHTML == '<p><br data-mce-bogus="1"></p>')
+                        return false;
+                    else
+                        return true;
+                };
                 /**
                  * loadMoreItems method loads the sections in list page.
                  */
@@ -42,7 +54,7 @@
 
                     console.log('items load called');
                     if (WidgetSections.noMoreItems || WidgetSections.isBusyItems) {
-                        //alert('full items');
+                        //alert('not loading items');
                         console.log('but no more items');
                         return;
                     }
@@ -69,7 +81,6 @@
 
                         console.log('result', result);
                         console.log('WidgetSections.locationData.items BEFORE', WidgetSections.locationData.items);
-                        //WidgetSections.locationData.items = WidgetSections.locationData.items ? WidgetSections.locationData.items.concat(result) : result;
                         var items = WidgetSections.locationData.items ? WidgetSections.locationData.items.concat(result) : result;
                         WidgetSections.locationData.items = $filter('unique')(items, 'id');
                         console.log('WidgetSections.locationData.items AFTER', WidgetSections.locationData.items);
@@ -84,7 +95,7 @@
                     view = null,
                     mapview = null,
                     currentLayout = '',
-                    _limit = 5,
+                    _limit = 10,
                     searchOptions = {
                         //filter: {"$json.secTitle": {"$regex": '/*'}},
                         skip: _skip,
@@ -101,9 +112,11 @@
                                 images: [],
                                 descriptionHTML: '<p>&nbsp;<br></p>',
                                 description: '<p>&nbsp;<br></p>',
-                                sortBy: 'Newest',
+                                sortBy: Orders.ordersMap.Manually,
                                 rankOfLastItem: '',
-                                sortByItems: 'Newest'
+                                sortByItems: OrdersItems.ordersMap.Newest,
+                                showAllItems: 'true',
+                                allItemImage: ''
                             },
                             design: {
                                 secListLayout: "sec-list-1-1",
@@ -118,6 +131,28 @@
                             }
                         }
                     };
+
+                /*declare the device width heights*/
+                WidgetSections.deviceHeight = window.innerHeight;
+                WidgetSections.deviceWidth = window.innerWidth;
+
+                /*initialize the device width heights*/
+                var initDeviceSize = function (callback) {
+                    WidgetSections.deviceHeight = window.innerHeight;
+                    WidgetSections.deviceWidth = window.innerWidth;
+                    if (callback) {
+                        if (WidgetSections.deviceWidth == 0 || WidgetSections.deviceHeight == 0) {
+                            setTimeout(function () {
+                                initDeviceSize(callback);
+                            }, 500);
+                        } else {
+                            callback();
+                            if (!$scope.$$phase && !$scope.$root.$$phase) {
+                                $scope.$apply();
+                            }
+                        }
+                    }
+                };
 
                 /**
                  * WidgetSections.isBusy is used for infinite scroll.
@@ -171,13 +206,9 @@
                 };
 
                 var refreshItems = function () {
-                    //alert('refresh called');
                     searchOptionsItems.skip = 0;
                     WidgetSections.noMoreItems = false;
                     WidgetSections.isBusyItems = false;
-                    /*if (WidgetSections.locationData.items)
-                     WidgetSections.locationData.items.length = 0;*/
-
                     if (WidgetSections.locationData.items) {
                         WidgetSections.locationData.items = [];
                     }
@@ -185,20 +216,9 @@
                 };
 
                 var loadAllItemsOfSections = function () {
-                    //alert('called');
                     var itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
                     searchOptionsItems.filter = itemFilter;
-                    //WidgetSections.items = null;
                     refreshItems();
-                    //WidgetSections.loadMoreItems();
-
-                    //updateGetOptionsItems();
-                    /* Items.find(itemFilter).then(function (res) {
-                     //WidgetSections.items = res;
-                     WidgetSections.locationData.items = res;//angular.copy(WidgetSections.items);
-                     }, function () {
-
-                     });*/
                 };
 
                 var initMapCarousel = function () {
@@ -240,14 +260,11 @@
                  * Buildfire.datastore.onUpdate method calls when Data is changed.
                  */
                 var clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
+                    console.log('Event in ------------------', event);
                     if (event.tag === "placeInfo") {
                         if (event.data) {
                             if (event.data.settings.showDistanceIn != WidgetSections.placesInfo.data.settings.showDistanceIn)
                                 $window.location.reload();
-
-                            if (event.data.design) {
-                                AppConfig.changeBackgroundTheme(event.data.design.secListBGImage);
-                            }
 
                             WidgetSections.placesInfo = event;
                             WidgetSections.selectedItem = null;
@@ -285,10 +302,8 @@
                             }
                             WidgetSections.selectedItem = null;
                             WidgetSections.selectedItemDistance = null;
-                            //WidgetSections.items = angular.copy(WidgetSections.locationData.items);
                             $scope.$apply();
                         }
-                        //WidgetSections.locationData.items = angular.copy(WidgetSections.items);
                     }
                     else {
                         view = null;
@@ -305,9 +320,6 @@
                     }
                     else {
                         WidgetSections.placesInfo = _placesInfoData;
-                    }
-                    if (WidgetSections.placesInfo.data.design.secListBGImage) {
-                        AppConfig.changeBackgroundTheme(WidgetSections.placesInfo.data.design.secListBGImage);
                     }
                     if (WidgetSections.placesInfo.data.settings.showDistanceIn == 'miles')
                         $scope.distanceSlider = {
@@ -353,7 +365,6 @@
 
 
                 function getGeoLocation() {
-                    console.log('navigator--------------------',navigator);
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(function (position) {
                             $scope.$apply(function () {
@@ -361,9 +372,8 @@
                                 WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
                                 localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
                             });
-                        },function(error){
-                            alert('Error occurred');
-                            console.log('Error while getting location',error);
+                        }, function (error) {
+                            console.error('Error while getting location', error);
                         });
                     }
                     // else - in this case, default coords will be used
@@ -412,22 +422,23 @@
                 }
 
                 function filterChanged() {
-                        var itemFilter;
-                        WidgetSections.selectedItem = null;
-                        console.log('filter changed---------------', WidgetSections.selectedSections);
-                        if (WidgetSections.selectedSections.length) {
-                            console.log('Selected called');
-                            itemFilter = {'$json.sections': {'$in': WidgetSections.selectedSections}};
-                        }
-                        else if ($routeParams.sectionId == 'allitems') {
-                            itemFilter = {'$json.sections': {'$eq': WidgetSections.selectedSections}};
-                        }
-                        else {
-                            itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
-                        }
-                        searchOptionsItems.filter = itemFilter;
-                        refreshItems();
-                        WidgetSections.loadMoreItems();
+                    var itemFilter;
+                    WidgetSections.selectedItem = null;
+                    if (WidgetSections.selectedSections.length) {
+                        // filter applied
+                        itemFilter = {'$json.sections': {'$in': WidgetSections.selectedSections}};
+                    }
+                    else {
+                        // all items selected
+                        itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
+                    }
+                    /* else if ($routeParams.sectionId == 'allitems') {
+                     // all items selected
+                     itemFilter = {"$json.itemTitle": {"$regex": '/!*'}};
+                     }*/
+                    searchOptionsItems.filter = itemFilter;
+                    refreshItems();
+                    WidgetSections.loadMoreItems();
                 }
 
                 WidgetSections.itemsOrder = function (item) {
@@ -448,7 +459,7 @@
                     initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
 
                     GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, [WidgetSections.selectedItem], '').then(function (result) {
-                        console.log(result);
+                        console.log('Distance---------------------', result);
                         if (result.rows.length && result.rows[0].elements.length && result.rows[0].elements[0].distance && result.rows[0].elements[0].distance.text) {
                             WidgetSections.selectedItemDistance = result.rows[0].elements[0].distance.text;
                         } else {
@@ -485,10 +496,6 @@
                  * loadMoreSections method loads the sections in list page.
                  */
                 WidgetSections.loadMoreSections = function () {
-                  /*  if (WidgetSections.isBusy || WidgetSections.noMoreSections) {
-                        console.log('fetch sections cancelled');
-                        return;
-                    }*/
                     if (WidgetSections.noMoreSections) {
                         console.log('fetch sections cancelled bcs all loaded up');
                         return;
@@ -541,7 +548,6 @@
                 };
 
                 WidgetSections.openInMap = function () {
-                    //Location.go('https://maps.apple.com/maps?q=' + WidgetSections.selectedItem.data.address.aName);
                     if (buildfire.context.device && buildfire.context.device.platform == 'ios')
                         window.open("maps://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lng + "," + WidgetSections.selectedItem.data.address.lat);
                     else
@@ -554,10 +560,10 @@
                 };
 
 
-
-                document.addEventListener("deviceready", function(){
-                    alert('Event fired');
-                    getGeoLocation()});
+                /*document.addEventListener("deviceready", );*/
+                $scope.$on('$viewContentLoaded', function () {
+                    getGeoLocation()
+                });
                 $scope.$watch(function () {
                     return WidgetSections.locationData.items;
                 }, getItemsDistance);
@@ -584,36 +590,36 @@
                     }
                 });
 
-                /**
-                 * will called when controller scope has been destroyed.
-                 */
-                $scope.$on("$destroy", function () {
-                    clearOnUpdateListener.clear();
-                });
-
-
                 if ($routeParams.sectionId) { // this case means the controller is serving the section view
+
+
+                    /*  if ($routeParams.sectionId == 'allitems') {
+                     WidgetSections.selectedSections = [];
+                     }
+                     else {
+                     WidgetSections.selectedSections = [$routeParams.sectionId];
+                     console.log(WidgetSections.selectedSections);
+                     }
+                     */
+
                     // have to get sections explicitly in item list view
-                    //alert('called');
                     WidgetSections.sections = [];
+                    Sections.getById($routeParams.sectionId).then(function (data) {
+                            WidgetSections.sectionInfo = data;
+                        }
+                        ,
+                        function (err) {
+                            // do somthing on err
+                        }
+                    )
+                    ;
                     Sections.find({}).then(function success(result) {
                         WidgetSections.sections = result;
-                        refreshItems();
-                        //WidgetSections.locationData.items = null;
-                        $timeout(function () {
-                            if ($routeParams.sectionId == 'allitems') {
-                                WidgetSections.selectedSections = [];
-                            }
-                            else {
-                                WidgetSections.selectedSections = [$routeParams.sectionId];
-                            }
-                        }, 1000);
-
 
                     }, function () {
-
                     });
-                    //syn with widget side
+
+                    //syn with control side
 
                     Messaging.sendMessageToControl({
                         name: EVENTS.ROUTE_CHANGE,
@@ -623,5 +629,16 @@
                         }
                     });
                 }
-            }]);
+
+                /**
+                 * will called when controller scope has been destroyed.
+                 */
+                $scope.$on("$destroy", function () {
+                    clearOnUpdateListener.clear();
+                });
+
+
+            }
+        ])
+    ;
 })(window.angular, undefined);
