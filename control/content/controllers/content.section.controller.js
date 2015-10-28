@@ -197,7 +197,9 @@
                     if (tmrDelayForMedia) {
                         clearTimeout(tmrDelayForMedia);
                     }
-                    if (_section && !isUnChanged(_section)) {
+
+                    ContentSection.isItemValid = isValidItem(ContentSection.section.data);
+                    if (_section && !isUnChanged(_section) && ContentSection.isItemValid) {
                         tmrDelayForMedia = setTimeout(function () {
                             /* if (_section.id) {
                              updateItemData(_section);
@@ -240,6 +242,12 @@
                 ContentSection.done = function () {
                     Location.goToHome();
                 };
+
+                //to validate the section
+                function isValidItem(item) {
+                    return item.secTitle;
+                }
+
 
                 //syn with widget
                 Messaging.sendMessageToWidget({
