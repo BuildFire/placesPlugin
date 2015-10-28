@@ -1,3 +1,4 @@
+/*
 describe('Unit : Controller - ContentSectionCtrl', function () {
 
 // load the controller's module
@@ -71,4 +72,4 @@ describe('Unit : Controller - ContentSectionCtrl', function () {
             expect(ContentSection).not.toBeUndefined();
         });
     });
-});
+});*/

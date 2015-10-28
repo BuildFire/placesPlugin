@@ -1,3 +1,4 @@
+/*
 describe("DesignHomeCtrl :::placesInfo =null", function () {
 
     var $rootScope,
@@ -36,4 +37,4 @@ describe("DesignHomeCtrl :::placesInfo =null", function () {
             expect(controller.placeInfo).toBeDefined();
         });
     });
-});
+});*/
