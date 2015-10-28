@@ -65,7 +65,7 @@
                             var PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
                                 , deferred = $q.defer()
                                 , success = function (result) {
-                                    if (Object.keys(result.data).length > 0) {
+                                    if (result && Object.keys(result.data).length > 0) {
                                         deferred.resolve(result);
                                     }
                                     else {
@@ -182,7 +182,7 @@
         }])
         .run(['Location', 'Messaging', 'EVENTS', 'PATHS', '$location', function (Location, Messaging, EVENTS, PATHS, $location) {
             Messaging.onReceivedMessage = function (event) {
-                console.log('Widget syn called-----',event);
+                console.log('Widget syn called-----', event);
                 if (event) {
                     switch (event.name) {
                         case EVENTS.ROUTE_CHANGE:
