@@ -420,64 +420,17 @@
                         // filter applied
                         itemFilter = {'$json.sections': {'$in': WidgetSections.selectedSections}};
                     }
-                    else{
+                    else {
                         // all items selected
                         itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
                     }
-                   /* else if ($routeParams.sectionId == 'allitems') {
-                        // all items selected
-                        itemFilter = {"$json.itemTitle": {"$regex": '/!*'}};
-                    }*/
+                    /* else if ($routeParams.sectionId == 'allitems') {
+                     // all items selected
+                     itemFilter = {"$json.itemTitle": {"$regex": '/!*'}};
+                     }*/
                     searchOptionsItems.filter = itemFilter;
                     refreshItems();
                     WidgetSections.loadMoreItems();
-                }
-
-                if ($routeParams.sectionId) { // this case means the controller is serving the section view
-
-                    // have to get sections explicitly in item list view
-                    WidgetSections.sections = [];
-                    Sections.getById($routeParams.sectionId).then(function (data) {
-                            WidgetSections.sectionInfo = data;
-                        }
-                        ,
-                        function (err) {
-                            // do somthing on err
-                        }
-                    )
-                    ;
-                    Sections.find({}).then(function success(result) {
-                        WidgetSections.sections = result;
-                        refreshItems();
-                        /* $timeout(function () {
-                         if ($routeParams.sectionId == 'allitems') {
-                         WidgetSections.selectedSections = [];
-                         }
-                         else {
-                         WidgetSections.selectedSections = [$routeParams.sectionId];
-                         }
-                         }, 500);*/
-
-
-                    }, function () {
-
-                    });
-
-                    if ($routeParams.sectionId == 'allitems') {
-                        WidgetSections.selectedSections = [];
-                    }
-                    else {
-                        WidgetSections.selectedSections = [$routeParams.sectionId];
-                    }
-                    //syn with control side
-
-                    Messaging.sendMessageToControl({
-                        name: EVENTS.ROUTE_CHANGE,
-                        message: {
-                            path: PATHS.SECTION,
-                            secId: $routeParams.sectionId
-                        }
-                    });
                 }
 
                 WidgetSections.itemsOrder = function (item) {
@@ -635,6 +588,43 @@
                 $scope.$on("$destroy", function () {
                     clearOnUpdateListener.clear();
                 });
+
+                if ($routeParams.sectionId) { // this case means the controller is serving the section view
+
+                    // have to get sections explicitly in item list view
+                    WidgetSections.sections = [];
+                    Sections.getById($routeParams.sectionId).then(function (data) {
+                            WidgetSections.sectionInfo = data;
+                        }
+                        ,
+                        function (err) {
+                            // do somthing on err
+                        }
+                    )
+                    ;
+                    Sections.find({}).then(function success(result) {
+                        WidgetSections.sections = result;
+                        refreshItems();
+                    }, function () {
+                    });
+                    $timeout(function () {
+                        if ($routeParams.sectionId == 'allitems') {
+                            WidgetSections.selectedSections = [];
+                        }
+                        else {
+                            WidgetSections.selectedSections = [$routeParams.sectionId];
+                        }
+                    }, 500);
+                    //syn with control side
+
+                    Messaging.sendMessageToControl({
+                        name: EVENTS.ROUTE_CHANGE,
+                        message: {
+                            path: PATHS.SECTION,
+                            secId: $routeParams.sectionId
+                        }
+                    });
+                }
             }
         ])
     ;
