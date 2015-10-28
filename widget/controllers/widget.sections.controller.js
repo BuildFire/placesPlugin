@@ -30,7 +30,7 @@
                  * WidgetSections.noMoreItems checks for further data in Items
                  * @type {boolean}
                  */
-                WidgetSections.noMoreItems = false;
+                WidgetSections.noMoreItems = true;
 
                 WidgetSections.showDescription = function () {
                     if (WidgetSections.placesInfo.data.content.descriptionHTML == '<p>&nbsp;<br></p>' || WidgetSections.placesInfo.data.content.descriptionHTML == '<p><br data-mce-bogus="1"></p>')
@@ -45,7 +45,7 @@
 
                     console.log('items load called');
                     if (WidgetSections.noMoreItems || WidgetSections.isBusyItems) {
-                        //alert('full items');
+                        //alert('not loading items');
                         console.log('but no more items');
                         return;
                     }
@@ -252,7 +252,7 @@
                  * Buildfire.datastore.onUpdate method calls when Data is changed.
                  */
                 var clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
-                    console.log('Event in ------------------',event);
+                    console.log('Event in ------------------', event);
                     if (event.tag === "placeInfo") {
                         if (event.data) {
                             if (event.data.settings.showDistanceIn != WidgetSections.placesInfo.data.settings.showDistanceIn)
@@ -417,19 +417,20 @@
                     var itemFilter;
                     WidgetSections.selectedItem = null;
                     if (WidgetSections.selectedSections.length) {
+                        // filter applied
                         itemFilter = {'$json.sections': {'$in': WidgetSections.selectedSections}};
                     }
-                    else if ($routeParams.sectionId == 'allitems') {
-                        itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
-                        //itemFilter = {'$json.sections': {'$eq': WidgetSections.selectedSections}};
-                        //itemFilter = {};
-                    }
-                    else {
+                    else{
+                        // all items selected
                         itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
                     }
+                   /* else if ($routeParams.sectionId == 'allitems') {
+                        // all items selected
+                        itemFilter = {"$json.itemTitle": {"$regex": '/!*'}};
+                    }*/
                     searchOptionsItems.filter = itemFilter;
-                    //refreshItems();
-                    //WidgetSections.loadMoreItems();
+                    refreshItems();
+                    WidgetSections.loadMoreItems();
                 }
 
                 WidgetSections.itemsOrder = function (item) {
@@ -450,7 +451,7 @@
                     initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
 
                     GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, [WidgetSections.selectedItem], '').then(function (result) {
-                        console.log('Distance---------------------',result);
+                        console.log('Distance---------------------', result);
                         if (result.rows.length && result.rows[0].elements.length && result.rows[0].elements[0].distance && result.rows[0].elements[0].distance.text) {
                             WidgetSections.selectedItemDistance = result.rows[0].elements[0].distance.text;
                         } else {
@@ -590,6 +591,12 @@
 
 
                 if ($routeParams.sectionId) { // this case means the controller is serving the section view
+                    if ($routeParams.sectionId == 'allitems') {
+                        WidgetSections.selectedSections = [];
+                    }
+                    else {
+                        WidgetSections.selectedSections = [$routeParams.sectionId];
+                    }
                     // have to get sections explicitly in item list view
                     WidgetSections.sections = [];
                     Sections.getById($routeParams.sectionId).then(function (data) {
@@ -604,15 +611,14 @@
                     Sections.find({}).then(function success(result) {
                         WidgetSections.sections = result;
                         refreshItems();
-                        //WidgetSections.locationData.items = null;
-                        $timeout(function () {
-                            if ($routeParams.sectionId == 'allitems') {
-                                WidgetSections.selectedSections = [];
-                            }
-                            else {
-                                WidgetSections.selectedSections = [$routeParams.sectionId];
-                            }
-                        }, 1000);
+                       /* $timeout(function () {
+                        if ($routeParams.sectionId == 'allitems') {
+                            WidgetSections.selectedSections = [];
+                        }
+                        else {
+                            WidgetSections.selectedSections = [$routeParams.sectionId];
+                        }
+                        }, 500);*/
 
 
                     }, function () {
