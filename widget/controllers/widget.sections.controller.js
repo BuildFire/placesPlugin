@@ -7,7 +7,16 @@
                 WidgetSections.sectionId = $routeParams.sectionId;
                 WidgetSections.showMenu = false;
                 WidgetSections.menuTab = 'Category';
-                WidgetSections.selectedSections = [];
+
+                //WidgetSections.selectedSections = [];
+                if ($routeParams.sectionId && $routeParams.sectionId != 'allitems') {
+                    WidgetSections.selectedSections = [$routeParams.sectionId];
+                }
+                else {
+                    WidgetSections.selectedSections = [];
+                }
+
+
                 WidgetSections.showSections = true;
                 WidgetSections.placesInfo = null;
                 WidgetSections.currentView = null;
@@ -30,7 +39,7 @@
                  * WidgetSections.noMoreItems checks for further data in Items
                  * @type {boolean}
                  */
-                WidgetSections.noMoreItems = true;
+                WidgetSections.noMoreItems = false;
 
                 WidgetSections.showDescription = function () {
                     if (WidgetSections.placesInfo.data.content.descriptionHTML == '<p>&nbsp;<br></p>' || WidgetSections.placesInfo.data.content.descriptionHTML == '<p><br data-mce-bogus="1"></p>')
@@ -197,7 +206,6 @@
                 };
 
                 var refreshItems = function () {
-                    //alert('refresh called');
                     searchOptionsItems.skip = 0;
                     WidgetSections.noMoreItems = false;
                     WidgetSections.isBusyItems = false;
@@ -582,14 +590,17 @@
                     }
                 });
 
-                /**
-                 * will called when controller scope has been destroyed.
-                 */
-                $scope.$on("$destroy", function () {
-                    clearOnUpdateListener.clear();
-                });
-
                 if ($routeParams.sectionId) { // this case means the controller is serving the section view
+
+
+                    /*  if ($routeParams.sectionId == 'allitems') {
+                     WidgetSections.selectedSections = [];
+                     }
+                     else {
+                     WidgetSections.selectedSections = [$routeParams.sectionId];
+                     console.log(WidgetSections.selectedSections);
+                     }
+                     */
 
                     // have to get sections explicitly in item list view
                     WidgetSections.sections = [];
@@ -604,17 +615,10 @@
                     ;
                     Sections.find({}).then(function success(result) {
                         WidgetSections.sections = result;
-                        refreshItems();
+
                     }, function () {
                     });
-                    $timeout(function () {
-                        if ($routeParams.sectionId == 'allitems') {
-                            WidgetSections.selectedSections = [];
-                        }
-                        else {
-                            WidgetSections.selectedSections = [$routeParams.sectionId];
-                        }
-                    }, 500);
+
                     //syn with control side
 
                     Messaging.sendMessageToControl({
@@ -625,6 +629,15 @@
                         }
                     });
                 }
+
+                /**
+                 * will called when controller scope has been destroyed.
+                 */
+                $scope.$on("$destroy", function () {
+                    clearOnUpdateListener.clear();
+                });
+
+
             }
         ])
     ;
