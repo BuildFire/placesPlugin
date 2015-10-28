@@ -582,14 +582,17 @@
                     }
                 });
 
-                /**
-                 * will called when controller scope has been destroyed.
-                 */
-                $scope.$on("$destroy", function () {
-                    clearOnUpdateListener.clear();
-                });
-
                 if ($routeParams.sectionId) { // this case means the controller is serving the section view
+
+                    //$timeout(function () {
+                    if ($routeParams.sectionId == 'allitems') {
+                        WidgetSections.selectedSections = [];
+                    }
+                    else {
+                        WidgetSections.selectedSections = [$routeParams.sectionId];
+                        console.log(WidgetSections.selectedSections);
+                    }
+                    //}, 1000);
 
                     // have to get sections explicitly in item list view
                     WidgetSections.sections = [];
@@ -607,14 +610,7 @@
                         refreshItems();
                     }, function () {
                     });
-                    $timeout(function () {
-                        if ($routeParams.sectionId == 'allitems') {
-                            WidgetSections.selectedSections = [];
-                        }
-                        else {
-                            WidgetSections.selectedSections = [$routeParams.sectionId];
-                        }
-                    }, 500);
+
                     //syn with control side
 
                     Messaging.sendMessageToControl({
@@ -625,6 +621,15 @@
                         }
                     });
                 }
+
+                /**
+                 * will called when controller scope has been destroyed.
+                 */
+                $scope.$on("$destroy", function () {
+                    clearOnUpdateListener.clear();
+                });
+
+
             }
         ])
     ;

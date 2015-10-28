@@ -236,6 +236,8 @@
                     Location.goToHome();
                 else if (path.indexOf('/item/') == 0)
                     Location.go('#/items/' + path.split('/')[2]);
+                else
+                    buildfire.navigation.navigateHome();
             }
         }]);
 })(window.angular, window.buildfire);
