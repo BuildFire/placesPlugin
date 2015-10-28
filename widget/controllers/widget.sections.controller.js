@@ -584,7 +584,7 @@
 
                 if ($routeParams.sectionId) { // this case means the controller is serving the section view
 
-                    //$timeout(function () {
+                    $timeout(function () {
                     if ($routeParams.sectionId == 'allitems') {
                         WidgetSections.selectedSections = [];
                     }
@@ -592,7 +592,7 @@
                         WidgetSections.selectedSections = [$routeParams.sectionId];
                         console.log(WidgetSections.selectedSections);
                     }
-                    //}, 1000);
+                    }, 500);
 
                     // have to get sections explicitly in item list view
                     WidgetSections.sections = [];
