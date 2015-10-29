@@ -199,7 +199,8 @@
                     if (tmrDelayForItem) {
                         clearTimeout(tmrDelayForItem);
                     }
-                    if (_item && !isUnChanged(_item)) {
+                    ContentItem.isItemValid = isValidItem(ContentItem.item.data);
+                    if (_item && !isUnChanged(_item) && ContentItem.isItemValid) {
                         tmrDelayForItem = setTimeout(function () {
                             insertAndUpdate(_item);
                         }, 1000);
@@ -302,6 +303,13 @@
                         ContentItem.currentCoordinates = null;
                     }
                 };
+
+
+                //to validate the item
+                function isValidItem(item) {
+                    return item.itemTitle;
+                }
+
 
                 //syn with widget
                 Messaging.sendMessageToWidget({

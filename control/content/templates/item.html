@@ -124,7 +124,7 @@
     <div class="main col-md-9 pull-right">
         <div class="col-md-6 pull-right padding-right-zero padding-left-ten">
             <a class="btn btn-primary pull-right stretch" ng-click="ContentItem.done()"
-               href="javaScript:void(0);">Done</a>
+               ng-disabled="!ContentItem.isItemValid" href="javaScript:void(0);">Done</a>
         </div>
     </div>
 </div>
