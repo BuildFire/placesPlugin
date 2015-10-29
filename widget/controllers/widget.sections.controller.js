@@ -7,7 +7,6 @@
                 WidgetSections.sectionId = $routeParams.sectionId;
                 WidgetSections.showMenu = false;
                 WidgetSections.menuTab = 'Category';
-
                 //WidgetSections.selectedSections = [];
                 if ($routeParams.sectionId && $routeParams.sectionId != 'allitems') {
                     WidgetSections.selectedSections = [$routeParams.sectionId];
