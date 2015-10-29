@@ -1,88 +1,85 @@
 <div class="holder padding-zero has-bottom text-overlay">
-    <div class="places-plugin layout1">
-        <div id="scroll-infinite">
-            <div class="plugin-banner clearfix border-bottom-grey">
-                <div class="plugin-slide text-center">
-                    <div id="carousel" build-fire-carousel=""></div>
-                </div>
+    <div id="scroll-infinite" class="places-plugin layout1">
+        <div class="plugin-banner clearfix border-bottom-grey">
+            <div class="plugin-slide text-center">
+                <div id="carousel" build-fire-carousel=""></div>
             </div>
-            <div class="text-left padded padding-bottom-zero clearfix"
-                 ng-if="WidgetSections.showDescription()">
-                <p class="margin-bottom-zero"
-                   ng-bind-html="WidgetSections.placesInfo.data.content.descriptionHTML | safeHtml"></p>
-            </div>
-            <div class="padding-top-zero">
-                <div ng-show="WidgetSections.showSections">
-                    <div infinite-scroll-distance="0"
-                         infinite-scroll="WidgetSections.loadMoreSections()"
+        </div>
+        <div class="text-left padded padding-bottom-zero clearfix"
+             ng-if="WidgetSections.showDescription()">
+            <p class="margin-bottom-zero"
+               ng-bind-html="WidgetSections.placesInfo.data.content.descriptionHTML | safeHtml"></p>
+        </div>
+        <div class="padding-top-zero">
+            <div ng-show="WidgetSections.showSections">
+                <div infinite-scroll-distance="0"
+                     infinite-scroll="WidgetSections.loadMoreSections()"
 
-                         infinite-scroll-container="'#scroll-infinite'">
-                        <div ng-if="WidgetSections.placesInfo.data.content.showAllItems"
-                             class="plugin-banner has-info-bar clearfix"
-                             style="min-height: 10px">
-                            <a href="#/items/allitems">
-                                <div class="plugin-slide text-center">
-                                    <img ng-if="WidgetSections.placesInfo.data.content.allItemImage"
-                                         ng-src="{{WidgetSections.placesInfo.data.content.allItemImage | resizeImage:342:274}}">
-                                    <img ng-if="!WidgetSections.placesInfo.data.content.allItemImage"
-                                         src="assets/images/placeholder.jpg">
-                                </div>
-                                <div class="info-bar sec-list-dark-overlay">
-                                    <div class="col-xs-12 text-left pull-left">
-                                        <p class="margin-bottom-zero ellipsis">
-                                            <span class="text-primary" style="color:#fff !important;">All Items</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div ng-repeat="item in WidgetSections.sections" class="plugin-banner has-info-bar clearfix"
-                             style="min-height: 10px">
-                            <a href="#/items/{{item.id}}">
-                                <div class="plugin-slide text-center">
-                                    <img ng-if="item.data.mainImage"
-                                         ng-src="{{item.data.mainImage | resizeImage:342:274}}">
-                                    <img ng-if="!item.data.mainImage" src="assets/images/placeholder.jpg">
-                                </div>
-                                <div class="info-bar sec-list-dark-overlay">
-                                    <div class="col-xs-12 text-left pull-left">
-                                        <p class="margin-bottom-zero ellipsis"><span class="text-primary"
-                                                                                     style="color:#fff !important;">{{item.data.secTitle}}</span>
-                                        </p>
-
-                                        <p class="margin-bottom-zero ellipsis" style="color:#fff !important;">
-                                            {{item.data.secSummary}}</p>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div ng-hide="WidgetSections.showSections">
-                    <div infinite-scroll-distance="0"
-                         infinite-scroll="WidgetSections.loadMoreItems()"
-
-                         infinite-scroll-container="'#scroll-infinite'">
-                        <div class="no-items-msg" ng-hide="WidgetSections.locationData.items.length">
-                            No item(s) to show
-                        </div>
-                        <div class="plugin-banner has-info-bar clearfix"
-                             ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
+                     infinite-scroll-container="'#scroll-infinite'">
+                    <div ng-if="WidgetSections.placesInfo.data.content.showAllItems"
+                         class="plugin-banner has-info-bar clearfix"
+                         style="min-height: 10px">
+                        <a href="#/items/allitems">
                             <div class="plugin-slide text-center">
-                                <img ng-if="item.data.listImage" ng-src="{{item.data.listImage | resizeImage:342:274}}">
-                                <img ng-if="!item.data.listImage" src="assets/images/placeholder.jpg">
+                                <img ng-if="WidgetSections.placesInfo.data.content.allItemImage"
+                                     ng-src="{{WidgetSections.placesInfo.data.content.allItemImage | resizeImage:342:274}}">
+                                <img ng-if="!WidgetSections.placesInfo.data.content.allItemImage"
+                                     src="assets/images/placeholder.jpg">
                             </div>
-                            <div class="info-bar">
-                                <div class="col-xs-8 text-left pull-left">
-                                    <p class="margin-bottom-zero ellipsis"><a ng-href="#/item/{{item.id}}">{{item.data.itemTitle}}</a>
+                            <div class="info-bar sec-list-dark-overlay">
+                                <div class="col-xs-12 text-left pull-left">
+                                    <p class="margin-bottom-zero ellipsis">
+                                        <span class="text-primary" style="color:#fff !important;">All Items</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div ng-repeat="item in WidgetSections.sections" class="plugin-banner has-info-bar clearfix"
+                         style="min-height: 10px">
+                        <a href="#/items/{{item.id}}">
+                            <div class="plugin-slide text-center">
+                                <img ng-if="item.data.mainImage" ng-src="{{item.data.mainImage | resizeImage:342:274}}">
+                                <img ng-if="!item.data.mainImage" src="assets/images/placeholder.jpg">
+                            </div>
+                            <div class="info-bar sec-list-dark-overlay">
+                                <div class="col-xs-12 text-left pull-left">
+                                    <p class="margin-bottom-zero ellipsis"><span class="text-primary"
+                                                                                 style="color:#fff !important;">{{item.data.secTitle}}</span>
                                     </p>
 
-                                    <p class="margin-bottom-zero ellipsis">{{item.data.summary}}</p>
+                                    <p class="margin-bottom-zero ellipsis" style="color:#fff !important;">
+                                        {{item.data.secSummary}}</p>
                                 </div>
-                                <div class="col-xs-4 text-right pull-right padding-left-zero">
-                                    <span class="icon icon-map-marker icon-sm" style="color:#fff;"></span>
-                                    <span class="miles">{{item.data.distanceText}}</span>
-                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div ng-hide="WidgetSections.showSections">
+                <div infinite-scroll-distance="0"
+                     infinite-scroll="WidgetSections.loadMoreItems()"
+
+                     infinite-scroll-container="'#scroll-infinite'">
+                    <div class="no-items-msg" ng-hide="WidgetSections.locationData.items.length">
+                        No item(s) to show
+                    </div>
+                    <div class="plugin-banner has-info-bar clearfix"
+                         ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
+                        <div class="plugin-slide text-center">
+                            <img ng-if="item.data.listImage" ng-src="{{item.data.listImage | resizeImage:342:274}}">
+                            <img ng-if="!item.data.listImage" src="assets/images/placeholder.jpg">
+                        </div>
+                        <div class="info-bar">
+                            <div class="col-xs-8 text-left pull-left">
+                                <p class="margin-bottom-zero ellipsis"><a ng-href="#/item/{{item.id}}">{{item.data.itemTitle}}</a>
+                                </p>
+
+                                <p class="margin-bottom-zero ellipsis">{{item.data.summary}}</p>
+                            </div>
+                            <div class="col-xs-4 text-right pull-right padding-left-zero">
+                                <span class="icon icon-map-marker icon-sm" style="color:#fff;"></span>
+                                <span class="miles">{{item.data.distanceText}}</span>
                             </div>
                         </div>
                     </div>
