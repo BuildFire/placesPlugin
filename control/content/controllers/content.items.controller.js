@@ -292,8 +292,6 @@
                 ContentItems.editSections = function (ind) {
                     Sections.find({}).then(function (data) {
                         Modals.editSectionModal(data, ContentItems.items[ind]).then(function (result) {
-                            //console.log(result);
-
                             Items.update(result.id, result.data).then(function () {
                                 _skip = 0;
                                 ContentItems.items = null;
