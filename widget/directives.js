@@ -39,7 +39,10 @@
                                 mapTypeControl: false,
                                 zoom: 8,
                                 center: {lat: mapCenterLat, lng: mapCenterLng},
-                                mapTypeId: google.maps.MapTypeId.ROADMAP
+                                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                                zoomControlOptions: {
+                                    position: google.maps.ControlPosition.RIGHT_TOP
+                                }
                             });
 
                             var styleOptions = {
@@ -150,7 +153,10 @@
                                 mapTypeControl: false,
                                 zoom: 4,
                                 center: {lat: mapCenterLat, lng: mapCenterLng},
-                                mapTypeId: google.maps.MapTypeId.ROADMAP
+                                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                                zoomControlOptions: {
+                                    position: google.maps.ControlPosition.RIGHT_TOP
+                                }
                             });
 
 
