@@ -232,8 +232,15 @@
             buildfire.navigation.onBackButtonClick = function () {
                 var path = $location.path();
                 console.log(path);
-                if (path.indexOf('/items/') == 0)
+                if (path.indexOf('/items/') == 0) {
                     Location.goToHome();
+                    Messaging.sendMessageToControl({
+                        name: EVENTS.ROUTE_CHANGE,
+                        message: {
+                            path: PATHS.HOME
+                        }
+                    });
+                }
                 else if (path.indexOf('/item/') == 0)
                     Location.go('#/items/' + path.split('/')[2]);
                 else
