@@ -23,10 +23,8 @@
 
                 <p class="text-primary ellipsis margin-zero"><a class="margin-bottom-zero text-primary ellipsis">{{WidgetItem.item.data.address.aName}}</a>
                 </p>
-            </div>
-            <div ng-if="WidgetItem.itemData.currentCoordinates" style="height: 60px;width: 100px;" show-window="false"
-                 details-google-map location-data="WidgetItem.itemData"
-                 class="col-xs-4 text-right pull-right padding-right-zero">
+            </div>            
+            <div ng-if="WidgetItem.itemData.currentCoordinates" show-window="false"  details-google-map location-data="WidgetItem.itemData" class="col-xs-4 text-right pull-right padding-right-zero details-google-map-fix">
             </div>
         </div>
         <div class="padded padding-top-ten padding-bottom-ten" ng-if="WidgetItem.showBodyContent()">
@@ -36,8 +34,8 @@
         <div class="padded padding-top-zero">
             <div class="dynamic-links" ng-repeat="link in WidgetItem.item.data.links">
                 <a ng-click="WidgetItem.executeAction(link)">
-                    <span class="icon icon-cog" style="color: #09A3EE !important;"></span>
-                    <span class="copy" style="color: #09A3EE !important;">{{link.title}}</span>
+                    <span class="icon icon-cog color-blue"></span>
+                    <span class="copy color-blue">{{link.title}}</span>
                 </a>
             </div>
         </div>
