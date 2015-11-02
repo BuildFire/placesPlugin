@@ -135,7 +135,6 @@
             WidgetItem.clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
                     if (event.tag == 'items' && event.data) {
                         WidgetItem.item = event;
-                        AppConfig.changeBackgroundTheme(WidgetItem.item.data.backgroundImage);
                         if (event.data.address && event.data.address.lng && event.data.address.lat) {
                             WidgetItem.itemData.currentCoordinates = [event.data.address.lng, event.data.address.lat];
                             calDistance(WidgetItem.locationData.currentCoordinates, [event], WidgetItem.placeInfo.data.settings.showDistanceIn);
