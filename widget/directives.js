@@ -30,8 +30,8 @@
                     elem.css('min-height', '556px').css('width', '100%');
                     scope.$watch('locationData', function (newValue, oldValue) {
                         if (newValue) {
-                            var mapCenterLng = (scope.locationData.currentCoordinates.length && scope.locationData.currentCoordinates[0]) ? scope.locationData.currentCoordinates[0] : 78.8718;
-                            var mapCenterLat = (scope.locationData.currentCoordinates.length && scope.locationData.currentCoordinates[1]) ? scope.locationData.currentCoordinates[1] : 21.7679;
+                            var mapCenterLng = (scope.locationData && scope.locationData.currentCoordinates && scope.locationData.currentCoordinates.length && scope.locationData.currentCoordinates[0]) ? scope.locationData.currentCoordinates[0] : -87.7679;
+                            var mapCenterLat = (scope.locationData && scope.locationData.currentCoordinates && scope.locationData.currentCoordinates.length && scope.locationData.currentCoordinates[1]) ? scope.locationData.currentCoordinates[1] : 41.8718;
 
                             // Create the map.
                             var map = new google.maps.Map(elem[0], {

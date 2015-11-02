@@ -74,7 +74,7 @@
                         if (result.length) {
                             result.forEach(function (_item) {
                                 _item.data.distance = 0; // default distance value
-                                _item.data.distanceText = 'Fetching..';
+                                _item.data.distanceText = (WidgetSections.locationData.currentCoordinates) ? 'Fetching..' : 'NA';
                             });
                         }
 
