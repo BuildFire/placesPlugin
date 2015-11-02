@@ -4,8 +4,8 @@
 (function (angular, tinymce) {
     'use strict';
     angular.module('placesContent')
-        .controller('ContentSectionCtrl', ['$scope', '$routeParams', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Location', 'placesInfo', 'sectionInfo',
-            function ($scope, $routeParams, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Location, placesInfo, sectionInfo) {
+        .controller('ContentSectionCtrl', ['$scope', '$routeParams', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Location', 'placesInfo', 'sectionInfo', 'DEFAULT_DATA',
+            function ($scope, $routeParams, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Location, placesInfo, sectionInfo, DEFAULT_DATA) {
                 /**
                  * ContentSection._Sections is an instance of Sections db collection
                  * @type {DB}
@@ -15,44 +15,9 @@
                  */
                 var ContentSection = this
                     , tmrDelayForMedia = null
-                    , _sectionData = {
-                        data: {
-                            mainImage: '',
-                            secTitle: '',
-                            secSummary: '',
-                            itemListBGImage: '',
-                            sortBy: '',
-                            rankOfLastItem: ''
-                        }
-                    }
                     , selectImageOptions = {showIcons: false, multiSelection: false}
                     , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
-                    , updating = false
-                    , _placeInfoData = {
-                        data: {
-                            content: {
-                                images: [],
-                                descriptionHTML: '<p>&nbsp;<br></p>',
-                                description: '<p>&nbsp;<br></p>',
-                                sortBy: Orders.ordersMap.Manually,
-                                rankOfLastItem: '',
-                                sortByItems: OrdersItems.ordersMap.Newest,
-                                showAllItems: 'true',
-                                allItemImage: ''
-                            },
-                            design: {
-                                secListLayout: "sec-list-1-1",
-                                mapLayout: "map-1",
-                                itemListLayout: "item-list-1",
-                                itemDetailsLayout: "item-details-1",
-                                secListBGImage: ""
-                            },
-                            settings: {
-                                defaultView: "list",
-                                showDistanceIn: "miles"
-                            }
-                        }
-                    };
+                    , updating = false;
 
                 var background = new Buildfire.components.images.thumbnail("#background");
                 ContentSection._Sections = new DB(COLLECTIONS.Sections);
@@ -61,7 +26,7 @@
                     placeInfoData = placesInfo;
                 }
                 else {
-                    placeInfoData = _placeInfoData;
+                    placeInfoData = DEFAULT_DATA.PLACE_INFO;
                 }
 
 
@@ -70,7 +35,7 @@
                     updateMasterSection(ContentSection.section);
                 }
                 else {
-                    ContentSection.section = _sectionData;
+                    ContentSection.section = DEFAULT_DATA.SECTION;
                     updateMasterSection(ContentSection.section);
                 }
 

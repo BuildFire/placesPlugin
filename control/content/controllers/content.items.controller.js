@@ -8,8 +8,8 @@
     /**
      * Inject dependency
      */
-        .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'DB', 'COLLECTIONS', 'Modals', 'Orders', 'OrdersItems', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'placesInfo', 'sectionInfo',
-            function ($scope, $routeParams, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo, sectionInfo) {
+        .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'DB', 'COLLECTIONS', 'Modals', 'Orders', 'OrdersItems', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'placesInfo', 'sectionInfo', 'DEFAULT_DATA',
+            function ($scope, $routeParams, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo, sectionInfo, DEFAULT_DATA) {
 
                 /**
                  * Create instance of Sections and Items db collection
@@ -22,32 +22,7 @@
                     , tmrDelayForInfo = null
                     , _skip = 0
                     , _limit = 10
-                    , _maxLimit = 19
-                    , placeInfoData = {
-                        data: {
-                            content: {
-                                images: [],
-                                descriptionHTML: '<p>&nbsp;<br></p>',
-                                description: '<p>&nbsp;<br></p>',
-                                sortBy: Orders.ordersMap.Manually,
-                                rankOfLastItem: '',
-                                sortByItems: OrdersItems.ordersMap.Newest,
-                                showAllItems: 'true',
-                                allItemImage: ''
-                            },
-                            design: {
-                                secListLayout: "sec-list-1-1",
-                                mapLayout: "map-1",
-                                itemListLayout: "item-list-1",
-                                itemDetailsLayout: "item-details-1",
-                                secListBGImage: ""
-                            },
-                            settings: {
-                                defaultView: "list",
-                                showDistanceIn: "miles"
-                            }
-                        }
-                    };
+                    , _maxLimit = 19;
 
                 var ContentItems = this;
                 if (sectionInfo != 'allitems')
@@ -56,8 +31,8 @@
                     updateMasterInfoData(placesInfo);
                     ContentItems.info = placesInfo;
                 } else {
-                    updateMasterInfoData(placeInfoData);
-                    ContentItems.info = angular.copy(placeInfoData);
+                    updateMasterInfoData(DEFAULT_DATA.PLACE_INFO);
+                    ContentItems.info = angular.copy(DEFAULT_DATA.PLACE_INFO);
                 }
                 if ($routeParams.sectionId) {
                     ContentItems.section = $routeParams.sectionId;
