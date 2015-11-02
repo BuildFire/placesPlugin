@@ -74,8 +74,6 @@
                 currentCoordinates: null
             };
             if (WidgetItem.item.data) {
-                if (WidgetItem.item.data.backgroundImage)
-                    AppConfig.changeBackgroundTheme(WidgetItem.item.data.backgroundImage);
                 if (WidgetItem.item.data.images)
                     initCarousel(WidgetItem.item.data.images);
                 itemLat = (WidgetItem.item.data.address && WidgetItem.item.data.address.lat) ? WidgetItem.item.data.address.lat : null;
@@ -158,6 +156,15 @@
                         window.open('maps://maps.google.com/maps?daddr=' + WidgetItem.item.data.address.lng + ',' + WidgetItem.item.data.address.lat, '_system');
                     else
                         window.open('http://maps.google.com/maps?daddr=' + WidgetItem.item.data.address.lng + ',' + WidgetItem.item.data.address.lat, '_system');
+            };
+
+
+            // Show Body Content when it is not blank
+            WidgetItem.showBodyContent = function () {
+                if (WidgetItem.item.data.bodyContent == '<p>&nbsp;<br></p>' || WidgetItem.item.data.bodyContent == '<p><br data-mce-bogus="1"></p>')
+                    return false;
+                else
+                    return true;
             };
 
             //syn with widget side
