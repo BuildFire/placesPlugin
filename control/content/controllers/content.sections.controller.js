@@ -2,8 +2,8 @@
     'use strict';
     angular
         .module('placesContent')
-        .controller('ContentSectionsCtrl', ['$scope', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Modals', 'placesInfo',
-            function ($scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, placesInfo) {
+        .controller('ContentSectionsCtrl', ['$scope', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Modals', 'placesInfo', 'DEFAULT_DATA',
+            function ($scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, placesInfo, DEFAULT_DATA) {
 
                 var header = {
                         secTitle: 'Section Title',
@@ -41,32 +41,7 @@
                     , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
                     , Sections = new DB(COLLECTIONS.Sections)
                     , Items = new DB(COLLECTIONS.Items)
-                    , records = []
-                    , _infoData = {
-                        data: {
-                            content: {
-                                images: [],
-                                descriptionHTML: '<p>&nbsp;<br></p>',
-                                description: '<p>&nbsp;<br></p>',
-                                sortBy: Orders.ordersMap.Manually,
-                                rankOfLastItem: '',
-                                sortByItems: OrdersItems.ordersMap.Newest,
-                                showAllItems: 'true',
-                                allItemImage: ''
-                            },
-                            design: {
-                                secListLayout: "sec-list-1-1",
-                                mapLayout: "map-1",
-                                itemListLayout: "item-list-1",
-                                itemDetailsLayout: "item-details-1",
-                                secListBGImage: ""
-                            },
-                            settings: {
-                                defaultView: "list",
-                                showDistanceIn: "miles"
-                            }
-                        }
-                    };
+                    , records = [];
 
                 var ContentSections = this;
                 ContentSections.masterInfo = null;
@@ -76,8 +51,8 @@
                     ContentSections.info = placesInfo;
                 }
                 else {
-                    updateMasterInfo(_infoData);
-                    ContentSections.info = _infoData;
+                    updateMasterInfo(DEFAULT_DATA.PLACE_INFO);
+                    ContentSections.info = DEFAULT_DATA.PLACE_INFO;
                 }
 
 

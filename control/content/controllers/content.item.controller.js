@@ -5,27 +5,10 @@
     'use strict';
     angular
         .module('placesContent')
-        .controller('ContentItemCtrl', ['$scope', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout', 'EVENTS', 'PATHS', 'Messaging', 'item',
-            function ($scope, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout, EVENTS, PATHS, Messaging, item) {
+        .controller('ContentItemCtrl', ['$scope', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout', 'EVENTS', 'PATHS', 'Messaging', 'item', 'DEFAULT_DATA',
+            function ($scope, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout, EVENTS, PATHS, Messaging, item, DEFAULT_DATA) {
                 var tmrDelayForItem = null
                     , Items = new DB(COLLECTIONS.Items)
-                    , _data = {
-                        listImage: '',
-                        itemTitle: '',
-                        images: [],
-                        summary: '',
-                        bodyContent: '<p>&nbsp;<br></p>',
-                        bodyContentHTML: '',
-                        addressTitle: '',
-                        sections: ($routeParams.sectionId != 'allitems') ? [$routeParams.sectionId] : [],
-                        address: {
-                            lat: '',
-                            lng: '',
-                            aName: ''
-                        },
-                        links: [],
-                        backgroundImage: ''
-                    }
                     , updating = false;
 
                 var background = new Buildfire.components.images.thumbnail("#background");
@@ -42,7 +25,9 @@
                     ContentItem.masterItem = angular.copy(ContentItem.item);
                 }
                 else {
-                    ContentItem.item = {data: _data};
+                    ContentItem.item = DEFAULT_DATA.ITEM;
+                    if ($routeParams.sectionId != 'allitems')
+                        ContentItem.item.data.sections.push($routeParams.sectionId);
                     ContentItem.masterItem = angular.copy(ContentItem.item);
                 }
 
@@ -179,12 +164,12 @@
                         _item.data.dateCreated = new Date();
                         Items.insert(_item.data).then(function (data) {
                             updating = false;
-                            if(data && data.id){
+                            if (data && data.id) {
                                 ContentItem.item.data.deepLinkUrl = Buildfire.deeplink.createLink({id: data.id});
                                 ContentItem.item.id = data.id;
                                 updateMasterItem(ContentItem.item);
                             }
-                            else{
+                            else {
                                 resetItem();
                             }
                         }, function (err) {
