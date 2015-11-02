@@ -46,3 +46,27 @@ Style for loader
 .padding-top-fix {
     padding-top: 18px;
 }
+
+
+.left-width-fifty-pc{
+    width: 50%;
+    float: left;
+}
+
+.right-width-fifty-pc{
+    width: 50%;
+    float: left;
+}
+
+.google-map-fix{
+    height: 200px;
+    position: relative;
+}
+
+.hidden-visibility{
+    visibility: hidden;
+}
+
+.toggle-fix{
+    margin-top: -12px !important;
+}

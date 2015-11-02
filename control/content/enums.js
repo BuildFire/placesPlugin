@@ -32,6 +32,62 @@
         })
         .constant('GOOGLE_KEYS', {
             API_KEY: 'AIzaSyB0xpJ-AseoeusvT2PPWd5MOak58CR_B0c'
+        })
+        .constant('DEFAULT_DATA', {
+            PLACE_INFO: {
+                data: {
+                    content: {
+                        images: [],
+                        descriptionHTML: '<p>&nbsp;<br></p>',
+                        description: '<p>&nbsp;<br></p>',
+                        sortBy: 'Manually',
+                        rankOfLastItem: '',
+                        sortByItems: 'Newest',
+                        showAllItems: 'true',
+                        allItemImage: ''
+                    },
+                    design: {
+                        secListLayout: "sec-list-1-1",
+                        mapLayout: "map-1",
+                        itemListLayout: "item-list-1",
+                        itemDetailsLayout: "item-details-1",
+                        secListBGImage: ""
+                    },
+                    settings: {
+                        defaultView: "list",
+                        showDistanceIn: "miles"
+                    }
+                }
+            },
+            SECTION: {
+                data: {
+                    mainImage: '',
+                    secTitle: '',
+                    secSummary: '',
+                    itemListBGImage: '',
+                    sortBy: '',
+                    rankOfLastItem: ''
+                }
+            },
+            ITEM: {
+                data: {
+                    listImage: '',
+                    itemTitle: '',
+                    images: [],
+                    summary: '',
+                    bodyContent: '<p>&nbsp;<br></p>',
+                    bodyContentHTML: '',
+                    addressTitle: '',
+                    sections: [],
+                    address: {
+                        lat: '',
+                        lng: '',
+                        aName: ''
+                    },
+                    links: [],
+                    backgroundImage: ''
+                }
+            }
         });
 
 })(window.angular, undefined);

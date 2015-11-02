@@ -1,21 +1,21 @@
 <div ng-class="WidgetSections.showMenu ? 'active' : ''" class="bottom fixed-bottom clearfix transition-third">
     <div>
         <div class="extra-links">
-            <a ng-click="WidgetSections.refreshLocation()"  class="my-location" style="background:#09a3ee;">
+            <a ng-click="WidgetSections.refreshLocation()"  class="my-location background-blue">
                 <span class="icon icon-aim"></span>
             </a>
         </div>
     </div>
-    <div class="col-xs-6 pull-left text-center transition-third" style="background:#09a3ee;">
-        <a ng-show="WidgetSections.currentView == 'list'" ng-click="WidgetSections.currentView = 'map';" style="color:#fff !important;">
+    <div class="col-xs-6 pull-left text-center transition-third background-blue">
+        <a ng-show="WidgetSections.currentView == 'list'" ng-click="WidgetSections.currentView = 'map';" class="color-white">
             Map
         </a>
-        <a  ng-show="WidgetSections.currentView == 'map'" ng-click="WidgetSections.currentView = 'list';" style="color:#fff !important;">
+        <a  ng-show="WidgetSections.currentView == 'map'" ng-click="WidgetSections.currentView = 'list';" class="color-white">
             List
         </a>
     </div>
-    <div class="col-xs-6 pull-left text-center transition-third" style="background:#09a3ee;">
-        <a ng-click="WidgetSections.showMenu = !WidgetSections.showMenu" style="color:#fff !important;">Filter</a>
+    <div class="col-xs-6 pull-left text-center transition-third background-blue">
+        <a ng-click="WidgetSections.showMenu = !WidgetSections.showMenu" class="color-white">Filter</a>
     </div>
     <div class="col-xs-12 pull-left hidden-content">
         <div class="tabs clearfix">
@@ -59,17 +59,17 @@
                     <div class="toggle-btns border-radius-four overflow-hidden">
                         <div ng-click="WidgetSections.sortOnClosest = false"
                              class="col-xs-6 padding-zero text-center primaryBackgroundTheme"
-                             ng-style="WidgetSections.sortOnClosest ? {} : {'background':'#09a3ee'}">
+                             ng-class="WidgetSections.sortOnClosest ? '' : 'background-blue'">
                             <a ng-class="WidgetSections.sortOnClosest ? '' : 'active'">Default</a>
                         </div>
-                        <div ng-hide="WidgetSections.locationData.currentCoordinates == null" ng-style="WidgetSections.sortOnClosest == false ? {} : {'background':'#09a3ee'}"
+                        <div ng-hide="WidgetSections.locationData.currentCoordinates == null" ng-class="!WidgetSections.sortOnClosest ? '' : 'background-blue'"
                              ng-class="WidgetSections.sortOnClosest ? '' : 'active'"
                              ng-click="WidgetSections.sortOnClosest = true" class="col-xs-6 padding-zero text-center">
                             <a ng-class="WidgetSections.sortOnClosest ? 'active' : ''">Closest to Me</a>
                         </div>
                         <div ng-show="WidgetSections.locationData.currentCoordinates == null"
                              class="col-xs-6 padding-zero text-center">
-                            <a style="background-color: lightgrey" ng-class="WidgetSections.sortOnClosest ? 'active' : ''">Closest to Me</a>
+                            <a class="background-grey" ng-class="WidgetSections.sortOnClosest ? 'active' : ''">Closest to Me</a>
                         </div>
                     </div>
                     <p class="location-share-msg" ng-show="WidgetSections.locationData.currentCoordinates == null">Enable Location sharing to activate Closest to me </p>

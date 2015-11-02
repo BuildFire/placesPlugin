@@ -19,19 +19,18 @@
         <div class="plugin-banner has-info-bar clearfix" ng-if="WidgetItem.itemData.currentCoordinates">
             <div class="plugin-slide map-holder">
                 <p details-google-map show-window="true" location-data="WidgetItem.itemData"
-                   style="height: 193px;width: 342px;position:relative; top:0px; color:#fff; text-align:center;">Map
+                   class="details-2-google-map-fix">Map
                     goes in here</p>
             </div>
             <div class="info-bar bg-primary text-center">
-                <p class="margin-bottom-zero ellipsis col-xs-12" style="font-family: 'Muli', sans-serif;">
+                <p class="margin-bottom-zero ellipsis col-xs-12 details-2-font color-white">
                     {{WidgetItem.item.data.addressTitle+" "+WidgetItem.item.data.address.aName}}</p>
             </div>
         </div>
-        <div class="padded text-center">
-            <a class="text-primary">Contact info</a>
+        <div class="padded text-center" ng-if="WidgetItem.showBodyContent()">
+            <!--<a class="text-primary">Contact info</a>-->
             <hr class="small">
-            <p class="text-left" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml">
-                {{WidgetItem.item.data.bodyContent | safeHtml}}</p>
+            <p class="text-left" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml"></p>
         </div>
     </div>
 </div>

@@ -5,27 +5,10 @@
     'use strict';
     angular
         .module('placesContent')
-        .controller('ContentItemCtrl', ['$scope', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout', 'EVENTS', 'PATHS', 'Messaging', 'item',
-            function ($scope, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout, EVENTS, PATHS, Messaging, item) {
+        .controller('ContentItemCtrl', ['$scope', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout', 'EVENTS', 'PATHS', 'Messaging', 'item', 'DEFAULT_DATA',
+            function ($scope, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout, EVENTS, PATHS, Messaging, item, DEFAULT_DATA) {
                 var tmrDelayForItem = null
                     , Items = new DB(COLLECTIONS.Items)
-                    , _data = {
-                        listImage: '',
-                        itemTitle: '',
-                        images: [],
-                        summary: '',
-                        bodyContent: '<p>&nbsp;<br></p>',
-                        bodyContentHTML: '',
-                        addressTitle: '',
-                        sections: ($routeParams.sectionId != 'allitems') ? [$routeParams.sectionId] : [],
-                        address: {
-                            lat: '',
-                            lng: '',
-                            aName: ''
-                        },
-                        links: [],
-                        backgroundImage: ''
-                    }
                     , updating = false;
 
                 var background = new Buildfire.components.images.thumbnail("#background");
@@ -42,7 +25,9 @@
                     ContentItem.masterItem = angular.copy(ContentItem.item);
                 }
                 else {
-                    ContentItem.item = {data: _data};
+                    ContentItem.item = DEFAULT_DATA.ITEM;
+                    if ($routeParams.sectionId != 'allitems')
+                        ContentItem.item.data.sections.push($routeParams.sectionId);
                     ContentItem.masterItem = angular.copy(ContentItem.item);
                 }
 
@@ -178,10 +163,15 @@
                         console.info('****************Item inserted***********************');
                         _item.data.dateCreated = new Date();
                         Items.insert(_item.data).then(function (data) {
-                            ContentItem.item.data.deepLinkUrl = Buildfire.deeplink.createLink({id: data.id});
-                            ContentItem.item.id = data.id;
                             updating = false;
-                            updateMasterItem(ContentItem.item);
+                            if (data && data.id) {
+                                ContentItem.item.data.deepLinkUrl = Buildfire.deeplink.createLink({id: data.id});
+                                ContentItem.item.id = data.id;
+                                updateMasterItem(ContentItem.item);
+                            }
+                            else {
+                                resetItem();
+                            }
                         }, function (err) {
                             updating = false;
                             console.log('Error---', err);
@@ -199,7 +189,8 @@
                     if (tmrDelayForItem) {
                         clearTimeout(tmrDelayForItem);
                     }
-                    if (_item && !isUnChanged(_item)) {
+                    ContentItem.isItemValid = isValidItem(ContentItem.item.data);
+                    if (_item && !isUnChanged(_item) && ContentItem.isItemValid) {
                         tmrDelayForItem = setTimeout(function () {
                             insertAndUpdate(_item);
                         }, 1000);
@@ -302,6 +293,13 @@
                         ContentItem.currentCoordinates = null;
                     }
                 };
+
+
+                //to validate the item
+                function isValidItem(item) {
+                    return item.itemTitle;
+                }
+
 
                 //syn with widget
                 Messaging.sendMessageToWidget({

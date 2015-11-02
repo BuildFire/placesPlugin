@@ -27,11 +27,11 @@
                 replace: true,
                 scope: {locationData: '=locationData', markerCallback: '=markerCallback'},
                 link: function (scope, elem, attrs) {
-                    elem.css('min-height', '556px');
+                    elem.css('min-height', '556px').css('width', '100%');
                     scope.$watch('locationData', function (newValue, oldValue) {
                         if (newValue) {
-                            var mapCenterLng = (scope.locationData.currentCoordinates.length && scope.locationData.currentCoordinates[0]) ? scope.locationData.currentCoordinates[0] : 78.8718;
-                            var mapCenterLat = (scope.locationData.currentCoordinates.length && scope.locationData.currentCoordinates[1]) ? scope.locationData.currentCoordinates[1] : 21.7679;
+                            var mapCenterLng = (scope.locationData && scope.locationData.currentCoordinates && scope.locationData.currentCoordinates.length && scope.locationData.currentCoordinates[0]) ? scope.locationData.currentCoordinates[0] : -87.7679;
+                            var mapCenterLat = (scope.locationData && scope.locationData.currentCoordinates && scope.locationData.currentCoordinates.length && scope.locationData.currentCoordinates[1]) ? scope.locationData.currentCoordinates[1] : 41.8718;
 
                             // Create the map.
                             var map = new google.maps.Map(elem[0], {
@@ -39,7 +39,10 @@
                                 mapTypeControl: false,
                                 zoom: 8,
                                 center: {lat: mapCenterLat, lng: mapCenterLng},
-                                mapTypeId: google.maps.MapTypeId.ROADMAP
+                                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                                zoomControlOptions: {
+                                    position: google.maps.ControlPosition.RIGHT_TOP
+                                }
                             });
 
                             var styleOptions = {
@@ -150,7 +153,10 @@
                                 mapTypeControl: false,
                                 zoom: 4,
                                 center: {lat: mapCenterLat, lng: mapCenterLng},
-                                mapTypeId: google.maps.MapTypeId.ROADMAP
+                                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                                zoomControlOptions: {
+                                    position: google.maps.ControlPosition.RIGHT_TOP
+                                }
                             });
 
 

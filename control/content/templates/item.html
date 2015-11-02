@@ -43,10 +43,10 @@
     <div class="layout padded clearfix">
         <ul class="nav nav-tabs nav-justified">
             <li class="">
-                <a class="active" ng-click="itemShow = 'Content'" style="width: 50%;float: left;">Content</a>
+                <a class="active left-width-fifty-pc" ng-click="itemShow = 'Content'">Content</a>
             </li>
             <li class="">
-                <a ng-click="itemShow = 'Design'" style="width: 50%;float: right;">Design</a>
+                <a class="right-width-fifty-pc" ng-click="itemShow = 'Design'">Design</a>
             </li>
         </ul>
     </div>
@@ -108,7 +108,8 @@
         <div class="col-md-9 pull-right">
             <div google-map dragged-fn="ContentItem.setDraggedLocation(data)"
                  coordinates="ContentItem.currentCoordinates"
-                 style="height: 200px; position: relative;"></div>
+                 class="google-map-fix"
+                 ></div>
         </div>
     </div>
     <hr class="none">
@@ -124,7 +125,7 @@
     <div class="main col-md-9 pull-right">
         <div class="col-md-6 pull-right padding-right-zero padding-left-ten">
             <a class="btn btn-primary pull-right stretch" ng-click="ContentItem.done()"
-               href="javaScript:void(0);">Done</a>
+               ng-disabled="!ContentItem.isItemValid" href="javaScript:void(0);">Done</a>
         </div>
     </div>
 </div>
