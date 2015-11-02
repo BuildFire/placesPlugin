@@ -178,10 +178,15 @@
                         console.info('****************Item inserted***********************');
                         _item.data.dateCreated = new Date();
                         Items.insert(_item.data).then(function (data) {
-                            ContentItem.item.data.deepLinkUrl = Buildfire.deeplink.createLink({id: data.id});
-                            ContentItem.item.id = data.id;
                             updating = false;
-                            updateMasterItem(ContentItem.item);
+                            if(data && data.id){
+                                ContentItem.item.data.deepLinkUrl = Buildfire.deeplink.createLink({id: data.id});
+                                ContentItem.item.id = data.id;
+                                updateMasterItem(ContentItem.item);
+                            }
+                            else{
+                                resetItem();
+                            }
                         }, function (err) {
                             updating = false;
                             console.log('Error---', err);

@@ -36,15 +36,14 @@
                 </div>
             </div>
         </div>
-        <div class="margin-top-ten">
+        <!--<div class="margin-top-ten">
             <a class="text-primary">Contact info</a>
-        </div>
+        </div>-->
     </div>
-    <div class="padding-left-fifteen padding-right-fifteen">
+    <div class="padding-left-fifteen padding-right-fifteen" ng-if="WidgetItem.showBodyContent()">
         <hr class="small margin-zero">
     </div>
     <div class="padded">
-        <p ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml">{{WidgetItem.item.data.bodyContent |
-            safeHtml}}</p>
+        <p ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml"></p>
     </div>
 </div>

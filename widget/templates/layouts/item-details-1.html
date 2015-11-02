@@ -16,20 +16,19 @@
                 </div>
             </div>
         </div>
-        <div class="border-top-grey border-bottom-grey clearfix">
+        <div class="border-top-grey border-bottom-grey clearfix" ng-if="WidgetItem.item.data.address.aName">
             <div class="col-xs-8 text-left pull-left padding-right-zero margin-top-ten padding-bottom-five">
                 <p class="text-primary ellipsis margin-zero"><a class="margin-bottom-zero text-primary">{{WidgetItem.item.data.addressTitle}}</a>
                 </p>
 
                 <p class="text-primary ellipsis margin-zero"><a class="margin-bottom-zero text-primary ellipsis">{{WidgetItem.item.data.address.aName}}</a>
                 </p>
-            </div>
+            </div>            
             <div ng-if="WidgetItem.itemData.currentCoordinates" show-window="false"  details-google-map location-data="WidgetItem.itemData" class="col-xs-4 text-right pull-right padding-right-zero details-google-map-fix">
             </div>
         </div>
-        <div class="padded padding-top-ten padding-bottom-ten">
-            <p class="margin-zero" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml">
-                {{WidgetItem.item.data.bodyContent | safeHtml}}</p>
+        <div class="padded padding-top-ten padding-bottom-ten" ng-if="WidgetItem.showBodyContent()">
+            <p class="margin-zero" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml"></p>
 
         </div>
         <div class="padded padding-top-zero">
