@@ -26,8 +26,8 @@
 }
 
 #scroll-infinite {
-   /* overflow-y: auto;
-    max-height: 570px;*/
+    overflow-y: auto;
+    max-height: 570px;
 }
 
 .location-share-msg {
