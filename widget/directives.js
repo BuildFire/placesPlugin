@@ -227,7 +227,7 @@
                     attrs.$observe('ngSrc', function (ngSrc) {
 
                         if (!ngSrc) {
-                            element.attr('src', 'assets/images/placeholder.jpg'); // set default image
+                            element.attr('src', 'assets/images/placeholder.png'); // set default image
                         }
 
                     });

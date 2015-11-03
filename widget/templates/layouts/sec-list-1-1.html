@@ -24,7 +24,7 @@
                                 <img ng-if="WidgetSections.placesInfo.data.content.allItemImage"
                                      ng-src="{{WidgetSections.placesInfo.data.content.allItemImage | resizeImage:342:274}}">
                                 <img ng-if="!WidgetSections.placesInfo.data.content.allItemImage"
-                                     src="assets/images/placeholder.jpg">
+                                     src="assets/images/placeholder.png">
                             </div>
                             <div class="info-bar">
                                 <div class="col-xs-12 text-left pull-left">
@@ -40,7 +40,7 @@
                         <a href="#/items/{{item.id}}">
                             <div class="plugin-slide text-center">
                                 <img ng-if="item.data.mainImage" ng-src="{{item.data.mainImage | resizeImage:342:274}}">
-                                <img ng-if="!item.data.mainImage" src="assets/images/placeholder.jpg">
+                                <img ng-if="!item.data.mainImage" src="assets/images/placeholder.png">
                             </div>
                             <div class="info-bar">
                                 <div class="col-xs-12 text-left pull-left">
@@ -68,7 +68,7 @@
                          ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
                         <div class="plugin-slide text-center">
                             <img ng-if="item.data.listImage" ng-src="{{item.data.listImage | resizeImage:342:274}}">
-                            <img ng-if="!item.data.listImage" src="assets/images/placeholder.jpg">
+                            <img ng-if="!item.data.listImage" src="assets/images/placeholder.png">
                         </div>
                         <div class="info-bar">
                             <div class="col-xs-8 text-left pull-left">
