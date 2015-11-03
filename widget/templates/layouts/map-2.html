@@ -7,10 +7,10 @@
                     <div id="mapCarousel" map-build-fire-carousel=""></div>
                 </div>
             </div>
-            <div ng-if="WidgetSections.selectedItem" class="info-bar bg-primary padding-top-five padding-bottom-five">
+            <div ng-if="WidgetSections.selectedItem" class="info-bar titleBarBackgroundTheme padding-top-five padding-bottom-five">
                 <div class="col-xs-9 pull-left">
-                    <a ng-href="#/item/{{WidgetSections.selectedItem.data.sections[0]}}/{{WidgetSections.selectedItem.id}}" class="margin-bottom-zero color-white">{{WidgetSections.selectedItem.data.itemTitle}}</a>
-                    <p class="margin-bottom-zero ellipsis">{{WidgetSections.selectedItem.data.summary}}</p>
+                    <a ng-href="#/item/{{WidgetSections.selectedItem.data.sections[0]}}/{{WidgetSections.selectedItem.id}}" class="margin-bottom-zero titleBarTextAndIcons">{{WidgetSections.selectedItem.data.itemTitle}}</a>
+                    <p class="margin-bottom-zero ellipsis titleBarTextAndIcons">{{WidgetSections.selectedItem.data.summary}}</p>
                 </div>
                 <div class="col-xs-3 padding-left-zero pull-right text-right margin-top-five">
                     <span ng-click="WidgetSections.openInMap()" class="icon icon-location location-circle primaryTheme background-white color-blue"

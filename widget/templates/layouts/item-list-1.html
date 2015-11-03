@@ -10,12 +10,12 @@
                     <img ng-if="item.data.listImage" ng-src="{{item.data.listImage | resizeImage:342:274}}">
                     <img ng-if="!item.data.listImage" src="assets/images/placeholder.png">
                 </div>
-                <div class="info-bar bg-primary">
+                <div class="info-bar titleBarBackgroundTheme">
                     <div class="col-xs-8 text-left pull-left">
-                        <p class="margin-bottom-zero ellipsis"><span class="text-primary color-white">{{item.data.itemTitle}}</span>
+                        <p class="margin-bottom-zero ellipsis"><span class="text-primary titleBarTextAndIcons">{{item.data.itemTitle}}</span>
                         </p>
 
-                        <p class="margin-bottom-zero ellipsis color-white">{{item.data.summary}}</p>
+                        <p class="margin-bottom-zero ellipsis titleBarTextAndIcons">{{item.data.summary}}</p>
                     </div>
                     <div class="col-xs-4 text-right pull-right padding-left-zero">
                         <span class="icon icon-map-marker icon-sm color-white"></span>
