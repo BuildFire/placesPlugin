@@ -64,8 +64,8 @@
                             <div class="info-bar titleBarBackgroundTheme">
                                 <div class="col-xs-8 text-left pull-left">
                                     <p class="margin-bottom-zero ellipsis titleBarTextAndIcons">
-                                        <a ng-if="item.data.sections.length" ng-href="#/item/{{item.data.sections[0]}}/{{item.id}}">{{item.data.itemTitle}}</a>
-                                        <a ng-if="item.data.sections.length == 0" ng-href="#/item/allitems/{{item.id}}">{{item.data.itemTitle}}</a>
+                                        <a class="titleBarTextAndIcons" ng-if="item.data.sections.length" ng-href="#/item/{{item.data.sections[0]}}/{{item.id}}">{{item.data.itemTitle}}</a>
+                                        <a class="titleBarTextAndIcons" ng-if="item.data.sections.length == 0" ng-href="#/item/allitems/{{item.id}}">{{item.data.itemTitle}}</a>
                                     </p>
                                     <p class="margin-bottom-zero ellipsis titleBarTextAndIcons">{{item.data.summary}}</p>
                                 </div>

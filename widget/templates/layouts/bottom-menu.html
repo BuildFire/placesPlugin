@@ -1,21 +1,21 @@
 <div ng-class="WidgetSections.showMenu ? 'active' : ''" class="bottom fixed-bottom clearfix transition-third">
     <div>
         <div class="extra-links">
-            <a ng-click="WidgetSections.refreshLocation()"  class="my-location background-blue">
-                <span class="icon icon-aim"></span>
+            <a ng-click="WidgetSections.refreshLocation()"  class="my-location bg-primary">
+                <span class="icon icon-aim titleBarTextAndIcons"></span>
             </a>
         </div>
     </div>
-    <div class="col-xs-6 pull-left text-center transition-third background-blue">
-        <a ng-show="WidgetSections.currentView == 'list'" ng-click="WidgetSections.currentView = 'map';" class="color-white">
+    <div class="col-xs-6 pull-left text-center transition-third bg-primary">
+        <a ng-show="WidgetSections.currentView == 'list'" ng-click="WidgetSections.currentView = 'map';" class="titleBarTextAndIcons">
             Map
         </a>
-        <a  ng-show="WidgetSections.currentView == 'map'" ng-click="WidgetSections.currentView = 'list';" class="color-white">
+        <a  ng-show="WidgetSections.currentView == 'map'" ng-click="WidgetSections.currentView = 'list';" class="titleBarTextAndIcons">
             List
         </a>
     </div>
-    <div class="col-xs-6 pull-left text-center transition-third background-blue">
-        <a ng-click="WidgetSections.showMenu = !WidgetSections.showMenu" class="color-white">Filter</a>
+    <div class="col-xs-6 pull-left text-center transition-third bg-primary">
+        <a ng-click="WidgetSections.showMenu = !WidgetSections.showMenu" class="titleBarTextAndIcons">Filter</a>
     </div>
     <div class="col-xs-12 pull-left hidden-content">
         <div class="tabs clearfix">
