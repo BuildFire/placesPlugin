@@ -59,10 +59,10 @@
                     <div class="toggle-btns border-radius-four overflow-hidden">
                         <div ng-click="WidgetSections.sortOnClosest = false"
                              class="col-xs-6 padding-zero text-center"
-                             ng-class="WidgetSections.sortOnClosest ? '' : 'background-blue'">
+                             ng-class="WidgetSections.sortOnClosest ? '' : 'bg-primary'">
                             <a ng-class="WidgetSections.sortOnClosest ? '' : 'active'">Default</a>
                         </div>
-                        <div ng-hide="WidgetSections.locationData.currentCoordinates == null" ng-class="!WidgetSections.sortOnClosest ? '' : 'background-blue'"
+                        <div ng-hide="WidgetSections.locationData.currentCoordinates == null" ng-class="!WidgetSections.sortOnClosest ? '' : 'bg-primary'"
                              ng-class="WidgetSections.sortOnClosest ? '' : 'active'"
                              ng-click="WidgetSections.sortOnClosest = true" class="col-xs-6 padding-zero text-center">
                             <a ng-class="WidgetSections.sortOnClosest ? 'active' : ''">Closest to Me</a>
