@@ -1,5 +1,5 @@
 <div class="holder padding-zero has-bottom text-overlay">
-    <div id="scroll-infinite" class="places-plugin layout1">
+    <div class="places-plugin layout1">
         <div class="plugin-banner clearfix">
             <div class="plugin-slide text-center">
                 <div id="carousel" build-fire-carousel=""></div>
@@ -13,9 +13,7 @@
         <div class="padding-top-zero">
             <div ng-show="WidgetSections.showSections">
                 <div infinite-scroll-distance="0"
-                     infinite-scroll="WidgetSections.loadMoreSections()"
-
-                     infinite-scroll-container="'#scroll-infinite'">
+                     infinite-scroll="WidgetSections.loadMoreSections()">
                     <div ng-if="WidgetSections.placesInfo.data.content.showAllItems"
                          class="plugin-banner has-info-bar clearfix "
                          style="min-height: 10px">
