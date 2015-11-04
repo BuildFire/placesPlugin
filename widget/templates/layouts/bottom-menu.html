@@ -43,8 +43,8 @@
             <div ng-class="WidgetSections.menuTab == 'Sorting' ? 'active' : ''" class="sorting-tab tab padded">
                 <div class="distance">
                     <p class="text-primary">Distance</p>
-                    <p ng-show="WidgetSections.placesInfo.data.settings.showDistanceIn == 'miles'">0 to 200 miles</p>
-                    <p ng-hide="WidgetSections.placesInfo.data.settings.showDistanceIn == 'miles'">0 to 320 km</p>
+                    <p class="text-primary" ng-show="WidgetSections.placesInfo.data.settings.showDistanceIn == 'miles'">0 to 200 miles</p>
+                    <p class="text-primary" ng-hide="WidgetSections.placesInfo.data.settings.showDistanceIn == 'miles'">0 to 320 km</p>
                     <rzslider rz-slider-tpl-url="templates/layouts/slider-template.html"
                               rz-slider-floor="distanceSlider.floor"
                               rz-slider-ceil="distanceSlider.ceil"
@@ -60,12 +60,12 @@
                         <div ng-click="WidgetSections.sortOnClosest = false"
                              class="col-xs-6 padding-zero text-center"
                              ng-class="WidgetSections.sortOnClosest ? '' : 'bg-primary'">
-                            <a ng-class="WidgetSections.sortOnClosest ? '' : 'active'">Default</a>
+                            <a ng-class="WidgetSections.sortOnClosest ? '' : 'color-white'">Default</a>
                         </div>
                         <div ng-hide="WidgetSections.locationData.currentCoordinates == null" ng-class="!WidgetSections.sortOnClosest ? '' : 'bg-primary'"
                              ng-class="WidgetSections.sortOnClosest ? '' : 'active'"
                              ng-click="WidgetSections.sortOnClosest = true" class="col-xs-6 padding-zero text-center">
-                            <a ng-class="WidgetSections.sortOnClosest ? 'active' : ''">Closest to Me</a>
+                            <a ng-class="WidgetSections.sortOnClosest ? 'color-white' : ''">Closest to Me</a>
                         </div>
                         <div ng-show="WidgetSections.locationData.currentCoordinates == null"
                              class="col-xs-6 padding-zero text-center">
