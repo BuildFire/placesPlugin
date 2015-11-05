@@ -1,6 +1,6 @@
 <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
-        <span>Sort</span>
+        <span>Sort Items</span>
     </div>
     <div class="main col-md-9 pull-right">
         <div class="col-md-4 pull-left padding-left-zero">
@@ -34,19 +34,15 @@
 <hr>
 <div class="item clearfix row">
     <div class="main col-md-9 pull-right padding-left-zero row">
-        <div class="pull-left inner-main col-md-3">
+        <div class="pull-left inner-main col-md-5">
             <a ng-click="ContentItems.done()"
-               href="javaScript:void(0);" class="btn btn-success stretch">Sections</a>
+               href="javaScript:void(0);" class="btn btn-success stretch">Go back to Sections</a>
         </div>
-        <div class="pull-left inner-main col-md-8 padding-zero">
+        <div class="pull-left inner-main col-md-3 padding-zero">
             <a ng-href="#/item/{{ContentItems.section}}" class="btn btn-success stretch">Add New Item</a>
         </div>
-        <!--  <div class="col-md-4 pull-right">
-              <a ng-click="ContentItems.searchListItem(search)" class="btn btn-primary pull-right stretch">Search</a>
-          </div>-->
     </div>
 </div>
-<hr>
 <div class="item clearfix">
     <div id="items-scroll-infinite"
          class="tab-order draggable-list-view wide-list has-btn-link border-grey border-radius-four">
