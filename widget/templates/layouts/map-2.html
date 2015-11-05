@@ -7,7 +7,7 @@
                     <div id="mapCarousel" map-build-fire-carousel=""></div>
                 </div>
             </div>
-            <div ng-if="WidgetSections.selectedItem" class="info-bar titleBarBackgroundTheme padding-top-five padding-bottom-five">
+            <div ng-if="WidgetSections.selectedItem" class="info-bar titleBarBackgroundTheme padding-top-five padding-bottom-five" style="min-height: 45px;">
                 <div class="col-xs-9 pull-left">
                     <a ng-href="#/item/{{WidgetSections.selectedItem.data.sections[0]}}/{{WidgetSections.selectedItem.id}}" class="margin-bottom-zero whiteTheme">{{WidgetSections.selectedItem.data.itemTitle}}</a>
                     <p class="margin-bottom-zero ellipsis whiteTheme">{{WidgetSections.selectedItem.data.summary}}</p>
