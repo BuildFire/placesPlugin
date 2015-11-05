@@ -2,15 +2,15 @@
     <div>
         <div class="extra-links">
             <a ng-click="WidgetSections.refreshLocation()"  class="my-location bg-primary">
-                <span class="icon icon-aim titleBarTextAndIcons"></span>
+                <span class="icon icon-aim whiteTheme"></span>
             </a>
         </div>
     </div>
     <div class="col-xs-6 pull-left text-center transition-third bg-primary">
-        <a ng-show="WidgetSections.currentView == 'list'" ng-click="WidgetSections.currentView = 'map';" class="titleBarTextAndIcons">
+        <a ng-show="WidgetSections.currentView == 'list'" ng-click="WidgetSections.currentView = 'map';" class="whiteTheme">
             Map
         </a>
-        <a  ng-show="WidgetSections.currentView == 'map'" ng-click="WidgetSections.currentView = 'list';" class="titleBarTextAndIcons">
+        <a  ng-show="WidgetSections.currentView == 'map'" ng-click="WidgetSections.currentView = 'list';" class="whiteTheme">
             List
         </a>
     </div>
@@ -60,12 +60,12 @@
                         <div ng-click="WidgetSections.sortOnClosest = false"
                              class="col-xs-6 padding-zero text-center"
                              ng-class="WidgetSections.sortOnClosest ? '' : 'bg-primary'">
-                            <a ng-class="WidgetSections.sortOnClosest ? '' : 'color-white'">Default</a>
+                            <a ng-class="WidgetSections.sortOnClosest ? '' : 'whiteTheme'">Default</a>
                         </div>
                         <div ng-hide="WidgetSections.locationData.currentCoordinates == null" ng-class="!WidgetSections.sortOnClosest ? '' : 'bg-primary'"
                              ng-class="WidgetSections.sortOnClosest ? '' : 'active'"
                              ng-click="WidgetSections.sortOnClosest = true" class="col-xs-6 padding-zero text-center">
-                            <a ng-class="WidgetSections.sortOnClosest ? 'color-white' : ''">Closest to Me</a>
+                            <a ng-class="WidgetSections.sortOnClosest ? 'whiteTheme' : ''">Closest to Me</a>
                         </div>
                         <div ng-show="WidgetSections.locationData.currentCoordinates == null"
                              class="col-xs-6 padding-zero text-center">

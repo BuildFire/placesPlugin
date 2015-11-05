@@ -61,17 +61,17 @@
                                 <img ng-if="item.data.listImage" ng-src="{{item.data.listImage | resizeImage:342:274}}">
                                 <img ng-if="!item.data.listImage" src="assets/images/placeholder.png">
                             </div>
-                            <div class="info-bar titleBarBackgroundTheme">
+                            <div class="info-bar blackBackgroundTheme">
                                 <div class="col-xs-8 text-left pull-left">
-                                    <p class="margin-bottom-zero ellipsis titleBarTextAndIcons">
-                                        <a class="titleBarTextAndIcons" ng-if="item.data.sections.length" ng-href="#/item/{{item.data.sections[0]}}/{{item.id}}">{{item.data.itemTitle}}</a>
-                                        <a class="titleBarTextAndIcons" ng-if="item.data.sections.length == 0" ng-href="#/item/allitems/{{item.id}}">{{item.data.itemTitle}}</a>
+                                    <p class="margin-bottom-zero ellipsis whiteTheme">
+                                        <a class="whiteTheme" ng-if="item.data.sections.length" ng-href="#/item/{{item.data.sections[0]}}/{{item.id}}">{{item.data.itemTitle}}</a>
+                                        <a class="whiteTheme" ng-if="item.data.sections.length == 0" ng-href="#/item/allitems/{{item.id}}">{{item.data.itemTitle}}</a>
                                     </p>
-                                    <p class="margin-bottom-zero ellipsis titleBarTextAndIcons">{{item.data.summary}}</p>
+                                    <p class="margin-bottom-zero ellipsis whiteTheme">{{item.data.summary}}</p>
                                 </div>
                                 <div class="col-xs-4 text-right pull-right padding-left-zero">
-                                    <span class="icon icon-map-marker icon-sm titleBarTextAndIcons"></span>
-                                    <span class="miles titleBarTextAndIcons">{{item.data.distanceText}}</span>
+                                    <span class="icon icon-map-marker icon-sm whiteTheme"></span>
+                                    <span class="miles whiteTheme">{{item.data.distanceText}}</span>
                                 </div>
                             </div>
                         </div>
