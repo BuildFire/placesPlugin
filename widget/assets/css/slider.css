@@ -70,7 +70,7 @@ rzslider span.rz-pointer {
     -webkit-border-radius: 16px;
     -moz-border-radius: 16px;
     border-radius: 16px;
-    border-color: #0db9f0;
+    /*border-color: #0db9f0;*/
     border-style: solid;
     border-width: 2px;
 }
