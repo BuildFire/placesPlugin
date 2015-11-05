@@ -22,7 +22,7 @@
                             </div>
                         </div>
                         <div class="padded text-left">
-                            <span class="whiteTheme">All Items</span>
+                            <span class="text-primary ">All Items</span>
                         </div>
                     </a>
                 </div>
@@ -44,9 +44,7 @@
         </div>
         <div ng-hide="WidgetSections.showSections">
             <div infinite-scroll-distance="0"
-                 infinite-scroll="WidgetSections.loadMoreItems()"
-
-                 infinite-scroll-container="'#scroll-infinite'">
+                 infinite-scroll="WidgetSections.loadMoreItems()">
                 <div class="no-items-msg margin-left-fifteen margin-right-fifteen"
                      ng-hide="WidgetSections.locationData.items.length">
                     No item(s) to show
