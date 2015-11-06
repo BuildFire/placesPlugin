@@ -79,6 +79,7 @@
                         <div class="media-holder pull-left">
                             <img ng-src="{{ContentSections.info.data.content.allItemImage | resizeImage : 50:50}}"
                                  ng-if="ContentSections.info.data.content.allItemImage">
+                            <img src="assets/images/1x1.png" ng-if="!ContentSections.info.data.content.allItemImage">
                         </div>
                         <div class="copy pull-right">
                             <div class="col-md-4 padding-zero pull-left">
@@ -87,10 +88,12 @@
                                 </a>
                             </div>
                             <div class="col-md-6 padding-right-zero pull-left">
-                                <a><span class="content ellipsis text-primary" ng-click="ContentSections.selectAllItemImage()">Edit</span></a>
+                                <a><span class="content ellipsis text-primary"
+                                         ng-click="ContentSections.selectAllItemImage()">Edit</span></a>
                             </div>
                             <div class="pull-right padding-top-fix toggle-fix">
-                                <switch ng-model="ContentSections.info.data.content.showAllItems" class="green"></switch>
+                                <switch ng-model="ContentSections.info.data.content.showAllItems"
+                                        class="green"></switch>
                             </div>
                         </div>
                     </div>
@@ -104,6 +107,7 @@
 
                     <div class="media-holder pull-left">
                         <img ng-src="{{item.data.mainImage | resizeImage : 50:50}}" ng-if="item.data.mainImage">
+                        <img src="assets/images/1x1.png" ng-if="!item.data.mainImage">
                     </div>
                     <div class="copy pull-right">
                         <div class="col-md-4 padding-zero pull-left">
