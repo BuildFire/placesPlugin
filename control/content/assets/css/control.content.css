@@ -47,26 +47,41 @@ Style for loader
     padding-top: 18px;
 }
 
-
-.left-width-fifty-pc{
+.left-width-fifty-pc {
     width: 50%;
     float: left;
 }
 
-.right-width-fifty-pc{
+.right-width-fifty-pc {
     width: 50%;
     float: left;
 }
 
-.google-map-fix{
+.google-map-fix {
     height: 200px;
     position: relative;
 }
 
-.hidden-visibility{
+.hidden-visibility {
     visibility: hidden;
 }
 
-.toggle-fix{
+.toggle-fix {
     margin-top: -12px !important;
+}
+
+.sort-padding {
+    line-height: 30px;
+}
+
+.padding-bottom-sort {
+    padding-bottom: 20px;
+    margin-right: -73px !important;
+}
+
+.main-right-padding {
+    padding-right: 20px;
+}
+.custom-margin{
+    margin-left: 0px !important;
 }
