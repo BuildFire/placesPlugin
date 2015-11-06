@@ -25,7 +25,7 @@
                     ContentItem.masterItem = angular.copy(ContentItem.item);
                 }
                 else {
-                    ContentItem.item = DEFAULT_DATA.ITEM;
+                    ContentItem.item = angular.copy(DEFAULT_DATA.ITEM);
                     if ($routeParams.sectionId != 'allitems')
                         ContentItem.item.data.sections.push($routeParams.sectionId);
                     ContentItem.masterItem = angular.copy(ContentItem.item);
@@ -198,22 +198,6 @@
                 }
 
                 //init();
-
-                ContentItem.addBackgroundImage = function () {
-                    var options = {showIcons: false, multiSelection: false}
-                        , callback = function (error, result) {
-                            if (error) {
-                                console.error('Error:', error);
-                            } else {
-                                ContentItem.item.data.backgroundImage = result.selectedFiles && result.selectedFiles[0] || null;
-                                $scope.$digest();
-                            }
-                        };
-                    Buildfire.imageLib.showDialog(options, callback);
-                };
-                ContentItem.removeBackgroundImage = function () {
-                    ContentItem.item.data.backgroundImage = null;
-                };
                 ContentItem.addListImage = function () {
                     var options = {showIcons: false, multiSelection: false},
                         listImgCB = function (error, result) {
