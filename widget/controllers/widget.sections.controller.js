@@ -583,6 +583,12 @@
                     }
                 });
 
+                WidgetSections.increaseMaxDis=function(){
+                    $scope.distanceSlider.ceil=$scope.distanceSlider.ceil+10;
+                    console.log($scope.distanceSlider.max,"$scope.distanceSlider.max-------------------");
+                    $scope.$digest();
+                };
+
                 $scope.$on("Map Carousel:LOADED", function () {
                     if (!mapview) {
                         mapview = new Buildfire.components.carousel.view("#mapCarousel", []);  ///create new instance of buildfire carousel viewer
