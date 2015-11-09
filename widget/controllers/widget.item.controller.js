@@ -28,7 +28,7 @@
                         },
                         settings: {
                             defaultView: "list",
-                            showDistanceIn: "miles"
+                            showDistanceIn: "mi"
                         }
                     }
                 }

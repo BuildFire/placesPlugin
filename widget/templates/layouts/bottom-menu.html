@@ -42,15 +42,16 @@
             </div>
             <div ng-class="WidgetSections.menuTab == 'Sorting' ? 'active' : ''" class="sorting-tab tab padded">
                 <div class="distance">
-                    <p class="text-primary">Distance</p>
+                   <!-- <p class="text-primary">Distance</p>
                     <p class="text-primary" ng-show="WidgetSections.placesInfo.data.settings.showDistanceIn == 'miles'">{{distanceSlider.min}} to {{distanceSlider.max}} miles</p>
-                    <p class="text-primary" ng-hide="WidgetSections.placesInfo.data.settings.showDistanceIn == 'miles'">{{distanceSlider.min}} to {{distanceSlider.max}} km</p>
+                    <p class="text-primary" ng-hide="WidgetSections.placesInfo.data.settings.showDistanceIn == 'miles'">{{distanceSlider.min}} to {{distanceSlider.max}} km</p>-->
                     <rzslider rz-slider-tpl-url="templates/layouts/slider-template.html"
                               rz-slider-floor="distanceSlider.floor"
                               rz-slider-ceil="distanceSlider.ceil"
                               rz-slider-model="distanceSlider.min"
                               rz-slider-high="distanceSlider.max"
                               rz-slider-step="5"
+                              data-ciel-label="{{WidgetSections.placesInfo.data.settings.showDistanceIn}}"
                               rz-slider-hide-limit-labels="true"></rzslider>
                 </div>
                 <div class="sort-items margin-top-twenty">

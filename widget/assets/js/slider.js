@@ -421,6 +421,7 @@
                     useCustomTr = useCustomTr === undefined ? true : useCustomTr;
 
                     var valStr = (useCustomTr ? this.customTrFn(value) : value).toString(),
+                        self = this,
                         getWidth = false;
 
                     if(label.rzsv === undefined || label.rzsv.length !== valStr.length || (label.rzsv.length > 0 && label.rzsw === 0))
@@ -429,7 +430,7 @@
                         label.rzsv = valStr;
                     }
 
-                    label.text(valStr);
+                    label.text(valStr + " " + (self.scope.cielLabel || ""));
 
                     // Update width only when length of the label have changed
                     if(getWidth) { this.getWidth(label); }
@@ -1283,6 +1284,7 @@
 
                 link: function(scope, elem, attr)
                 {
+                    scope.cielLabel = attr.cielLabel || null;
                     return new RzSlider(scope, elem, attr);
                 }
             };

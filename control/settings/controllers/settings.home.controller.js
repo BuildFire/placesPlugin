@@ -24,7 +24,7 @@
                     },
                     settings: {
                         defaultView: "list",
-                        showDistanceIn: "miles"
+                        showDistanceIn: "mi"
                     }
                 }
                 , tmrDelay = null;
