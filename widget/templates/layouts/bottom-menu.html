@@ -40,7 +40,7 @@
                 <a ng-click="WidgetSections.toggleSectionSelection($index)"
                    ng-repeat="item in WidgetSections.sections | unique : 'id'"
                    class="list-item section-filter"
-                   ng-class="WidgetSections.selectedSections.indexOf(item.id) > -1 ? 'active':''"
+                   ng-class="WidgetSections.selectedSections.indexOf(item.id) > -1 ? 'bg-primary whiteTheme':''"
                    section-id="{{item.id}}">{{item.data.secTitle}}</a>
             </div>
             <div ng-class="WidgetSections.menuTab == 'Sorting' ? 'active' : ''" class="sorting-tab tab padded">
