@@ -30,7 +30,7 @@
         <div class="padded text-center" ng-if="WidgetItem.showBodyContent()">
             <!--<a class="text-primary">Contact info</a>-->
             <hr class="small">
-            <p class="text-left" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml"></p>
+            <p id="description" class="text-left" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml"></p>
         </div>
     </div>
 </div>

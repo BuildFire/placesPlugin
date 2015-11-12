@@ -36,9 +36,11 @@
                 </div>
             </div>-->
         </div>
-        <div class="padded text-center" >
+        <div class="padded text-center">
             <div class="plugin-banner clearfix">
-                <div class="plugin-slider text-center" ng-if="WidgetItem.item.data.images && WidgetItem.item.data.images.length" image-carousel="{{WidgetItem.item.data.images.length}}">
+                <div class="plugin-slider text-center"
+                     ng-if="WidgetItem.item.data.images && WidgetItem.item.data.images.length"
+                     image-carousel="{{WidgetItem.item.data.images.length}}">
                     <div class="plugin-slide item"
                          data-ng-repeat="image in WidgetItem.item.data.images">
                         <a href="{{image.url}}" data-ng-if="image.url"
@@ -49,14 +51,15 @@
                     </div>
                 </div>
             </div>
-        <!--<div class="margin-top-ten">
-            <a class="text-primary">Contact info</a>
-        </div>-->
-    </div>
-    <div class="padding-left-fifteen padding-right-fifteen" ng-if="WidgetItem.showBodyContent()">
-        <hr class="small margin-zero">
-    </div>
-    <div class="padded">
-        <p ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml"></p>
+            <!--<div class="margin-top-ten">
+                <a class="text-primary">Contact info</a>
+            </div>-->
+        </div>
+        <div class="padding-left-fifteen padding-right-fifteen" ng-if="WidgetItem.showBodyContent()">
+            <hr class="small margin-zero">
+        </div>
+        <div class="padded">
+            <p id="description" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml"></p>
+        </div>
     </div>
 </div>

@@ -5,7 +5,7 @@
                 <div id="carousel" build-fire-carousel=""></div>
             </div>
         </div>
-        <div class="padded text-left" ng-if="WidgetSections.showDescription()">
+        <div class="padded text-left" ng-if="WidgetSections.showDescription()" id="description">
             <p class="margin-bottom-zero"
                ng-bind-html="WidgetSections.placesInfo.data.content.descriptionHTML | safeHtml">
             </p>

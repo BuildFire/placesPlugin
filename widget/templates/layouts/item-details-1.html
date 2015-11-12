@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="padded padding-top-ten padding-bottom-ten" ng-if="WidgetItem.showBodyContent()">
-            <p class="margin-zero" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml"></p>
+            <p id="description" class="margin-zero" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml"></p>
 
         </div>
         <div class="padded padding-top-zero">

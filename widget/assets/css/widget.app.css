@@ -152,3 +152,12 @@ style for sec list dark overlay
     height: 100%;
     position: relative;
 }
+
+#description ul li{
+    list-style: inherit !important;
+    list-style-position: inside !important;
+}
+#description ol li{
+    list-style: decimal !important;
+    list-style-position: inside !important;
+}
