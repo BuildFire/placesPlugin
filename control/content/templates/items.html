@@ -1,17 +1,14 @@
 <div class="item clearfix row">
     <div class="main col-md-12 pull-left padding-zero">
-
         <div class="col-md-12 padding-zero padding-left">
             <div class="pull-left inner-main col-md-4">
-                <a ng-click="ContentItems.done()"
-                   href="javaScript:void(0);" class="btn btn-primary stretch">Go back to Sections</a>
+                <a ng-click="ContentItems.done()" href="javaScript:void(0);" class="btn btn-primary stretch">Go back to Sections</a>
             </div>
             <div class="pull-left inner-main col-md-6">
                 <input ng-model="search" type="text" class="form-control" placeholder="Search Item Name">
             </div>
             <div class="col-md-2 pull-right padding-zero">
                 <a ng-click="ContentItems.searchListItem(search)" class="btn btn-primary pull-right stretch">Search</a>
-
             </div>
         </div>
     </div>
@@ -28,8 +25,7 @@
             </div>
             <div class="col-md-4 pull-right padding-left-zero">
                 <div class="dropdown pull-left col-md-12 padding-zero" dropdown>
-                    <button class="btn btn-default text-left dropdown-toggle" data-toggle="dropdown" dropdown-toggle
-                            aria-expanded="true">
+                    <button class="btn btn-default text-left dropdown-toggle" data-toggle="dropdown" dropdown-toggle aria-expanded="true">
                         <span class="pull-left">{{ContentItems.info.data.content.sortByItems || 'Newest'}}</span>
                         <span class="chevron icon-chevron-down pull-right"></span>
                     </button>
@@ -47,41 +43,33 @@
 <div class="item clearfix row custom-margin">
     <div id="items-scroll-infinite"
          class="tab-order draggable-list-view wide-list has-btn-link border-grey border-radius-four">
-        <div infinite-scroll-distance="0"
-             infinite-scroll="ContentItems.getMore()"
-             infinite-scroll-disabled="ContentItems.noMore"
-             infinite-scroll-container="'#items-scroll-infinite'">
-
+        <div infinite-scroll-distance="0" infinite-scroll="ContentItems.getMore()" infinite-scroll-disabled="ContentItems.noMore" infinite-scroll-container="'#items-scroll-infinite'">
             <div ui-sortable="ContentItems.itemSortableOptions" ng-model="ContentItems.items">
-                <div class="well text-center margin-bottom-zero border-none"
-                     ng-show="ContentItems.items && ContentItems.items.length == 0">
+                <div class="well text-center margin-bottom-zero border-none" ng-show="ContentItems.items && ContentItems.items.length == 0">
                     <p class="margin-zero">No items found.</p>
                 </div>
-                <div class="d-item double-line square-icon clearfix" ng-show="ContentItems.items"
-                     ng-repeat="item in ContentItems.items">
-                    <span class="icon icon-menu pull-left cursor-grab"
-                          ng-class="{ 'disabled': ContentItems.itemSortableOptions.disabled }"></span>
-
+                <div class="d-item double-line square-icon clearfix" ng-show="ContentItems.items" ng-repeat="item in ContentItems.items">
+                    <span class="icon icon-menu pull-left cursor-grab" ng-class="{ 'disabled': ContentItems.itemSortableOptions.disabled }"></span>
                     <div class="media-holder pull-left">
                         <img ng-src="{{item.data.listImage | resizeImage : 50:50}}" ng-if="item.data.listImage">
                         <img src="assets/images/1x1.png" ng-if="!item.data.listImage">
                     </div>
                     <div class="copy pull-right">
                         <div class="col-md-4 padding-zero pull-left">
-                            <a class="text-primary" href="#/item/{{ContentItems.section}}/{{item.id}}"><span
-                                    class="title ellipsis pull-left">{{item.data.itemTitle}}</span></a>
-                            <span class="title ellipsis pull-left">{{item.data.summary}}</span>
+                            <a class="text-primary" href="#/item/{{ContentItems.section}}/{{item.id}}">
+								<span class="title ellipsis pull-left">{{item.data.itemTitle}}</span>
+							</a>
+                           	<span class="title ellipsis pull-left">{{item.data.summary}}</span>
                         </div>
                         <div class="col-md-6 padding-right-zero pull-left">
-                            <a ng-click="ContentItems.editSections($index)" class="text-primary"><span
-                                    ng-show="item.data.sections.length == 0" class="content ellipsis text-primary">No section</span><span
-                                    ng-show="item.data.sections.length > 0" class="content ellipsis text-primary">{{item.data.sections.length}} section(s)</span></a>
+                            <a ng-click="ContentItems.editSections($index)" class="text-primary">
+								<span ng-show="item.data.sections.length == 0" class="content ellipsis text-primary">No section</span>
+								<span ng-show="item.data.sections.length > 0" class="content ellipsis text-primary">{{item.data.sections.length}} section(s)</span>
+							</a>
                         </div>
                         <div class="pull-right  padding-top-fix">
-                    <span class="btn-icon btn-link-icon btn-primary transition-third"
-                          ng-click="ContentItems.deepLinkUrl(item.data.deepLinkUrl)"></span>
-                    <span class="btn-icon btn-delete-icon btn-danger transition-third"
-                          ng-click="ContentItems.removeListItem($index)"></span>
+                    		<span class="btn-icon btn-link-icon btn-primary transition-third" ng-click="ContentItems.deepLinkUrl(item.data.deepLinkUrl)"></span>
+                    		<span class="btn-icon btn-delete-icon btn-danger transition-third" ng-click="ContentItems.removeListItem($index)"></span>
                         </div>
                     </div>
                 </div>

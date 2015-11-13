@@ -4,9 +4,11 @@
     <div class="labels col-md-1 padding-right-zero pull-left">
         <span>Body</span>
     </div>
+</div>
+<hr class="none">
+<div class="item clearfix row">
     <div class="main col-md-12 pull-right">
-        <textarea class="form-control" placeholder="WYSIWYG" ui-tinymce="ContentSections.bodyWYSIWYGOptions"
-                  ng-model="ContentSections.info.data.content.descriptionHTML"></textarea>
+        <textarea class="form-control" placeholder="WYSIWYG" ui-tinymce="ContentSections.bodyWYSIWYGOptions" ng-model="ContentSections.info.data.content.descriptionHTML"></textarea>
     </div>
 </div>
 <hr class="none">
@@ -14,11 +16,17 @@
     <div class="labels col-md-3 padding-right-zero pull-left">
         <span>Bulk Actions</span>
     </div>
-    <div class="main col-md-9 pull-right">
-        <a class="btn btn-primary" ng-click="ContentSections.openImportCSVDialog()">Import CSV</a>
-        <a class="btn btn-primary margin-left-ten" ng-click="ContentSections.exportCSV()">Export CSV</a>
-        <a class="btn btn-primary margin-left-ten" ng-click="ContentSections.getTemplate()">Get Template</a>
-    </div>
+    <div class="main col-md-9 pull-right padding-right-zero">
+		<div class="col-xs-4 padding-left-zero">
+        	<a class="btn btn-primary stretch" ng-click="ContentSections.openImportCSVDialog()">Import CSV</a>
+        </div>
+		<div class="col-xs-4 padding-left-zero">
+			<a class="btn btn-primary stretch" ng-click="ContentSections.exportCSV()">Export CSV</a>
+        </div>
+		<div class="col-xs-4 padding-left-zero">
+			<a class="btn btn-primary stretch" ng-click="ContentSections.getTemplate()">Get Template</a>
+   		</div>
+ 	</div>
 </div>
 <hr class="none">
 
@@ -29,8 +37,7 @@
     <div class="main col-md-11 pull-right">
         <div class="col-md-4 pull-left padding-left-zero">
             <div class="dropdown pull-left col-md-12 padding-zero" dropdown>
-                <button ng-disabled="disabled" class="btn btn-default text-left dropdown-toggle" data-toggle="dropdown"
-                        dropdown-toggle aria-expanded="true">
+                <button ng-disabled="disabled" class="btn btn-default text-left dropdown-toggle" data-toggle="dropdown" dropdown-toggle aria-expanded="true">
                     <span class="pull-left">{{ContentSections.info.data.content.sortBy || 'Newest'}}</span>
                     <span class="chevron icon-chevron-down pull-right"></span>
                 </button>
@@ -44,7 +51,7 @@
 
         </div>
         <div class="col-md-8 pull-right padding-zero">
-            <div class="col-md-8 pull-left">
+            <div class="col-md-8 pull-left padding-left-zero">
                 <input ng-model="search" type="text" class="form-control" placeholder="Search Section Name">
             </div>
             <div class="col-md-4 pull-right padding-zero">
@@ -82,18 +89,18 @@
                             <img src="assets/images/1x1.png" ng-if="!ContentSections.info.data.content.allItemImage">
                         </div>
                         <div class="copy pull-right">
-                            <div class="col-md-4 padding-zero pull-left">
-                                <a class="text-primary" href="#/allitems"><span
-                                        class="title ellipsis pull-left">All Items</span>
+                            <div class="col-md-7 padding-zero pull-left">
+                                <a class="text-primary" href="#/allitems">
+									<span class="title ellipsis pull-left">All Items</span>
                                 </a>
                             </div>
-                            <div class="col-md-6 padding-right-zero pull-left">
-                                <a><span class="content ellipsis text-primary"
-                                         ng-click="ContentSections.selectAllItemImage()">Edit</span></a>
+                            <div class="col-md-3 padding-right-zero pull-left text-center">
+                                <a>
+									<span class="content ellipsis text-primary" ng-click="ContentSections.selectAllItemImage()">Edit</span>
+								</a>
                             </div>
                             <div class="pull-right padding-top-fix toggle-fix">
-                                <switch ng-model="ContentSections.info.data.content.showAllItems"
-                                        class="green"></switch>
+                                <switch ng-model="ContentSections.info.data.content.showAllItems" class="green"></switch>
                             </div>
                         </div>
                     </div>
@@ -110,12 +117,12 @@
                         <img src="assets/images/1x1.png" ng-if="!item.data.mainImage">
                     </div>
                     <div class="copy pull-right">
-                        <div class="col-md-4 padding-zero pull-left">
+                        <div class="col-md-7 padding-zero pull-left">
                             <a class="text-primary" href="#/items/{{item.id}}"><span
                                     class="title ellipsis pull-left">{{item.data.secTitle}}</span></a>
                             <span class="title ellipsis pull-left">{{item.data.secSummary}}</span>
                         </div>
-                        <div class="col-md-6 padding-right-zero pull-left">
+                        <div class="col-md-3 padding-right-zero text-center pull-left">
                             <a href="#/section/{{item.id}}" class="text-primary"><span
                                     class="content ellipsis text-primary">Edit</span></a>
                         </div>

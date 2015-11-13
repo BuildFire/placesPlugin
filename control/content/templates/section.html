@@ -15,14 +15,11 @@
     <div class="main col-md-9 pull-right">
         <div class="screens clearfix">
             <div class="screen carouselicon pull-left text-center">
-                <a class="border-grey border-radius-three default-background-hover"
-                   ng-click="ContentSection.selectMainImage()">
-                    <span class="add-icon hidden">+</span>
-                    <img ng-show="ContentSection.section.data.mainImage"
-                         ng-src="{{ContentSection.section.data.mainImage | resizeImage : 82:110}}">
+                <a class="border-grey border-radius-three default-background-hover" ng-click="ContentSection.selectMainImage()">
+                    <span class="add-icon" ng-hide="ContentSection.section.data.mainImage">+</span>
+                    <img ng-show="ContentSection.section.data.mainImage" ng-src="{{ContentSection.section.data.mainImage | resizeImage : 82:110}}">
                 </a>
-                <span class="icon btn-delete-icon btn-danger transition-third"
-                      ng-click="ContentSection.removeMainImage()"></span>
+                <span class="icon btn-delete-icon btn-danger transition-third" ng-click="ContentSection.removeMainImage()"></span>
                 <label class="secondary">1024x1024</label>
             </div>
         </div>
@@ -34,17 +31,16 @@
         <span>Section Summary</span>
     </div>
     <div class="main col-md-9 pull-right">
-        <textarea ng-model="ContentSection.section.data.secSummary" placeholder="Summary"
-                  class="form-control"></textarea>
+        <textarea ng-model="ContentSection.section.data.secSummary" placeholder="Summary" class="form-control"></textarea>
     </div>
 </div>
 <hr class="none">
 <div id="background"></div>
+<hr class="none">
 <div class="item clearfix row">
     <div class="main col-md-9 pull-right">
         <div class="col-md-6 pull-right padding-right-zero padding-left-ten">
-            <a class="btn btn-primary pull-right stretch" ng-click="ContentSection.done()"
-               ng-disabled="!ContentSection.isItemValid" href="javaScript:void(0);">Done</a>
+            <a class="btn btn-primary pull-right stretch" ng-click="ContentSection.done()" ng-disabled="!ContentSection.isItemValid" href="javaScript:void(0);">Done</a>
         </div>
     </div>
 </div>
