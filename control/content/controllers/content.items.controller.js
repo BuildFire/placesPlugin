@@ -48,6 +48,7 @@
                     handle: '> .cursor-grab',
                     disabled: !(ContentItems.info.data.content.sortBy === Orders.ordersMap.Manually),
                     stop: function (e, ui) {
+
                         var endIndex = ui.item.sortable.dropindex,
                             maxRank = 0,
                             draggedItem = ContentItems.items[endIndex];
@@ -71,6 +72,7 @@
                                 }
                             }
                             if (isRankChanged) {
+                                console.log('update in index');
                                 Items.update(draggedItem.id, draggedItem.data).then(function (updataeditem) {
                                     console.log('Updated item--------------------------------', updataeditem);
                                     if (ContentItems.sectionInfo) {

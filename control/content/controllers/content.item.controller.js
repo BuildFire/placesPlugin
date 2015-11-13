@@ -5,13 +5,23 @@
     'use strict';
     angular
         .module('placesContent')
-        .controller('ContentItemCtrl', ['$scope', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout', 'EVENTS', 'PATHS', 'Messaging', 'item', 'DEFAULT_DATA',
-            function ($scope, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout, EVENTS, PATHS, Messaging, item, DEFAULT_DATA) {
+        .controller('ContentItemCtrl', ['$scope', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout', 'EVENTS', 'PATHS', 'Messaging', 'item', 'placesInfo', 'DEFAULT_DATA',
+            function ($scope, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout, EVENTS, PATHS, Messaging, item, placesInfo, DEFAULT_DATA) {
                 var tmrDelayForItem = null
                     , Items = new DB(COLLECTIONS.Items)
+                    , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
                     , updating = false;
 
                 var background = new Buildfire.components.images.thumbnail("#background");
+
+                var placeInfoData;
+                if (placesInfo) {
+                    placeInfoData = placesInfo;
+                }
+                else {
+                    placeInfoData = DEFAULT_DATA.PLACE_INFO;
+                }
+                console.log('placeInfoData>>>>>>>>>>', placeInfoData);
 
                 $scope.itemShow = 'Content';
 
@@ -161,6 +171,7 @@
                     }
                     else {
                         console.info('****************Item inserted***********************');
+                        _item.data.rank = (placeInfoData.data.content.rankOfLastItemItems || 0) + 10;
                         _item.data.dateCreated = new Date();
                         Items.insert(_item.data).then(function (data) {
                             updating = false;
@@ -168,6 +179,12 @@
                                 ContentItem.item.data.deepLinkUrl = Buildfire.deeplink.createLink({id: data.id});
                                 ContentItem.item.id = data.id;
                                 updateMasterItem(ContentItem.item);
+                                placeInfoData.data.content.rankOfLastItemItems = _item.data.rank;
+                                PlaceInfo.save(placeInfoData.data).then(function (data) {
+                                }, function (err) {
+                                    resetItem();
+                                    console.error('Error while getting----------', err);
+                                });
                             }
                             else {
                                 resetItem();

@@ -261,15 +261,25 @@
                 var clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
                     console.log('Event in ------------------', event);
                     if (event.tag === "placeInfo") {
+                        console.log('update happened in placeInfo');
+
                         if (event.data) {
                             if (event.data.settings.showDistanceIn != WidgetSections.placesInfo.data.settings.showDistanceIn)
                                 $window.location.reload();
 
+                            var sortByItemsChange = false;
+                            if (event.data.content.sortByItems != WidgetSections.placesInfo.data.content.sortByItems)
+                                sortByItemsChange = true;
+
                             WidgetSections.placesInfo = event;
+
+                            if(sortByItemsChange)
+                            filterChanged();
+
                             WidgetSections.selectedItem = null;
                             WidgetSections.selectedItemDistance = null;
                             WidgetSections.currentView = WidgetSections.placesInfo.data.settings.defaultView;
-                            $scope.$digest();
+                            $scope.$apply();
                             refreshSections();
 
 
@@ -291,6 +301,10 @@
                         if (event.data) {
                             if (event.data.address && event.data.address.lng && event.data.address.lat) {
                                 loadAllItemsOfSections();
+                            }
+                            else
+                            {
+                                filterChanged();
                             }
                         } else if (event.id && WidgetSections.locationData.items) {
                             for (var _index = 0; _index < WidgetSections.locationData.items.length; _index++) {

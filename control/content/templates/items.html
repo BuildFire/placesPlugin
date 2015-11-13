@@ -52,11 +52,8 @@
              infinite-scroll-disabled="ContentItems.noMore"
              infinite-scroll-container="'#items-scroll-infinite'">
 
-            <div ui-sortable="ContentItems.itemSortableOptions" ng-model="ContentItems.items">
-                <div class="well text-center margin-bottom-zero border-none"
-                     ng-show="ContentItems.items && ContentItems.items.length == 0">
-                    <p class="margin-zero">No items found.</p>
-                </div>
+            <div ng-show="ContentItems.items.length" ui-sortable="ContentItems.itemSortableOptions" ng-model="ContentItems.items">
+
                 <div class="d-item double-line square-icon clearfix" ng-show="ContentItems.items"
                      ng-repeat="item in ContentItems.items">
                     <span class="icon icon-menu pull-left cursor-grab"
@@ -86,6 +83,12 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div ng-show="ContentItems.items && ContentItems.items.length == 0"
+            class="tab-order draggable-list-view wide-list has-btn-link border-grey border-radius-four">
+        <div class="well text-center margin-bottom-zero border-none">
+            <p class="margin-zero">No items found.</p>
         </div>
     </div>
 </div>
