@@ -22,7 +22,7 @@
                                 <img ng-if="WidgetSections.placesInfo.data.content.allItemImage"
                                      ng-src="{{WidgetSections.placesInfo.data.content.allItemImage | cropImage:342:192}}">
                                 <img ng-if="!WidgetSections.placesInfo.data.content.allItemImage"
-                                     src="assets/images/placeholder.png">
+                                     src="assets/images/16x9.png">
                             </div>
                             <div class="info-bar blackBackgroundTheme">
                                 <div class="col-xs-12 text-left pull-left">
@@ -38,12 +38,13 @@
                         <a href="#/items/{{item.id}}">
                             <div class="plugin-slide text-center">
                                 <img ng-if="item.data.mainImage" ng-src="{{item.data.mainImage | cropImage:342:192}}">
-                                <img ng-if="!item.data.mainImage" src="assets/images/placeholder.png">
+                                <img ng-if="!item.data.mainImage" src="assets/images/16x9.png">
                             </div>
                             <div class="info-bar blackBackgroundTheme">
                                 <div class="col-xs-12 text-left pull-left">
-                                    <p class="margin-bottom-zero ellipsis whiteTheme"><span class="text-primary whiteTheme"
-                                                                                 >{{item.data.secTitle}}</span>
+                                    <p class="margin-bottom-zero ellipsis whiteTheme"><span
+                                            class="text-primary whiteTheme"
+                                            >{{item.data.secTitle}}</span>
                                     </p>
 
                                     <p class="margin-bottom-zero ellipsis whiteTheme">
@@ -64,13 +65,15 @@
                          ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
                         <div class="plugin-slide text-center">
                             <img ng-if="item.data.listImage" ng-src="{{item.data.listImage | cropImage:342:192}}">
-                            <img ng-if="!item.data.listImage" src="assets/images/placeholder.png">
+                            <img ng-if="!item.data.listImage" src="assets/images/16x9.png">
                         </div>
                         <div class="info-bar blackBackgroundTheme">
                             <div class="col-xs-8 text-left pull-left">
                                 <p class="margin-bottom-zero ellipsis whiteTheme">
-                                    <a class="whiteTheme" ng-if="item.data.sections.length" ng-href="#/item/{{item.data.sections[0]}}/{{item.id}}">{{item.data.itemTitle}}</a>
-                                    <a class="whiteTheme" ng-if="item.data.sections.length == 0" ng-href="#/item/allitems/{{item.id}}">{{item.data.itemTitle}}</a>
+                                    <a class="whiteTheme" ng-if="item.data.sections.length"
+                                       ng-href="#/item/{{item.data.sections[0]}}/{{item.id}}">{{item.data.itemTitle}}</a>
+                                    <a class="whiteTheme" ng-if="item.data.sections.length == 0"
+                                       ng-href="#/item/allitems/{{item.id}}">{{item.data.itemTitle}}</a>
                                 </p>
 
                                 <p class="margin-bottom-zero ellipsis whiteTheme">{{item.data.summary}}</p>
