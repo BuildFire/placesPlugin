@@ -278,8 +278,8 @@
 
                             WidgetSections.placesInfo = event;
 
-                            if(sortByItemsChange)
-                            filterChanged();
+                            if (sortByItemsChange)
+                                filterChanged();
 
                             WidgetSections.selectedItem = null;
                             WidgetSections.selectedItemDistance = null;
@@ -307,9 +307,10 @@
                             if (event.data.address && event.data.address.lng && event.data.address.lat) {
                                 loadAllItemsOfSections();
                             }
-                            else
-                            {
-                                filterChanged();
+                            else {
+                                $timeout(function () {
+                                    filterChanged();
+                                }, 500);
                             }
                         } else if (event.id && WidgetSections.locationData.items) {
                             for (var _index = 0; _index < WidgetSections.locationData.items.length; _index++) {
@@ -492,14 +493,14 @@
                 /* Filters the items based on the range of distance slider */
                 WidgetSections.sortFilter = function (item) {
 
-                    if (WidgetSections.filterUnapplied || WidgetSections.locationData.currentCoordinates == null || !item.data.distanceText  || item.data.distanceText == 'Fetching..' || item.data.distanceText == 'NA') {
+                    if (WidgetSections.filterUnapplied || WidgetSections.locationData.currentCoordinates == null || !item.data.distanceText || item.data.distanceText == 'Fetching..' || item.data.distanceText == 'NA') {
                         return true;
                     }
                     var sortFilterCond;
-                    try{
+                    try {
                         sortFilterCond = (Number(item.data.distanceText.split(' ')[0]) >= $scope.distanceSlider.min && Number(item.data.distanceText.split(' ')[0]) <= $scope.distanceSlider.max);
                     }
-                    catch(e){
+                    catch (e) {
                         sortFilterCond = true;
                     }
                     return sortFilterCond;
@@ -609,9 +610,9 @@
                     }
                 });
 
-                WidgetSections.increaseMaxDis=function(){
-                    $scope.distanceSlider.ceil=$scope.distanceSlider.ceil+10;
-                    console.log($scope.distanceSlider.max,"$scope.distanceSlider.max-------------------");
+                WidgetSections.increaseMaxDis = function () {
+                    $scope.distanceSlider.ceil = $scope.distanceSlider.ceil + 10;
+                    console.log($scope.distanceSlider.max, "$scope.distanceSlider.max-------------------");
                     $scope.$digest();
                 };
 
