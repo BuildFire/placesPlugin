@@ -6,8 +6,8 @@
              ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
             <a ng-href="#/item/{{WidgetSections.sectionId}}/{{item.id}}">
                 <div class="plugin-slide text-center">
-                    <img ng-if="item.data.listImage" ng-src="{{item.data.listImage | resizeImage:342:274}}">
-                    <img ng-if="!item.data.listImage" src="assets/images/placeholder.png">
+                    <img ng-if="item.data.listImage" ng-src="{{item.data.listImage | cropImage:342:192}}">
+                    <img ng-if="!item.data.listImage" src="assets/images/16x9.png">
                 </div>
                 <div class="info-bar blackBackgroundTheme">
                     <div class="col-xs-8 text-left pull-left">
