@@ -273,8 +273,8 @@
 
                             WidgetSections.placesInfo = event;
 
-                            if(sortByItemsChange)
-                            filterChanged();
+                            if (sortByItemsChange)
+                                filterChanged();
 
                             WidgetSections.selectedItem = null;
                             WidgetSections.selectedItemDistance = null;
@@ -302,8 +302,7 @@
                             if (event.data.address && event.data.address.lng && event.data.address.lat) {
                                 loadAllItemsOfSections();
                             }
-                            else
-                            {
+                            else {
                                 filterChanged();
                             }
                         } else if (event.id && WidgetSections.locationData.items) {
@@ -486,11 +485,11 @@
 
                 /* Filters the items based on the range of distance slider */
                 WidgetSections.sortFilter = function (item) {
-
-                    if (WidgetSections.locationData.currentCoordinates == null || item.data.distanceText == 'Fetching..' || !item.data.distanceText || item.data.distanceText == 'NA') {
-                        return true;
-                    }
-                    return (Number(item.data.distanceText.split(' ')[0]) >= $scope.distanceSlider.min && Number(item.data.distanceText.split(' ')[0]) <= $scope.distanceSlider.max);
+                    return true;
+                    /*        if (WidgetSections.locationData.currentCoordinates == null || !item.data.distanceText  || item.data.distanceText == 'Fetching..' || item.data.distanceText == 'NA') {
+                     return true;
+                     }
+                     return (Number(item.data.distanceText.split(' ')[0]) >= $scope.distanceSlider.min && Number(item.data.distanceText.split(' ')[0]) <= $scope.distanceSlider.max);*/
                 };
 
 
@@ -597,9 +596,9 @@
                     }
                 });
 
-                WidgetSections.increaseMaxDis=function(){
-                    $scope.distanceSlider.ceil=$scope.distanceSlider.ceil+10;
-                    console.log($scope.distanceSlider.max,"$scope.distanceSlider.max-------------------");
+                WidgetSections.increaseMaxDis = function () {
+                    $scope.distanceSlider.ceil = $scope.distanceSlider.ceil + 10;
+                    console.log($scope.distanceSlider.max, "$scope.distanceSlider.max-------------------");
                     $scope.$digest();
                 };
 
