@@ -11,8 +11,10 @@
             </p>
         </div>
         <div ng-show="WidgetSections.showSections">
-            <div infinite-scroll-distance="0"
-                 infinite-scroll="WidgetSections.loadMoreSections()">
+            <div infinite-scroll="WidgetSections.loadMoreSections()"
+                 infinite-scroll-distance="1"
+                 data-infinite-container=".infinite-scroll-parent"
+                 infinite-scroll-disabled="WidgetSections.noMoreSections">
                 <div ng-if="WidgetSections.placesInfo.data.content.showAllItems">
                     <a href="#/items/allitems">
                         <div class="plugin-banner clearfix border-bottom-grey">
@@ -36,14 +38,16 @@
                         <div class="padded text-left">
                             <span class="text-primary">{{item.data.secTitle}}</span>
 
-                            <p class="margin-zero color-dark-grey" >{{item.data.secSummary}}</p>
+                            <p class="margin-zero color-dark-grey">{{item.data.secSummary}}</p>
                         </div>
                     </a>
                 </div>
             </div>
         </div>
         <div ng-hide="WidgetSections.showSections">
-            <div infinite-scroll-distance="0"
+            <div infinite-scroll-distance="1"
+                 data-infinite-container=".infinite-scroll-parent"
+                 infinite-scroll-disabled="WidgetSections.noMoreItems"
                  infinite-scroll="WidgetSections.loadMoreItems()">
                 <div class="no-items-msg margin-left-fifteen margin-right-fifteen"
                      ng-hide="WidgetSections.locationData.items.length">
@@ -58,8 +62,10 @@
                     <div class="info-bar blackBackgroundTheme">
                         <div class="col-xs-8 text-left pull-left">
                             <p class="margin-bottom-zero ellipsis whiteTheme">
-                                <a class="whiteTheme" ng-if="item.data.sections.length" ng-href="#/item/{{item.data.sections[0]}}/{{item.id}}">{{item.data.itemTitle}}</a>
-                                <a class="whiteTheme" ng-if="item.data.sections.length == 0" ng-href="#/item/allitems/{{item.id}}">{{item.data.itemTitle}}</a>
+                                <a class="whiteTheme" ng-if="item.data.sections.length"
+                                   ng-href="#/item/{{item.data.sections[0]}}/{{item.id}}">{{item.data.itemTitle}}</a>
+                                <a class="whiteTheme" ng-if="item.data.sections.length == 0"
+                                   ng-href="#/item/allitems/{{item.id}}">{{item.data.itemTitle}}</a>
                             </p>
 
                             <p class="margin-bottom-zero ellipsis whiteTheme">{{item.data.summary}}</p>

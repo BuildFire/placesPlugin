@@ -11,8 +11,10 @@
         <div class="">
             <div class="list-layout">
                 <div ng-show="WidgetSections.showSections">
-                    <div infinite-scroll-distance="0"
-                         infinite-scroll="WidgetSections.loadMoreSections()">
+                    <div infinite-scroll-distance="1"
+                         data-infinite-container=".infinite-scroll-parent"
+                         infinite-scroll-disabled="WidgetSections.noMoreItems"
+                         infinite-scroll="WidgetSections.loadMoreItems()">
                         <div class="list-item" ng-if="WidgetSections.placesInfo.data.content.showAllItems">
                             <a href="#/items/allitems">
                                 <div class="list-item-media text-left overflow-hidden">
@@ -52,7 +54,9 @@
                     <div class="no-items-msg margin-fifteen" ng-hide="WidgetSections.locationData.items.length">
                         No item(s) to show
                     </div>
-                    <div infinite-scroll-distance="0"
+                    <div infinite-scroll-distance="1"
+                         data-infinite-container=".infinite-scroll-parent"
+                         infinite-scroll-disabled="WidgetSections.noMoreItems"
                          infinite-scroll="WidgetSections.loadMoreItems()">
                         <div class="plugin-banner has-info-bar clearfix"
                              ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">

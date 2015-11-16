@@ -12,8 +12,10 @@
         </div>
         <div class="padding-top-zero">
             <div ng-show="WidgetSections.showSections">
-                <div infinite-scroll-distance="0"
-                     infinite-scroll="WidgetSections.loadMoreSections()">
+                <div infinite-scroll="WidgetSections.loadMoreSections()"
+                     infinite-scroll-distance="1"
+                     data-infinite-container=".infinite-scroll-parent"
+                     infinite-scroll-disabled="WidgetSections.noMoreSections">
                     <div ng-if="WidgetSections.placesInfo.data.content.showAllItems"
                          class="plugin-banner has-info-bar clearfix "
                          style="min-height: 10px">
@@ -56,7 +58,9 @@
                 </div>
             </div>
             <div ng-hide="WidgetSections.showSections">
-                <div infinite-scroll-distance="0"
+                <div infinite-scroll-distance="1"
+                     data-infinite-container=".infinite-scroll-parent"
+                     infinite-scroll-disabled="WidgetSections.noMoreItems"
                      infinite-scroll="WidgetSections.loadMoreItems()">
                     <div class="no-items-msg" ng-hide="WidgetSections.locationData.items.length">
                         No item(s) to show
