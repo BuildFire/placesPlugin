@@ -7,6 +7,7 @@
         .module('placesContent')
         .controller('ContentItemCtrl', ['$scope', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout', 'EVENTS', 'PATHS', 'Messaging', 'item', 'placesInfo', 'DEFAULT_DATA',
             function ($scope, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout, EVENTS, PATHS, Messaging, item, placesInfo, DEFAULT_DATA) {
+                Buildfire.appearance.setHeaderVisibility(true);
                 var tmrDelayForItem = null
                     , Items = new DB(COLLECTIONS.Items)
                     , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
