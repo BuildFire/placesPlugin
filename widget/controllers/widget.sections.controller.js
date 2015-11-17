@@ -310,7 +310,7 @@
                             else {
                                 $timeout(function () {
                                     filterChanged();
-                                }, 500);
+                                }, 1500);
                             }
                         } else if (event.id && WidgetSections.locationData.items) {
                             for (var _index = 0; _index < WidgetSections.locationData.items.length; _index++) {
@@ -372,7 +372,7 @@
                 if (typeof(Storage) !== "undefined") {
                     var userLocation = localStorage.getItem('user_location');
                     if (userLocation) {
-                        WidgetSections.sortOnClosest = true;// will be true if user allows location
+                        //WidgetSections.sortOnClosest = true;// will be true if user allows location
                         WidgetSections.locationData.currentCoordinates = JSON.parse(userLocation);
                     }
                     else
@@ -387,7 +387,7 @@
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(function (position) {
                             $scope.$apply(function () {
-                                WidgetSections.sortOnClosest = true;// will be true if user allows location
+                                //WidgetSections.sortOnClosest = true;// will be true if user allows location
                                 WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
                                 localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
                             });
