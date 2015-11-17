@@ -46,7 +46,7 @@
                 ContentItems.sortOptions = OrdersItems.options;
                 ContentItems.itemSortableOptions = {
                     handle: '> .cursor-grab',
-                    disabled: !(ContentItems.info.data.content.sortBy === Orders.ordersMap.Manually),
+                    disabled: !(ContentItems.info.data.content.sortByItems === Orders.ordersMap.Manually),
                     stop: function (e, ui) {
 
                         var endIndex = ui.item.sortable.dropindex,
