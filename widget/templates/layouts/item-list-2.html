@@ -32,7 +32,7 @@
         <div class="plugin-banner has-info-bar clearfix" ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
             <a ng-href="#/item/{{WidgetSections.sectionId}}/{{item.id}}">
             <div class="plugin-slide text-center">
-                <img ng-if="item.data.listImage" ng-src="{{item.data.listImage | cropImage:342:192}}">
+                <img ng-if="item.data.listImage" ng-src="{{item.data.listImage | cropImage:WidgetSections.deviceWidth:192}}">
             </div>
             <div class="plugin-copy border-bottom-grey clearfix">
                 <div class="col-xs-8 text-left pull-left">
