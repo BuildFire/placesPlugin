@@ -22,7 +22,7 @@
                         <a href="#/items/allitems">
                             <div class="plugin-slide text-center">
                                 <img ng-if="WidgetSections.placesInfo.data.content.allItemImage"
-                                     ng-src="{{WidgetSections.placesInfo.data.content.allItemImage | cropImage:342:192}}">
+                                     ng-src="{{WidgetSections.placesInfo.data.content.allItemImage | cropImage:WidgetSections.deviceWidth:192}}">
                                 <img ng-if="!WidgetSections.placesInfo.data.content.allItemImage"
                                      src="assets/images/16x9.png">
                             </div>
@@ -39,7 +39,7 @@
                          style="min-height: 10px">
                         <a href="#/items/{{item.id}}">
                             <div class="plugin-slide text-center">
-                                <img ng-if="item.data.mainImage" ng-src="{{item.data.mainImage | cropImage:342:192}}">
+                                <img ng-if="item.data.mainImage" ng-src="{{item.data.mainImage | cropImage:WidgetSections.deviceWidth:192}}">
                                 <img ng-if="!item.data.mainImage" src="assets/images/16x9.png">
                             </div>
                             <div class="info-bar blackBackgroundTheme">
@@ -68,7 +68,7 @@
                     <div class="plugin-banner has-info-bar clearfix"
                          ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
                         <div class="plugin-slide text-center">
-                            <img ng-if="item.data.listImage" ng-src="{{item.data.listImage | cropImage:342:192}}">
+                            <img ng-if="item.data.listImage" ng-src="{{item.data.listImage | cropImage:WidgetSections.deviceWidth:192}}">
                             <img ng-if="!item.data.listImage" src="assets/images/16x9.png">
                         </div>
                         <div class="info-bar blackBackgroundTheme">

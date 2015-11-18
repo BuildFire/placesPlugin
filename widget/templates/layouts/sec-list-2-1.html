@@ -20,7 +20,7 @@
                         <div class="plugin-banner clearfix border-bottom-grey">
                             <div class="plugin-slide text-center"
                                  ng-if="WidgetSections.placesInfo.data.content.allItemImage">
-                                <img ng-src="{{WidgetSections.placesInfo.data.content.allItemImage | cropImage:342:192}}">
+                                <img ng-src="{{WidgetSections.placesInfo.data.content.allItemImage | cropImage:WidgetSections.deviceWidth:192}}">
                             </div>
                         </div>
                         <div class="padded text-left">
@@ -32,7 +32,7 @@
                     <a ng-href="#/items/{{item.id}}">
                         <div class="plugin-banner clearfix border-bottom-grey">
                             <div class="plugin-slide text-center" ng-if="item.data.mainImage">
-                                <img ng-src="{{item.data.mainImage | cropImage:342:192}}">
+                                <img ng-src="{{item.data.mainImage | cropImage:WidgetSections.deviceWidth:192}}">
                             </div>
                         </div>
                         <div class="padded text-left">
@@ -56,7 +56,7 @@
                 <div class="plugin-banner has-info-bar clearfix"
                      ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
                     <div class="plugin-slide text-center">
-                        <img ng-if="item.data.listImage" ng-src="{{item.data.listImage | cropImage:342:192}}">
+                        <img ng-if="item.data.listImage" ng-src="{{item.data.listImage | cropImage:WidgetSections.deviceWidth:192}}">
                         <img ng-if="!item.data.listImage" src="assets/images/16x9.png">
                     </div>
                     <div class="info-bar blackBackgroundTheme">
