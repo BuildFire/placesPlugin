@@ -47,7 +47,7 @@ rzslider span.rz-bar {
     z-index: 0;
     width: 100%;
     height: 2px;
-    background: #d8e0f3;
+    background: #ddd;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
