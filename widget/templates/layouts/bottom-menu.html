@@ -34,9 +34,10 @@
         </div>
         <div class="tab-content clearfix">
             <div ng-class="WidgetSections.menuTab == 'Category' ? 'active' : ''" class="category-tab tab">
-                <a ng-show="WidgetSections.placesInfo.data.content.showAllItems"
-                   ng-class="(WidgetSections.selectedSections.length == 0 && WidgetSections.showSections == false) ? 'active' : ''"
-                   ng-click="WidgetSections.resetSectionFilter()" class="list-item">All Locations</a>
+                <a id="allItemsOption"
+                   ng-show="WidgetSections.placesInfo.data.content.showAllItems"
+                   ng-class="(WidgetSections.selectedSections.length == 0 && WidgetSections.showSections == false) ? 'bg-primary whiteTheme' : ''"
+                   ng-click="WidgetSections.resetSectionFilter()" class="list-item section-filter">All Locations</a>
                 <a ng-click="WidgetSections.toggleSectionSelection($index)"
                    ng-repeat="item in WidgetSections.sections | unique : 'id'"
                    class="list-item section-filter"
