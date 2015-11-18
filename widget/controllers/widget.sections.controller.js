@@ -464,7 +464,7 @@
                     else {
                         var order = OrdersItems.getOrder(WidgetSections.placesInfo.data.content.sortByItems || OrdersItems.ordersMap.Default);
                         if (order.order == 1)
-                            return item.data[order.key]
+                            return item.data[order.key];
                         else
                             return item.data['-' + order.key];
                     }
