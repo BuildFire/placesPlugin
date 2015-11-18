@@ -304,13 +304,11 @@
                     }
                     else if (event.tag === "items") {
                         if (event.data) {
+                            $timeout(function () {
+                                filterChanged();
+                            }, 1500);
                             if (event.data.address && event.data.address.lng && event.data.address.lat) {
                                 loadAllItemsOfSections();
-                            }
-                            else {
-                                $timeout(function () {
-                                    filterChanged();
-                                }, 1500);
                             }
                         } else if (event.id && WidgetSections.locationData.items) {
                             for (var _index = 0; _index < WidgetSections.locationData.items.length; _index++) {
@@ -466,7 +464,7 @@
                     else {
                         var order = OrdersItems.getOrder(WidgetSections.placesInfo.data.content.sortByItems || OrdersItems.ordersMap.Default);
                         if (order.order == 1)
-                            return item.data[order.key]
+                            return item.data[order.key];
                         else
                             return item.data['-' + order.key];
                     }

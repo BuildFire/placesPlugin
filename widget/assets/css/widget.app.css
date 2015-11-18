@@ -38,9 +38,9 @@
 .no-items-msg {
     text-align: center;
     padding: 15px;
-    background-color: #eef0f0;
+    /*background-color: #eef0f0;
     border-radius: 4px;
-    border: 1px solid #ddd;
+    border: 1px solid #ddd;*/
 }
 
 .margin-fifteen {
