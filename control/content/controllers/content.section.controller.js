@@ -13,7 +13,7 @@
                  * PlaceSettings will get the Place initialized settings
                  *
                  */
-                Buildfire.appearance.setHeaderVisibility(true);
+                Buildfire.appearance.setHeaderVisibility(false);
                 var ContentSection = this
                     , tmrDelayForMedia = null
                     , selectImageOptions = {showIcons: false, multiSelection: false}
