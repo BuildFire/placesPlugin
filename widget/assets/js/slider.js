@@ -44,22 +44,24 @@
          */
         function throttle(func, wait, options) {
             'use strict';
-            var getTime = (Date.now || function() {
+            var getTime = (Date.now || function () {
                 return new Date().getTime();
             });
             var context, args, result;
             var timeout = null;
             var previous = 0;
             options = options || {};
-            var later = function() {
+            var later = function () {
                 previous = options.leading === false ? 0 : getTime();
                 timeout = null;
                 result = func.apply(context, args);
                 context = args = null;
             };
-            return function() {
+            return function () {
                 var now = getTime();
-                if (!previous && options.leading === false) { previous = now; }
+                if (!previous && options.leading === false) {
+                    previous = now;
+                }
                 var remaining = wait - (now - previous);
                 context = this;
                 args = arguments;
@@ -76,8 +78,7 @@
             };
         })
 
-        .factory('RzSlider', function($timeout, $document, $window, throttle)
-        {
+        .factory('RzSlider', function ($timeout, $document, $window, throttle) {
             'use strict';
 
             /**
@@ -88,8 +89,7 @@
              * @param {*} attributes       The slider directive attributes
              * @constructor
              */
-            var Slider = function(scope, sliderElem, attributes)
-            {
+            var Slider = function (scope, sliderElem, attributes) {
                 /**
                  * The slider's scope
                  *
@@ -230,7 +230,9 @@
                  *
                  * @type {function}
                  */
-                this.customTrFn = this.scope.rzSliderTranslate() || function(value) { return String(value); };
+                this.customTrFn = this.scope.rzSliderTranslate() || function (value) {
+                        return String(value);
+                    };
 
                 /**
                  * Array of de-registration functions to call on $destroy
@@ -246,7 +248,7 @@
                 this.maxH = null;     // Right slider handle
                 this.flrLab = null;   // Floor label
                 this.ceilLab = null;  // Ceiling label
-                this.minLab =  null;  // Label above the low value
+                this.minLab = null;  // Label above the low value
                 this.maxLab = null;   // Label above the high value
                 this.cmbLab = null;   // Combined label
 
@@ -262,8 +264,7 @@
                  *
                  * @returns {undefined}
                  */
-                init: function()
-                {
+                init: function () {
                     var thrLow, thrHigh, unRegFn,
                         calcDimFn = angular.bind(this, this.calcViewDimensions),
                         self = this;
@@ -275,12 +276,13 @@
                     this.precision = this.scope.rzSliderPrecision === undefined ? 0 : +this.scope.rzSliderPrecision;
                     this.step = this.scope.rzSliderStep === undefined ? 1 : +this.scope.rzSliderStep;
 
-                    $timeout(function()
-                    {
+                    $timeout(function () {
                         self.updateCeilLab();
                         self.updateFloorLab();
                         self.initHandles();
-                        if (!self.presentOnly) { self.bindEvents(); }
+                        if (!self.presentOnly) {
+                            self.bindEvents();
+                        }
                     });
 
                     // Recalculate slider view dimensions
@@ -294,73 +296,76 @@
 
                     // Watch for changes to the model
 
-                    thrLow = throttle(function()
-                    {
+                    thrLow = throttle(function () {
                         self.setMinAndMax();
                         self.updateLowHandle(self.valueToOffset(self.scope.rzSliderModel));
                         self.updateSelectionBar();
 
-                        if(self.range)
-                        {
+                        if (self.range) {
                             self.updateCmbLabel();
                         }
 
-                    }, 350, { leading: false });
+                    }, 350, {leading: false});
 
-                    thrHigh = throttle(function()
-                    {
+                    thrHigh = throttle(function () {
                         self.setMinAndMax();
                         self.updateHighHandle(self.valueToOffset(self.scope.rzSliderHigh));
                         self.updateSelectionBar();
                         self.updateCmbLabel();
-                    }, 350, { leading: false });
+                    }, 350, {leading: false});
 
-                    this.scope.$on('rzSliderForceRender', function()
-                    {
+                    this.scope.$on('rzSliderForceRender', function () {
                         self.resetLabelsValue();
                         thrLow();
-                        if(self.range) { thrHigh(); }
+                        if (self.range) {
+                            thrHigh();
+                        }
                         self.resetSlider();
                     });
 
                     // Watchers
 
-                    unRegFn = this.scope.$watch('rzSliderModel', function(newValue, oldValue)
-                    {
-                        if(newValue === oldValue) { return; }
+                    unRegFn = this.scope.$watch('rzSliderModel', function (newValue, oldValue) {
+                        if (newValue === oldValue) {
+                            return;
+                        }
                         thrLow();
                     });
                     this.deRegFuncs.push(unRegFn);
 
-                    unRegFn = this.scope.$watch('rzSliderHigh', function(newValue, oldValue)
-                    {
-                        if(newValue === oldValue) { return; }
+                    unRegFn = this.scope.$watch('rzSliderHigh', function (newValue, oldValue) {
+                        if (newValue === oldValue) {
+                            return;
+                        }
                         thrHigh();
                     });
                     this.deRegFuncs.push(unRegFn);
 
-                    this.scope.$watch('rzSliderFloor', function(newValue, oldValue)
-                    {
-                        if(newValue === oldValue) { return; }
+                    this.scope.$watch('rzSliderFloor', function (newValue, oldValue) {
+                        if (newValue === oldValue) {
+                            return;
+                        }
                         self.resetSlider();
                     });
                     this.deRegFuncs.push(unRegFn);
 
-                    unRegFn = this.scope.$watch('rzSliderCeil', function(newValue, oldValue)
-                    {
-                        if(newValue === oldValue) { return; }
+                    unRegFn = this.scope.$watch('rzSliderCeil', function (newValue, oldValue) {
+                        if (newValue === oldValue) {
+                            return;
+                        }
                         self.resetSlider();
                     });
                     this.deRegFuncs.push(unRegFn);
 
-                    this.scope.$on('$destroy', function()
-                    {
+                    this.scope.$on('$destroy', function () {
                         self.minH.off();
                         self.maxH.off();
                         self.fullBar.off();
                         self.selBar.off();
                         angular.element($window).off('resize', calcDimFn);
-                        self.deRegFuncs.map(function(unbind) { unbind(); });
+                        self.deRegFuncs.map(function (unbind) {
+                            unbind();
+                        });
                     });
                 },
 
@@ -369,8 +374,7 @@
                  *
                  * @returns {undefined}
                  */
-                resetSlider: function()
-                {
+                resetSlider: function () {
                     this.setMinAndMax();
                     this.updateCeilLab();
                     this.updateFloorLab();
@@ -382,8 +386,7 @@
                  *
                  * @return {undefined}
                  */
-                resetLabelsValue: function()
-                {
+                resetLabelsValue: function () {
                     this.minLab.rzsv = undefined;
                     this.maxLab.rzsv = undefined;
                 },
@@ -395,12 +398,10 @@
                  *
                  * @returns {undefined}
                  */
-                initHandles: function()
-                {
+                initHandles: function () {
                     this.updateLowHandle(this.valueToOffset(this.scope.rzSliderModel));
 
-                    if(this.range)
-                    {
+                    if (this.range) {
                         this.updateHighHandle(this.valueToOffset(this.scope.rzSliderHigh));
                         this.updateCmbLabel();
                     }
@@ -416,24 +417,73 @@
                  * @param {boolean} [useCustomTr]
                  * @returns {undefined}
                  */
-                translateFn: function(value, label, useCustomTr)
-                {
+                translateFn: function (value, label, useCustomTr) {
                     useCustomTr = useCustomTr === undefined ? true : useCustomTr;
 
                     var valStr = (useCustomTr ? this.customTrFn(value) : value).toString(),
                         self = this,
                         getWidth = false;
 
-                    if(label.rzsv === undefined || label.rzsv.length !== valStr.length || (label.rzsv.length > 0 && label.rzsw === 0))
-                    {
+                    if (label.rzsv === undefined || label.rzsv.length !== valStr.length || (label.rzsv.length > 0 && label.rzsw === 0)) {
                         getWidth = true;
                         label.rzsv = valStr;
                     }
-
-                    label.text(valStr + " " + (self.scope.cielLabel || ""));
-
+                    var higherLimit = this.scope.rzSliderHigh;
+                    var lwrLimit = this.scope.rzSliderModel;
+                    if (self.scope.cielLabel == 'mi') {
+                        if (typeof (value) == 'string') {
+                            if (higherLimit > 300 && lwrLimit <= 300) {
+                                label.html(lwrLimit + " +" + " " + (self.scope.cielLabel || ""));
+                            }
+                            else if (higherLimit > 300 && lwrLimit > 300) {
+                                label.html("&nbsp;&nbsp;&nbsp;&nbsp;+");
+                            }
+                            else {
+                                label.text(valStr + " " + (self.scope.cielLabel || ""));
+                            }
+                        }
+                        else {
+                            if (higherLimit > 300) {
+                                if (label == this.maxLab)
+                                    label.html("&nbsp;&nbsp;&nbsp;&nbsp;+");
+                                else {
+                                    label.text(valStr + " " + (self.scope.cielLabel || ""));
+                                }
+                            }
+                            else {
+                                label.text(valStr + " " + (self.scope.cielLabel || ""));
+                            }
+                        }
+                    }
+                    else {
+                        if (typeof (value) == 'string') {
+                            if (higherLimit > 483 && lwrLimit <= 483) {
+                                label.html(lwrLimit + " +" + " " + (self.scope.cielLabel || ""));
+                            }
+                            else if (higherLimit > 483 && lwrLimit > 483) {
+                                label.html("&nbsp;&nbsp;&nbsp;&nbsp;+");
+                            }
+                            else {
+                                label.text(valStr + " " + (self.scope.cielLabel || ""));
+                            }
+                        }
+                        else {
+                            if (higherLimit > 483) {
+                                if (label == this.maxLab)
+                                    label.html("&nbsp;&nbsp;&nbsp;&nbsp;+");
+                                else {
+                                    label.text(valStr + " " + (self.scope.cielLabel || ""));
+                                }
+                            }
+                            else {
+                                label.text(valStr + " " + (self.scope.cielLabel || ""));
+                            }
+                        }
+                    }
                     // Update width only when length of the label have changed
-                    if(getWidth) { this.getWidth(label); }
+                    if (getWidth) {
+                        this.getWidth(label);
+                    }
                 },
 
                 /**
@@ -441,28 +491,22 @@
                  *
                  * @returns {undefined}
                  */
-                setMinAndMax: function()
-                {
-                    if(this.scope.rzSliderFloor)
-                    {
+                setMinAndMax: function () {
+                    if (this.scope.rzSliderFloor) {
                         this.minValue = +this.scope.rzSliderFloor;
                     }
-                    else
-                    {
+                    else {
                         this.minValue = this.scope.rzSliderFloor = 0;
                     }
 
-                    if(this.scope.rzSliderCeil)
-                    {
+                    if (this.scope.rzSliderCeil) {
                         this.maxValue = +this.scope.rzSliderCeil;
                     }
-                    else
-                    {
+                    else {
                         this.maxValue = this.scope.rzSliderCeil = this.range ? this.scope.rzSliderHigh : this.scope.rzSliderModel;
                     }
 
-                    if(this.scope.rzSliderStep)
-                    {
+                    if (this.scope.rzSliderStep) {
                         this.step = +this.scope.rzSliderStep;
                     }
 
@@ -476,24 +520,39 @@
                  *
                  * @returns {undefined}
                  */
-                initElemHandles: function()
-                {
+                initElemHandles: function () {
                     // Assign all slider elements to object properties for easy access
-                    angular.forEach(this.sliderElem.children(), function(elem, index)
-                    {
+                    angular.forEach(this.sliderElem.children(), function (elem, index) {
                         var jElem = angular.element(elem);
 
-                        switch(index)
-                        {
-                            case 0: this.fullBar = jElem; break;
-                            case 1: this.selBar = jElem; break;
-                            case 2: this.minH = jElem; break;
-                            case 3: this.maxH = jElem; break;
-                            case 4: this.flrLab = jElem; break;
-                            case 5: this.ceilLab = jElem; break;
-                            case 6: this.minLab = jElem; break;
-                            case 7: this.maxLab = jElem; break;
-                            case 8: this.cmbLab = jElem; break;
+                        switch (index) {
+                            case 0:
+                                this.fullBar = jElem;
+                                break;
+                            case 1:
+                                this.selBar = jElem;
+                                break;
+                            case 2:
+                                this.minH = jElem;
+                                break;
+                            case 3:
+                                this.maxH = jElem;
+                                break;
+                            case 4:
+                                this.flrLab = jElem;
+                                break;
+                            case 5:
+                                this.ceilLab = jElem;
+                                break;
+                            case 6:
+                                this.minLab = jElem;
+                                break;
+                            case 7:
+                                this.maxLab = jElem;
+                                break;
+                            case 8:
+                                this.cmbLab = jElem;
+                                break;
                         }
 
                     }, this);
@@ -509,8 +568,7 @@
                     this.cmbLab.rzsl = 0;
 
                     // Hide limit labels
-                    if(this.hideLimitLabels)
-                    {
+                    if (this.hideLimitLabels) {
                         this.flrLab.rzAlwaysHide = true;
                         this.ceilLab.rzAlwaysHide = true;
                         this.hideEl(this.flrLab);
@@ -518,8 +576,7 @@
                     }
 
                     // Remove stuff not needed in single slider
-                    if(this.range === false)
-                    {
+                    if (this.range === false) {
                         this.cmbLab.remove();
                         this.maxLab.remove();
 
@@ -530,15 +587,13 @@
                     }
 
                     // Show selection bar for single slider or not
-                    if(this.range === false && this.alwaysShowBar === false)
-                    {
+                    if (this.range === false && this.alwaysShowBar === false) {
                         this.maxH.remove();
                         this.selBar.remove();
                     }
 
                     // If using draggable range, use appropriate cursor for this.selBar.
-                    if (this.dragRange)
-                    {
+                    if (this.dragRange) {
                         this.selBar.css('cursor', 'move');
                         this.selBar.addClass('rz-draggable');
                     }
@@ -551,8 +606,7 @@
                  *
                  * @returns {undefined}
                  */
-                calcViewDimensions: function ()
-                {
+                calcViewDimensions: function () {
                     var handleWidth = this.getWidth(this.minH);
 
                     this.handleHalfWidth = handleWidth / 2;
@@ -563,8 +617,7 @@
                     this.getWidth(this.sliderElem);
                     this.sliderElem.rzsl = this.sliderElem[0].getBoundingClientRect().left;
 
-                    if(this.initHasRun)
-                    {
+                    if (this.initHasRun) {
                         this.updateCeilLab();
                         this.initHandles();
                     }
@@ -575,8 +628,7 @@
                  *
                  * @returns {undefined}
                  */
-                updateCeilLab: function()
-                {
+                updateCeilLab: function () {
                     this.translateFn(this.scope.rzSliderCeil, this.ceilLab);
                     this.setLeft(this.ceilLab, this.barWidth - this.ceilLab.rzsw);
                     this.getWidth(this.ceilLab);
@@ -587,8 +639,7 @@
                  *
                  * @returns {undefined}
                  */
-                updateFloorLab: function()
-                {
+                updateFloorLab: function () {
                     this.translateFn(this.scope.rzSliderFloor, this.flrLab);
                     this.getWidth(this.flrLab);
                 },
@@ -598,10 +649,10 @@
                  *
                  * @returns {undefined}
                  */
-                callOnStart: function() {
-                    if(this.scope.rzSliderOnStart) {
+                callOnStart: function () {
+                    if (this.scope.rzSliderOnStart) {
                         var self = this;
-                        $timeout(function() {
+                        $timeout(function () {
                             self.scope.rzSliderOnStart();
                         });
                     }
@@ -612,11 +663,11 @@
                  *
                  * @returns {undefined}
                  */
-                callOnChange: function() {
-                    if(this.scope.rzSliderOnChange) {
+                callOnChange: function () {
+                    if (this.scope.rzSliderOnChange) {
                         var self = this;
-                        $timeout(function() {
-                           self.scope.rzSliderOnChange();
+                        $timeout(function () {
+                            self.scope.rzSliderOnChange();
                         });
                     }
                 },
@@ -626,10 +677,10 @@
                  *
                  * @returns {undefined}
                  */
-                callOnEnd: function() {
-                    if(this.scope.rzSliderOnEnd) {
+                callOnEnd: function () {
+                    if (this.scope.rzSliderOnEnd) {
                         var self = this;
-                        $timeout(function() {
+                        $timeout(function () {
                             self.scope.rzSliderOnEnd();
                         });
                     }
@@ -641,27 +692,22 @@
                  * @param {string} which
                  * @param {number} newOffset
                  */
-                updateHandles: function(which, newOffset)
-                {
-                    if(which === 'rzSliderModel')
-                    {
+                updateHandles: function (which, newOffset) {
+                    if (which === 'rzSliderModel') {
                         this.updateLowHandle(newOffset);
                         this.updateSelectionBar();
 
-                        if(this.range)
-                        {
+                        if (this.range) {
                             this.updateCmbLabel();
                         }
                         return;
                     }
 
-                    if(which === 'rzSliderHigh')
-                    {
+                    if (which === 'rzSliderHigh') {
                         this.updateHighHandle(newOffset);
                         this.updateSelectionBar();
 
-                        if(this.range)
-                        {
+                        if (this.range) {
                             this.updateCmbLabel();
                         }
                         return;
@@ -680,11 +726,12 @@
                  * @param {number} newOffset
                  * @returns {undefined}
                  */
-                updateLowHandle: function(newOffset)
-                {
+                updateLowHandle: function (newOffset) {
                     var delta = Math.abs(this.minH.rzsl - newOffset);
 
-                    if(this.minLab.rzsv && delta < 1) { return; }
+                    if (this.minLab.rzsv && delta < 1) {
+                        return;
+                    }
 
                     this.setLeft(this.minH, newOffset);
                     this.translateFn(this.scope.rzSliderModel, this.minLab);
@@ -699,8 +746,7 @@
                  * @param {number} newOffset
                  * @returns {undefined}
                  */
-                updateHighHandle: function(newOffset)
-                {
+                updateHighHandle: function (newOffset) {
                     this.setLeft(this.maxH, newOffset);
                     this.translateFn(this.scope.rzSliderHigh, this.maxLab);
                     this.setLeft(this.maxLab, newOffset - this.maxLab.rzsw / 2 + this.handleHalfWidth);
@@ -713,50 +759,40 @@
                  *
                  * @returns {undefined}
                  */
-                shFloorCeil: function()
-                {
+                shFloorCeil: function () {
                     var flHidden = false, clHidden = false;
 
-                    if(this.minLab.rzsl <= this.flrLab.rzsl + this.flrLab.rzsw + 5)
-                    {
+                    if (this.minLab.rzsl <= this.flrLab.rzsl + this.flrLab.rzsw + 5) {
                         flHidden = true;
                         this.hideEl(this.flrLab);
                     }
-                    else
-                    {
+                    else {
                         flHidden = false;
                         this.showEl(this.flrLab);
                     }
 
-                    if(this.minLab.rzsl + this.minLab.rzsw >= this.ceilLab.rzsl - this.handleHalfWidth - 10)
-                    {
+                    if (this.minLab.rzsl + this.minLab.rzsw >= this.ceilLab.rzsl - this.handleHalfWidth - 10) {
                         clHidden = true;
                         this.hideEl(this.ceilLab);
                     }
-                    else
-                    {
+                    else {
                         clHidden = false;
                         this.showEl(this.ceilLab);
                     }
 
-                    if(this.range)
-                    {
-                        if(this.maxLab.rzsl + this.maxLab.rzsw >= this.ceilLab.rzsl - 10)
-                        {
+                    if (this.range) {
+                        if (this.maxLab.rzsl + this.maxLab.rzsw >= this.ceilLab.rzsl - 10) {
                             this.hideEl(this.ceilLab);
                         }
-                        else if( ! clHidden)
-                        {
+                        else if (!clHidden) {
                             this.showEl(this.ceilLab);
                         }
 
                         // Hide or show floor label
-                        if(this.maxLab.rzsl <= this.flrLab.rzsl + this.flrLab.rzsw + this.handleHalfWidth)
-                        {
+                        if (this.maxLab.rzsl <= this.flrLab.rzsl + this.flrLab.rzsw + this.handleHalfWidth) {
                             this.hideEl(this.flrLab);
                         }
-                        else if( ! flHidden)
-                        {
+                        else if (!flHidden) {
                             this.showEl(this.flrLab);
                         }
                     }
@@ -767,8 +803,7 @@
                  *
                  * @returns {undefined}
                  */
-                updateSelectionBar: function()
-                {
+                updateSelectionBar: function () {
                     this.setWidth(this.selBar, Math.abs(this.maxH.rzsl - this.minH.rzsl));
                     this.setLeft(this.selBar, this.range ? this.minH.rzsl + this.handleHalfWidth : 0);
                 },
@@ -778,19 +813,15 @@
                  *
                  * @returns {undefined}
                  */
-                updateCmbLabel: function()
-                {
+                updateCmbLabel: function () {
                     var lowTr, highTr;
 
-                    if(this.minLab.rzsl + this.minLab.rzsw + 10 >= this.maxLab.rzsl)
-                    {
-                        if(this.customTrFn)
-                        {
+                    if (this.minLab.rzsl + this.minLab.rzsw + 10 >= this.maxLab.rzsl) {
+                        if (this.customTrFn) {
                             lowTr = this.customTrFn(this.scope.rzSliderModel);
                             highTr = this.customTrFn(this.scope.rzSliderHigh);
                         }
-                        else
-                        {
+                        else {
                             lowTr = this.scope.rzSliderModel;
                             highTr = this.scope.rzSliderHigh;
                         }
@@ -801,8 +832,7 @@
                         this.hideEl(this.maxLab);
                         this.showEl(this.cmbLab);
                     }
-                    else
-                    {
+                    else {
                         this.showEl(this.maxLab);
                         this.showEl(this.minLab);
                         this.hideEl(this.cmbLab);
@@ -815,8 +845,7 @@
                  * @param {number} value
                  * @returns {number}
                  */
-                roundStep: function(value)
-                {
+                roundStep: function (value) {
                     var step = this.step,
                         remainder = +((value - this.minValue) % step).toFixed(3),
                         steppedValue = remainder > (step / 2) ? value + step - remainder : value - remainder;
@@ -831,8 +860,7 @@
                  * @param element
                  * @returns {jqLite} The jqLite wrapped DOM element
                  */
-                hideEl: function (element)
-                {
+                hideEl: function (element) {
                     return element.css({opacity: 0});
                 },
 
@@ -842,9 +870,10 @@
                  * @param element The jqLite wrapped DOM element
                  * @returns {jqLite} The jqLite
                  */
-                showEl: function (element)
-                {
-                    if(!!element.rzAlwaysHide) { return element; }
+                showEl: function (element) {
+                    if (!!element.rzAlwaysHide) {
+                        return element;
+                    }
 
                     return element.css({opacity: 1});
                 },
@@ -856,8 +885,7 @@
                  * @param {number} left
                  * @returns {number}
                  */
-                setLeft: function (elem, left)
-                {
+                setLeft: function (elem, left) {
                     elem.rzsl = left;
                     elem.css({left: left + 'px'});
                     return left;
@@ -869,8 +897,7 @@
                  * @param {jqLite} elem The jqLite wrapped DOM element
                  * @returns {number}
                  */
-                getWidth: function(elem)
-                {
+                getWidth: function (elem) {
                     var val = elem[0].getBoundingClientRect();
                     elem.rzsw = val.right - val.left;
                     return elem.rzsw;
@@ -883,8 +910,7 @@
                  * @param {number} width
                  * @returns {number}
                  */
-                setWidth: function(elem, width)
-                {
+                setWidth: function (elem, width) {
                     elem.rzsw = width;
                     elem.css({width: width + 'px'});
                     return width;
@@ -896,8 +922,7 @@
                  * @param {number} val
                  * @returns {number}
                  */
-                valueToOffset: function(val)
-                {
+                valueToOffset: function (val) {
                     return (val - this.minValue) * this.maxLeft / this.valueRange || 0;
                 },
 
@@ -907,8 +932,7 @@
                  * @param {number} offset
                  * @returns {number}
                  */
-                offsetToValue: function(offset)
-                {
+                offsetToValue: function (offset) {
                     return (offset / this.maxLeft) * this.valueRange + this.minValue;
                 },
 
@@ -920,12 +944,10 @@
                  * @param {Object} event  The event
                  * @returns {number}
                  */
-                getEventX: function(event)
-                {
+                getEventX: function (event) {
                     /* http://stackoverflow.com/a/12336075/282882 */
                     //noinspection JSLint
-                    if('clientX' in event)
-                    {
+                    if ('clientX' in event) {
                         return event.clientX;
                     }
 
@@ -940,9 +962,10 @@
                  * @param event {Event} The event
                  * @returns {jqLite} The handle closest to the event.
                  */
-                getNearestHandle: function(event)
-                {
-                    if (!this.range) { return this.minH; }
+                getNearestHandle: function (event) {
+                    if (!this.range) {
+                        return this.minH;
+                    }
                     var offset = this.getEventX(event) - this.sliderElem.rzsl - this.handleHalfWidth;
                     return Math.abs(offset - this.minH.rzsl) < Math.abs(offset - this.maxH.rzsl) ? this.minH : this.maxH;
                 },
@@ -952,32 +975,33 @@
                  *
                  * @returns {undefined}
                  */
-                bindEvents: function()
-                {
+                bindEvents: function () {
                     var barTracking, barStart, barMove;
 
-                    if (this.dragRange)
-                    {
+                    if (this.dragRange) {
                         barTracking = 'rzSliderDrag';
                         barStart = this.onDragStart;
                         barMove = this.onDragMove;
                     }
-                    else
-                    {
+                    else {
                         barTracking = 'rzSliderModel';
                         barStart = this.onStart;
                         barMove = this.onMove;
                     }
 
                     this.minH.on('mousedown', angular.bind(this, this.onStart, this.minH, 'rzSliderModel'));
-                    if(this.range) { this.maxH.on('mousedown', angular.bind(this, this.onStart, this.maxH, 'rzSliderHigh')); }
+                    if (this.range) {
+                        this.maxH.on('mousedown', angular.bind(this, this.onStart, this.maxH, 'rzSliderHigh'));
+                    }
                     this.fullBar.on('mousedown', angular.bind(this, this.onStart, null, null));
                     this.fullBar.on('mousedown', angular.bind(this, this.onMove, this.fullBar));
                     this.selBar.on('mousedown', angular.bind(this, barStart, null, barTracking));
                     this.selBar.on('mousedown', angular.bind(this, barMove, this.selBar));
 
                     this.minH.on('touchstart', angular.bind(this, this.onStart, this.minH, 'rzSliderModel'));
-                    if(this.range) { this.maxH.on('touchstart', angular.bind(this, this.onStart, this.maxH, 'rzSliderHigh')); }
+                    if (this.range) {
+                        this.maxH.on('touchstart', angular.bind(this, this.onStart, this.maxH, 'rzSliderHigh'));
+                    }
                     this.fullBar.on('touchstart', angular.bind(this, this.onStart, null, null));
                     this.fullBar.on('touchstart', angular.bind(this, this.onMove, this.fullBar));
                     this.selBar.on('touchstart', angular.bind(this, barStart, null, barTracking));
@@ -992,26 +1016,25 @@
                  * @param {Event}   event   The event
                  * @returns {undefined}
                  */
-                onStart: function (pointer, ref, event)
-                {
+                onStart: function (pointer, ref, event) {
                     var ehMove, ehEnd,
                         eventNames = this.getEventNames(event);
 
                     event.stopPropagation();
                     event.preventDefault();
 
-                    if(this.tracking !== '') { return; }
+                    if (this.tracking !== '') {
+                        return;
+                    }
 
                     // We have to do this in case the HTML where the sliders are on
                     // have been animated into view.
                     this.calcViewDimensions();
 
-                    if(pointer)
-                    {
+                    if (pointer) {
                         this.tracking = ref;
                     }
-                    else
-                    {
+                    else {
                         pointer = this.getNearestHandle(event);
                         this.tracking = pointer === this.minH ? 'rzSliderModel' : 'rzSliderHigh';
                     }
@@ -1033,24 +1056,21 @@
                  * @param {Event}  event The event
                  * @returns {undefined}
                  */
-                onMove: function (pointer, event)
-                {
+                onMove: function (pointer, event) {
                     var eventX = this.getEventX(event),
                         sliderLO, newOffset, newValue;
 
                     sliderLO = this.sliderElem.rzsl;
                     newOffset = eventX - sliderLO - this.handleHalfWidth;
 
-                    if(newOffset <= 0)
-                    {
-                        if(pointer.rzsl === 0)
+                    if (newOffset <= 0) {
+                        if (pointer.rzsl === 0)
                             return;
                         newValue = this.minValue;
                         newOffset = 0;
                     }
-                    else if(newOffset >= this.maxLeft)
-                    {
-                        if(pointer.rzsl === this.maxLeft)
+                    else if (newOffset >= this.maxLeft) {
+                        if (pointer.rzsl === this.maxLeft)
                             return;
                         newValue = this.maxValue;
                         newOffset = this.maxLeft;
@@ -1073,8 +1093,7 @@
                  * @param {Event}  event   The event
                  * @returns {undefined}
                  */
-                onDragStart: function(pointer, ref, event)
-                {
+                onDragStart: function (pointer, ref, event) {
                     var offset = this.getEventX(event) - this.sliderElem.rzsl - this.handleHalfWidth;
                     this.dragging = {
                         active: true,
@@ -1099,30 +1118,30 @@
                  * @param {Event}  event The event
                  * @returns {undefined}
                  */
-                onDragMove: function(pointer, event)
-                {
+                onDragMove: function (pointer, event) {
                     var newOffset = this.getEventX(event) - this.sliderElem.rzsl - this.handleHalfWidth,
                         newMinOffset, newMaxOffset,
                         newMinValue, newMaxValue;
 
-                    if (newOffset <= this.dragging.lowDist)
-                    {
-                        if (pointer.rzsl === this.dragging.lowDist) { return; }
+                    if (newOffset <= this.dragging.lowDist) {
+                        if (pointer.rzsl === this.dragging.lowDist) {
+                            return;
+                        }
                         newMinValue = this.minValue;
                         newMinOffset = 0;
                         newMaxValue = this.dragging.difference;
                         newMaxOffset = this.valueToOffset(newMaxValue);
                     }
-                    else if (newOffset >= this.maxLeft - this.dragging.highDist)
-                    {
-                        if (pointer.rzsl === this.dragging.highDist) { return; }
+                    else if (newOffset >= this.maxLeft - this.dragging.highDist) {
+                        if (pointer.rzsl === this.dragging.highDist) {
+                            return;
+                        }
                         newMaxValue = this.maxValue;
                         newMaxOffset = this.maxLeft;
                         newMinValue = this.maxValue - this.dragging.difference;
                         newMinOffset = this.valueToOffset(newMinValue);
                     }
-                    else
-                    {
+                    else {
                         newMinValue = this.offsetToValue(newOffset - this.dragging.lowDist);
                         newMinValue = this.roundStep(newMinValue);
                         newMinOffset = this.valueToOffset(newMinValue);
@@ -1141,8 +1160,7 @@
                  * @param {number} newMinOffset  the new minimum offset
                  * @param {number} newMaxOffset  the new maximum offset
                  */
-                positionTrackingBar: function(newMinValue, newMaxValue, newMinOffset, newMaxOffset)
-                {
+                positionTrackingBar: function (newMinValue, newMaxValue, newMinOffset, newMaxOffset) {
                     this.scope.rzSliderModel = newMinValue;
                     this.scope.rzSliderHigh = newMaxValue;
                     this.updateHandles('rzSliderModel', newMinOffset);
@@ -1157,13 +1175,10 @@
                  * @param {number} newValue new model value
                  * @param {number} newOffset new offset value
                  */
-                positionTrackingHandle: function(newValue, newOffset)
-                {
-                    if(this.range)
-                    {
+                positionTrackingHandle: function (newValue, newOffset) {
+                    if (this.range) {
                         /* This is to check if we need to switch the min and max handles*/
-                        if (this.tracking === 'rzSliderModel' && newValue >= this.scope.rzSliderHigh)
-                        {
+                        if (this.tracking === 'rzSliderModel' && newValue >= this.scope.rzSliderHigh) {
                             this.scope[this.tracking] = this.scope.rzSliderHigh;
                             this.updateHandles(this.tracking, this.maxH.rzsl);
                             this.tracking = 'rzSliderHigh';
@@ -1173,8 +1188,7 @@
                             this.scope.$apply();
                             this.callOnChange();
                         }
-                        else if(this.tracking === 'rzSliderHigh' && newValue <= this.scope.rzSliderModel)
-                        {
+                        else if (this.tracking === 'rzSliderHigh' && newValue <= this.scope.rzSliderModel) {
                             this.scope[this.tracking] = this.scope.rzSliderModel;
                             this.updateHandles(this.tracking, this.minH.rzsl);
                             this.tracking = 'rzSliderModel';
@@ -1186,8 +1200,7 @@
                         }
                     }
 
-                    if(this.scope[this.tracking] !== newValue)
-                    {
+                    if (this.scope[this.tracking] !== newValue) {
                         this.scope[this.tracking] = newValue;
                         this.updateHandles(this.tracking, newOffset);
                         this.scope.$apply();
@@ -1202,8 +1215,7 @@
                  * @param {Function} ehMove   The the bound move event handler
                  * @returns {undefined}
                  */
-                onEnd: function(ehMove, event)
-                {
+                onEnd: function (ehMove, event) {
                     var moveEventName = this.getEventNames(event).moveEvent;
 
                     this.minH.removeClass('rz-active');
@@ -1225,17 +1237,14 @@
                  *
                  * @return {{moveEvent: string, endEvent: string}}
                  */
-                getEventNames: function(event)
-                {
+                getEventNames: function (event) {
                     var eventNames = {moveEvent: '', endEvent: ''};
 
-                    if(event.touches || (event.originalEvent !== undefined && event.originalEvent.touches))
-                    {
+                    if (event.touches || (event.originalEvent !== undefined && event.originalEvent.touches)) {
                         eventNames.moveEvent = 'touchmove';
                         eventNames.endEvent = 'touchend';
                     }
-                    else
-                    {
+                    else {
                         eventNames.moveEvent = 'mousemove';
                         eventNames.endEvent = 'mouseup';
                     }
@@ -1247,8 +1256,7 @@
             return Slider;
         })
 
-        .directive('rzslider', function(RzSlider)
-        {
+        .directive('rzslider', function (RzSlider) {
             'use strict';
 
             return {
@@ -1277,13 +1285,12 @@
                  * @param {Object} attrs
                  * @return {string}
                  */
-                templateUrl: function(elem, attrs) {
+                templateUrl: function (elem, attrs) {
                     //noinspection JSUnresolvedVariable
                     return attrs.rzSliderTplUrl || 'rzSliderTpl.html';
                 },
 
-                link: function(scope, elem, attr)
-                {
+                link: function (scope, elem, attr) {
                     scope.cielLabel = attr.cielLabel || null;
                     return new RzSlider(scope, elem, attr);
                 }

@@ -338,18 +338,18 @@
                     else {
                         WidgetSections.placesInfo = _placesInfoData;
                     }
-                    if (WidgetSections.placesInfo.data.settings.showDistanceIn == 'miles')
+                    if (WidgetSections.placesInfo.data.settings.showDistanceIn == 'mi')
                         $scope.distanceSlider = {
                             min: 0,
-                            max: 200,
-                            ceil: 200, //upper limit
+                            max: 300,
+                            ceil: 310, //upper limit
                             floor: 0
                         };
                     else
                         $scope.distanceSlider = {
                             min: 0,
-                            max: 320,
-                            ceil: 320, //upper limit
+                            max: 483,
+                            ceil: 499, //upper limit
                             floor: 0
                         };
 
