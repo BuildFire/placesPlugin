@@ -7,7 +7,10 @@
         .module('placesContent')
         .controller('ContentItemCtrl', ['$scope', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout', 'EVENTS', 'PATHS', 'Messaging', 'item', 'placesInfo', 'DEFAULT_DATA',
             function ($scope, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout, EVENTS, PATHS, Messaging, item, placesInfo, DEFAULT_DATA) {
-                Buildfire.appearance.setHeaderVisibility(true);
+
+                //Hide the INT header part.
+                Buildfire.appearance.setHeaderVisibility(false);
+
                 var tmrDelayForItem = null
                     , Items = new DB(COLLECTIONS.Items)
                     , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
@@ -22,7 +25,6 @@
                 else {
                     placeInfoData = DEFAULT_DATA.PLACE_INFO;
                 }
-                console.log('placeInfoData>>>>>>>>>>', placeInfoData);
 
                 $scope.itemShow = 'Content';
 

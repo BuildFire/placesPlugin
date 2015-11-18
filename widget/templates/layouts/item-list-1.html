@@ -33,6 +33,7 @@
          infinite-scroll-distance="1"
          data-infinite-container=".infinite-scroll-parent"
          infinite-scroll="WidgetSections.loadMoreItems()"
+         infinit-scroll-disabled="WidgetSections.noMoreItems">
          infinite-scroll-disabled="WidgetSections.noMore">
         <div class="plugin-banner has-info-bar clearfix"
              ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
