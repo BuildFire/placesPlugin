@@ -18,8 +18,7 @@
         .constant('EVENTS', {
             ROUTE_CHANGE: "ROUTE_CHANGE",
             DESIGN_LAYOUT_CHANGE: "DESIGN_LAYOUT_CHANGE",
-            DESIGN_BGIMAGE_CHANGE: "DESIGN_BGIMAGE_CHANGE",
-            ROUTE_CHANGE_1: "ROUTE_CHANGE_1"
+            DESIGN_BGIMAGE_CHANGE: "DESIGN_BGIMAGE_CHANGE"
         })
         .constant('COLLECTIONS', {
             PlaceInfo: "placeInfo",

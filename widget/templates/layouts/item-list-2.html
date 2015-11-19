@@ -1,29 +1,3 @@
-
-    <div class="item-list2" infinite-scroll-distance="1"
-         data-infinite-container=".infinite-scroll-parent"
-         infinite-scroll="WidgetSections.loadMoreItems()"
-         infinit-scroll-disabled="WidgetSections.noMore">
-        <div class="plugin-banner has-info-bar clearfix" ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
-            <a ng-href="#/item/{{WidgetSections.sectionId}}/{{item.id}}">
-                <div class="plugin-slide text-center">
-                    <img ng-if="item.data.listImage" ng-src="{{item.data.listImage | cropImage:342:192}}">
-                </div>
-                <div class="plugin-copy border-bottom-grey clearfix">
-                    <div class="col-xs-8 text-left pull-left">
-                        <p class="margin-bottom-zero ellipsis titleBarTextAndIcons"><span>{{item.data.itemTitle}}</span></p>
-
-                        <p class="margin-bottom-zero ellipsis titleBarTextAndIcons">{{item.data.summary}}</p>
-                    </div>
-                    <div class="col-xs-4 text-right pull-right padding-left-zero">
-                        <span class="icon icon-map-marker icon-sm titleBarTextAndIcons"></span>
-                        <span class="miles titleBarTextAndIcons">{{item.data.distanceText}}</span>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-    </div>
-<!--
 <div class="holder padding-zero has-bottom has-bottom-viewing">
     <div class="places-plugin item-list2" infinite-scroll-distance="1"
          data-infinite-container=".infinite-scroll-parent"
@@ -49,4 +23,4 @@
         </div>
         <div ng-include="'templates/layouts/bottom-menu.html'"></div>
     </div>
-</div>-->
+</div>
