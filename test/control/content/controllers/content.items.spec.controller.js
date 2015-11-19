@@ -3,9 +3,9 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
 // load the controller's module
     beforeEach(module('placesContent'));
 
-    var $q, ContentItems, scope, $routeParams, $rootScope, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo;
+    var $q, ContentItems, scope, $routeParams, $rootScope,Buildfire, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo;
 
-    beforeEach(inject(function (_$q_, _$routeParams_, $controller, _$rootScope_, _DB_, _COLLECTIONS_, _Modals_, _Orders_, _OrdersItems_, _Messaging_, _EVENTS_, _PATHS_, _Location_) {
+    beforeEach(inject(function (_$q_, _$routeParams_, $controller,_Buildfire_, _$rootScope_, _DB_, _COLLECTIONS_, _Modals_, _Orders_, _OrdersItems_, _Messaging_, _EVENTS_, _PATHS_, _Location_) {
             scope = _$rootScope_.$new();
             $rootScope = _$rootScope_;
             DB = _DB_;
@@ -18,6 +18,7 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
             Location = _Location_;
             $q = _$q_;
             Modals = _Modals_;
+            Buildfire=_Buildfire_;
             //placesInfo = {data: {content: {}}};
             $routeParams = _$routeParams_;
 
@@ -27,6 +28,7 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
                 DB: DB,
                 COLLECTIONS: COLLECTIONS,
                 Orders: Orders,
+                Buildfire:Buildfire,
                 OrdersItems: OrdersItems,
                 Messaging: Messaging,
                 EVENTS: EVENTS,

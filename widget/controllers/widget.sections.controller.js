@@ -7,6 +7,7 @@
                 WidgetSections.sectionId = $routeParams.sectionId;
                 WidgetSections.showMenu = false;
                 WidgetSections.menuTab = 'Category';
+                WidgetSections.filterUnapplied = true;
                 //WidgetSections.selectedSections = [];
                 if ($routeParams.sectionId && $routeParams.sectionId != 'allitems') {
                     WidgetSections.selectedSections = [$routeParams.sectionId];
@@ -14,6 +15,10 @@
                 else {
                     WidgetSections.selectedSections = [];
                 }
+
+                WidgetSections.onSliderChange = function () {
+                    WidgetSections.filterUnapplied = false; // this tells us that the slider has been set by the user
+                };
 
 
                 WidgetSections.showSections = true;
@@ -126,7 +131,7 @@
                             },
                             settings: {
                                 defaultView: "list",
-                                showDistanceIn: "miles"
+                                showDistanceIn: "mi"
                             }
                         }
                     };
@@ -261,15 +266,25 @@
                 var clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
                     console.log('Event in ------------------', event);
                     if (event.tag === "placeInfo") {
+                        console.log('update happened in placeInfo');
+
                         if (event.data) {
                             if (event.data.settings.showDistanceIn != WidgetSections.placesInfo.data.settings.showDistanceIn)
                                 $window.location.reload();
 
+                            var sortByItemsChange = false;
+                            if (event.data.content.sortByItems != WidgetSections.placesInfo.data.content.sortByItems)
+                                sortByItemsChange = true;
+
                             WidgetSections.placesInfo = event;
+
+                            if (sortByItemsChange)
+                                filterChanged();
+
                             WidgetSections.selectedItem = null;
                             WidgetSections.selectedItemDistance = null;
                             WidgetSections.currentView = WidgetSections.placesInfo.data.settings.defaultView;
-                            $scope.$digest();
+                            $scope.$apply();
                             refreshSections();
 
 
@@ -289,6 +304,9 @@
                     }
                     else if (event.tag === "items") {
                         if (event.data) {
+                            $timeout(function () {
+                                filterChanged();
+                            }, 1500);
                             if (event.data.address && event.data.address.lng && event.data.address.lat) {
                                 loadAllItemsOfSections();
                             }
@@ -320,18 +338,18 @@
                     else {
                         WidgetSections.placesInfo = _placesInfoData;
                     }
-                    if (WidgetSections.placesInfo.data.settings.showDistanceIn == 'miles')
+                    if (WidgetSections.placesInfo.data.settings.showDistanceIn == 'mi')
                         $scope.distanceSlider = {
                             min: 0,
-                            max: 200,
-                            ceil: 200, //upper limit
+                            max: 300,
+                            ceil: 310, //upper limit
                             floor: 0
                         };
                     else
                         $scope.distanceSlider = {
                             min: 0,
-                            max: 320,
-                            ceil: 320, //upper limit
+                            max: 483,
+                            ceil: 499, //upper limit
                             floor: 0
                         };
 
@@ -352,7 +370,7 @@
                 if (typeof(Storage) !== "undefined") {
                     var userLocation = localStorage.getItem('user_location');
                     if (userLocation) {
-                        WidgetSections.sortOnClosest = true;// will be true if user allows location
+                        //WidgetSections.sortOnClosest = true;// will be true if user allows location
                         WidgetSections.locationData.currentCoordinates = JSON.parse(userLocation);
                     }
                     else
@@ -367,7 +385,7 @@
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(function (position) {
                             $scope.$apply(function () {
-                                WidgetSections.sortOnClosest = true;// will be true if user allows location
+                                //WidgetSections.sortOnClosest = true;// will be true if user allows location
                                 WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
                                 localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
                             });
@@ -446,7 +464,7 @@
                     else {
                         var order = OrdersItems.getOrder(WidgetSections.placesInfo.data.content.sortByItems || OrdersItems.ordersMap.Default);
                         if (order.order == 1)
-                            return item.data[order.key]
+                            return item.data[order.key];
                         else
                             return item.data['-' + order.key];
                     }
@@ -473,10 +491,17 @@
                 /* Filters the items based on the range of distance slider */
                 WidgetSections.sortFilter = function (item) {
 
-                    if (WidgetSections.locationData.currentCoordinates == null || item.data.distanceText == 'Fetching..' || !item.data.distanceText || item.data.distanceText == 'NA') {
+                    if (WidgetSections.filterUnapplied || WidgetSections.locationData.currentCoordinates == null || !item.data.distanceText || item.data.distanceText == 'Fetching..' || item.data.distanceText == 'NA') {
                         return true;
                     }
-                    return (Number(item.data.distanceText.split(' ')[0]) >= $scope.distanceSlider.min && Number(item.data.distanceText.split(' ')[0]) <= $scope.distanceSlider.max);
+                    var sortFilterCond;
+                    try {
+                        sortFilterCond = (Number(item.data.distanceText.split(' ')[0]) >= $scope.distanceSlider.min && Number(item.data.distanceText.split(' ')[0]) <= $scope.distanceSlider.max);
+                    }
+                    catch (e) {
+                        sortFilterCond = true;
+                    }
+                    return sortFilterCond;
                 };
 
 
@@ -582,6 +607,12 @@
                         view.loadItems([]);
                     }
                 });
+
+                WidgetSections.increaseMaxDis = function () {
+                    $scope.distanceSlider.ceil = $scope.distanceSlider.ceil + 10;
+                    console.log($scope.distanceSlider.max, "$scope.distanceSlider.max-------------------");
+                    $scope.$digest();
+                };
 
                 $scope.$on("Map Carousel:LOADED", function () {
                     if (!mapview) {

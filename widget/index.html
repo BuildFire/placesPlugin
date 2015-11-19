@@ -16,7 +16,7 @@
     <script src="../../../scripts/angular/ui-bootstrap.min.js"></script>
     <!-- JS -->
     <script src="assets/js/jquery-ui.min.js"></script>
-    <script src="assets/js/ng-infinite-scroll.js"></script>
+    <script src="assets/js/ng-infinite-scroll.custom.js"></script>
     <!-- Owl Carousel -->
     <script type="text/javascript" src="../../../scripts/owlCarousel/owlCarousel.js"></script>
     <script src="../../../scripts/buildfire/components/carousel/carousel.js"></script>
@@ -43,14 +43,22 @@
     <!-- Slider css-->
     <link href="assets/css/slider.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="../../../../styles/transitionAnimation.css">
+    <link rel="stylesheet" href="../../../styles/transitionAnimation.css">
 
 </head>
 <!--<body class="scrollable customBackground" ng-style="currentBackgroundImage">-->
-<body class="scrollable customBackground" ng-style="currentBackgroundImage">
+<body class="scrollable">
 <div class="">
 
-    <div class="content" ng-view=""></div>
+    <div class="content relative infinite-scroll-parent" ng-view=""></div>
 </div>
 </body>
+<!--<script>
+    window.document.onload = function(){
+        alert(0);
+        document.addEventListener('deviceready',function(){alert('deviceready load fired');},false);
+    };
+
+
+</script>-->
 </html>

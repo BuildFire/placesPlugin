@@ -42,7 +42,8 @@
                         description: '<p>&nbsp;<br></p>',
                         sortBy: 'Manually',
                         rankOfLastItem: '',
-                        sortByItems: 'Newest',
+                        rankOfLastItemItems: '',
+                        sortByItems: 'Manually',
                         showAllItems: 'true',
                         allItemImage: ''
                     },
@@ -55,7 +56,7 @@
                     },
                     settings: {
                         defaultView: "list",
-                        showDistanceIn: "miles"
+                        showDistanceIn: "mi"
                     }
                 }
             },

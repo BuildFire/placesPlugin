@@ -38,9 +38,9 @@
 .no-items-msg {
     text-align: center;
     padding: 15px;
-    background-color: #eef0f0;
+    /*background-color: #eef0f0;
     border-radius: 4px;
-    border: 1px solid #ddd;
+    border: 1px solid #ddd;*/
 }
 
 .margin-fifteen {
@@ -151,4 +151,13 @@ style for sec list dark overlay
 .google-map-fix{
     height: 100%;
     position: relative;
+}
+
+#description ul li{
+    list-style: inherit !important;
+    list-style-position: inside !important;
+}
+#description ol li{
+    list-style: decimal !important;
+    list-style-position: inside !important;
 }

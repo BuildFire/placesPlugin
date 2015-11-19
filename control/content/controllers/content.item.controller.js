@@ -5,13 +5,26 @@
     'use strict';
     angular
         .module('placesContent')
-        .controller('ContentItemCtrl', ['$scope', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout', 'EVENTS', 'PATHS', 'Messaging', 'item', 'DEFAULT_DATA',
-            function ($scope, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout, EVENTS, PATHS, Messaging, item, DEFAULT_DATA) {
+        .controller('ContentItemCtrl', ['$scope', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout', 'EVENTS', 'PATHS', 'Messaging', 'item', 'placesInfo', 'DEFAULT_DATA',
+            function ($scope, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout, EVENTS, PATHS, Messaging, item, placesInfo, DEFAULT_DATA) {
+
+                //Hide the INT header part.
+                Buildfire.appearance.setHeaderVisibility(false);
+
                 var tmrDelayForItem = null
                     , Items = new DB(COLLECTIONS.Items)
+                    , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
                     , updating = false;
 
                 var background = new Buildfire.components.images.thumbnail("#background");
+
+                var placeInfoData;
+                if (placesInfo) {
+                    placeInfoData = placesInfo;
+                }
+                else {
+                    placeInfoData = DEFAULT_DATA.PLACE_INFO;
+                }
 
                 $scope.itemShow = 'Content';
 
@@ -25,7 +38,7 @@
                     ContentItem.masterItem = angular.copy(ContentItem.item);
                 }
                 else {
-                    ContentItem.item = DEFAULT_DATA.ITEM;
+                    ContentItem.item = angular.copy(DEFAULT_DATA.ITEM);
                     if ($routeParams.sectionId != 'allitems')
                         ContentItem.item.data.sections.push($routeParams.sectionId);
                     ContentItem.masterItem = angular.copy(ContentItem.item);
@@ -161,6 +174,7 @@
                     }
                     else {
                         console.info('****************Item inserted***********************');
+                        _item.data.rank = (placeInfoData.data.content.rankOfLastItemItems || 0) + 10;
                         _item.data.dateCreated = new Date();
                         Items.insert(_item.data).then(function (data) {
                             updating = false;
@@ -168,6 +182,12 @@
                                 ContentItem.item.data.deepLinkUrl = Buildfire.deeplink.createLink({id: data.id});
                                 ContentItem.item.id = data.id;
                                 updateMasterItem(ContentItem.item);
+                                placeInfoData.data.content.rankOfLastItemItems = _item.data.rank;
+                                PlaceInfo.save(placeInfoData.data).then(function (data) {
+                                }, function (err) {
+                                    resetItem();
+                                    console.error('Error while getting----------', err);
+                                });
                             }
                             else {
                                 resetItem();
@@ -198,22 +218,6 @@
                 }
 
                 //init();
-
-                ContentItem.addBackgroundImage = function () {
-                    var options = {showIcons: false, multiSelection: false}
-                        , callback = function (error, result) {
-                            if (error) {
-                                console.error('Error:', error);
-                            } else {
-                                ContentItem.item.data.backgroundImage = result.selectedFiles && result.selectedFiles[0] || null;
-                                $scope.$digest();
-                            }
-                        };
-                    Buildfire.imageLib.showDialog(options, callback);
-                };
-                ContentItem.removeBackgroundImage = function () {
-                    ContentItem.item.data.backgroundImage = null;
-                };
                 ContentItem.addListImage = function () {
                     var options = {showIcons: false, multiSelection: false},
                         listImgCB = function (error, result) {

@@ -1,25 +1,26 @@
-<div class="holder padding-zero has-bottom has-bottom-viewing" id="scroll-infinite">
-    <div class="places-plugin item-list1" infinite-scroll-distance="0"
+<div class="holder padding-zero has-bottom has-bottom-viewing">
+    <div class="places-plugin item-list1"
+         infinite-scroll-distance="1"
+         data-infinite-container=".infinite-scroll-parent"
          infinite-scroll="WidgetSections.loadMoreItems()"
-         infinite-scroll-container='"#scroll-infinite"'
-         infinit-scroll-disabled="WidgetSections.noMore">
+         infinit-scroll-disabled="WidgetSections.noMoreItems">
         <div class="plugin-banner has-info-bar clearfix"
              ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
             <a ng-href="#/item/{{WidgetSections.sectionId}}/{{item.id}}">
                 <div class="plugin-slide text-center">
-                    <img ng-if="item.data.listImage" ng-src="{{item.data.listImage | resizeImage:342:274}}">
-                    <img ng-if="!item.data.listImage" src="assets/images/placeholder.jpg">
+                    <img ng-if="item.data.listImage" ng-src="{{item.data.listImage | cropImage:WidgetSections.deviceWidth:192}}">
+                    <img ng-if="!item.data.listImage" src="assets/images/16x9.png">
                 </div>
-                <div class="info-bar bg-primary">
+                <div class="info-bar blackBackgroundTheme">
                     <div class="col-xs-8 text-left pull-left">
-                        <p class="margin-bottom-zero ellipsis"><span class="text-primary color-white">{{item.data.itemTitle}}</span>
+                        <p class="margin-bottom-zero ellipsis"><span class="text-primary whiteTheme">{{item.data.itemTitle}}</span>
                         </p>
 
-                        <p class="margin-bottom-zero ellipsis color-white">{{item.data.summary}}</p>
+                        <p class="margin-bottom-zero ellipsis whiteTheme">{{item.data.summary}}</p>
                     </div>
                     <div class="col-xs-4 text-right pull-right padding-left-zero">
-                        <span class="icon icon-map-marker icon-sm color-white"></span>
-                        <span class="miles color-white">{{item.data.distanceText}}</span>
+                        <span class="icon icon-map-marker icon-sm whiteTheme"></span>
+                        <span class="miles whiteTheme">{{item.data.distanceText}}</span>
                     </div>
                 </div>
             </a>

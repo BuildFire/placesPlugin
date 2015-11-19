@@ -8,9 +8,10 @@
     /**
      * Inject dependency
      */
-        .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'DB', 'COLLECTIONS', 'Modals', 'Orders', 'OrdersItems', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'placesInfo', 'sectionInfo', 'DEFAULT_DATA',
-            function ($scope, $routeParams, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo, sectionInfo, DEFAULT_DATA) {
-
+        .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'Buildfire', 'DB', 'COLLECTIONS', 'Modals', 'Orders', 'OrdersItems', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'placesInfo', 'sectionInfo', 'DEFAULT_DATA',
+            function ($scope, $routeParams, Buildfire, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo, sectionInfo, DEFAULT_DATA) {
+                //Show the INT header part.
+                Buildfire.appearance.setHeaderVisibility(true);
                 /**
                  * Create instance of Sections and Items db collection
                  * @type {DB}
@@ -46,8 +47,9 @@
                 ContentItems.sortOptions = OrdersItems.options;
                 ContentItems.itemSortableOptions = {
                     handle: '> .cursor-grab',
-                    disabled: !(ContentItems.info.data.content.sortBy === Orders.ordersMap.Manually),
+                    disabled: !(ContentItems.info.data.content.sortByItems === Orders.ordersMap.Manually),
                     stop: function (e, ui) {
+
                         var endIndex = ui.item.sortable.dropindex,
                             maxRank = 0,
                             draggedItem = ContentItems.items[endIndex];
@@ -71,6 +73,7 @@
                                 }
                             }
                             if (isRankChanged) {
+                                console.log('update in index');
                                 Items.update(draggedItem.id, draggedItem.data).then(function (updataeditem) {
                                     console.log('Updated item--------------------------------', updataeditem);
                                     if (ContentItems.sectionInfo) {

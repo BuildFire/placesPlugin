@@ -227,11 +227,54 @@
                     attrs.$observe('ngSrc', function (ngSrc) {
 
                         if (!ngSrc) {
-                            element.attr('src', 'assets/images/placeholder.jpg'); // set default image
+                            element.attr('src', 'assets/images/placeholder.png'); // set default image
                         }
 
                     });
                 }
             };
         })
+        .directive('imageCarousel', function () {
+            return {
+                restrict: 'A',
+                link: function (scope, elem, attrs) {
+                    scope.carousel = null;
+                    scope.isCarouselInitiated = false;
+                    function initCarousel() {
+                        scope.carousel = null;
+                        setTimeout(function () {
+                            var obj = {
+                                'slideSpeed': 300,
+                                'dots': false,
+                                'autoplay': true,
+                                'margin': 10
+                            };
+
+                            var totalImages = parseInt(attrs.imageCarousel, 10);
+                            if (totalImages) {
+                                if (totalImages > 1) {
+                                    obj['loop'] = true;
+                                }
+                                scope.carousel = $(elem).owlCarousel(obj);
+                                scope.isCarouselInitiated = true;
+                            }
+                            scope.$apply();
+                        }, 100);
+                    }
+
+                    initCarousel();
+
+                    scope.$watch("imagesUpdated", function (newVal, oldVal) {
+                        if (newVal) {
+                            if (scope.isCarouselInitiated) {
+                                scope.carousel.trigger("destroy.owl.carousel");
+                                scope.isCarouselInitiated = false;
+                            }
+                            $(elem).find(".owl-stage-outer").remove();
+                            initCarousel();
+                        }
+                    });
+                }
+            }
+        });
 })(window.angular, undefined);

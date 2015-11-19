@@ -41,8 +41,8 @@
 }
 
 .switch.checked {
-    background: rgb(100, 189, 99);
-    border-color: rgb(100, 189, 99);
+	background:#14cb5d;
+	border-color:#14cb5d;
 }
 
 .switch.checked small {

@@ -5,6 +5,8 @@
         .controller('ContentSectionsCtrl', ['$scope', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Modals', 'placesInfo', 'DEFAULT_DATA',
             function ($scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, placesInfo, DEFAULT_DATA) {
 
+                //Show the INT header part.
+                Buildfire.appearance.setHeaderVisibility(true);
                 var header = {
                         secTitle: 'Section Title',
                         mainImage: 'Section Image',

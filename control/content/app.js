@@ -56,7 +56,25 @@
                     resolve: {
                         item: function () {
                             return null;
-                        }
+                        },
+                        placesInfo: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', function ($q, DB, COLLECTIONS, Orders, Location) {
+                            var deferred = $q.defer();
+                            var PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
+
+                            PlaceInfo.get().then(function success(result) {
+                                    if (result && result.id && result.data) {
+                                        deferred.resolve(result);
+                                    }
+                                    else {
+                                        deferred.resolve(null);
+                                    }
+                                },
+                                function fail(err) {
+                                    deferred.resolve(null);
+                                }
+                            );
+                            return deferred.promise;
+                        }]
                     }
 
                 })
@@ -67,7 +85,25 @@
                     resolve: {
                         item: function () {
                             return null;
-                        }
+                        },
+                        placesInfo: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', function ($q, DB, COLLECTIONS, Orders, Location) {
+                            var deferred = $q.defer();
+                            var PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
+
+                            PlaceInfo.get().then(function success(result) {
+                                    if (result && result.id && result.data) {
+                                        deferred.resolve(result);
+                                    }
+                                    else {
+                                        deferred.resolve(null);
+                                    }
+                                },
+                                function fail(err) {
+                                    deferred.resolve(null);
+                                }
+                            );
+                            return deferred.promise;
+                        }]
                     }
 
                 })
@@ -91,6 +127,24 @@
                                     deferred.resolve(null);
                                 };
                             Items.getById($route.current.params.itemId).then(success, error);
+                            return deferred.promise;
+                        }],
+                        placesInfo: ['$q', 'DB', 'COLLECTIONS', 'Orders', 'Location', function ($q, DB, COLLECTIONS, Orders, Location) {
+                            var deferred = $q.defer();
+                            var PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
+
+                            PlaceInfo.get().then(function success(result) {
+                                    if (result && result.id && result.data) {
+                                        deferred.resolve(result);
+                                    }
+                                    else {
+                                        deferred.resolve(null);
+                                    }
+                                },
+                                function fail(err) {
+                                    deferred.resolve(null);
+                                }
+                            );
                             return deferred.promise;
                         }]
                     }

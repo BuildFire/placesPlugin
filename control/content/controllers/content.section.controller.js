@@ -6,6 +6,10 @@
     angular.module('placesContent')
         .controller('ContentSectionCtrl', ['$scope', '$routeParams', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Location', 'placesInfo', 'sectionInfo', 'DEFAULT_DATA',
             function ($scope, $routeParams, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Location, placesInfo, sectionInfo, DEFAULT_DATA) {
+
+                //Hide the INT header part.
+                Buildfire.appearance.setHeaderVisibility(false);
+                
                 /**
                  * ContentSection._Sections is an instance of Sections db collection
                  * @type {DB}

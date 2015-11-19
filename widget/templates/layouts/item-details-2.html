@@ -22,15 +22,15 @@
                    class="details-2-google-map-fix">Map
                     goes in here</p>
             </div>
-            <div class="info-bar bg-primary text-center">
-                <p class="margin-bottom-zero ellipsis col-xs-12 details-2-font color-white">
+            <div class="info-bar titleBarBackgroundTheme text-center">
+                <p class="margin-bottom-zero ellipsis col-xs-12 details-2-font color-white titleBarTextAndIcons">
                     {{WidgetItem.item.data.addressTitle+" "+WidgetItem.item.data.address.aName}}</p>
             </div>
         </div>
         <div class="padded text-center" ng-if="WidgetItem.showBodyContent()">
             <!--<a class="text-primary">Contact info</a>-->
             <hr class="small">
-            <p class="text-left" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml"></p>
+            <p id="description" class="text-left" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml"></p>
         </div>
     </div>
 </div>
