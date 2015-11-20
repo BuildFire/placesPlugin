@@ -57,7 +57,7 @@
                     }
                 })
                 .when('/items/:sectionId', {
-                    templateUrl: 'templates/home.html',
+                    templateUrl: 'templates/section.html',
                     controllerAs: 'WidgetSections',
                     controller: 'WidgetSectionsCtrl',
                     resolve: {
@@ -180,7 +180,7 @@
             $httpProvider.interceptors.push(interceptor);
 
         }])
-        .run(['Location', 'Messaging', 'EVENTS', 'PATHS', '$location', '$rootScope', function (Location, Messaging, EVENTS, PATHS, $location, $rootScope) {
+        .run(['Location', 'Messaging', 'EVENTS', 'PATHS', '$location', function (Location, Messaging, EVENTS, PATHS, $location) {
             Messaging.onReceivedMessage = function (event) {
                 console.log('Widget syn called-----', event);
                 if (event) {
@@ -201,15 +201,12 @@
                                     }
                                     break;
                                 case PATHS.HOME:
-                                    $rootScope.$broadcast(EVENTS.ROUTE_CHANGE_1, null);
-                                    return;
-                                    //Location.goToHome();
+                                    //url = url + "home";
+                                    Location.goToHome();
                                     break;
                                 case PATHS.SECTION:
                                     if (secId) {
-                                        $rootScope.$broadcast(EVENTS.ROUTE_CHANGE_1, secId);
-                                        return;
-                                        //url = url + "items" + "/" + secId;
+                                        url = url + "items" + "/" + secId;
                                     }
                                     else {
                                         url = url + "home";
@@ -236,26 +233,18 @@
                 var path = $location.path();
                 console.log(path);
                 if (path.indexOf('/items/') == 0) {
-                    //alert(1);
                     Location.goToHome();
-                    /*     Messaging.sendMessageToControl({
-                     name: EVENTS.ROUTE_CHANGE,
-                     message: {
-                     path: PATHS.HOME
-                     }
-                     });*/
+                    Messaging.sendMessageToControl({
+                        name: EVENTS.ROUTE_CHANGE,
+                        message: {
+                            path: PATHS.HOME
+                        }
+                    });
                 }
-                else if (path.indexOf('/item/') == 0) {
-                    //alert(2);
-                    //Location.goToHome()
+                else if (path.indexOf('/item/') == 0)
                     Location.go('#/items/' + path.split('/')[2]);
-                }
-                else {
-                    if ($('.section-filter.whiteTheme').length == 0) // this means filter is applied
-                        buildfire.navigation.navigateHome();
-                    else
-                        $rootScope.$broadcast(EVENTS.ROUTE_CHANGE_1, null);
-                }
+                else
+                    buildfire.navigation.navigateHome();
             }
         }]);
 })(window.angular, window.buildfire);

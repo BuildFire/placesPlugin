@@ -50,7 +50,6 @@
     </div>
 </div>
 <div ng-show="itemShow=='Content'">
-    <h4>Places Item Content</h4>
     <div id="carousel"></div>
     <hr class="none">
     <div class="item clearfix row">
@@ -66,7 +65,10 @@
         <div class="labels col-md-3 padding-right-zero pull-left">
             <span>Body Content</span>
         </div>
-        <div class="main col-md-9 pull-right">
+	</div>
+	<hr class="none">
+	<div class="item clearfix row">
+        <div class="main col-md-12 pull-right">
             <textarea placeholder="WYSIWYG" class="form-control" ui-tinymce="ContentItem.bodyWYSIWYGOptions" ng-model="ContentItem.item.data.bodyContent"></textarea>
         </div>
     </div>
@@ -111,8 +113,6 @@
     <div id="actionItems"></div>
 </div>
 <div ng-show="itemShow=='Design'">
-    <h4>Places Item Design</h4>
-    <hr>
     <div id="background"></div>
 </div>
 <hr class="none">

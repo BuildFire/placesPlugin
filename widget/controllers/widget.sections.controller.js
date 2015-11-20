@@ -9,7 +9,12 @@
                 WidgetSections.menuTab = 'Category';
                 WidgetSections.filterUnapplied = true;
                 //WidgetSections.selectedSections = [];
-
+                if ($routeParams.sectionId && $routeParams.sectionId != 'allitems') {
+                    WidgetSections.selectedSections = [$routeParams.sectionId];
+                }
+                else {
+                    WidgetSections.selectedSections = [];
+                }
 
                 WidgetSections.onSliderChange = function () {
                     WidgetSections.filterUnapplied = false; // this tells us that the slider has been set by the user
@@ -17,17 +22,6 @@
 
 
                 WidgetSections.showSections = true;
-
-                if ($routeParams.sectionId && $routeParams.sectionId != 'allitems') {
-                    WidgetSections.showSections = false;
-                    //$timeout(function () {
-                    WidgetSections.selectedSections = [$routeParams.sectionId];
-                    //}, 500);
-                }
-                else {
-                    WidgetSections.selectedSections = [];
-                }
-
                 WidgetSections.placesInfo = null;
                 WidgetSections.currentView = null;
                 WidgetSections.selectedItem = null;
@@ -690,22 +684,7 @@
                     clearOnUpdateListener.clear();
                 });
 
-                $rootScope.$on(EVENTS.ROUTE_CHANGE_1, function (e, data) {
-                    console.log('>>>>>>>>>>>>>>', data);
-                    if (data) {
-                        WidgetSections.sectionId = data.toString();
-                        WidgetSections.selectedSections = [data.toString()];
-                        WidgetSections.showSections = false;
-                        $scope.$apply();
-                    }
-                    else {
-                        WidgetSections.selectedSections = [];
-                        WidgetSections.showSections = true;
-                    }
-                    console.log('<<<<<<<<<<<<<<', WidgetSections.selectedSections);
 
-                    $scope.$apply();
-                });
             }
         ])
     ;
