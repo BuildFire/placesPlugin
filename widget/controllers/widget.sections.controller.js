@@ -394,15 +394,18 @@
                      });
                      }
                      // else - in this case, default coords will be used*/
-
+alert('came to check location');
                     Buildfire.geo.getCurrentPosition(
                         null,
                         function (err, position) {
-                            if (err)
+                            if (err) {
+                                alert(err);
                                 console.error(err);
+                            }
                             else {
                                 $scope.$apply(function () {
-                                    console.log('position>>>>>.',position);
+                                    alert(position.coords.longitude);
+                                    console.log('position>>>>>.', position);
                                     //WidgetSections.sortOnClosest = true;// will be true if user allows location
                                     WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
                                     localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
@@ -602,9 +605,9 @@
 
 
                 /*document.addEventListener("deviceready", );
-                $scope.$on('$viewContentLoaded', function () {
-                    getGeoLocation()
-                });*/
+                 $scope.$on('$viewContentLoaded', function () {
+                 getGeoLocation()
+                 });*/
                 $scope.$watch(function () {
                     return WidgetSections.locationData.items;
                 }, getItemsDistance);
