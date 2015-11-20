@@ -394,7 +394,7 @@
                      });
                      }
                      // else - in this case, default coords will be used*/
-alert('came to check location');
+alert('came to check location 1');
                     Buildfire.geo.getCurrentPosition(
                         {enableHighAccuracy:true,timeout:99999,maximumAge:99999},
                         function (err, position) {
