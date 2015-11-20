@@ -47,7 +47,7 @@
 
 </head>
 <!--<body class="scrollable customBackground" ng-style="currentBackgroundImage">-->
-<body class="scrollable">
+<body class="scrollable" data-ng-attr-style="background:url({{ cropImage(data.design.backgroundImage, {width: deviceWidth, height: deviceHeight}) }}) !important; background-size:cover;">
 <div class="">
 
     <div class="content relative infinite-scroll-parent" ng-view=""></div>

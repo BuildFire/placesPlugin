@@ -1,7 +1,3 @@
-<div class="overlay background"
-     ng-if="WidgetSections.placesInfo.data.design.secListBGImage && WidgetSections.deviceWidth != 0 && WidgetSections.deviceHeight != 0">
-    <img ng-src="{{WidgetSections.placesInfo.data.design.secListBGImage |cropImage : WidgetSections.deviceWidth : WidgetSections.deviceHeight}}">
-</div>
 <div>
     <div ng-switch="WidgetSections.currentView">
         <div ng-switch-when="list">
