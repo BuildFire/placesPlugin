@@ -21,7 +21,7 @@
                 if ($routeParams.sectionId && $routeParams.sectionId != 'allitems') {
                     WidgetSections.showSections = false;
                     //$timeout(function () {
-                        WidgetSections.selectedSections = [$routeParams.sectionId];
+                    WidgetSections.selectedSections = [$routeParams.sectionId];
                     //}, 500);
                 }
                 else {
@@ -388,18 +388,34 @@
 
 
                 function getGeoLocation() {
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(function (position) {
-                            $scope.$apply(function () {
-                                //WidgetSections.sortOnClosest = true;// will be true if user allows location
-                                WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
-                                localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
-                            });
-                        }, function (error) {
-                            console.error('Error while getting location', error);
-                        });
-                    }
-                    // else - in this case, default coords will be used
+                    /*if (navigator.geolocation) {
+                     navigator.geolocation.getCurrentPosition(function (position) {
+                     $scope.$apply(function () {
+                     //WidgetSections.sortOnClosest = true;// will be true if user allows location
+                     WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
+                     localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
+                     });
+                     }, function (error) {
+                     console.error('Error while getting location', error);
+                     });
+                     }
+                     // else - in this case, default coords will be used*/
+
+                    Buildfire.geo.getCurrentPosition(
+                        null,
+                        function (err, position) {
+                            if (err)
+                                console.error(err);
+                            else {
+                                $scope.$apply(function () {
+                                    console.log('position>>>>>.',position);
+                                    //WidgetSections.sortOnClosest = true;// will be true if user allows location
+                                    WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
+                                    localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
+                                });
+                            }
+                        }
+                    );
                 }
 
                 /// load items
@@ -591,10 +607,10 @@
                 };
 
 
-                /*document.addEventListener("deviceready", );*/
+                /*document.addEventListener("deviceready", );
                 $scope.$on('$viewContentLoaded', function () {
                     getGeoLocation()
-                });
+                });*/
                 $scope.$watch(function () {
                     return WidgetSections.locationData.items;
                 }, getItemsDistance);
