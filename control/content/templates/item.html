@@ -1,4 +1,3 @@
-<hr class="none">
 <div class="item clearfix row">
     <div class="labels col-md-3 padding-right-zero pull-left">
         <span>List Image</span>
@@ -6,15 +5,13 @@
     <div class="main col-md-9 pull-right">
         <div class="screens clearfix">
             <div class="screen carouselicon pull-left text-center">
-                <a class="border-grey border-radius-three default-background-hover"
-                   ng-click="ContentItem.addListImage()">
+                <a class="border-grey border-radius-three default-background-hover" ng-click="ContentItem.addListImage()">
                     <span ng-if="!ContentItem.item.data.listImage" class="add-icon hidden">+</span>
-                    <img ng-if="ContentItem.item.data.listImage"
-                         ng-src="{{ContentItem.item.data.listImage | resizeImage : 82:110}}">
+                    <img ng-if="ContentItem.item.data.listImage" ng-src="{{ContentItem.item.data.listImage | resizeImage : 82:110}}">
                 </a>
-                <span ng-if="ContentItem.item.data.listImage" class="icon btn-delete-icon btn-danger transition-third"
-                      ng-click="ContentItem.removeListImage()"></span>
-            </div>
+            	<span class="add-icon">+</span>
+                <span ng-if="ContentItem.item.data.listImage" class="icon btn-delete-icon btn-danger transition-third" ng-click="ContentItem.removeListImage()"></span>
+			</div>
         </div>
     </div>
 </div>
@@ -37,7 +34,7 @@
     </div>
 </div>
 <hr class="none">
-<div class="item clearfix row">
+<div class="item clearfix">
     <div class="layout padded clearfix">
         <ul class="nav nav-tabs nav-justified">
             <li class="">
@@ -50,7 +47,6 @@
     </div>
 </div>
 <div ng-show="itemShow=='Content'">
-    <h4>Places Item Content</h4>
     <div id="carousel"></div>
     <hr class="none">
     <div class="item clearfix row">
@@ -66,7 +62,10 @@
         <div class="labels col-md-3 padding-right-zero pull-left">
             <span>Body Content</span>
         </div>
-        <div class="main col-md-9 pull-right">
+	</div>
+	<hr class="none">
+	<div class="item clearfix row">
+        <div class="main col-md-12 pull-right">
             <textarea placeholder="WYSIWYG" class="form-control" ui-tinymce="ContentItem.bodyWYSIWYGOptions" ng-model="ContentItem.item.data.bodyContent"></textarea>
         </div>
     </div>
@@ -111,8 +110,6 @@
     <div id="actionItems"></div>
 </div>
 <div ng-show="itemShow=='Design'">
-    <h4>Places Item Design</h4>
-    <hr>
     <div id="background"></div>
 </div>
 <hr class="none">
