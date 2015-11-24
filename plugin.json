@@ -17,7 +17,7 @@
   },
   "widget": {
   },
-  "features": [],
+  "features": ["GEO"],
   "languages": [
     "en"
   ]
