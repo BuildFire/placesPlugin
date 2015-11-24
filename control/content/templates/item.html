@@ -6,10 +6,9 @@
         <div class="screens clearfix">
             <div class="screen carouselicon pull-left text-center">
                 <a class="border-grey border-radius-three default-background-hover" ng-click="ContentItem.addListImage()">
-                    <span ng-if="!ContentItem.item.data.listImage" class="add-icon hidden">+</span>
+                    <span ng-if="!ContentItem.item.data.listImage" class="add-icon">+</span>
                     <img ng-if="ContentItem.item.data.listImage" ng-src="{{ContentItem.item.data.listImage | resizeImage : 82:110}}">
                 </a>
-            	<span class="add-icon">+</span>
                 <span ng-if="ContentItem.item.data.listImage" class="icon btn-delete-icon btn-danger transition-third" ng-click="ContentItem.removeListImage()"></span>
 			</div>
         </div>
@@ -46,7 +45,7 @@
         </ul>
     </div>
 </div>
-<div ng-show="itemShow=='Content'">
+<div ng-show="itemShow=='Content'" class="margin-top-thirty">
     <div id="carousel"></div>
     <hr class="none">
     <div class="item clearfix row">
@@ -109,7 +108,7 @@
     <hr class="none">
     <div id="actionItems"></div>
 </div>
-<div ng-show="itemShow=='Design'">
+<div ng-show="itemShow=='Design'" class="margin-top-thirty">
     <div id="background"></div>
 </div>
 <hr class="none">
