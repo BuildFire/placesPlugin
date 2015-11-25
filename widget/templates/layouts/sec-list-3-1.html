@@ -16,7 +16,7 @@
                          infinite-scroll-disabled="WidgetSections.noMoreItems"
                          infinite-scroll="WidgetSections.loadMoreItems()">
                         <div class="list-item" ng-if="WidgetSections.placesInfo.data.content.showAllItems">
-                            <a href="#/items/allitems">
+                            <a ng-click="WidgetSections.showSections = false;$('#allItemsOption').click()">
                                 <div class="list-item-media text-left overflow-hidden">
                                     <div ng-if="WidgetSections.placesInfo.data.content.allItemImage"
                                          class="list-media-holder pull-left">
@@ -31,8 +31,8 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="list-item" ng-repeat="item in WidgetSections.sections">
-                            <a ng-href="#/items/{{item.id}}">
+                        <div class="list-item" ng-repeat="item in WidgetSections.sections | unique: 'id'">
+                            <a ng-click="WidgetSections.selectedSections = [item.id];WidgetSections.showSections = false;">
                                 <div class="list-item-media text-left overflow-hidden">
                                     <div ng-if="item.data.mainImage" class="list-media-holder pull-left">
                                         <img default-image ng-src="{{item.data.mainImage | cropImage :110 :60}}">
@@ -51,7 +51,10 @@
                     </div>
                 </div>
                 <div ng-hide="WidgetSections.showSections">
-                    <div class="no-items-msg margin-fifteen" ng-hide="WidgetSections.locationData.items.length">
+                    <div ng-if="WidgetSections.placesInfo.data.design.itemListLayout"
+                         ng-include="'templates/layouts/' + WidgetSections.placesInfo.data.design.itemListLayout+ '.html'">
+                    </div>
+                  <!--  <div class="no-items-msg margin-fifteen" ng-hide="WidgetSections.locationData.items.length">
                         No item(s) to show
                     </div>
                     <div infinite-scroll-distance="1"
@@ -78,7 +81,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>

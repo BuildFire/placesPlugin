@@ -26,6 +26,13 @@
                 }
                 else {
                     WidgetSections.selectedSections = [];
+
+                    if ($routeParams.sectionId == 'allitems'){
+                        $timeout(function () {
+                            $('#allItemsOption').click();
+                        },500);
+
+                    }
                 }
 
                 WidgetSections.placesInfo = null;
@@ -642,6 +649,13 @@
                     $scope.$digest();
                 };
 
+                WidgetSections.getSectionId = function (arr) {
+                    if (arr.length)
+                        return arr[0];
+                    else
+                        return 'allitems';
+                };
+
                 $scope.$on("Map Carousel:LOADED", function () {
                     if (!mapview) {
                         mapview = new Buildfire.components.carousel.view("#mapCarousel", []);  ///create new instance of buildfire carousel viewer
@@ -649,6 +663,7 @@
                 });
 
                 if ($routeParams.sectionId) { // this case means the controller is serving the section view
+
 
 
                     /*  if ($routeParams.sectionId == 'allitems') {
@@ -662,20 +677,24 @@
 
                     // have to get sections explicitly in item list view
                     WidgetSections.sections = [];
-                    Sections.getById($routeParams.sectionId).then(function (data) {
-                            WidgetSections.sectionInfo = data;
-                        }
-                        ,
-                        function (err) {
-                            // do somthing on err
-                        }
-                    )
-                    ;
+                    if ($routeParams.sectionId != 'allitems') {
+                        Sections.getById($routeParams.sectionId).then(function (data) {
+                                WidgetSections.sectionInfo = data;
+                            }
+                            ,
+                            function (err) {
+                                // do somthing on err
+                            }
+                        )
+                        ;
+                    }
                     Sections.find({}).then(function success(result) {
                         WidgetSections.sections = result;
 
                     }, function () {
                     });
+
+
 
                     //syn with control side
 
@@ -688,14 +707,8 @@
                     });
                 }
 
-                /**
-                 * will called when controller scope has been destroyed.
-                 */
-                $scope.$on("$destroy", function () {
-                    clearOnUpdateListener.clear();
-                });
+                var offCallMeFn = $rootScope.$on(EVENTS.ROUTE_CHANGE_1, function (e, data) {
 
-                $rootScope.$on(EVENTS.ROUTE_CHANGE_1, function (e, data) {
                     console.log('>>>>>>>>>>>>>>', data);
                     if (data) {
                         if (data.toString() === 'allitems') {
@@ -715,6 +728,14 @@
                     console.log('<<<<<<<<<<<<<<', WidgetSections.selectedSections);
 
                     $scope.$apply();
+                });
+
+                /**
+                 * will called when controller scope has been destroyed.
+                 */
+                $scope.$on("$destroy", function () {
+                    clearOnUpdateListener.clear();
+                    offCallMeFn();
                 });
             }
         ])
