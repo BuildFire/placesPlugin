@@ -13,8 +13,8 @@
                 <div ng-show="WidgetSections.showSections">
                     <div infinite-scroll-distance="1"
                          data-infinite-container=".infinite-scroll-parent"
-                         infinite-scroll-disabled="WidgetSections.noMoreItems"
-                         infinite-scroll="WidgetSections.loadMoreItems()">
+                         infinite-scroll-disabled="WidgetSections.noMoreSections"
+                         infinite-scroll="WidgetSections.loadMoreSections()">
                         <div class="list-item" ng-if="WidgetSections.placesInfo.data.content.showAllItems">
                             <a ng-click="WidgetSections.showSections = false;$('#allItemsOption').click()">
                                 <div class="list-item-media text-left overflow-hidden">

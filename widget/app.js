@@ -239,7 +239,6 @@
                 var path = $location.path();
                 console.log(path);
                 if (path.indexOf('/items/') == 0) {
-                    alert(1);
                     Location.goToHome();
                     /*     Messaging.sendMessageToControl({
                      name: EVENTS.ROUTE_CHANGE,
@@ -249,12 +248,10 @@
                      });*/
                 }
                 else if (path.indexOf('/item/') == 0) {
-                    alert(2);
                     //Location.goToHome()
                     Location.go('#/items/' + path.split('/')[2]);
                 }
                 else {
-                    alert(3);
                     if ($('.section-filter.whiteTheme').length == 0) // this means filter is applied
                         buildfire.navigation.navigateHome();
                     else
