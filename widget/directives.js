@@ -27,7 +27,7 @@
                 replace: true,
                 scope: {locationData: '=locationData', markerCallback: '=markerCallback'},
                 link: function (scope, elem, attrs) {
-                    elem.css('min-height', '556px').css('width', '100%');
+                    elem.css('min-height', '556px').css('width', '100%').css('height', '100%');
                     scope.$watch('locationData', function (newValue, oldValue) {
                         if (newValue) {
                             var mapCenterLng = (scope.locationData && scope.locationData.currentCoordinates && scope.locationData.currentCoordinates.length && scope.locationData.currentCoordinates[0]) ? scope.locationData.currentCoordinates[0] : -87.7679;
