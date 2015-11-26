@@ -2,8 +2,8 @@
      ng-if="WidgetSections.sectionInfo.data.itemListBGImage && WidgetSections.deviceWidth != 0 && WidgetSections.deviceHeight != 0">
     <img ng-src="{{WidgetSections.sectionInfo.data.itemListBGImage|cropImage : WidgetSections.deviceWidth : WidgetSections.deviceHeight}}">
 </div>
-<div>
-    <div ng-switch="WidgetSections.currentView" class="scrollable">
+<div class="scrollable">
+    <div ng-switch="WidgetSections.currentView">
         <div ng-switch-when="list">
             <div ng-if="WidgetSections.placesInfo.data.design.itemListLayout"
                  ng-include="'templates/layouts/' + WidgetSections.placesInfo.data.design.itemListLayout+ '.html'">
