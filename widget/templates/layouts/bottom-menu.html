@@ -7,13 +7,9 @@
         </div>
     </div>
     <div class="col-xs-6 pull-left text-center transition-third bg-primary">
-        <a ng-show="WidgetSections.currentView == 'list'" ng-click="WidgetSections.currentView = 'map';"
+        <a ng-click="WidgetSections.currentView = (WidgetSections.currentView == 'map') ? 'list' : 'map';"
            class="whiteTheme">
-            Map
-        </a>
-        <a ng-show="WidgetSections.currentView == 'map'" ng-click="WidgetSections.currentView = 'list';"
-           class="whiteTheme">
-            List
+            {{WidgetSections.currentView == 'map' ? 'List' : 'Map'}}
         </a>
     </div>
     <div class="col-xs-6 pull-left text-center transition-third bg-primary">
