@@ -1,11 +1,11 @@
 <div class="holder padding-zero text-overlay">
     <div class="places-plugin layout3">
-        <div class="media-center-banner clearfix ">
+        <div ng-show="WidgetSections.showSections" class="media-center-banner clearfix ">
             <div class="plugin-slide text-center">
                 <div id="carousel" build-fire-carousel=""></div>
             </div>
         </div>
-        <div id="description" class="padded text-left padding-bottom-zero clearfix" ng-if="WidgetSections.showDescription()">
+        <div ng-show="WidgetSections.showSections" id="description" class="padded text-left padding-bottom-zero clearfix" ng-if="WidgetSections.showDescription()">
             <p ng-bind-html="WidgetSections.placesInfo.data.content.descriptionHTML | safeHtml"></p>
         </div>
         <div class="">
