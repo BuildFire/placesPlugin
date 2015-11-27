@@ -217,7 +217,7 @@
                             for (var _ind = 0; _ind < items.length; _ind++) {
                                 items[_ind].data.address = items[_ind].data.address.aName;
                                 if (items[_ind].data.sections.length > 1) {
-                                    for (var _i = 0; _i < items[_ind].sections.length; _i++) {
+                                    for (var _i = 0; _i < items[_ind].data.sections.length; _i++) {
                                         items[_ind].data.secTitle = allSections[items[_ind].data.sections[_i]].secTitle;
                                         items[_ind].data.secSummary = allSections[items[_ind].data.sections[_i]].secSummary;
                                         items[_ind].data.mainImage = allSections[items[_ind].data.sections[_i]].mainImage;
