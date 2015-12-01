@@ -47,18 +47,9 @@
 
 </head>
 <!--<body class="scrollable customBackground" ng-style="currentBackgroundImage">-->
-<body class="scrollable">
-<div class="">
-
-    <div class="content relative infinite-scroll-parent" ng-view=""></div>
+<body class="no-scroll">
+<div class="height-hundred-pc">
+    <div class="content slide relative infinite-scroll-parent height-hundred-pc" ng-view=""></div>
 </div>
 </body>
-<!--<script>
-    window.document.onload = function(){
-        alert(0);
-        document.addEventListener('deviceready',function(){alert('deviceready load fired');},false);
-    };
-
-
-</script>-->
 </html>

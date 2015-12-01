@@ -9,12 +9,7 @@
                 WidgetSections.menuTab = 'Category';
                 WidgetSections.filterUnapplied = true;
                 //WidgetSections.selectedSections = [];
-                if ($routeParams.sectionId && $routeParams.sectionId != 'allitems') {
-                    WidgetSections.selectedSections = [$routeParams.sectionId];
-                }
-                else {
-                    WidgetSections.selectedSections = [];
-                }
+
 
                 WidgetSections.onSliderChange = function () {
                     WidgetSections.filterUnapplied = false; // this tells us that the slider has been set by the user
@@ -22,6 +17,24 @@
 
 
                 WidgetSections.showSections = true;
+
+                if ($routeParams.sectionId && $routeParams.sectionId != 'allitems') {
+                    WidgetSections.showSections = false;
+                    //$timeout(function () {
+                    WidgetSections.selectedSections = [$routeParams.sectionId];
+                    //}, 500);
+                }
+                else {
+                    WidgetSections.selectedSections = [];
+
+                    if ($routeParams.sectionId == 'allitems'){
+                        $timeout(function () {
+                            $('#allItemsOption').click();
+                        },500);
+
+                    }
+                }
+
                 WidgetSections.placesInfo = null;
                 WidgetSections.currentView = null;
                 WidgetSections.selectedItem = null;
@@ -383,38 +396,38 @@
 
                 function getGeoLocation() {
                     if (navigator.geolocation) {
-                     navigator.geolocation.getCurrentPosition(function (position) {
+                        navigator.geolocation.getCurrentPosition(function (position) {
+                            $scope.$apply(function () {
+                                //WidgetSections.sortOnClosest = true;// will be true if user allows location
+                                WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
+                                localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
+                            });
+                        }, function (error) {
+                            console.error('Error while getting location', error);
+                        });
+                    }
+                    // else - in this case, default coords will be used
+
+                    /*  alert('came to check location 1');
+                     Buildfire.geo.getCurrentPosition(
+                     {enableHighAccuracy:true,timeout:99999,maximumAge:99999},
+                     function (err, position) {
+                     if (err) {
+                     alert(err);
+                     console.error(err);
+                     }
+                     else {
+                     alert(position.coords.longitude);
                      $scope.$apply(function () {
+                     alert(position.coords.longitude);
+                     console.log('position>>>>>.', position);
                      //WidgetSections.sortOnClosest = true;// will be true if user allows location
                      WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
                      localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
                      });
-                     }, function (error) {
-                     console.error('Error while getting location', error);
-                     });
                      }
-                     // else - in this case, default coords will be used
-
-                  /*  alert('came to check location 1');
-                    Buildfire.geo.getCurrentPosition(
-                        {enableHighAccuracy:true,timeout:99999,maximumAge:99999},
-                        function (err, position) {
-                            if (err) {
-                                alert(err);
-                                console.error(err);
-                            }
-                            else {
-                                alert(position.coords.longitude);
-                                $scope.$apply(function () {
-                                    alert(position.coords.longitude);
-                                    console.log('position>>>>>.', position);
-                                    //WidgetSections.sortOnClosest = true;// will be true if user allows location
-                                    WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
-                                    localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
-                                });
-                            }
-                        }
-                    );*/
+                     }
+                     );*/
                 }
 
                 /// load items
@@ -636,6 +649,13 @@
                     $scope.$digest();
                 };
 
+                WidgetSections.getSectionId = function (arr) {
+                    if (arr.length)
+                        return arr[0];
+                    else
+                        return 'allitems';
+                };
+
                 $scope.$on("Map Carousel:LOADED", function () {
                     if (!mapview) {
                         mapview = new Buildfire.components.carousel.view("#mapCarousel", []);  ///create new instance of buildfire carousel viewer
@@ -643,6 +663,7 @@
                 });
 
                 if ($routeParams.sectionId) { // this case means the controller is serving the section view
+
 
 
                     /*  if ($routeParams.sectionId == 'allitems') {
@@ -656,20 +677,24 @@
 
                     // have to get sections explicitly in item list view
                     WidgetSections.sections = [];
-                    Sections.getById($routeParams.sectionId).then(function (data) {
-                            WidgetSections.sectionInfo = data;
-                        }
-                        ,
-                        function (err) {
-                            // do somthing on err
-                        }
-                    )
-                    ;
+                    if ($routeParams.sectionId != 'allitems') {
+                        Sections.getById($routeParams.sectionId).then(function (data) {
+                                WidgetSections.sectionInfo = data;
+                            }
+                            ,
+                            function (err) {
+                                // do somthing on err
+                            }
+                        )
+                        ;
+                    }
                     Sections.find({}).then(function success(result) {
                         WidgetSections.sections = result;
 
                     }, function () {
                     });
+
+
 
                     //syn with control side
 
@@ -682,14 +707,36 @@
                     });
                 }
 
+                var offCallMeFn = $rootScope.$on(EVENTS.ROUTE_CHANGE_1, function (e, data) {
+
+                    console.log('>>>>>>>>>>>>>>', data);
+                    if (data) {
+                        if (data.toString() === 'allitems') {
+                            $('#allItemsOption').click();
+                        }
+                        else {
+                            WidgetSections.sectionId = data.toString();
+                            WidgetSections.selectedSections = [data.toString()];
+                        }
+                        WidgetSections.showSections = false;
+                        $scope.$apply();
+                    }
+                    else {
+                        WidgetSections.selectedSections = [];
+                        WidgetSections.showSections = true;
+                    }
+                    console.log('<<<<<<<<<<<<<<', WidgetSections.selectedSections);
+
+                    $scope.$apply();
+                });
+
                 /**
                  * will called when controller scope has been destroyed.
                  */
                 $scope.$on("$destroy", function () {
                     clearOnUpdateListener.clear();
+                    offCallMeFn();
                 });
-
-
             }
         ])
     ;

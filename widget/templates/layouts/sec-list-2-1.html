@@ -1,11 +1,11 @@
 <div class="holder padding-zero has-bottom text-overlay">
     <div class="places-plugin">
-        <div class="plugin-banner clearfix ">
+        <div ng-show="WidgetSections.showSections" class="plugin-banner clearfix ">
             <div class="plugin-slide text-center">
                 <div id="carousel" build-fire-carousel=""></div>
             </div>
         </div>
-        <div class="padded text-left" ng-if="WidgetSections.showDescription()" id="description">
+        <div ng-show="WidgetSections.showSections" class="padded text-left" ng-if="WidgetSections.showDescription()" id="description">
             <p class="margin-bottom-zero"
                ng-bind-html="WidgetSections.placesInfo.data.content.descriptionHTML | safeHtml">
             </p>
@@ -16,7 +16,7 @@
                  data-infinite-container=".infinite-scroll-parent"
                  infinite-scroll-disabled="WidgetSections.noMoreSections">
                 <div ng-if="WidgetSections.placesInfo.data.content.showAllItems">
-                    <a href="#/items/allitems">
+                    <a  ng-click="WidgetSections.showSections = false;$('#allItemsOption').click()">
                         <div class="plugin-banner clearfix border-bottom-grey">
                             <div class="plugin-slide text-center"
                                  ng-if="WidgetSections.placesInfo.data.content.allItemImage">
@@ -28,8 +28,8 @@
                         </div>
                     </a>
                 </div>
-                <div ng-repeat="item in WidgetSections.sections">
-                    <a ng-href="#/items/{{item.id}}">
+                <div ng-repeat="item in WidgetSections.sections | unique: 'id'">
+                    <a ng-click="WidgetSections.selectedSections = [item.id];WidgetSections.showSections = false;">
                         <div class="plugin-banner clearfix border-bottom-grey">
                             <div class="plugin-slide text-center" ng-if="item.data.mainImage">
                                 <img ng-src="{{item.data.mainImage | cropImage:WidgetSections.deviceWidth:192}}">
@@ -45,7 +45,10 @@
             </div>
         </div>
         <div ng-hide="WidgetSections.showSections">
-            <div infinite-scroll-distance="1"
+            <div ng-if="WidgetSections.placesInfo.data.design.itemListLayout"
+                 ng-include="'templates/layouts/' + WidgetSections.placesInfo.data.design.itemListLayout+ '.html'">
+            </div>
+            <!--<div infinite-scroll-distance="1"
                  data-infinite-container=".infinite-scroll-parent"
                  infinite-scroll-disabled="WidgetSections.noMoreItems"
                  infinite-scroll="WidgetSections.loadMoreItems()">
@@ -76,8 +79,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
         </div>
-        <div ng-include="'templates/layouts/bottom-menu.html'"></div>
+        <!--<div ng-include="'templates/layouts/bottom-menu.html'"></div>-->
     </div>
 </div>

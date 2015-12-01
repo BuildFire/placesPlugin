@@ -2,7 +2,7 @@
      ng-if="WidgetItem.item.data.backgroundImage && WidgetItem.deviceWidth != 0 && WidgetItem.deviceHeight != 0">
     <img ng-src="{{WidgetItem.item.data.backgroundImage |cropImage : WidgetItem.deviceWidth : WidgetItem.deviceHeight}}">
 </div>
-<div>
+<div class="scrollable">
     <div ng-switch="WidgetSections.currentView">
         <div ng-switch-when="list">
             <div ng-if="WidgetSections.placesInfo.data.design.secListLayout"
@@ -15,4 +15,7 @@
             </div>
         </div>
     </div>
+</div>
+<div class="holder padding-zero">
+    <div ng-include="'templates/layouts/bottom-menu.html'"></div>
 </div>

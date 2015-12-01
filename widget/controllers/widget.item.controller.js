@@ -194,11 +194,20 @@
                     });
             }
 
+            var offCallMeFn = $rootScope.$on(EVENTS.ROUTE_CHANGE_1, function (e, data) {
+
+                    Location.goToHome();
+
+
+                $scope.$apply();
+            });
+
             /**
              * will called when controller scope has been destroyed.
              */
             $scope.$on("$destroy", function () {
                 WidgetItem.clearOnUpdateListener.clear();
+                offCallMeFn();
             });
         }
         ])
