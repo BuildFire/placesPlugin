@@ -52,4 +52,11 @@
     <div class="content slide relative infinite-scroll-parent height-hundred-pc" ng-view=""></div>
 </div>
 </body>
+<script>
+    function manuallyTransitionAnimation(){
+        $('.slide').hide('slide', {direction: 'left'}, 250);
+        //$('.slide').hide();
+        setTimeout(function(){$('.slide').show('slide', {direction: 'right'}, 250);},500);
+    }
+</script>
 </html>

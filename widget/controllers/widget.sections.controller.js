@@ -708,9 +708,10 @@
                 }
 
                 var offCallMeFn = $rootScope.$on(EVENTS.ROUTE_CHANGE_1, function (e, data) {
-
                     console.log('>>>>>>>>>>>>>>', data);
+                    manuallyTransitionAnimation();
                     if (data) {
+
                         if (data.toString() === 'allitems') {
                             $('#allItemsOption').click();
                         }
