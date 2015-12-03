@@ -395,8 +395,9 @@
 
 
                 function getGeoLocation() {
+                    alert('came to check geo location ');
                      if (navigator.geolocation) {
-                         alert('came to check geo location ');
+
                      navigator.geolocation.getCurrentPosition(function (position) {
                      $scope.$apply(function () {
                      //WidgetSections.sortOnClosest = true;// will be true if user allows location
