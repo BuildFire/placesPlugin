@@ -410,18 +410,18 @@
                      }*/
                     // else - in this case, default coords will be used
 
-                    alert('came to check location 1');
+
                     Buildfire.geo.getCurrentPosition(
                         null,
                         function (err, position) {
                             if (err) {
-                                alert(err);
+
                                 console.error(err);
                             }
                             else {
-                                alert(position.coords.longitude);
+
                                 $scope.$apply(function () {
-                                    alert(position.coords.longitude);
+
                                     console.log('position>>>>>.', position);
                                     //WidgetSections.sortOnClosest = true;// will be true if user allows location
                                     WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
