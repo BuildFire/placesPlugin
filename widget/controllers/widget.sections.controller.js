@@ -395,7 +395,8 @@
 
 
                 function getGeoLocation() {
-                    /* if (navigator.geolocation) {
+                     if (navigator.geolocation) {
+                         alert('came to check geo location ');
                      navigator.geolocation.getCurrentPosition(function (position) {
                      $scope.$apply(function () {
                      //WidgetSections.sortOnClosest = true;// will be true if user allows location
@@ -405,10 +406,10 @@
                      }, function (error) {
                      console.error('Error while getting location', error);
                      });
-                     }*/
+                     }
                     // else - in this case, default coords will be used
 
-                    alert('came to check location 1');
+                    /*alert('came to check location 1');
                     Buildfire.geo.getCurrentPosition(
                         null,
                         function (err, position) {
@@ -427,7 +428,7 @@
                                 });
                             }
                         }
-                    );
+                    );*/
                 }
 
                 /// load items
