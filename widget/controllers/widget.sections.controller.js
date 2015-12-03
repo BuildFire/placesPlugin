@@ -395,7 +395,7 @@
 
 
                 function getGeoLocation() {
-                    alert('came to check geo location ');
+                    /*alert('came to check geo location ');
                      if (navigator.geolocation) {
 
                      navigator.geolocation.getCurrentPosition(function (position) {
@@ -407,10 +407,10 @@
                      }, function (error) {
                      console.error('Error while getting location', error);
                      });
-                     }
+                     }*/
                     // else - in this case, default coords will be used
 
-                    /*alert('came to check location 1');
+                    alert('came to check location 1');
                     Buildfire.geo.getCurrentPosition(
                         null,
                         function (err, position) {
@@ -429,7 +429,7 @@
                                 });
                             }
                         }
-                    );*/
+                    );
                 }
 
                 /// load items
