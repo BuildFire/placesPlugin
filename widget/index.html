@@ -54,9 +54,12 @@
 </body>
 <script>
     function manuallyTransitionAnimation(){
-        $('.slide').hide('slide', {direction: 'left'}, 375);
-        //$('.slide').hide();
-        setTimeout(function(){$('.slide').show('slide', {direction: 'right'}, 375);},750);
+        // applied css transitions (jquery slide flickers on iphone)
+        $(".slide").css("transform","translateX(-" + $(window).width() + "px)");
+        setTimeout(function(){$('.slide').css("transform","translateX(0px)");},300);
+
+       /* $('.slide').hide('slide', {direction: 'left'}, 375);
+        setTimeout(function(){$('.slide').show('slide', {direction: 'right'}, 375);},750);*/
     }
 </script>
 </html>
