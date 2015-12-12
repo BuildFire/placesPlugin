@@ -165,3 +165,7 @@ style for sec list dark overlay
 .height-hundred-pc{
     height:100% !important;
 }
+
+.notransition {
+    transform: none !important;
+}
