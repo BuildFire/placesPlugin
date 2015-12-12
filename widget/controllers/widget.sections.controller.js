@@ -27,10 +27,10 @@
                 else {
                     WidgetSections.selectedSections = [];
 
-                    if ($routeParams.sectionId == 'allitems'){
+                    if ($routeParams.sectionId == 'allitems') {
                         $timeout(function () {
                             $('#allItemsOption').click();
-                        },500);
+                        }, 500);
 
                     }
                 }
@@ -395,39 +395,41 @@
 
 
                 function getGeoLocation() {
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(function (position) {
-                            $scope.$apply(function () {
-                                //WidgetSections.sortOnClosest = true;// will be true if user allows location
-                                WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
-                                localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
-                            });
-                        }, function (error) {
-                            console.error('Error while getting location', error);
-                        });
-                    }
-                    // else - in this case, default coords will be used
+                    /*alert('came to check geo location ');
+                     if (navigator.geolocation) {
 
-                    /*  alert('came to check location 1');
-                     Buildfire.geo.getCurrentPosition(
-                     {enableHighAccuracy:true,timeout:99999,maximumAge:99999},
-                     function (err, position) {
-                     if (err) {
-                     alert(err);
-                     console.error(err);
-                     }
-                     else {
-                     alert(position.coords.longitude);
+                     navigator.geolocation.getCurrentPosition(function (position) {
                      $scope.$apply(function () {
-                     alert(position.coords.longitude);
-                     console.log('position>>>>>.', position);
                      //WidgetSections.sortOnClosest = true;// will be true if user allows location
                      WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
                      localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
                      });
-                     }
-                     }
-                     );*/
+                     }, function (error) {
+                     console.error('Error while getting location', error);
+                     });
+                     }*/
+                    // else - in this case, default coords will be used
+
+
+                    Buildfire.geo.getCurrentPosition(
+                        null,
+                        function (err, position) {
+                            if (err) {
+
+                                console.error(err);
+                            }
+                            else {
+
+                                $scope.$apply(function () {
+
+                                    console.log('position>>>>>.', position);
+                                    //WidgetSections.sortOnClosest = true;// will be true if user allows location
+                                    WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
+                                    localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
+                                });
+                            }
+                        }
+                    );
                 }
 
                 /// load items
@@ -665,7 +667,6 @@
                 if ($routeParams.sectionId) { // this case means the controller is serving the section view
 
 
-
                     /*  if ($routeParams.sectionId == 'allitems') {
                      WidgetSections.selectedSections = [];
                      }
@@ -695,7 +696,6 @@
                     });
 
 
-
                     //syn with control side
 
                     Messaging.sendMessageToControl({
@@ -708,9 +708,10 @@
                 }
 
                 var offCallMeFn = $rootScope.$on(EVENTS.ROUTE_CHANGE_1, function (e, data) {
-
                     console.log('>>>>>>>>>>>>>>', data);
+                    manuallyTransitionAnimation();
                     if (data) {
+
                         if (data.toString() === 'allitems') {
                             $('#allItemsOption').click();
                         }

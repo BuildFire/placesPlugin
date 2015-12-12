@@ -19,7 +19,7 @@
                     <div ng-if="WidgetSections.placesInfo.data.content.showAllItems"
                          class="plugin-banner has-info-bar clearfix "
                          style="min-height: 10px">
-                        <a ng-click="WidgetSections.showSections = false;$('#allItemsOption').click()">
+                        <a onclick="manuallyTransitionAnimation()" ng-click="WidgetSections.showSections = false;$('#allItemsOption').click()">
                             <div class="plugin-slide text-center">
                                 <img ng-if="WidgetSections.placesInfo.data.content.allItemImage"
                                      ng-src="{{WidgetSections.placesInfo.data.content.allItemImage | cropImage:WidgetSections.deviceWidth:192}}">
@@ -37,7 +37,7 @@
                     </div>
                     <div ng-repeat="item in WidgetSections.sections | unique: 'id'" class="plugin-banner has-info-bar clearfix"
                          style="min-height: 10px">
-                        <a ng-click="WidgetSections.selectedSections = [item.id];WidgetSections.showSections = false;">
+                        <a onclick="manuallyTransitionAnimation()" ng-click="WidgetSections.selectedSections = [item.id];WidgetSections.showSections = false;">
                             <div class="plugin-slide text-center">
                                 <img ng-if="item.data.mainImage" ng-src="{{item.data.mainImage | cropImage:WidgetSections.deviceWidth:192}}">
                                 <img ng-if="!item.data.mainImage" src="assets/images/16x9.png">

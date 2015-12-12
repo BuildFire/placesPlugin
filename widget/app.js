@@ -206,8 +206,7 @@
                                     //Location.goToHome();
                                     break;
                                 case PATHS.SECTION:
-                                    if(window.location.href.indexOf('/item/') == -1)
-                                    {
+                                    if (window.location.href.indexOf('/item/') == -1) {
                                         $rootScope.$broadcast(EVENTS.ROUTE_CHANGE_1, secId);
                                         return;
                                     }
@@ -240,12 +239,6 @@
                 console.log(path);
                 if (path.indexOf('/items/') == 0) {
                     Location.goToHome();
-                    /*     Messaging.sendMessageToControl({
-                     name: EVENTS.ROUTE_CHANGE,
-                     message: {
-                     path: PATHS.HOME
-                     }
-                     });*/
                 }
                 else if (path.indexOf('/item/') == 0) {
                     //Location.goToHome()
@@ -254,8 +247,10 @@
                 else {
                     if ($('.section-filter.whiteTheme').length == 0) // this means filter is applied
                         buildfire.navigation.navigateHome();
-                    else
+                    else {
+                       manuallyTransitionAnimation();
                         $rootScope.$broadcast(EVENTS.ROUTE_CHANGE_1, null);
+                    }
                 }
             }
         }]);

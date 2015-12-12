@@ -1,4 +1,4 @@
-describe('Unit : Controller - WidgetSectionsCtrl', function () {
+xdescribe('Unit : Controller - WidgetSectionsCtrl', function () {
 
 // load the controller's module
     beforeEach(module('placesWidget'));

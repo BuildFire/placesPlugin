@@ -195,10 +195,7 @@
             }
 
             var offCallMeFn = $rootScope.$on(EVENTS.ROUTE_CHANGE_1, function (e, data) {
-
-                    Location.goToHome();
-
-
+                Location.goToHome();
                 $scope.$apply();
             });
 
