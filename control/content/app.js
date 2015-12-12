@@ -226,7 +226,7 @@
                             var PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
                                 , deferred = $q.defer()
                                 , success = function (result) {
-                                    if (Object.keys(result.data).length > 0) {
+                                    if (result && Object.keys(result.data).length > 0) {
                                         deferred.resolve(result);
                                     }
                                     else {

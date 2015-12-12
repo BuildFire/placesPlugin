@@ -41,7 +41,7 @@
                             var PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
                                 , deferred = $q.defer()
                                 , success = function (result) {
-                                    if (Object.keys(result.data).length > 0) {
+                                    if (result && Object.keys(result.data).length > 0) {
                                         deferred.resolve(result);
                                     }
                                     else {
@@ -89,7 +89,7 @@
                             var PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
                                 , deferred = $q.defer()
                                 , success = function (result) {
-                                    if (Object.keys(result.data).length > 0) {
+                                    if (result && Object.keys(result.data).length > 0) {
                                         deferred.resolve(result);
                                     }
                                     else {
@@ -106,7 +106,7 @@
                             var Items = new DB(COLLECTIONS.Items)
                                 , deferred = $q.defer()
                                 , success = function (result) {
-                                    if (Object.keys(result.data).length > 0) {
+                                    if (result && Object.keys(result.data).length > 0) {
                                         deferred.resolve(result);
                                     }
                                     else {
@@ -130,7 +130,7 @@
                             var PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
                                 , deferred = $q.defer()
                                 , success = function (result) {
-                                    if (Object.keys(result.data).length > 0) {
+                                    if (result && Object.keys(result.data).length > 0) {
                                         deferred.resolve(result);
                                     }
                                     else {
