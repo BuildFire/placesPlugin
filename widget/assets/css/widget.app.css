@@ -166,6 +166,12 @@ style for sec list dark overlay
     height:100% !important;
 }
 
-.notransition {
+.slide.infinite-scroll-parent {
     transform: none !important;
+    -webkit-transform: none !important;
+}
+
+.slide.infinite-scroll-parent.ng-enter,.slide.infinite-scroll-parent.ng-enter-active {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
 }
