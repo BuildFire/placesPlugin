@@ -175,3 +175,6 @@ style for sec list dark overlay
     -webkit-transform: translateX(0);
     transform: translateX(0);
 }
+.padding-five{
+    padding: 5px !important;
+}
