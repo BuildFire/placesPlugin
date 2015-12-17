@@ -1,7 +1,7 @@
 /**
  * Create self executing funton to avoid global scope creation
  */
-(function (angular, tinymce) {
+(function (angular, tinymce,buildfire) {
     'use strict';
     angular
         .module('placesContent')
@@ -12,6 +12,10 @@
             function ($scope, $routeParams, Buildfire, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo, sectionInfo, DEFAULT_DATA) {
                 //Show the INT header part.
                 Buildfire.appearance.setHeaderVisibility(true);
+
+
+               //Scroll current view to top when page loaded.
+               buildfire.navigation.scrollTop();
                 /**
                  * Create instance of Sections and Items db collection
                  * @type {DB}
@@ -305,4 +309,4 @@
                 }, saveInfoDataWithDelay, true);
 
             }]);
-})(window.angular, window.tinymce);
+})(window.angular, window.tinymce, window.buildfire);

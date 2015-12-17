@@ -1,4 +1,4 @@
-(function (angular) {
+(function (angular,buildfire) {
     'use strict';
     angular
         .module('placesContent')
@@ -7,6 +7,10 @@
 
                 //Show the INT header part.
                 Buildfire.appearance.setHeaderVisibility(true);
+
+                //Scroll current view to top when page loaded.
+                buildfire.navigation.scrollTop();
+
                 var header = {
                         secTitle: 'Section Title',
                         mainImage: 'Section Image',
@@ -618,4 +622,4 @@
                 }, saveDataWithDelay, true);
 
             }]);
-})(window.angular, undefined);
+})(window.angular, window.buildfire);
