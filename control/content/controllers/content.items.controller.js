@@ -170,6 +170,7 @@
 
 
                 ContentItems.deepLinkUrl = function (url) {
+                  buildfire.navigation.scrollTop();
                     Modals.DeeplinkPopupModal(url);
                 };
 
@@ -230,6 +231,8 @@
                     }
                     var item = ContentItems.items[index];
                     if ("undefined" !== typeof item) {
+                        buildfire.navigation.scrollTop();
+
                         Modals.removePopupModal({title: ''}).then(function (result) {
                             if (result) {
                                 Items.delete(item.id).then(function (data) {
@@ -273,6 +276,7 @@
 
                 ContentItems.editSections = function (ind) {
                     Sections.find({}).then(function (data) {
+                      buildfire.navigation.scrollTop();
                         Modals.editSectionModal(data, ContentItems.items[ind]).then(function (result) {
                             Items.update(result.id, result.data).then(function () {
                                 _skip = 0;

@@ -67,6 +67,7 @@
                 ContentSections.sortOptions = Orders.options;
 
                 ContentSections.deepLinkUrl = function (url) {
+                  buildfire.navigation.scrollTop();
                     Modals.DeeplinkPopupModal(url);
                 };
 
@@ -502,7 +503,9 @@
                     var item = ContentSections.sections[_index];
 
                     if ("undefined" !== typeof item) {
-                        Modals.removePopupModal({title: ''}).then(function (result) {
+                      buildfire.navigation.scrollTop();
+
+                      Modals.removePopupModal({title: ''}).then(function (result) {
                             if (result) {
                                 Sections.delete(item.id).then(function (data) {
                                     ContentSections.sections.splice(_index, 1);
@@ -602,6 +605,7 @@
                 };
 
                 ContentSections.selectAllItemImage = function () {
+                  buildfire.navigation.scrollTop();
                     Modals.selectAllItemImageModal(ContentSections.info).then(function (data) {
                         console.log('Select Image Popup----Success----------', data);
                         ContentSections.info = data;
