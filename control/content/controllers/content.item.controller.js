@@ -1,7 +1,7 @@
 /**
  * Create self executing function to avoid global scope creation
  */
-(function (angular, tinymce) {
+(function (angular, tinymce,buildfire) {
     'use strict';
     angular
         .module('placesContent')
@@ -10,6 +10,9 @@
 
                 //Hide the INT header part.
                 Buildfire.appearance.setHeaderVisibility(false);
+
+                //Scroll current view to top when page loaded.
+                buildfire.navigation.scrollTop();
 
                 var tmrDelayForItem = null
                     , Items = new DB(COLLECTIONS.Items)
@@ -320,4 +323,4 @@
                     return ContentItem.item;
                 }, updateItemsWithDelay, true);
             }]);
-})(window.angular, window.tinymce);
+})(window.angular, window.tinymce,window.buildfire);

@@ -1,4 +1,4 @@
-(function (angular) {
+(function (angular,buildfire) {
     'use strict';
     angular
         .module('placesContent')
@@ -7,6 +7,10 @@
 
                 //Show the INT header part.
                 Buildfire.appearance.setHeaderVisibility(true);
+
+                //Scroll current view to top when page loaded.
+                buildfire.navigation.scrollTop();
+
                 var header = {
                         secTitle: 'Section Title',
                         mainImage: 'Section Image',
@@ -63,6 +67,7 @@
                 ContentSections.sortOptions = Orders.options;
 
                 ContentSections.deepLinkUrl = function (url) {
+                  buildfire.navigation.scrollTop();
                     Modals.DeeplinkPopupModal(url);
                 };
 
@@ -327,6 +332,7 @@
                  * method to open the importCSV Dialog
                  */
                 ContentSections.openImportCSVDialog = function () {
+                    buildfire.navigation.scrollTop();
                     $csv.import(headerRow).then(function (rows) {
                         console.log('Rows in Import CSV---------------------', rows);
                         //ContentSections.loading = true;
@@ -454,7 +460,7 @@
                         }
                     }, function (error) {
                         //ContentHome.loading = false;
-                        $scope.apply();
+                        $scope.$apply();
                         //do something on cancel
                     });
                 };
@@ -498,7 +504,9 @@
                     var item = ContentSections.sections[_index];
 
                     if ("undefined" !== typeof item) {
-                        Modals.removePopupModal({title: ''}).then(function (result) {
+                      buildfire.navigation.scrollTop();
+
+                      Modals.removePopupModal({title: ''}).then(function (result) {
                             if (result) {
                                 Sections.delete(item.id).then(function (data) {
                                     ContentSections.sections.splice(_index, 1);
@@ -598,6 +606,7 @@
                 };
 
                 ContentSections.selectAllItemImage = function () {
+                  buildfire.navigation.scrollTop();
                     Modals.selectAllItemImageModal(ContentSections.info).then(function (data) {
                         console.log('Select Image Popup----Success----------', data);
                         ContentSections.info = data;
@@ -618,4 +627,4 @@
                 }, saveDataWithDelay, true);
 
             }]);
-})(window.angular, undefined);
+})(window.angular, window.buildfire);

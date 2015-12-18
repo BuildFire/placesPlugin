@@ -1,7 +1,7 @@
 /**
  * Create self executing function to avoid global scope creation
  */
-(function (angular, tinymce) {
+(function (angular, tinymce,buildfire) {
     'use strict';
     angular.module('placesContent')
         .controller('ContentSectionCtrl', ['$scope', '$routeParams', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Location', 'placesInfo', 'sectionInfo', 'DEFAULT_DATA',
@@ -9,7 +9,10 @@
 
                 //Hide the INT header part.
                 Buildfire.appearance.setHeaderVisibility(false);
-                
+
+                //Scroll current view to top when page loaded.
+                buildfire.navigation.scrollTop();
+
                 /**
                  * ContentSection._Sections is an instance of Sections db collection
                  * @type {DB}
@@ -230,4 +233,4 @@
                     return ContentSection.section;
                 }, updateItemsWithDelay, true);
             }]);
-})(window.angular, window.tinymce);
+})(window.angular, window.tinymce, window.buildfire);

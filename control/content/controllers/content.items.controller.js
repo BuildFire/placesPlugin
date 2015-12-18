@@ -1,7 +1,7 @@
 /**
  * Create self executing funton to avoid global scope creation
  */
-(function (angular, tinymce) {
+(function (angular, tinymce,buildfire) {
     'use strict';
     angular
         .module('placesContent')
@@ -12,6 +12,10 @@
             function ($scope, $routeParams, Buildfire, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo, sectionInfo, DEFAULT_DATA) {
                 //Show the INT header part.
                 Buildfire.appearance.setHeaderVisibility(true);
+
+
+               //Scroll current view to top when page loaded.
+               buildfire.navigation.scrollTop();
                 /**
                  * Create instance of Sections and Items db collection
                  * @type {DB}
@@ -166,6 +170,7 @@
 
 
                 ContentItems.deepLinkUrl = function (url) {
+                  buildfire.navigation.scrollTop();
                     Modals.DeeplinkPopupModal(url);
                 };
 
@@ -226,6 +231,8 @@
                     }
                     var item = ContentItems.items[index];
                     if ("undefined" !== typeof item) {
+                        buildfire.navigation.scrollTop();
+
                         Modals.removePopupModal({title: ''}).then(function (result) {
                             if (result) {
                                 Items.delete(item.id).then(function (data) {
@@ -269,6 +276,7 @@
 
                 ContentItems.editSections = function (ind) {
                     Sections.find({}).then(function (data) {
+                      buildfire.navigation.scrollTop();
                         Modals.editSectionModal(data, ContentItems.items[ind]).then(function (result) {
                             Items.update(result.id, result.data).then(function () {
                                 _skip = 0;
@@ -305,4 +313,4 @@
                 }, saveInfoDataWithDelay, true);
 
             }]);
-})(window.angular, window.tinymce);
+})(window.angular, window.tinymce, window.buildfire);

@@ -18,10 +18,10 @@
         </div>
         <div class="border-top-grey border-bottom-grey clearfix" ng-if="WidgetItem.item.data.address.aName">
             <div class="col-xs-8 text-left pull-left padding-right-zero margin-top-ten padding-bottom-five">
-                <p class="text-primary ellipsis margin-zero"><a class="margin-bottom-zero text-primary">{{WidgetItem.item.data.addressTitle}}</a>
+                <p class="text-primary ellipsis margin-zero"><a ng-click="WidgetItem.openMap()" href="javaScript:void(0);" class="margin-bottom-zero text-primary">{{WidgetItem.item.data.addressTitle}}</a>
                 </p>
 
-                <p class="text-primary ellipsis margin-zero"><a class="margin-bottom-zero text-primary ellipsis">{{WidgetItem.item.data.address.aName}}</a>
+                <p class="text-primary ellipsis margin-zero"><a ng-click="WidgetItem.openMap()" href="javaScript:void(0);" class="margin-bottom-zero text-primary ellipsis">{{WidgetItem.item.data.address.aName}}</a>
                 </p>
             </div>
             <div ng-if="WidgetItem.itemData.currentCoordinates" show-window="false" details-google-map
@@ -35,11 +35,6 @@
         </div>
         <div class="padded padding-top-zero">
             <div class="dynamic-links" ng-repeat="link in WidgetItem.item.data.links">
-               <!-- <a ng-click="WidgetItem.executeAction(link)">
-                    <span ng-if="!link.iconUrl" class="icon icon-cog color-blue"></span>
-                    <span ng-if="link.iconUrl" class="icon"><img ng-src="{{link.iconUrl | cropImage:17:17}}"/></span>
-                    <span class="copy color-blue">{{link.title}}</span>
-                </a>-->
                 <p ng-click="WidgetItem.executeAction(link)">
                     <span ng-if="!link.iconUrl" class="icon icon-cog"></span>
                     <span ng-if="link.iconUrl" class="icon"><img ng-src="{{link.iconUrl | cropImage:17:17}}"/></span>
