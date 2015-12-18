@@ -332,6 +332,7 @@
                  * method to open the importCSV Dialog
                  */
                 ContentSections.openImportCSVDialog = function () {
+                    buildfire.navigation.scrollTop();
                     $csv.import(headerRow).then(function (rows) {
                         console.log('Rows in Import CSV---------------------', rows);
                         //ContentSections.loading = true;
@@ -459,7 +460,7 @@
                         }
                     }, function (error) {
                         //ContentHome.loading = false;
-                        $scope.apply();
+                        $scope.$apply();
                         //do something on cancel
                     });
                 };
