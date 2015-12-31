@@ -5,7 +5,7 @@ describe('Unit : Controller - WidgetItemCtrl', function () {
 
     var $q, $controller, scope, $window, DB, COLLECTIONS, Buildfire, $rootScope, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $routeParams, OrdersItems;
 
-    beforeEach(inject(function (_$q_, _$routeParams_, _$controller_, _$rootScope_, _Buildfire_, _DB_, _COLLECTIONS_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _Location_, _Orders_, _GeoDistance_, _$routeParams_, _$timeout_, _OrdersItems_) {
+    beforeEach(inject(function (_$q_, _$controller_, _$rootScope_, _Buildfire_, _DB_, _COLLECTIONS_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _Location_, _Orders_, _GeoDistance_, _$routeParams_, _$timeout_, _OrdersItems_) {
             scope = _$rootScope_.$new();
             DB = _DB_;
             $controller = _$controller_;
@@ -20,7 +20,7 @@ describe('Unit : Controller - WidgetItemCtrl', function () {
             AppConfig = _AppConfig_;
             $routeParams = _$routeParams_;
             GeoDistance = _GeoDistance_;
-            $rootScope:_$rootScope_;
+            $rootScope=_$rootScope_;
             Buildfire = {
                 components: {
                     carousel: {
@@ -32,12 +32,16 @@ describe('Unit : Controller - WidgetItemCtrl', function () {
                 },
                 datastore: {
                     onUpdate: {}
+                },
+                navigation :{
+
                 }
             };
             Location = _Location_;
             COLLECTIONS = _COLLECTIONS_;
             $rootScope = _$rootScope_;
             DB = _DB_;
+            Buildfire.navigation = jasmine.createSpyObj('Buildfire.navigation');
             Buildfire.components.carousel = jasmine.createSpyObj('Buildfire.components.carousel', ['view', '', '']);
             Buildfire.components.actionItems = jasmine.createSpyObj('Buildfire.components.actionItems', ['sortableList', '', '']);
             Buildfire.datastore = jasmine.createSpyObj('Buildfire.datastore', ['onUpdate', '', '']);
@@ -45,6 +49,13 @@ describe('Unit : Controller - WidgetItemCtrl', function () {
                 return {
                     loadItems: function () {
                         console.log("editor.loadItems hasbeen called");
+                    }
+                };
+            });
+            Buildfire.navigation.and.callFake(function () {
+                return {
+                    scrollTop: function () {
+                        console.log("scrollTop method  has been called");
                     }
                 };
             });

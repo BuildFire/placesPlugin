@@ -9,9 +9,11 @@
 </div>
 <script>
     function openInMap(lat, lng) {
-        if (window.buildfire.context.device && window.buildfire.context.device.platform == 'ios')
-            window.buildfire.navigation.openWindow('maps://maps.google.com/maps?daddr=' + lng + ',' + lat, '_system');
-        else
-            window.buildfire.navigation.openWindow('http://maps.google.com/maps?daddr=' + lng + ',' + lat, '_system');
+        window.buildfire.getContext(function(err,context){
+            if(context && context.device && context.device.platform=='ios')
+                window.buildfire.navigation.openWindow('maps://maps.google.com/maps?daddr='  + lat + ',' + lng);
+            else
+                window.buildfire.navigation.openWindow('http://maps.google.com/maps?daddr=' + lat + ',' + lng);
+        });
     }
 </script>

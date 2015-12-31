@@ -84,6 +84,14 @@
 
             }
 
+            var getContextCb=function(err,data){
+                console.log('error-------------',err,'data--------------',data);
+                if(data && data.device)
+                WidgetItem.device=data.device;
+            };
+
+            Buildfire.getContext(getContextCb);
+
 
             WidgetItem.executeAction = function (actionItem) {
                 Buildfire.actionItems.execute(actionItem);
@@ -152,12 +160,11 @@
 
             WidgetItem.openMap = function () {
                 if (WidgetItem.item && WidgetItem.item.data && WidgetItem.item.data.address)
-                    if (buildfire.context.device && buildfire.context.device.platform == 'ios')
-                        window.open('maps://maps.google.com/maps?daddr=' + WidgetItem.item.data.address.lng + ',' + WidgetItem.item.data.address.lat, '_system');
+                    if (WidgetItem.device && WidgetItem.device.platform == 'ios')
+                        Buildfire.navigation.openWindow('maps://maps.google.com/maps?daddr=' + WidgetItem.item.data.address.lat + ',' + WidgetItem.item.data.address.lng );
                     else
-                        window.open('http://maps.google.com/maps?daddr=' + WidgetItem.item.data.address.lng + ',' + WidgetItem.item.data.address.lat, '_system');
+                        Buildfire.navigation.openWindow('http://maps.google.com/maps?daddr='  + WidgetItem.item.data.address.lat + ',' + WidgetItem.item.data.address.lng );
             };
-
 
             // Show Body Content when it is not blank
             WidgetItem.showBodyContent = function () {
