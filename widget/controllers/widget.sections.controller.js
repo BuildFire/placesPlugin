@@ -645,12 +645,12 @@
                     }
                 });
 
-                WidgetSections.increaseMaxDis = function () {
+               /* WidgetSections.increaseMaxDis = function () {
                     $scope.distanceSlider.ceil = $scope.distanceSlider.ceil + 10;
                     console.log($scope.distanceSlider.max, "$scope.distanceSlider.max-------------------");
                     $scope.$digest();
                 };
-
+*/
                 WidgetSections.getSectionId = function (arr) {
                     if (arr.length)
                         return arr[0];

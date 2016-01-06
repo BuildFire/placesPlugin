@@ -1,4 +1,4 @@
-xdescribe('Unit : Controller - WidgetSectionsCtrl', function () {
+describe('Unit : Controller - WidgetSectionsCtrl', function () {
 
 // load the controller's module
     beforeEach(module('placesWidget'));
@@ -32,9 +32,9 @@ xdescribe('Unit : Controller - WidgetSectionsCtrl', function () {
                 PATHS: PATHS,
                 Location: Location,
                 AppConfig: AppConfig,
-                placesInfo: {data:{design:{},settings:{showDistanceIn : true},content:{sortBy:'Newest'}}},
+                placesInfo: {data: {design: {}, settings: {showDistanceIn: true}, content: {sortBy: 'Newest'}}},
                 DEFAULT_VIEWS: DEFAULT_VIEWS,
-                GeoDistance : GeoDistance
+                GeoDistance: GeoDistance
             });
         })
     )
@@ -54,23 +54,23 @@ xdescribe('Unit : Controller - WidgetSectionsCtrl', function () {
         });
 
         it('it should pass if WidgetSections.sortFilter returns true if WidgetSections.locationData.currentCoordinates is null', function () {
-            WidgetSections.locationData.currentCoordinates = [0,0];
+            WidgetSections.locationData.currentCoordinates = [0, 0];
             scope.distanceSlider.min = 100;
             scope.distanceSlider.max = 200;
-            var res = WidgetSections.sortFilter({data:{distanceText:'150 miles'}});
+            var res = WidgetSections.sortFilter({data: {distanceText: '150 miles'}});
             expect(res).toBeTruthy();
         });
 
         it('WidgetSections.itemsOrder should pass if it returns distance when WidgetSections.sortOnClosest is true', function () {
             WidgetSections.sortOnClosest = true;
-            var res = WidgetSections.itemsOrder({data:{distance:1}});
+            var res = WidgetSections.itemsOrder({data: {distance: 1}});
             expect(res).toEqual(1);
         });
 
         it('WidgetSections.itemsOrder should pass if it returns distance when WidgetSections.sortOnClosest is true', function () {
             WidgetSections.placesInfo.data.content.sortByItems = 'Oldest';
             WidgetSections.sortOnClosest = false;
-            var res = WidgetSections.itemsOrder({data:{dateCreated:'test date'}});
+            var res = WidgetSections.itemsOrder({data: {dateCreated: 'test date'}});
             expect(res).toEqual('test date');
         });
     });
@@ -95,21 +95,21 @@ xdescribe('Unit : Controller - WidgetSectionsCtrl', function () {
 
         it('should pass if it sets WidgetSections.showSections to false', function () {
             WidgetSections.showSections = true;
-            WidgetSections.sections = [{id:1}];
+            WidgetSections.sections = [{id: 1}];
             WidgetSections.toggleSectionSelection(0);
             expect(WidgetSections.showSections).toBeFalsy();
         });
 
         it('should pass if it adds to WidgetSections.selectedSections if the section was not selected', function () {
             WidgetSections.selectedSections = [];
-            WidgetSections.sections = [{id:1}];
+            WidgetSections.sections = [{id: 1}];
             WidgetSections.toggleSectionSelection(0);
             expect(WidgetSections.selectedSections.length).toEqual(1);
         });
 
         it('should pass if it removes from WidgetSections.selectedSections if the section was selected', function () {
             WidgetSections.selectedSections = [1];
-            WidgetSections.sections = [{id:1}];
+            WidgetSections.sections = [{id: 1}];
             WidgetSections.toggleSectionSelection(0);
             expect(WidgetSections.selectedSections.length).toEqual(0);
         });
@@ -141,6 +141,46 @@ xdescribe('Unit : Controller - WidgetSectionsCtrl', function () {
         });
 
 
+    });
+
+    describe('WidgetSections.getSectionId', function () {
+
+        it('should pass if it returns allitems when the passed array is empty', function () {
+            var result = WidgetSections.getSectionId([]);
+            expect(result).toEqual('allitems');
+        });
+
+        it('should pass if it returns first element when the passed array is not empty', function () {
+            var result = WidgetSections.getSectionId([1, 2]);
+            expect(result).toEqual(1);
+        });
+
+
+    });
+
+    describe('WidgetSections.showDescription', function () {
+
+        it('should pass if it returns true when description is not the default html', function () {
+            WidgetSections.placesInfo.data.content.descriptionHTML = 'a';
+            var result = WidgetSections.showDescription();
+            expect(result).toEqual(true);
+        });
+
+        it('should pass if it returns true when description is not the default html', function () {
+            WidgetSections.placesInfo.data.content.descriptionHTML = '<p>&nbsp;<br></p>';
+            var result = WidgetSections.showDescription();
+            expect(result).not.toEqual(true);
+        });
+    });
+
+
+    xdescribe('WidgetSections.loadMoreItems', function () {
+
+        it('should pass if it does nothing when all items have been loaded', function () {
+            WidgetSections.isBusyItems = false;
+            WidgetSections.loadMoreItems();
+
+        });
     });
 
     //xdescribe('WidgetSections.selectedMarker', function () {
