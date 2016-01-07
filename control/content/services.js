@@ -301,6 +301,30 @@
                         deferred.resolve(null);
                     }
                     return deferred.promise;
+                },
+                getCoordinatesFromAddress: function (address) {
+                    var deferred = $q.defer();
+
+                    if (address) {
+                        $http.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + GOOGLE_KEYS.API_KEY)
+                            .then(function (response) {
+                                // this callback will be called asynchronously
+                                // when the response is available
+                                if (response.data && response.data.results && response.data.results.length) {
+                                    deferred.resolve(response);
+                                } else {
+                                    deferred.resolve(true);
+                                }
+                            }, function (error) {
+                                // called asynchronously if an error occurs
+                                // or server returns response with an error status.
+                                deferred.reject(error);
+                            });
+                    }
+                    else {
+                        deferred.resolve(null);
+                    }
+                    return deferred.promise;
                 }
             }
         }]);
