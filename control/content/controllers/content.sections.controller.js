@@ -340,7 +340,7 @@
                             itemArray = [],
                             itemSecMap = [];
                         var addItem = function (row, data) {
-
+                            row.images = row.images.replace(/ /g, '');
                             if (row.images) {
                                 if (row.images.indexOf(',') < 0) {
                                     row.images = [{
@@ -352,7 +352,7 @@
                                 else {
                                     var tempImages = row.images.split(',');
                                     row.images = [];
-                                    angular.forEach(tempImages, function(itr) {
+                                    angular.forEach(tempImages, function (itr) {
                                         row.images.push({
                                             action: "noAction",
                                             iconUrl: itr,
