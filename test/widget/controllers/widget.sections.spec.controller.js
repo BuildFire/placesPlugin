@@ -14,7 +14,7 @@ describe('Unit : Controller - WidgetSectionsCtrl', function () {
         }
     };
 
-    beforeEach(inject(function (_$q_, _$routeParams_, $controller, _$rootScope_, _DB_, _COLLECTIONS_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _Location_, _Orders_, _DEFAULT_VIEWS_, _GeoDistance_, _$routeParams_, _$timeout_, _OrdersItems_) {
+    beforeEach(inject(function (_$q_, $controller, _$rootScope_, _DB_, _COLLECTIONS_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _Location_, _Orders_, _DEFAULT_VIEWS_, _GeoDistance_, _$routeParams_, _$timeout_, _OrdersItems_) {
             scope = _$rootScope_.$new();
             DB = _DB_;
             COLLECTIONS = _COLLECTIONS_;
@@ -31,7 +31,7 @@ describe('Unit : Controller - WidgetSectionsCtrl', function () {
             GeoDistance = _GeoDistance_;
             WidgetSections = $controller('WidgetSectionsCtrl', {
                 $scope: scope,
-                $routeParams: $routeParams,
+                $routeParams: {sectionId:'sectio1'},
                 DB: DB,
                 COLLECTIONS: COLLECTIONS,
                 Orders: Orders,
@@ -44,10 +44,10 @@ describe('Unit : Controller - WidgetSectionsCtrl', function () {
                 placesInfo: {data: {design: {}, settings: {showDistanceIn: true}, content: {sortBy: 'Newest'}}},
                 DEFAULT_VIEWS: DEFAULT_VIEWS,
                 GeoDistance: {
-                    getDistance: function () {
+                    getDistance: function (items,distanceIn) {
                         console.log('acv');
                         var deferred = $q.defer();
-                        deferred.reject({rows: [{elements: [{distance: {text: 'test'}}]}]});
+                        deferred.resolve(items);
                         return deferred.promise;
                     }
                 },
@@ -156,13 +156,12 @@ describe('Unit : Controller - WidgetSectionsCtrl', function () {
                 deferred.resolve({});
                 return deferred.promise;
             });
-
         }));
 
         xit('should pass if it calls GeoDistance.getDistance', function () {
             WidgetSections.locationData.items = [{}];
             WidgetSections.selectedMarker(0);
-            expect(spy).toHaveBeenCalled();
+            expect(spy.getDistance).toHaveBeenCalled();
         });
 
         it('should pass if it nullifies WidgetSections.selectedItemDistance if the response from service is empty', function () {
@@ -205,7 +204,7 @@ describe('Unit : Controller - WidgetSectionsCtrl', function () {
     });
 
 
-    xdescribe('WidgetSections.loadMoreItems', function () {
+    describe('WidgetSections.loadMoreItems', function () {
 
         it('should pass if it does nothing when all items have been loaded', function () {
             WidgetSections.isBusyItems = false;
@@ -222,7 +221,7 @@ describe('Unit : Controller - WidgetSectionsCtrl', function () {
         });
     });
 
-    xdescribe('WidgetSections.selectedMarker', function () {
+    describe('WidgetSections.selectedMarker', function () {
         /*
          var spy;
          beforeEach(inject(function () {
@@ -239,7 +238,7 @@ describe('Unit : Controller - WidgetSectionsCtrl', function () {
             WidgetSections.locationData.items = [{}];
             WidgetSections.selectedMarker(0);
             console.log(WidgetSections.selectedItemDistance);
-            expect(WidgetSections.selectedItemDistance).toEqual('test');
+            expect(WidgetSections.selectedItemDistance).toEqual(null);
         });
     });
 
@@ -287,6 +286,75 @@ describe('Unit : Controller - WidgetSectionsCtrl', function () {
             WidgetSections.openInMap();
             expect(window.open).toHaveBeenCalledWith('http://maps.google.com/maps?daddr=1,1');
         });
+        it('should pass if it calls with http address in case of Zero ', function () {
+            WidgetSections.deviceWidth = 0;
+        });
     });
 
+});
+describe('Unit : Controller - WidgetSectionsCtrl Null Case', function () {
+
+// load the controller's module
+    beforeEach(module('placesWidget'));
+
+    var $q, WidgetSections, scope, $window, DB, COLLECTIONS, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $routeParams, $timeout, placesInfo, OrdersItems;
+    var bf = {
+        geo: {
+            getCurrentPosition: jasmine.createSpy()
+        },
+        datastore: {
+            onUpdate: function () {
+            }
+        }
+    };
+
+    beforeEach(inject(function (_$q_, $controller, _$rootScope_, _DB_, _COLLECTIONS_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _Location_, _Orders_, _DEFAULT_VIEWS_, _GeoDistance_, _$routeParams_, _$timeout_, _OrdersItems_) {
+            scope = _$rootScope_.$new();
+            DB = _DB_;
+            COLLECTIONS = _COLLECTIONS_;
+            Orders = _Orders_;
+            OrdersItems = _OrdersItems_;
+            Messaging = _Messaging_;
+            EVENTS = _EVENTS_;
+            PATHS = _PATHS_;
+            Location = _Location_;
+            $q = _$q_;
+            AppConfig = _AppConfig_;
+            $routeParams = _$routeParams_;
+            DEFAULT_VIEWS = _DEFAULT_VIEWS_;
+            GeoDistance = _GeoDistance_;
+            WidgetSections = $controller('WidgetSectionsCtrl', {
+                $scope: scope,
+                $routeParams: {sectionId:'allitems'},
+                DB: DB,
+                COLLECTIONS: COLLECTIONS,
+                Orders: Orders,
+                OrdersItems: OrdersItems,
+                Messaging: Messaging,
+                EVENTS: EVENTS,
+                PATHS: PATHS,
+                Location: Location,
+                AppConfig: AppConfig,
+                placesInfo: null,
+                DEFAULT_VIEWS: DEFAULT_VIEWS,
+                GeoDistance: {
+                    getDistance: function () {
+                        console.log('acv');
+                        var deferred = $q.defer();
+                        deferred.reject({rows: [{elements: [{distance: {text: 'test'}}]}]});
+                        return deferred.promise;
+                    }
+                },
+                Buildfire: bf
+            });
+
+        })
+    )
+    ;
+
+    describe('Units: units should be Defined', function () {
+        it('it should pass if WidgetSections is defined', function () {
+            expect(WidgetSections).not.toBeUndefined();
+        });
+    });
 });
