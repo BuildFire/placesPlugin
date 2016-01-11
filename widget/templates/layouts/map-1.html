@@ -3,7 +3,7 @@
         <div class="item-info clearfix background-white" ng-if="WidgetSections.selectedItem">
             <div class="col-xs-9 pull-left padding-left-zero">
                 <div class="pull-left">
-                    <img default-image class="map-1-image-fix" ng-src="{{WidgetSections.selectedItem.data.listImage}}">
+                    <img default-image ng-src="{{WidgetSections.selectedItem.data.listImage | cropImage : 80:60 }}">
                 </div>
                 <div class="copy stretch pull-left">
                     <p class="margin-bottom-zero ellipsis margin-top-ten text-primary"><a ng-href="#/item/{{WidgetSections.selectedItem.data.sections[0]}}/{{WidgetSections.selectedItem.id}}" class="ellipsis text-primary">{{WidgetSections.selectedItem.data.itemTitle}}</a></p>
