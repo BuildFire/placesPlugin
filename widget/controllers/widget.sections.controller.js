@@ -297,7 +297,7 @@
                             WidgetSections.selectedItem = null;
                             WidgetSections.selectedItemDistance = null;
                             WidgetSections.currentView = WidgetSections.placesInfo.data.settings.defaultView;
-                            $scope.$apply();
+                            if (!$scope.$$phase)$scope.$digest();
                             refreshSections();
 
 
@@ -332,7 +332,7 @@
                             }
                             WidgetSections.selectedItem = null;
                             WidgetSections.selectedItemDistance = null;
-                            $scope.$apply();
+                            if (!$scope.$$phase)$scope.$digest();
                         }
                     }
                     else {
@@ -471,7 +471,7 @@
                     WidgetSections.sections = [];
                     WidgetSections.noMoreSections = false;
                     WidgetSections.loadMoreSections();
-                    $scope.$apply();
+                    if (!$scope.$$phase)$scope.$digest();
                 }
 
                 function filterChanged() {
@@ -720,15 +720,14 @@
                             WidgetSections.selectedSections = [data.toString()];
                         }
                         WidgetSections.showSections = false;
-                        $scope.$apply();
+                        if (!$scope.$$phase)$scope.$digest();
                     }
                     else {
                         WidgetSections.selectedSections = [];
                         WidgetSections.showSections = true;
                     }
                     console.log('<<<<<<<<<<<<<<', WidgetSections.selectedSections);
-
-                    $scope.$apply();
+                    if (!$scope.$$phase)$scope.$digest();
                 });
 
                 /**

@@ -134,7 +134,8 @@
                             console.error('Error:', error);
                         } else {
                             SelectImagePopup.PlaceInfo.data.content.allItemImage = result.selectedFiles && result.selectedFiles[0] || null;
-                            $scope.$digest();
+
+                            if (!$scope.$$phase)$scope.$digest();
                         }
                     };
                 Buildfire.imageLib.showDialog(options, callback);

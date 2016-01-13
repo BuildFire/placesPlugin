@@ -80,24 +80,24 @@
                     if (!ContentItem.item.data.images)
                         ContentItem.item.data.images = [];
                     ContentItem.item.data.images.push.apply(ContentItem.item.data.images, items);
-                    $scope.$digest();
+                    if (!$scope.$$phase)$scope.$digest();
                 };
                 // this method will be called when an item deleted from the list
                 ContentItem.editor.onDeleteItem = function (item, index) {
                     ContentItem.item.data.images.splice(index, 1);
-                    $scope.$digest();
+                    if (!$scope.$$phase)$scope.$digest();
                 };
                 // this method will be called when you edit item details
                 ContentItem.editor.onItemChange = function (item, index) {
                     ContentItem.item.data.images.splice(index, 1, item);
-                    $scope.$digest();
+                    if (!$scope.$$phase)$scope.$digest();
                 };
                 // this method will be called when you change the order of items
                 ContentItem.editor.onOrderChange = function (item, oldIndex, newIndex) {
                     var temp = ContentItem.item.data.images[oldIndex];
                     ContentItem.item.data.images[oldIndex] = ContentItem.item.data.images[newIndex];
                     ContentItem.item.data.images[newIndex] = temp;
-                    $scope.$digest();
+                    if (!$scope.$$phase)$scope.$digest();
                 };
                 // create a new instance of the buildfire action Items
                 ContentItem.linkEditor = new Buildfire.components.actionItems.sortableList("#actionItems");
@@ -106,24 +106,24 @@
                     if (!ContentItem.item.data.links)
                         ContentItem.item.data.links = [];
                     ContentItem.item.data.links.push(items);
-                    $scope.$digest();
+                    if (!$scope.$$phase)$scope.$digest();
                 };
                 // this method will be called when an item deleted from the list
                 ContentItem.linkEditor.onDeleteItem = function (item, index) {
                     ContentItem.item.data.links.splice(index, 1);
-                    $scope.$digest();
+                    if (!$scope.$$phase)$scope.$digest();
                 };
                 // this method will be called when you edit item details
                 ContentItem.linkEditor.onItemChange = function (item, index) {
                     ContentItem.item.data.links.splice(index, 1, item);
-                    $scope.$digest();
+                    if (!$scope.$$phase)$scope.$digest();
                 };
                 // this method will be called when you change the order of items
                 ContentItem.linkEditor.onOrderChange = function (item, oldIndex, newIndex) {
                     var temp = ContentItem.item.data.links[oldIndex];
                     ContentItem.item.data.links[oldIndex] = ContentItem.item.data.links[newIndex];
                     ContentItem.item.data.links[newIndex] = temp;
-                    $scope.$digest();
+                    if (!$scope.$$phase)$scope.$digest();
                 };
 
                 /**
@@ -228,7 +228,7 @@
                                 console.error('Error:', error);
                             } else {
                                 ContentItem.item.data.listImage = result.selectedFiles && result.selectedFiles[0] || null;
-                                $scope.$digest();
+                                if (!$scope.$$phase)$scope.$digest();
                             }
                         };
                     Buildfire.imageLib.showDialog(options, listImgCB);
@@ -255,7 +255,7 @@
                     };
                     ContentItem.currentAddress = data.location;
                     ContentItem.currentCoordinates = data.coordinates;
-                    $scope.$digest();
+                    if (!$scope.$$phase)$scope.$digest();
                 };
                 ContentItem.setDraggedLocation = function (data) {
                     ContentItem.item.data.address = {
@@ -265,7 +265,7 @@
                     };
                     ContentItem.currentAddress = data.location;
                     ContentItem.currentCoordinates = data.coordinates;
-                    $scope.$digest();
+                    if (!$scope.$$phase)$scope.$digest();
                 };
                 ContentItem.setCoordinates = function () {
                     function successCallback(resp) {
