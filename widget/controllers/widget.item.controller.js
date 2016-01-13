@@ -147,13 +147,13 @@
                         }
                         if (event.data.images)
                             initCarousel(event.data.images);
-                        $scope.$digest();
+                        if (!$scope.$$phase)$scope.$digest();
                     }
                     else if (event.tag == 'placeInfo' && event.data) {
                         if (event.data.settings)
                             calDistance(WidgetItem.locationData.currentCoordinates, [WidgetItem.item], event.data.settings.showDistanceIn);
                         WidgetItem.placeInfo = event;
-                        $scope.$digest();
+                        if (!$scope.$$phase)$scope.$digest();
                     }
                 }
             );
@@ -203,7 +203,7 @@
 
             var offCallMeFn = $rootScope.$on(EVENTS.ROUTE_CHANGE_1, function (e, data) {
                 Location.goToHome();
-                $scope.$apply();
+                if (!$scope.$$phase)$scope.$digest();
             });
 
             /**
