@@ -170,7 +170,8 @@ describe('Unit : placesContent content.item.controller.js', function () {
                 $rootScope.$digest();
                 expect(ContentItem.currentAddress).toEqual('noida');
             });
-        });describe('Function : ContentItem.setLocation ', function () {
+        });
+       describe('Function : ContentItem.setLocation ', function () {
             it('ContentItem.removeListImage should be called', function () {
                 var data = {
                     coordinates:['28','29'],
