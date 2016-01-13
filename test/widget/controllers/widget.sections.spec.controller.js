@@ -161,7 +161,7 @@ describe('Unit : Controller - WidgetSectionsCtrl', function () {
         xit('should pass if it calls GeoDistance.getDistance', function () {
             WidgetSections.locationData.items = [{}];
             WidgetSections.selectedMarker(0);
-            expect(spy.getDistance).toHaveBeenCalled();
+            expect(spy).toHaveBeenCalled();
         });
 
         it('should pass if it nullifies WidgetSections.selectedItemDistance if the response from service is empty', function () {
