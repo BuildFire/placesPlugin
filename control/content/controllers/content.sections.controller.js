@@ -346,6 +346,7 @@
                             itemArray = [],
                             itemSecMap = [];
                         var addItem = function (row, data) {
+
                             row.images = row.images.replace(/ /g, '');
                             if (row.images) {
                                 if (row.images.indexOf(',') < 0) {
@@ -371,22 +372,137 @@
                                 row.images = [];
                             }
 
-                            Items.insert({
-                                itemTitle: row.itemTitle,
-                                summary: row.summary,
-                                listImage: row.listImage,
-                                images: row.images,
-                                bodyContent: row.bodyContent,
-                                addressTitle: row.addressTitle,
-                                address: {aName: row.address, lat: ContentSections._lat, lng: ContentSections._lng},
-                                dateCreated: +new Date(),
-                                rank: rankSec,
-                                sections: [data.id],
-                            }).then(function (data) {
-                                console.log('Item inserted using Import CSV-----', data);
-                            }, function (error) {
-                                console.log('Error----------', error);
-                            });
+                            var links = [];
+                            if (row.webURL) {
+                                links.push({
+                                    title: "Link",
+                                    url: row.webURL,
+                                    action: "linkToWeb",
+                                    openIn: "_blank"
+                                });
+                            }
+
+                            if (row.sendToEmail) {
+                                links.push({
+                                    title: "Send Email",
+                                    subject: "",
+                                    body: "",
+                                    email: row.sendToEmail,
+                                    action: "sendEmail"
+                                });
+                            }
+
+                            if (row.smsTextNumber) {
+                                links.push({
+                                    title: "Send SMS",
+                                    subject: "action Item SMS Example",
+                                    body: "We are testing action Item send SMS",
+                                    phoneNumber: row.smsTextNumber,
+                                    action: "sendSMS"
+                                });
+                            }
+
+                            if (row.facebookURL) {
+                                links.push({
+                                    title: "Link to Facebook",
+                                    url: row.facebookURL,
+                                    action: "linkToSocialFacebook"
+                                });
+                            }
+
+                            if (row.twitterURL) {
+                                links.push({
+                                    title: "Link to Twitter",
+                                    url: row.twitterURL,
+                                    action: "linkToSocialTwitter"
+                                });
+                            }
+
+                            if (row.googlePlusURL) {
+                                links.push({
+                                    title: "Link to Google",
+                                    url: row.googlePlusURL,
+                                    action: "linkToSocialGoogle"
+                                });
+                            }
+
+                            if (row.linkedinURL) {
+                                links.push({
+                                    title: "Link to LinkedIn",
+                                    url: row.linkedinURL,
+                                    action: "linkToSocialLinkedIn"
+                                });
+                            }
+
+                            if (row.instagramURL) {
+                                links.push({
+                                    title: "Link to Instagram",
+                                    url: row.instagramURL,
+                                    action: "linkToSocialInstagram"
+                                });
+                            }
+
+                            if (row.mapAddress) {
+
+                                Utils.getCoordinatesFromAddress(row.mapAddress).then(function (coordinates) {
+                                    if (!coordinates) {
+                                        return;
+                                    }
+                                    console.log('coordinates', coordinates);
+                                    if (coordinates.data.status == 'OK') {
+                                        links.push({
+                                            title: "Navigate to address title",
+                                            lat: coordinates.data.results[0].geometry.location.lat,
+                                            lng: coordinates.data.results[0].geometry.location.lng,
+                                            address: row.mapAddress,
+                                            action: "navigateToAddress"
+                                        });
+
+                                        Items.insert({
+                                            itemTitle: row.itemTitle,
+                                            summary: row.summary,
+                                            listImage: row.listImage,
+                                            images: row.images,
+                                            bodyContent: row.bodyContent,
+                                            addressTitle: row.addressTitle,
+                                            address: {aName: row.address, lat: ContentSections._lat, lng: ContentSections._lng},
+                                            dateCreated: +new Date(),
+                                            rank: rankSec,
+                                            sections: [data.id],
+                                            links: links
+                                        }).then(function (data) {
+                                            console.log('Item inserted using Import CSV-----', data);
+                                        }, function (error) {
+                                            console.log('Error----------', error);
+                                        });
+                                    }
+                                }, function () {
+
+                                });
+
+
+                            }
+                            else {
+                                Items.insert({
+                                    itemTitle: row.itemTitle,
+                                    summary: row.summary,
+                                    listImage: row.listImage,
+                                    images: row.images,
+                                    bodyContent: row.bodyContent,
+                                    addressTitle: row.addressTitle,
+                                    address: {aName: row.address, lat: ContentSections._lat, lng: ContentSections._lng},
+                                    dateCreated: +new Date(),
+                                    rank: rankSec,
+                                    sections: [data.id],
+                                    links: links
+                                }).then(function (data) {
+                                    console.log('Item inserted using Import CSV-----', data);
+                                }, function (error) {
+                                    console.log('Error----------', error);
+                                });
+                            }
+
+
                         };
 
                         if (rows && rows.length) {
