@@ -218,7 +218,7 @@
                         console.log('allSections', allSections);
 
                         Items.find({filter: {"$json.itemTitle": {"$regex": '/*'}}}).then(function (items) {
-                            console.log(items);
+                            console.log('Items in epxort--------------------------', items);
                             for (var _ind = 0; _ind < items.length; _ind++) {
                                 items[_ind].data.address = items[_ind].data.address.aName;
                                 if (items[_ind].data.sections.length > 1) {
@@ -245,11 +245,17 @@
                                 }
 
                             }
-                            console.log(json);
+                            console.log('Json in export csv-----------------', json);
                             var csv = $csv.jsonToCsv(angular.toJson(json), {
                                 header: header
                             });
-                            $csv.download(csv, "Export.csv");
+                            console.log('Csv---------------------------------------------------------', csv);
+                            if (csv) {
+                                $csv.download(csv, "Export.csv");
+                            }
+                            else {
+                                $csv.download([], "Export.csv");
+                            }
                         }, function () {
                         });
 
@@ -269,24 +275,24 @@
                     if (!ContentSections.info.data.content.images)
                         ContentSections.info.data.content.images = [];
                     ContentSections.info.data.content.images.push.apply(ContentSections.info.data.content.images, items);
-                    $scope.$digest();
+                    if (!$scope.$$phase)$scope.$digest();
                 };
                 // this method will be called when an item deleted from the list
                 ContentSections.editor.onDeleteItem = function (item, index) {
                     ContentSections.info.data.content.images.splice(index, 1);
-                    $scope.$digest();
+                    if (!$scope.$$phase)$scope.$digest();
                 };
                 // this method will be called when you edit item details
                 ContentSections.editor.onItemChange = function (item, index) {
                     ContentSections.info.data.content.images.splice(index, 1, item);
-                    $scope.$digest();
+                    if (!$scope.$$phase)$scope.$digest();
                 };
                 // this method will be called when you change the order of items
                 ContentSections.editor.onOrderChange = function (item, oldIndex, newIndex) {
                     var temp = ContentSections.info.data.content.images[oldIndex];
                     ContentSections.info.data.content.images[oldIndex] = ContentSections.info.data.content.images[newIndex];
                     ContentSections.info.data.content.images[newIndex] = temp;
-                    $scope.$digest();
+                    if (!$scope.$$phase)$scope.$digest();
                 };
 
                 // initialize carousel data
