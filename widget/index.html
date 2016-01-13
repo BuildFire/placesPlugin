@@ -47,7 +47,7 @@
 
 </head>
 <!--<body class="scrollable customBackground" ng-style="currentBackgroundImage">-->
-<body class="no-scroll" style=" padding-bottom: 40px; height: 100% !important; ">
+<body class="no-scroll">
 <div class="height-hundred-pc">
     <div class="content slide infinite-scroll-parent relative height-hundred-pc" ng-view=""></div>
 </div>
@@ -63,7 +63,7 @@
         setTimeout(function(){$('.slide').css("transform","translateX(0px)");},300);*/
 
         $('.slide').hide('slide', {direction: 'left'}, 375);
-        setTimeout(function(){$('.slide').show('slide', {direction: 'right'}, 375);},750);
+        setTimeout(function(){$('.slide').show('slide', {direction: 'right'}, 375);},750);*/
     }
 </script>
 </html>
