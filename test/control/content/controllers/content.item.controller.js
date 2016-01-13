@@ -1,4 +1,3 @@
-/*
 describe('Unit : placesContent content.item.controller.js', function () {
     var ContentItem, scope, $rootScope, $controller, q, $timeout, $httpBackend, DB, Buildfire, COLLECTIONS, Location, $routeParams, Utils;
     beforeEach(module('placesContent'));
@@ -41,41 +40,76 @@ describe('Unit : placesContent content.item.controller.js', function () {
                 }
             };
         });
-    }));
-    describe('Units:  DataStore.save returns success', function () {
-        beforeEach(function () {
-            ContentItem = $controller('ContentItemCtrl', {
-                $scope: scope,
-                Buildfire: Buildfire,
-                item: {
-                    data: {
-                        listImage: '',
-                        itemTitle: '',
-                        images: [],
-                        summary: '',
-                        bodyContent: '',
-                        bodyContentHTML: '',
-                        addressTitle: '',
-                        sections: ['123124234'],
-                        address: {
-                            lat: '28',
-                            lng: '77',
-                            aName: 'Office'
-                        },
-                        links: [],
-                        backgroundImage: ''
+
+        ContentItem = $controller('ContentItemCtrl', {
+            $scope: scope,
+            Buildfire: {
+                imageLib: {
+                    showDialog: function () {
+                        return (null, {selectedFiles: ['']});
+                    }
+                }
+                ,
+                appearance: {
+                    setHeaderVisibility: function () {
+
                     }
                 },
-                DB: DB,
-                COLLECTIONS: COLLECTIONS,
-                $routeScope: $rootScope,
-                $timeout: $timeout,
-                $routeParams: {
-                    sectionId: '123456'
-                },
-                Utils: Utils
-            });
+                components: {
+                    images: {
+                        thumbnail: function () {
+                        }
+                    },
+                    carousel: {
+                        editor: function () {
+                            var a = {loadItems:function(){}};
+                            return a;
+                        }
+                    },
+                    actionItems:{
+                        sortableList:function(){
+                            var a = {loadItems:function(){}};
+                            return a;
+                        }
+                    }
+                }
+            },
+            item: {
+                data: {
+                    listImage: '',
+                    itemTitle: '',
+                    images: [],
+                    summary: '',
+                    bodyContent: '',
+                    bodyContentHTML: '',
+                    addressTitle: '',
+                    sections: ['123124234'],
+                    address: {
+                        lat: '28',
+                        lng: '77',
+                        aName: 'Office'
+                    },
+                    links: [],
+                    backgroundImage: ''
+                }
+            },
+            DB: DB,
+            COLLECTIONS: COLLECTIONS,
+            $routeScope: $rootScope,
+            $timeout: $timeout,
+            $routeParams: {
+                sectionId: '123456'
+            },
+            Utils: Utils,
+            DEFAULT_DATA:{},
+            placesInfo:{}
         });
+    }));
+
+    describe('Units:  DataStore.save returns success', function () {
+      /*  beforeEach(function () {
+
+        });*/
 
         describe('Units: units should be Defined', function () {
             it('it should pass if ContentItem is defined', function () {
@@ -98,7 +132,7 @@ describe('Unit : placesContent content.item.controller.js', function () {
             });
         });
         describe('Function : ContentItem.removeBackgroundImage ', function () {
-            it('ContentItem.removeBackgroundImage should be called', function () {
+            xit('ContentItem.removeBackgroundImage should be called', function () {
                 ContentItem.item.data.backgroundImage = 'image.png';
                 ContentItem.removeBackgroundImage();
                 $rootScope.$digest();
@@ -295,4 +329,4 @@ describe('Unit : placesContent content.item.controller.js', function () {
             });
         });
     });
-});*/
+});

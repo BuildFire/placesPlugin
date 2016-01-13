@@ -3,7 +3,7 @@ describe('Unit : Controller - WidgetItemCtrl2', function () {
 // load the controller's module
     beforeEach(module('placesWidget'));
 
-    var $q, WidgetSections, scope, $window, DB, COLLECTIONS, Buildfire, $rootScope, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $routeParams, OrdersItems;
+    var $q, WidgetItem, scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS, AppConfig, placesInfo, Orders, OrdersItems, item;
 
     beforeEach(inject(function (_$q_, _$routeParams_, $controller, _$rootScope_, _Buildfire_, _DB_, _COLLECTIONS_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _Location_, _Orders_, _GeoDistance_, _$timeout_, _OrdersItems_) {
             scope = _$rootScope_.$new();
@@ -43,9 +43,9 @@ describe('Unit : Controller - WidgetItemCtrl2', function () {
     )
     ;
 
-    //xdescribe('Units: units should be Defined', function () {
-    //    it('it should pass if WidgetSections is defined', function () {
-    //        expect(WidgetItem).not.toBeUndefined();
-    //    });
-    //});
+    describe('Units: units should be Defined', function () {
+        it('it should pass if WidgetSections is defined', function () {
+            expect(WidgetItem).not.toBeUndefined();
+        });
+    });
 });

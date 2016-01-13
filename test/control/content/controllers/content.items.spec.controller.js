@@ -28,7 +28,31 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
                 DB: DB,
                 COLLECTIONS: COLLECTIONS,
                 Orders: Orders,
-                Buildfire:Buildfire,
+                Buildfire: {
+                    imageLib: {
+                        showDialog: function () {
+                            return (null, {selectedFiles: ['']});
+                        }
+                    }
+                    ,
+                    appearance: {
+                        setHeaderVisibility: function () {
+
+                        }
+                    },
+                    components: {
+                        images: {
+                            thumbnail: function () {
+                            }
+                        },
+                        carousel: {
+                            editor: function () {
+                                var a = {loadItems:function(){}};
+                                return a;
+                            }
+                        }
+                    }
+                },
                 OrdersItems: OrdersItems,
                 Messaging: Messaging,
                 EVENTS: EVENTS,
@@ -105,28 +129,28 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
         });
     });
 
-    //xdescribe('ContentItems.editSections', function () {
-    //    var Sections;
-    //    beforeEach(inject(function () {
-    //        /* spy = spyOn(window.Sections, 'find').and.callFake(function () {
-    //         console.log(786);
-    //         var deferred = $q.defer();
-    //         deferred.resolve('Remote call result');
-    //         return deferred.promise;
-    //         });*/
-    //
-    //        Sections = jasmine.createSpy().and.callFake(function () {
-    //            console.log(786);
-    //            var deferred = $q.defer();
-    //            deferred.resolve('Remote call result');
-    //            return deferred.promise;
-    //        });
-    //    }));
-    //    it('it should pass if ContentItems.editSections calls Items.update', function () {
-    //        ContentItems.editSections();
-    //        expect(Sections).toHaveBeenCalled();
-    //    });
-    //});
+    xdescribe('ContentItems.editSections', function () {
+        var Sections;
+        beforeEach(inject(function () {
+             spy = spyOn(window.Sections, 'find').and.callFake(function () {
+             console.log(786);
+             var deferred = $q.defer();
+             deferred.resolve('Remote call result');
+             return deferred.promise;
+             });
+
+            Sections = jasmine.createSpy().and.callFake(function () {
+                console.log(786);
+                var deferred = $q.defer();
+                deferred.resolve('Remote call result');
+                return deferred.promise;
+            });
+        }));
+        it('it should pass if ContentItems.editSections calls Items.update', function () {
+            ContentItems.editSections();
+            expect(Sections).toHaveBeenCalled();
+        });
+    });
     xdescribe('ContentItems.toggleSortOrder', function () {
         it('it should pass if ContentItems.toggleSortOrder calls', function () {
             ContentItems.toggleSortOrder('Newest');
@@ -134,73 +158,73 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
             expect(ContentItems.info.data.content.sortByItems).toEqual('Newest');
         });
     });
-    //xdescribe('Function called ContentItems.itemSortableOptions.stop', function () {
-    //    it('it should pass if ContentItems.itemSortableOptions.stop calls has been called', function () {
-    //        var ui = {
-    //            item: {
-    //                sortable: {
-    //                    dropindex: '0'
-    //                }
-    //            }
-    //        };
-    //        ContentItems.items = [{
-    //            data: {
-    //                listImage: '',
-    //                itemTitle: '',
-    //                images: [],
-    //                summary: '',
-    //                bodyContent: '',
-    //                bodyContentHTML: '',
-    //                addressTitle: '',
-    //                sections: ['123124234'],
-    //                address: {
-    //                    lat: '28',
-    //                    lng: '77',
-    //                    aName: 'Office'
-    //                },
-    //                links: [],
-    //                backgroundImage: ''
-    //            }
-    //        }, {
-    //            data: {
-    //                listImage: '',
-    //                itemTitle: '',
-    //                images: [],
-    //                summary: '',
-    //                bodyContent: '',
-    //                bodyContentHTML: '',
-    //                addressTitle: '',
-    //                sections: ['123124234'],
-    //                address: {
-    //                    lat: '28',
-    //                    lng: '77',
-    //                    aName: 'Office'
-    //                },
-    //                links: [],
-    //                backgroundImage: ''
-    //            }
-    //        }, {
-    //            data: {
-    //                listImage: '',
-    //                itemTitle: '',
-    //                images: [],
-    //                summary: '',
-    //                bodyContent: '',
-    //                bodyContentHTML: '',
-    //                addressTitle: '',
-    //                sections: ['123124234'],
-    //                address: {
-    //                    lat: '28',
-    //                    lng: '77',
-    //                    aName: 'Office'
-    //                },
-    //                links: [],
-    //                backgroundImage: ''
-    //            }
-    //        }];
-    //        ContentItems.itemSortableOptions.stop({}, ui);
-    //        expect(ContentItems.itemSortableOptions.stop).toHaveBeenCalled();
-    //    });
-    //});
+    xdescribe('Function called ContentItems.itemSortableOptions.stop', function () {
+        it('it should pass if ContentItems.itemSortableOptions.stop calls has been called', function () {
+            var ui = {
+                item: {
+                    sortable: {
+                        dropindex: '0'
+                    }
+                }
+            };
+            ContentItems.items = [{
+                data: {
+                    listImage: '',
+                    itemTitle: '',
+                    images: [],
+                    summary: '',
+                    bodyContent: '',
+                    bodyContentHTML: '',
+                    addressTitle: '',
+                    sections: ['123124234'],
+                    address: {
+                        lat: '28',
+                        lng: '77',
+                        aName: 'Office'
+                    },
+                    links: [],
+                    backgroundImage: ''
+                }
+            }, {
+                data: {
+                    listImage: '',
+                    itemTitle: '',
+                    images: [],
+                    summary: '',
+                    bodyContent: '',
+                    bodyContentHTML: '',
+                    addressTitle: '',
+                    sections: ['123124234'],
+                    address: {
+                        lat: '28',
+                        lng: '77',
+                        aName: 'Office'
+                    },
+                    links: [],
+                    backgroundImage: ''
+                }
+            }, {
+                data: {
+                    listImage: '',
+                    itemTitle: '',
+                    images: [],
+                    summary: '',
+                    bodyContent: '',
+                    bodyContentHTML: '',
+                    addressTitle: '',
+                    sections: ['123124234'],
+                    address: {
+                        lat: '28',
+                        lng: '77',
+                        aName: 'Office'
+                    },
+                    links: [],
+                    backgroundImage: ''
+                }
+            }];
+            ContentItems.itemSortableOptions.stop({}, ui);
+            expect(ContentItems.itemSortableOptions.stop).toHaveBeenCalled();
+        });
+    });
 });
 

@@ -1,11 +1,11 @@
-xdescribe('Unit : Controller - ContentSectionsCtrl', function () {
+describe('Unit : Controller - ContentSectionsCtrl', function () {
 
 // load the controller's module
     beforeEach(module('placesContent'));
 
-    var $q, ContentSections, scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, placesInfo;
+    var $q, ContentSections, scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, placesInfo,Utils;
 
-    beforeEach(inject(function (_$q_, $controller, _$rootScope_, _DB_,_Buildfire_, _$timeout_, _COLLECTIONS_, _Orders_, _OrdersItems_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _$csv_, _Buildfire_, _Modals_) {
+    beforeEach(inject(function (_$q_, $controller, _$rootScope_, _DB_, _$timeout_, _COLLECTIONS_, _Orders_, _OrdersItems_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _$csv_, _Buildfire_, _Modals_,_Utils_) {
             scope = _$rootScope_.$new();
             DB = _DB_;
             $timeout = _$timeout_;
@@ -23,6 +23,8 @@ xdescribe('Unit : Controller - ContentSectionsCtrl', function () {
             //Buildfire = _Buildfire_;
             //PlaceInfoData = _PlaceInfoData_;
 
+            Utils = _Utils_;
+
             ContentSections = $controller('ContentSectionsCtrl', {
                 $scope: scope,
                 placesInfo: {id: '1', data: {content: {sortBy: 'title'}}},
@@ -37,13 +39,39 @@ xdescribe('Unit : Controller - ContentSectionsCtrl', function () {
                 PATHS: PATHS,
                 $csv: $csv,
                 Modals: Modals,
-                Buildfire: Buildfire
+                Buildfire: {
+                    imageLib: {
+                        showDialog: function () {
+                            return (null, {selectedFiles: ['']});
+                        }
+                    }
+                    ,
+                    appearance: {
+                        setHeaderVisibility: function () {
+
+                        }
+                    },
+                    components: {
+                        images: {
+                            thumbnail: function () {
+                            }
+                        },
+                        carousel: {
+                            editor: function () {
+                                var a = {loadItems:function(){}};
+                                return a;
+                            }
+                        }
+                    }
+                },
+                Utils:_Utils_,
+                DEFAULT_DATA : {}
             });
         })
     )
     ;
 
-    xdescribe('Units: units should be Defined', function () {
+    describe('Units: units should be Defined', function () {
         it('it should pass if ContentSections is defined', function () {
             expect(ContentSections).not.toBeUndefined();
         });
@@ -79,7 +107,7 @@ xdescribe('Unit : Controller - ContentSectionsCtrl', function () {
         });
     });
 
-    xdescribe('Bulk Upload', function () {
+    describe('Bulk Upload', function () {
         var spy, importSpy;
         beforeEach(inject(function () {
             spy = spyOn($csv, 'download').and.callFake(function () {
@@ -109,7 +137,7 @@ xdescribe('Unit : Controller - ContentSectionsCtrl', function () {
     });
 
 
-    xdescribe('Search Sections Module', function () {
+    describe('Search Sections Module', function () {
         var spy;
         beforeEach(inject(function () {
             spy = spyOn(ContentSections, 'getMore').and.callFake(function () {
@@ -127,7 +155,7 @@ xdescribe('Unit : Controller - ContentSectionsCtrl', function () {
 
     });
 
-    xdescribe('Sort Sections Module', function () {
+    describe('Sort Sections Module', function () {
         var spy;
         beforeEach(inject(function () {
             spy = spyOn(ContentSections, 'getMore').and.callFake(function () {
@@ -150,7 +178,7 @@ xdescribe('Unit : Controller - ContentSectionsCtrl', function () {
 
     });
 
-    xdescribe('Delete Sections Module', function () {
+    describe('Delete Sections Module', function () {
         var spy;
         beforeEach(inject(function () {
             spy = spyOn(Modals, 'removePopupModal').and.callFake(function () {
@@ -178,7 +206,7 @@ xdescribe('Unit : Controller - ContentSectionsCtrl', function () {
 
     });
 
-    xdescribe('Carousel', function () {
+    describe('Carousel', function () {
         it('ContentSections.editor.onAddItems should pass if it initialises the ContentSections.info.data.content.images to blank array if it doesnt exyst', function () {
             ContentSections.info.data.content.images = null;
             ContentSections.editor.onAddItems(['test']);
@@ -224,14 +252,14 @@ xdescribe('Unit : Controller - ContentSectionsCtrl', function () {
 });
 
 
-describe('Unit : Controller - ContentSectionsCtrl - First time plugin setup - No placeInfo data', function () {
+xdescribe('Unit : Controller - ContentSectionsCtrl - First time plugin setup - No placeInfo data', function () {
 
 // load the controller's module
     beforeEach(module('placesContent'));
 
     var $q, ContentSections, scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, placesInfo;
 
-    beforeEach(inject(function (_$q_, $controller, _$rootScope_,_Buildfire_, _DB_, _$timeout_, _COLLECTIONS_, _Orders_, _OrdersItems_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _$csv_, _Buildfire_, _Modals_) {
+    beforeEach(inject(function (_$q_, $controller, _$rootScope_,_Buildfire_, _DB_, _$timeout_, _COLLECTIONS_, _Orders_, _OrdersItems_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _$csv_, _Modals_) {
             scope = _$rootScope_.$new();
             DB = _DB_;
             $timeout = _$timeout_;
@@ -270,7 +298,7 @@ describe('Unit : Controller - ContentSectionsCtrl - First time plugin setup - No
     ;
 
 
-    xdescribe('PlaceInfo Resolve', function () {
+    describe('PlaceInfo Resolve', function () {
 
         beforeEach(inject(function () {
             ContentSections.placesInfo = null;

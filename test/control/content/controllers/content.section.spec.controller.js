@@ -1,14 +1,13 @@
-/*
 describe('Unit : Controller - ContentSectionCtrl', function () {
 
 // load the controller's module
     beforeEach(module('placesContent'));
 
-    var $q, ContentSection, scope,$rootScope, $routeParams, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Location;
+    var $q, ContentSection, scope, $rootScope, $routeParams, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Location;
 
     beforeEach(inject(function (_$q_, $controller, _$rootScope_, _DB_, _$timeout_, _COLLECTIONS_, _Orders_, _OrdersItems_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _$csv_, _Buildfire_, _Location_) {
             scope = _$rootScope_.$new();
-            $rootScope=_$rootScope_;
+            $rootScope = _$rootScope_;
             DB = _DB_;
             $timeout = _$timeout_;
             COLLECTIONS = _COLLECTIONS_;
@@ -92,6 +91,18 @@ describe('Unit : Controller - ContentSectionCtrl', function () {
                             return (null, {selectedFiles: ['']});
                         }
                     }
+                    ,
+                    appearance: {
+                        setHeaderVisibility: function () {
+
+                        }
+                    },
+                    components: {
+                        images: {
+                            thumbnail: function () {
+                            }
+                        }
+                    }
                 }
             });
         })
@@ -143,27 +154,7 @@ describe('Unit : Controller - ContentSectionCtrl', function () {
         })
     });
 
-    describe('ContentSection.selectListBGImage', function () {
-
-
-        it('it should pass if it changes the ListBGImage on correct input', function () {
-            ContentSection.selectListBGImage();
-            expect(ContentSection.section.data.itemListBGImage).toEqual('');
-        })
-    });
-
-    describe('ContentSection.removeListBGImage', function () {
-
-
-        it('it should pass if it gives blank value to the ListBGImage', function () {
-            ContentSection.section.data.itemListBGImage = 'test';
-            ContentSection.removeListBGImage();
-            expect(ContentSection.section.data.itemListBGImage).toEqual('');
-        })
-    });
-
     describe('ContentSection.done', function () {
-
         var spy;
         beforeEach(inject(function () {
             spy = spyOn(Location, 'goToHome').and.callFake(function () {
@@ -178,7 +169,6 @@ describe('Unit : Controller - ContentSectionCtrl', function () {
     });
 
     describe('watcher of controller.section', function () {
-
         it('should change the lastSaved when PlaceInfo is changed succesfully on db', function () {
             ContentSection.masterSection = null;
             ContentSection._Sections.update = function () {
@@ -205,6 +195,24 @@ describe('Unit : Controller - ContentSectionCtrl', function () {
     });
 
 
+    /*xdescribe('ContentSection.selectListBGImage', function () {
+
+
+     it('it should pass if it changes the ListBGImage on correct input', function () {
+     ContentSection.selectListBGImage();
+     expect(ContentSection.section.data.itemListBGImage).toEqual('');
+     })
+     });
+
+     xdescribe('ContentSection.removeListBGImage', function () {
+
+
+     it('it should pass if it gives blank value to the ListBGImage', function () {
+     ContentSection.section.data.itemListBGImage = 'test';
+     ContentSection.removeListBGImage();
+     expect(ContentSection.section.data.itemListBGImage).toEqual('');
+     })
+     });*/
+
 });
 
-*/
