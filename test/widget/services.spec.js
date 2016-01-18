@@ -1,5 +1,5 @@
-describe('Unit: placesDesignServices: Services', function () {
-    beforeEach(module('placesDesignServices'));
+describe('Unit: placesWidgetServices: Services', function () {
+    beforeEach(module('placesWidgetServices'));
     var Buildfire;
 
 
@@ -13,7 +13,7 @@ describe('Unit: placesDesignServices: Services', function () {
 
     describe('Unit : DataStore Factory', function () {
         var DataStore, Buildfire, STATUS_MESSAGES, STATUS_CODE, q;
-        beforeEach(module('placesDesignServices'));
+        beforeEach(module('placesWidgetServices'));
         Buildfire = {
             datastore: {}
         };
@@ -43,7 +43,7 @@ describe('Unit: placesDesignServices: Services', function () {
             Buildfire = {
                 datastore: {}
             };
-            Buildfire.datastore = jasmine.createSpyObj('Buildfire.datastore', ['get', 'update', 'save']);
+            Buildfire.datastore = jasmine.createSpyObj('Buildfire.datastore', ['get', 'getById', 'search']);
         }));
 
         it('Places should exists', function () {
@@ -52,8 +52,6 @@ describe('Unit: placesDesignServices: Services', function () {
         });
         it('Places methods should exists', function () {
             expect(Places.get).toBeDefined();
-            expect(Places.save).toBeDefined();
-            expect(Places.update).toBeDefined();
         });
         it('Places.get methods should call Buildfire.datastore.get', function () {
             Buildfire.datastore.get.and.callFake(function (tagName, cb) {
@@ -67,40 +65,20 @@ describe('Unit: placesDesignServices: Services', function () {
             });
             Places.get();
         });
-        describe('update method:', function () {
-            it('Places.update methods should call Buildfire.datastore.update', function () {
-                Buildfire.datastore.update.and.callFake(function (tagName, cb) {
-                    cb(null, {});
+        describe('getById method:', function () {
+            it('Places.getById methods should call Buildfire.datastore.getById', function () {
+                Buildfire.datastore.getById.and.callFake(function (id, tagName, cb) {
+                    cb(null, {data: {}});
                 });
-                Places.update('id', {});
-                Places.update();
-                Places.update('id');
+                Places.getById('id1');
             });
-            it('Places.update methods should call Buildfire.datastore.update Error Case', function () {
-                Buildfire.datastore.update.and.callFake(function (id, data, tagName, cb) {
+            it('Places.getById methods should call Buildfire.datastore.getById Error Case', function () {
+                Buildfire.datastore.getById.and.callFake(function (id, tagName, cb) {
                     cb({}, null);
                 });
-                Places.update('id', {});
-                Places.update();
-                Places.update('id');
+                Places.getById('id1');
+                Places.getById();
             });
         });
-        describe('save method:', function () {
-            it('Places.save methods should call Buildfire.datastore.save', function () {
-                Buildfire.datastore.save.and.callFake(function (tagName, cb) {
-                    cb(null, {});
-                });
-                Places.save({});
-                Places.save();
-            });
-            it('Places.save methods should call Buildfire.datastore.save Error case', function () {
-                Buildfire.datastore.save.and.callFake(function (tagName, cb) {
-                    cb({}, null);
-                });
-                Places.save({});
-                Places.save();
-            });
-        });
-
     });
 });

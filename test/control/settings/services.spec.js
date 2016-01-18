@@ -1,5 +1,5 @@
-describe('Unit: placesDesignServices: Services', function () {
-    beforeEach(module('placesDesignServices'));
+describe('Unit: placesSettingsServices: Services', function () {
+    beforeEach(module('placesSettingsServices'));
     var Buildfire;
 
 
@@ -13,7 +13,7 @@ describe('Unit: placesDesignServices: Services', function () {
 
     describe('Unit : DataStore Factory', function () {
         var DataStore, Buildfire, STATUS_MESSAGES, STATUS_CODE, q;
-        beforeEach(module('placesDesignServices'));
+        beforeEach(module('placesSettingsServices'));
         Buildfire = {
             datastore: {}
         };
