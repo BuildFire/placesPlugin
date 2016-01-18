@@ -190,7 +190,7 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
             expect(ContentItems.info.data.content.sortByItems).toEqual('Newest');
         });
     });
-    xdescribe('Function called ContentItems.itemSortableOptions.stop', function () {
+    describe('Function called ContentItems.itemSortableOptions.stop when next and pre available', function () {
         it('it should pass if ContentItems.itemSortableOptions.stop calls has been called', function () {
             var ui = {
                 item: {
@@ -257,6 +257,127 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
                     rank:40
                 }
             }];
+            ContentItems.Items={update:function(id,data){
+                var deferred = $q.defer();
+                deferred.resolve({id:id,data:data});
+                return deferred.promise;
+            }};
+            ContentItems.itemSortableOptions.stop({}, ui);
+            //expect(ContentItems.itemSortableOptions.stop).toHaveBeenCalled();
+        });
+    });
+    describe('Function called ContentItems.itemSortableOptions.stop when pre available', function ()
+    {
+        it('it should pass if ContentItems.itemSortableOptions.stop calls has been called', function () {
+            var ui = {
+                item: {
+                    sortable: {
+                        dropindex: 1
+                    }
+                }
+            };
+            ContentItems.items = [{
+                data: {
+                    listImage: '',
+                    itemTitle: '',
+                    images: [],
+                    summary: '',
+                    bodyContent: '',
+                    bodyContentHTML: '',
+                    addressTitle: '',
+                    sections: ['123124234'],
+                    address: {
+                        lat: '28',
+                        lng: '77',
+                        aName: 'Office'
+                    },
+                    links: [],
+                    backgroundImage: '',
+                    rank:20
+                }
+            }, {
+                data: {
+                    listImage: '',
+                    itemTitle: '',
+                    images: [],
+                    summary: '',
+                    bodyContent: '',
+                    bodyContentHTML: '',
+                    addressTitle: '',
+                    sections: ['123124234'],
+                    address: {
+                        lat: '28',
+                        lng: '77',
+                        aName: 'Office'
+                    },
+                    links: [],
+                    backgroundImage: '',
+                    rank:30
+                }
+            }];
+            ContentItems.Items={update:function(id,data){
+                var deferred = $q.defer();
+                deferred.resolve({id:id,data:data});
+                return deferred.promise;
+            }};
+            ContentItems.itemSortableOptions.stop({}, ui);
+            //expect(ContentItems.itemSortableOptions.stop).toHaveBeenCalled();
+        });
+    });
+    describe('Function called ContentItems.itemSortableOptions.stop when next available', function ()
+    {
+        it('it should pass if ContentItems.itemSortableOptions.stop calls has been called', function () {
+            var ui = {
+                item: {
+                    sortable: {
+                        dropindex: 0
+                    }
+                }
+            };
+            ContentItems.items = [{
+                data: {
+                    listImage: '',
+                    itemTitle: '',
+                    images: [],
+                    summary: '',
+                    bodyContent: '',
+                    bodyContentHTML: '',
+                    addressTitle: '',
+                    sections: ['123124234'],
+                    address: {
+                        lat: '28',
+                        lng: '77',
+                        aName: 'Office'
+                    },
+                    links: [],
+                    backgroundImage: '',
+                    rank:20
+                }
+            }, {
+                data: {
+                    listImage: '',
+                    itemTitle: '',
+                    images: [],
+                    summary: '',
+                    bodyContent: '',
+                    bodyContentHTML: '',
+                    addressTitle: '',
+                    sections: ['123124234'],
+                    address: {
+                        lat: '28',
+                        lng: '77',
+                        aName: 'Office'
+                    },
+                    links: [],
+                    backgroundImage: '',
+                    rank:30
+                }
+            }];
+            ContentItems.Items={update:function(id,data){
+                var deferred = $q.defer();
+                deferred.resolve({id:id,data:data});
+                return deferred.promise;
+            }};
             ContentItems.itemSortableOptions.stop({}, ui);
             //expect(ContentItems.itemSortableOptions.stop).toHaveBeenCalled();
         });
