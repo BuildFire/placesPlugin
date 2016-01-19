@@ -12,17 +12,19 @@ describe('Unit: placesSettingsServices: Services', function () {
     });
 
     describe('Unit : DataStore Factory', function () {
-        var DataStore, Buildfire, STATUS_MESSAGES, STATUS_CODE, q;
-        beforeEach(module('placesSettingsServices'));
+        var DataStore, Buildfire, STATUS_MESSAGES, STATUS_CODE, Location;
         Buildfire = {
             datastore: {}
         };
         Buildfire.datastore = jasmine.createSpyObj('Buildfire.datastore', ['get', 'getById', 'bulkInsert', 'insert', 'search', 'update', 'save', 'delete']);
-        beforeEach(inject(function (_DataStore_, _STATUS_CODE_, _STATUS_MESSAGES_) {
-            DataStore = _DataStore_;
-            STATUS_CODE = _STATUS_CODE_;
-            STATUS_MESSAGES = _STATUS_MESSAGES_;
+        beforeEach(inject(function (_Location_) {
+            Location=_Location_;
         }));
+        describe('Location.Go method:', function () {
+            it('Location.Go methods callinge', function () {
+                Location.go('#/item');
+            });
+        });
     });
     beforeEach(inject(function () {
         Buildfire = {

@@ -32,7 +32,7 @@ describe("DesignHomeCtrl", function () {
                             mapLayout: "map-1",
                             itemListLayout: "item-list-1",
                             itemDetailsLayout: "item-details-1",
-                            secListBGImage: ""
+                            secListBGImage: "bg.png"
                         },
                         settings: {
                             defaultView: "list",
@@ -47,10 +47,19 @@ describe("DesignHomeCtrl", function () {
                             controller._callback(null, {selectedFiles: ['test']});
                         }
                     },
-                    components:{
-                        images:{thumbnail:function(){
+                    components: {
+                        images: {
+                            thumbnail: function () {
+                                this.loadbackground = function (url) {
+                                };
+                                this.onChange = function (url) {
+                                };
+                                this.onDelete = function (url) {
+                                };
+                                return this;
 
-                        }}
+                            }
+                        }
                     }
                 }
             });
@@ -121,13 +130,65 @@ describe("DesignHomeCtrl", function () {
         });
     });
 
-    describe('removeListBgImage', function () {
-        xit('should make the background image property null', function () {
-            controller.removeListBgImage();
-            expect(controller.placeInfo.data.design.secListBGImage).toBeNull();
+    describe('updateFn', function () {
+        it('should make the background image property null', function () {
+            controller.placeInfo.data.design.secListBGImage = 'Mno.png';
+            $rootScope.$apply();
+            //expect(controller.placeInfo.data.design.secListBGImage).toBeNull();
+        });
+        it('updateFn Unchanged', function () {
+            controller.placeInfo = {
+                id: '1', data: {
+                    content: {
+                        images: [],
+                        descriptionHTML: '',
+                        description: '',
+                        sortBy: 'Newest',
+                        rankOfLastItem: ''
+                    },
+                    design: {
+                        secListLayout: "sec-list-1-1",
+                        mapLayout: "map-1",
+                        itemListLayout: "item-list-1",
+                        itemDetailsLayout: "item-details-1",
+                        secListBGImage: "bg.png"
+                    },
+                    settings: {
+                        defaultView: "list",
+                        showDistanceIn: "miles"
+                    }
+                }
+            };
+            $rootScope.$apply();
+            //expect(controller.placeInfo.data.design.secListBGImage).toBeNull();
+        });
+        it('updateFn When  id is not there', function () {
+            controller.placeInfo = {
+                data: {
+                    content: {
+                        images: [],
+                        descriptionHTML: '',
+                        description: '',
+                        sortBy: 'Newest',
+                        rankOfLastItem: ''
+                    },
+                    design: {
+                        secListLayout: "sec-list-1-1",
+                        mapLayout: "map-1",
+                        itemListLayout: "item-list-1",
+                        itemDetailsLayout: "item-details-1",
+                        secListBGImage: "bg.png"
+                    },
+                    settings: {
+                        defaultView: "list",
+                        showDistanceIn: "miles"
+                    }
+                }
+            };
+            $rootScope.$apply();
+            //expect(controller.placeInfo.data.design.secListBGImage).toBeNull();
         });
     });
-
 
 
     xdescribe('Function :DesignHome.addItemListBackgroundImage', function () {
@@ -162,34 +223,59 @@ describe("DesignHomeCtrl", function () {
         });
     });
 
-    xdescribe('watcher of controller.placeInfo', function () {
+});
+describe("DesignHomeCtrl Undefined placeInfo", function () {
 
-        it('should change the lastSaved when PlaceInfo is changed succesfully on db', function () {
-            controller._lastSaved = null;
-            controller._placeCenter.update = function () {
-                var deferred = q.defer();
-                deferred.resolve('Remote call result');
-                return deferred.promise;
+    var $rootScope,
+        $scope,
+        controller,
+        q,
+        Buildfire;
+
+
+    beforeEach(function () {
+        module('placesDesign');
+
+        inject(function ($injector, $q, _Buildfire_) {
+            $rootScope = $injector.get('$rootScope');
+            $scope = $rootScope.$new();
+            controller = $injector.get('$controller')('DesignHomeCtrl', {
+                $scope: $scope,
+                Orders: $injector.get('Orders'),
+                COLLECTIONS: $injector.get('COLLECTIONS'),
+                DB: $injector.get('DB'),
+                placesInfo: null,
+                $timeout: $injector.get('$timeout'),
+                Buildfire: {
+                    imageLib: {
+                        showDialog: function (options, callback) {
+                            controller._callback(null, {selectedFiles: ['test']});
+                        }
+                    },
+                    components: {
+                        images: {
+                            thumbnail: function () {
+
+                            }
+                        }
+                    }
+                }
+            });
+            Buildfire = {
+                imageLib: {
+                    showDialog: function (options, callback) {
+                        controller._callback(null, {selectedFiles: ['test']});
+                    }
+                }
             };
-            //controller.placeInfo = {};
-            controller.placeInfo.data.design.secListBGImage = 'test';
-            //controller.removeListBgImage();
-            $scope.$digest();
-            expect(controller._lastSaved).toBeNull();
-        });
-
-        it('should revert the PlaceInfo to lastSaved when db change failed', function () {
-            //controller._lastSaved = null;
-            controller._placeCenter.update = function () {
-                var deferred = q.defer();
-                deferred.reject('Remote call result');
-                return deferred.promise;
-            };
-
-            controller.removeListBgImage();
-            $scope.$digest();
-            expect(controller.placeInfo.data.design.secListBGImage).toEqual(null);
+            q = $q;
         });
     });
 
+
+    describe('Initialization', function () {
+        it('should initialize the listLayouts to the default value', function () {
+            expect(controller.layouts.itemListLayouts.length).toEqual(2);
+        });
+    });
 });

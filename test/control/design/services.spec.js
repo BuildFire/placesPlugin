@@ -31,10 +31,11 @@ describe('Unit: placesDesignServices: Services', function () {
         Buildfire.datastore = jasmine.createSpyObj('Buildfire.datastore', ['get', 'update', 'save']);
     }));
     describe('Unit : Places service', function () {
-        var DB, Places, Buildfire, $rootScope;
+        var DB, Places, Buildfire, $rootScope,Location;
         beforeEach(inject(
-            function (_DB_, _$rootScope_, _Buildfire_) {
+            function (_DB_, _$rootScope_, _Buildfire_,_Location_) {
                 DB = _DB_;
+                Location=_Location_;
                 Buildfire = _Buildfire_;
                 Places = new DB('Places');
                 $rootScope = _$rootScope_;
@@ -49,6 +50,9 @@ describe('Unit: placesDesignServices: Services', function () {
         it('Places should exists', function () {
             expect(Places).toBeDefined();
             expect(Places._tagName).toEqual('Places');
+        });
+        it('Calling Location methods', function () {
+            Location.go('#/item');
         });
         it('Places methods should exists', function () {
             expect(Places.get).toBeDefined();
