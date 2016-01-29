@@ -214,7 +214,9 @@
                     }
                     ContentItem.isItemValid = isValidItem(ContentItem.item.data);
                     if (_item && !isUnChanged(_item) && ContentItem.isItemValid) {
+
                         tmrDelayForItem = setTimeout(function () {
+                            updating=true;
                             insertAndUpdate(_item);
                         }, 1000);
                     }
