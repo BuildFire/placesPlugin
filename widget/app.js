@@ -246,7 +246,7 @@
                 }
                 else {
                     if ($('.section-filter.whiteTheme').length == 0) // this means filter is applied
-                        buildfire.navigation.navigateHome();
+                        buildfire.navigation._goBackOne();
                     else {
                        manuallyTransitionAnimation();
                         $rootScope.$broadcast(EVENTS.ROUTE_CHANGE_1, null);
