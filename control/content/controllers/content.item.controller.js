@@ -185,7 +185,7 @@
 
                         Items.insert(_item.data).then(function (data) {
                             console.info('$$$$$$$$$$$$$$$$$ INSERT CALLED $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',_item.data);
-                            console.info('$$$$$$$$$$$$$$$$$ INSERT CALLED $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',_item.data);
+                       //     console.info('$$$$$$$$$$$$$$$$$ INSERT CALLED $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',_item.data);
                             updating = false;
                             if (data && data.id) {
                                 ContentItem.item.data.deepLinkUrl = Buildfire.deeplink.createLink({id: data.id});
