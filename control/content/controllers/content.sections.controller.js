@@ -702,7 +702,7 @@
                     var item = ContentSections.sections[_index];
 
                     if ("undefined" !== typeof item) {
-                        buildfire.navigation.scrollTop();
+                        //buildfire.navigation.scrollTop();
 
                         Modals.removePopupModal({title: ''}).then(function (result) {
                             if (result) {
