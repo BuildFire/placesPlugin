@@ -129,6 +129,15 @@
                                 }
                             }
                             var markerCluster = new MarkerClusterer(map, placeLocationMarkers);
+
+
+
+                            map.addListener('click', function () {
+                                if (selectedLocation) {
+                                    scope.markerCallback(null);
+                                    selectedLocation.setIcon(placeLocationIcon);
+                                }
+                            });
                         }
                     }, true);
                 }

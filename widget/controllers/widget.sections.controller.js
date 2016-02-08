@@ -510,6 +510,12 @@
 
                 /* Onclick event of items on the map view*/
                 WidgetSections.selectedMarker = function (itemIndex) {
+                    if(itemIndex === null)
+                    {
+                        WidgetSections.selectedItem = null;
+                        $scope.$digest();
+                        return;
+                    }
                     WidgetSections.selectedItem = WidgetSections.locationData.items[itemIndex];
                     initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
 
@@ -633,6 +639,10 @@
                 $scope.$watch(function () {
                     return WidgetSections.selectedSections;
                 }, filterChanged, true);
+
+                $scope.$watch(function () {
+                    return WidgetSections.currentView;
+                }, function(){ WidgetSections.selectedItem = null; }, true);
 
                 $scope.$on("Carousel:LOADED", function () {
                     if (!view) {
