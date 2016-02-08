@@ -1,3 +1,20 @@
+
+/*
+.modal {
+    display: none;
+    overflow: hidden;
+    position: relative !important;
+    top: -250px !important;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
+}
+*/
+
+
 .disabled {
     pointer-events: none;
     opacity: 0.5;
@@ -85,3 +102,4 @@ Style for loader
 .custom-margin{
     margin-left: 0px !important;
 }
+

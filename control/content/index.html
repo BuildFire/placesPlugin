@@ -46,6 +46,15 @@
     <script src="controllers/content.section.controller.js"></script>
     <script src="controllers/content.item.controller.js"></script>
     <script src="assets/js/ui-switch.min.js"></script>
+    <script>
+            function clickMe(e){
+                setTimeout(function () {
+                           var top =  e.pageY-50;
+                            $('.modal-dialog.modal-sm').offset({top: top, left: 0});
+                         }, 30);
+
+            };
+    </script>
     <meta charset="UTF-8">
 </head>
 <body>
