@@ -139,6 +139,7 @@
                 calDistance(WidgetItem.locationData.currentCoordinates, [WidgetItem.item], WidgetItem.placeInfo.data.settings.showDistanceIn);
 
             WidgetItem.clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
+                    console.log('OnUpdate method called----------------------************************',event);
                     if (event.tag == 'items' && event.data) {
                         WidgetItem.item = event;
                         if (event.data.address && event.data.address.lng && event.data.address.lat) {
