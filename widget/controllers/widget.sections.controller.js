@@ -59,7 +59,8 @@
                 WidgetSections.noMoreItems = false;
 
                 WidgetSections.showDescription = function () {
-                    if (WidgetSections.placesInfo.data.content.descriptionHTML == '<p>&nbsp;<br></p>' || WidgetSections.placesInfo.data.content.descriptionHTML == '<p><br data-mce-bogus="1"></p>')
+                    console.log('Description------------------------',WidgetSections.placesInfo,WidgetSections.placesInfo.data.content.descriptionHTML);
+                    if (WidgetSections.placesInfo.data.content.descriptionHTML == '<p>&nbsp;<br></p>' || WidgetSections.placesInfo.data.content.descriptionHTML == '<p><br data-mce-bogus="1"></p>' || WidgetSections.placesInfo.data.content.descriptionHTML == "" )
                         return false;
                     else
                         return true;
