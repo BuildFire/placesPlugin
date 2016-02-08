@@ -11,10 +11,10 @@
             </div>
             <div class="info-bar titleBarBackgroundTheme details-3-info-bar-fix">
                 <div class="col-xs-8 text-left pull-left">
-                    <p class="margin-bottom-zero ellipsis titleBarTextAndIcons">
+                    <p class="margin-bottom-zero ellipsis titleBarTextAndIcons" style="position:relative; top:-5px;">
                         {{WidgetItem.item.data.itemTitle}}</p>
 
-                    <p class="margin-bottom-zero ellipsis titleBarTextAndIcons">
+                    <p class="margin-bottom-zero ellipsis titleBarTextAndIcons" style="position:relative; top:-5px;">
                         {{WidgetItem.item.data.summary}}</p>
                 </div>
                 <div class="col-xs-4 text-right pull-right padding-left-zero" ng-if="WidgetItem.distance">
@@ -24,7 +24,7 @@
             </div>
         </div>
     </div>
-    <div class="padding-top-fifteen padding-bottom-ten text-center">
+    <div class="padding-top-twenty padding-bottom-ten text-center">
         <div class="plugin-thumbnail-slider clearfix">
             <p ng-if="WidgetItem.item.data.address.aName"><a ng-click="WidgetItem.openMap()" href="javaScript:void(0);">{{WidgetItem.item.data.address.aName}}</a>
             </p>
