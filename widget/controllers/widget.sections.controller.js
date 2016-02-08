@@ -640,6 +640,10 @@
                     return WidgetSections.selectedSections;
                 }, filterChanged, true);
 
+                $scope.$watch(function () {
+                    return WidgetSections.currentView;
+                }, function(){ WidgetSections.selectedItem = null; }, true);
+
                 $scope.$on("Carousel:LOADED", function () {
                     if (!view) {
                         view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
