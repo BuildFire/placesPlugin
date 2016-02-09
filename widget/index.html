@@ -61,12 +61,15 @@
          */
         /*$(".slide").css("transform","translateX(-" + $(window).width() + "px)");
          setTimeout(function(){$('.slide').css("transform","translateX(0px)");},300);*/
-        $("#btmmenu").hide();
+        $("#hidebtmmenu").click();
         $('.slide').hide().css('transform', 'translateX(' + $(window).width() + 'px)').show();
         setTimeout(function () {
             $('.slide').css('transform', 'translateX(0px)');
-            $("#btmmenu").show();
         }, 750);
+
+        setTimeout(function () {
+            $("#showbtmmenu").click();
+        }, 1500);
     }
 </script>
 </html>
