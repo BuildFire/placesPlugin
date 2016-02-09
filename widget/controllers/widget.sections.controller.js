@@ -10,7 +10,6 @@
                 WidgetSections.filterUnapplied = true;
                 //WidgetSections.selectedSections = [];
 
-                WidgetSections.btmmenu = true;
 
                 WidgetSections.onSliderChange = function () {
                     WidgetSections.filterUnapplied = false; // this tells us that the slider has been set by the user
