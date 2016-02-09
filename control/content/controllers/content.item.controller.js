@@ -73,32 +73,6 @@
                     trusted: true,
                     theme: 'modern'
                 };
-                // create a new instance of the buildfire carousel editor
-                ContentItem.editor = new Buildfire.components.carousel.editor("#carousel");
-                // this method will be called when a new item added to the list
-                ContentItem.editor.onAddItems = function (items) {
-                    if (!ContentItem.item.data.images)
-                        ContentItem.item.data.images = [];
-                    ContentItem.item.data.images.push.apply(ContentItem.item.data.images, items);
-                    if (!$scope.$$phase)$scope.$digest();
-                };
-                // this method will be called when an item deleted from the list
-                ContentItem.editor.onDeleteItem = function (item, index) {
-                    ContentItem.item.data.images.splice(index, 1);
-                    if (!$scope.$$phase)$scope.$digest();
-                };
-                // this method will be called when you edit item details
-                ContentItem.editor.onItemChange = function (item, index) {
-                    ContentItem.item.data.images.splice(index, 1, item);
-                    if (!$scope.$$phase)$scope.$digest();
-                };
-                // this method will be called when you change the order of items
-                ContentItem.editor.onOrderChange = function (item, oldIndex, newIndex) {
-                    var temp = ContentItem.item.data.images[oldIndex];
-                    ContentItem.item.data.images[oldIndex] = ContentItem.item.data.images[newIndex];
-                    ContentItem.item.data.images[newIndex] = temp;
-                    if (!$scope.$$phase)$scope.$digest();
-                };
                 // create a new instance of the buildfire action Items
                 ContentItem.linkEditor = new Buildfire.components.actionItems.sortableList("#actionItems");
                 // this method will be called when a new item added to the list
@@ -129,8 +103,6 @@
                 /**
                  * Initialize the carousel and links
                  */
-                if (ContentItem.item.data.images)
-                    ContentItem.editor.loadItems(ContentItem.item.data.images);
                 if (ContentItem.item.data.links)
                     ContentItem.linkEditor.loadItems(ContentItem.item.data.links);
                 if (ContentItem.item.data.address && ContentItem.item.data.address.aName) {

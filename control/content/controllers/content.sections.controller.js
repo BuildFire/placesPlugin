@@ -118,8 +118,8 @@
                  * ContentSections.noMore tells if all data has been loaded
                  */
                 ContentSections.noMore = false;
-                // create a new instance of the buildfire carousel editor
-                ContentSections.editor = new Buildfire.components.carousel.editor("#carousel");
+               /* // create a new instance of the buildfire carousel editor
+                ContentSections.editor = new Buildfire.components.carousel.editor("#carousel");*/
 
                 var updateSearchOptions = function () {
                     var order;
@@ -268,39 +268,6 @@
                  Buildfire.deeplink.getData(function (data) {
                  if (data) alert('deep link data: ' + data);
                  });*/
-
-
-                // this method will be called when a new item added to the list
-                ContentSections.editor.onAddItems = function (items) {
-                    if (!ContentSections.info.data.content.images)
-                        ContentSections.info.data.content.images = [];
-                    ContentSections.info.data.content.images.push.apply(ContentSections.info.data.content.images, items);
-                    if (!$scope.$$phase)$scope.$digest();
-                };
-                // this method will be called when an item deleted from the list
-                ContentSections.editor.onDeleteItem = function (item, index) {
-                    ContentSections.info.data.content.images.splice(index, 1);
-                    if (!$scope.$$phase)$scope.$digest();
-                };
-                // this method will be called when you edit item details
-                ContentSections.editor.onItemChange = function (item, index) {
-                    ContentSections.info.data.content.images.splice(index, 1, item);
-                    if (!$scope.$$phase)$scope.$digest();
-                };
-                // this method will be called when you change the order of items
-                ContentSections.editor.onOrderChange = function (item, oldIndex, newIndex) {
-                    var temp = ContentSections.info.data.content.images[oldIndex];
-                    ContentSections.info.data.content.images[oldIndex] = ContentSections.info.data.content.images[newIndex];
-                    ContentSections.info.data.content.images[newIndex] = temp;
-                    if (!$scope.$$phase)$scope.$digest();
-                };
-
-                // initialize carousel data
-                if (!ContentSections.info.data.content.images)
-                    ContentSections.editor.loadItems([]);
-                else
-                    ContentSections.editor.loadItems(ContentSections.info.data.content.images);
-
 
                 /**
                  * ContentSections.getTemplate() used to download csv template
