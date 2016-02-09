@@ -53,17 +53,20 @@
 </div>
 </body>
 <script>
-    function manuallyTransitionAnimation(){
+    function manuallyTransitionAnimation() {
         // applied css transitions (jquery slide flickers on iphone)
-       /* $(".slide").css("transform","translateX(-" + $(window).width() + "px)");
-        setTimeout(function(){$('.slide').hide().css("transform","translateX(" + $(window).width() + "px)").show();},500);
-        setTimeout(function(){$('.slide').css("transform","translateX(0px)");},1000);
-*/
+        /* $(".slide").css("transform","translateX(-" + $(window).width() + "px)");
+         setTimeout(function(){$('.slide').hide().css("transform","translateX(" + $(window).width() + "px)").show();},500);
+         setTimeout(function(){$('.slide').css("transform","translateX(0px)");},1000);
+         */
         /*$(".slide").css("transform","translateX(-" + $(window).width() + "px)");
-        setTimeout(function(){$('.slide').css("transform","translateX(0px)");},300);*/
-
+         setTimeout(function(){$('.slide').css("transform","translateX(0px)");},300);*/
+        $("#btmmenu").hide();
         $('.slide').hide().css('transform', 'translateX(' + $(window).width() + 'px)').show();
-        setTimeout(function(){$('.slide').css('transform', 'translateX(0px)');},750);
+        setTimeout(function () {
+            $('.slide').css('transform', 'translateX(0px)');
+            $("#btmmenu").show();
+        }, 750);
     }
 </script>
 </html>
