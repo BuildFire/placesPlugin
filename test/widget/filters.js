@@ -58,3 +58,20 @@ describe('Unit: safeHtml filter', function () {
         expect(typeof result).toEqual('object');
     });
 });
+
+describe('Unit: unique filter', function () {
+    beforeEach(module('placesWidgetFilters'));
+    var filter,$sce,$scope;
+    beforeEach(inject(function (_$rootScope_,_$filter_,_$sce_) {
+        filter = _$filter_;
+        $sce=_$sce_;
+
+        $scope=_$rootScope_;
+    }));
+
+    it('unique filter should returns an empty string if html value not provided', function () {
+        var result;
+        result = filter('unique')([{'id':'id1'},{'id':'id2'}],'id');
+        expect(result.length).toEqual(2);
+    });
+});

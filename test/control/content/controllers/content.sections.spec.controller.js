@@ -206,32 +206,6 @@ describe('Unit : Controller - ContentSectionsCtrl', function () {
 
     });
 
-    describe('Carousel', function () {
-        it('ContentSections.editor.onAddItems should pass if it initialises the ContentSections.info.data.content.images to blank array if it doesnt exyst', function () {
-            ContentSections.info.data.content.images = null;
-            ContentSections.editor.onAddItems(['test']);
-            expect(ContentSections.info.data.content.images.length).toEqual(1);
-        });
-
-        it('ContentSections.editor.onDeleteItem should pass if it deletes the item at given index', function () {
-            ContentSections.info.data.content.images = ['test'];
-            ContentSections.editor.onDeleteItem({}, 0);
-            expect(ContentSections.info.data.content.images.length).toEqual(0);
-        });
-
-        it('ContentSections.editor.onItemChange should call popup function if parameter is correct', function () {
-            ContentSections.info.data.content.images = ['and'];
-            ContentSections.editor.onItemChange('test', 0);
-            expect(ContentSections.info.data.content.images[0]).toEqual('test');
-        });
-
-        it('ContentSections.editor.onOrderChange should pass if it changes the index of given item', function () {
-            ContentSections.info.data.content.images = ['and', 'test', 'if'];
-            ContentSections.editor.onOrderChange('test', 1, 2);
-            expect(ContentSections.info.data.content.images[2]).toEqual('test');
-        });
-    });
-
     describe('Infinite scroll', function () {
 
         it('should make isBusy true when data is not being fetched', function () {

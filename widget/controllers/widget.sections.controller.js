@@ -28,9 +28,10 @@
                     WidgetSections.selectedSections = [];
 
                     if ($routeParams.sectionId == 'allitems') {
-                        $timeout(function () {
+                        WidgetSections.showSections = false;
+                       /* $timeout(function () {
                             $('#allItemsOption').click();
-                        }, 500);
+                        }, 1000);*/
 
                     }
                 }
@@ -59,7 +60,8 @@
                 WidgetSections.noMoreItems = false;
 
                 WidgetSections.showDescription = function () {
-                    if (WidgetSections.placesInfo.data.content.descriptionHTML == '<p>&nbsp;<br></p>' || WidgetSections.placesInfo.data.content.descriptionHTML == '<p><br data-mce-bogus="1"></p>')
+                    console.log('Description------------------------',WidgetSections.placesInfo,WidgetSections.placesInfo.data.content.descriptionHTML);
+                    if (WidgetSections.placesInfo.data.content.descriptionHTML == '<p>&nbsp;<br></p>' || WidgetSections.placesInfo.data.content.descriptionHTML == '<p><br data-mce-bogus="1"></p>' || WidgetSections.placesInfo.data.content.descriptionHTML == "" )
                         return false;
                     else
                         return true;
@@ -297,7 +299,7 @@
                             WidgetSections.selectedItem = null;
                             WidgetSections.selectedItemDistance = null;
                             WidgetSections.currentView = WidgetSections.placesInfo.data.settings.defaultView;
-                            $scope.$apply();
+                            if (!$scope.$$phase)$scope.$digest();
                             refreshSections();
 
 
@@ -332,7 +334,7 @@
                             }
                             WidgetSections.selectedItem = null;
                             WidgetSections.selectedItemDistance = null;
-                            $scope.$apply();
+                            if (!$scope.$$phase)$scope.$digest();
                         }
                     }
                     else {
@@ -471,7 +473,7 @@
                     WidgetSections.sections = [];
                     WidgetSections.noMoreSections = false;
                     WidgetSections.loadMoreSections();
-                    $scope.$apply();
+                    if (!$scope.$$phase)$scope.$digest();
                 }
 
                 function filterChanged() {
@@ -509,6 +511,12 @@
 
                 /* Onclick event of items on the map view*/
                 WidgetSections.selectedMarker = function (itemIndex) {
+                    if(itemIndex === null)
+                    {
+                        WidgetSections.selectedItem = null;
+                        $scope.$digest();
+                        return;
+                    }
                     WidgetSections.selectedItem = WidgetSections.locationData.items[itemIndex];
                     initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
 
@@ -633,6 +641,10 @@
                     return WidgetSections.selectedSections;
                 }, filterChanged, true);
 
+                $scope.$watch(function () {
+                    return WidgetSections.currentView;
+                }, function(){ WidgetSections.selectedItem = null; }, true);
+
                 $scope.$on("Carousel:LOADED", function () {
                     if (!view) {
                         view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
@@ -697,15 +709,27 @@
 
 
                     //syn with control side
-
                     Messaging.sendMessageToControl({
                         name: EVENTS.ROUTE_CHANGE,
                         message: {
                             path: PATHS.SECTION,
-                            secId: $routeParams.sectionId
+                            secId: $routeParams.sectionId,
+                            dontPropagate : true
                         }
                     });
                 }
+
+                WidgetSections.messageControlForSection = function (a) {
+                    //syn with control side
+                    Messaging.sendMessageToControl({
+                        name: EVENTS.ROUTE_CHANGE,
+                        message: {
+                            path: PATHS.SECTION,
+                            secId: a,
+                            dontPropagate : true
+                        }
+                    });
+                };
 
                 var offCallMeFn = $rootScope.$on(EVENTS.ROUTE_CHANGE_1, function (e, data) {
                     console.log('>>>>>>>>>>>>>>', data);
@@ -720,15 +744,14 @@
                             WidgetSections.selectedSections = [data.toString()];
                         }
                         WidgetSections.showSections = false;
-                        $scope.$apply();
+                        if (!$scope.$$phase)$scope.$digest();
                     }
                     else {
                         WidgetSections.selectedSections = [];
                         WidgetSections.showSections = true;
                     }
                     console.log('<<<<<<<<<<<<<<', WidgetSections.selectedSections);
-
-                    $scope.$apply();
+                    if (!$scope.$$phase)$scope.$digest();
                 });
 
                 /**

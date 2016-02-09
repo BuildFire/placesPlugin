@@ -37,7 +37,7 @@
                             var map = new google.maps.Map(elem[0], {
                                 streetViewControl: false,
                                 mapTypeControl: false,
-                                zoom: 8,
+                                zoom: 5,
                                 center: {lat: mapCenterLat, lng: mapCenterLng},
                                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                                 zoomControlOptions: {
@@ -103,8 +103,14 @@
                             var placeLocationMarkers = [];
                             if (scope.locationData && scope.locationData.items && scope.locationData.items.length) {
                                 for (var _index = 0; _index < scope.locationData.items.length; _index++) {
+
                                     var _place = scope.locationData.items[_index]
                                         , marker = '';
+
+                                    if (_index == 0) { // this is to center the map on the first item
+                                        map.setCenter(new google.maps.LatLng(_place.data.address.lat, _place.data.address.lng));
+                                    }
+
                                     if (_place.data && _place.data.address && _place.data.address.lat && _place.data.address.lng) {
                                         marker = new google.maps.Marker({
                                             position: {lat: _place.data.address.lat, lng: _place.data.address.lng},
@@ -129,6 +135,14 @@
                                 }
                             }
                             var markerCluster = new MarkerClusterer(map, placeLocationMarkers);
+
+
+                            map.addListener('click', function () {
+                                if (selectedLocation) {
+                                    scope.markerCallback(null);
+                                    selectedLocation.setIcon(placeLocationIcon);
+                                }
+                            });
                         }
                     }, true);
                 }

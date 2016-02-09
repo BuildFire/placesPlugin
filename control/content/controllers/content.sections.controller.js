@@ -118,8 +118,8 @@
                  * ContentSections.noMore tells if all data has been loaded
                  */
                 ContentSections.noMore = false;
-                // create a new instance of the buildfire carousel editor
-                ContentSections.editor = new Buildfire.components.carousel.editor("#carousel");
+               /* // create a new instance of the buildfire carousel editor
+                ContentSections.editor = new Buildfire.components.carousel.editor("#carousel");*/
 
                 var updateSearchOptions = function () {
                     var order;
@@ -218,7 +218,7 @@
                         console.log('allSections', allSections);
 
                         Items.find({filter: {"$json.itemTitle": {"$regex": '/*'}}}).then(function (items) {
-                            console.log(items);
+                            console.log('Items in epxort--------------------------', items);
                             for (var _ind = 0; _ind < items.length; _ind++) {
                                 items[_ind].data.address = items[_ind].data.address.aName;
                                 if (items[_ind].data.sections.length > 1) {
@@ -245,11 +245,17 @@
                                 }
 
                             }
-                            console.log(json);
+                            console.log('Json in export csv-----------------', json);
                             var csv = $csv.jsonToCsv(angular.toJson(json), {
                                 header: header
                             });
-                            $csv.download(csv, "Export.csv");
+                            console.log('Csv---------------------------------------------------------', csv);
+                            if (csv) {
+                                $csv.download(csv, "Export.csv");
+                            }
+                            else {
+                                $csv.download([], "Export.csv");
+                            }
                         }, function () {
                         });
 
@@ -262,39 +268,6 @@
                  Buildfire.deeplink.getData(function (data) {
                  if (data) alert('deep link data: ' + data);
                  });*/
-
-
-                // this method will be called when a new item added to the list
-                ContentSections.editor.onAddItems = function (items) {
-                    if (!ContentSections.info.data.content.images)
-                        ContentSections.info.data.content.images = [];
-                    ContentSections.info.data.content.images.push.apply(ContentSections.info.data.content.images, items);
-                    $scope.$digest();
-                };
-                // this method will be called when an item deleted from the list
-                ContentSections.editor.onDeleteItem = function (item, index) {
-                    ContentSections.info.data.content.images.splice(index, 1);
-                    $scope.$digest();
-                };
-                // this method will be called when you edit item details
-                ContentSections.editor.onItemChange = function (item, index) {
-                    ContentSections.info.data.content.images.splice(index, 1, item);
-                    $scope.$digest();
-                };
-                // this method will be called when you change the order of items
-                ContentSections.editor.onOrderChange = function (item, oldIndex, newIndex) {
-                    var temp = ContentSections.info.data.content.images[oldIndex];
-                    ContentSections.info.data.content.images[oldIndex] = ContentSections.info.data.content.images[newIndex];
-                    ContentSections.info.data.content.images[newIndex] = temp;
-                    $scope.$digest();
-                };
-
-                // initialize carousel data
-                if (!ContentSections.info.data.content.images)
-                    ContentSections.editor.loadItems([]);
-                else
-                    ContentSections.editor.loadItems(ContentSections.info.data.content.images);
-
 
                 /**
                  * ContentSections.getTemplate() used to download csv template
@@ -340,6 +313,7 @@
                             itemArray = [],
                             itemSecMap = [];
                         var addItem = function (row, data) {
+
                             row.images = row.images.replace(/ /g, '');
                             if (row.images) {
                                 if (row.images.indexOf(',') < 0) {
@@ -365,22 +339,137 @@
                                 row.images = [];
                             }
 
-                            Items.insert({
-                                itemTitle: row.itemTitle,
-                                summary: row.summary,
-                                listImage: row.listImage,
-                                images: row.images,
-                                bodyContent: row.bodyContent,
-                                addressTitle: row.addressTitle,
-                                address: {aName: row.address, lat: ContentSections._lat, lng: ContentSections._lng},
-                                dateCreated: +new Date(),
-                                rank: rankSec,
-                                sections: [data.id],
-                            }).then(function (data) {
-                                console.log('Item inserted using Import CSV-----', data);
-                            }, function (error) {
-                                console.log('Error----------', error);
-                            });
+                            var links = [];
+                            if (row.webURL) {
+                                links.push({
+                                    title: "Link",
+                                    url: row.webURL,
+                                    action: "linkToWeb",
+                                    openIn: "_blank"
+                                });
+                            }
+
+                            if (row.sendToEmail) {
+                                links.push({
+                                    title: "Send Email",
+                                    subject: "",
+                                    body: "",
+                                    email: row.sendToEmail,
+                                    action: "sendEmail"
+                                });
+                            }
+
+                            if (row.smsTextNumber) {
+                                links.push({
+                                    title: "Send SMS",
+                                    subject: "action Item SMS Example",
+                                    body: "We are testing action Item send SMS",
+                                    phoneNumber: row.smsTextNumber,
+                                    action: "sendSMS"
+                                });
+                            }
+
+                            if (row.facebookURL) {
+                                links.push({
+                                    title: "Link to Facebook",
+                                    url: row.facebookURL,
+                                    action: "linkToSocialFacebook"
+                                });
+                            }
+
+                            if (row.twitterURL) {
+                                links.push({
+                                    title: "Link to Twitter",
+                                    url: row.twitterURL,
+                                    action: "linkToSocialTwitter"
+                                });
+                            }
+
+                            if (row.googlePlusURL) {
+                                links.push({
+                                    title: "Link to Google",
+                                    url: row.googlePlusURL,
+                                    action: "linkToSocialGoogle"
+                                });
+                            }
+
+                            if (row.linkedinURL) {
+                                links.push({
+                                    title: "Link to LinkedIn",
+                                    url: row.linkedinURL,
+                                    action: "linkToSocialLinkedIn"
+                                });
+                            }
+
+                            if (row.instagramURL) {
+                                links.push({
+                                    title: "Link to Instagram",
+                                    url: row.instagramURL,
+                                    action: "linkToSocialInstagram"
+                                });
+                            }
+
+                            if (row.mapAddress) {
+
+                                Utils.getCoordinatesFromAddress(row.mapAddress).then(function (coordinates) {
+                                    if (!coordinates) {
+                                        return;
+                                    }
+                                    console.log('coordinates', coordinates);
+                                    if (coordinates.data.status == 'OK') {
+                                        links.push({
+                                            title: "Navigate to address title",
+                                            lat: coordinates.data.results[0].geometry.location.lat,
+                                            lng: coordinates.data.results[0].geometry.location.lng,
+                                            address: row.mapAddress,
+                                            action: "navigateToAddress"
+                                        });
+
+                                        Items.insert({
+                                            itemTitle: row.itemTitle,
+                                            summary: row.summary,
+                                            listImage: row.listImage,
+                                            images: row.images,
+                                            bodyContent: row.bodyContent,
+                                            addressTitle: row.addressTitle,
+                                            address: {aName: row.address, lat: ContentSections._lat, lng: ContentSections._lng},
+                                            dateCreated: +new Date(),
+                                            rank: rankSec,
+                                            sections: [data.id],
+                                            links: links
+                                        }).then(function (data) {
+                                            console.log('Item inserted using Import CSV-----', data);
+                                        }, function (error) {
+                                            console.log('Error----------', error);
+                                        });
+                                    }
+                                }, function () {
+
+                                });
+
+
+                            }
+                            else {
+                                Items.insert({
+                                    itemTitle: row.itemTitle,
+                                    summary: row.summary,
+                                    listImage: row.listImage,
+                                    images: row.images,
+                                    bodyContent: row.bodyContent,
+                                    addressTitle: row.addressTitle,
+                                    address: {aName: row.address, lat: ContentSections._lat, lng: ContentSections._lng},
+                                    dateCreated: +new Date(),
+                                    rank: rankSec,
+                                    sections: [data.id],
+                                    links: links
+                                }).then(function (data) {
+                                    console.log('Item inserted using Import CSV-----', data);
+                                }, function (error) {
+                                    console.log('Error----------', error);
+                                });
+                            }
+
+
                         };
 
                         if (rows && rows.length) {
@@ -580,7 +669,7 @@
                     var item = ContentSections.sections[_index];
 
                     if ("undefined" !== typeof item) {
-                        buildfire.navigation.scrollTop();
+                        //buildfire.navigation.scrollTop();
 
                         Modals.removePopupModal({title: ''}).then(function (result) {
                             if (result) {

@@ -73,32 +73,6 @@
                     trusted: true,
                     theme: 'modern'
                 };
-                // create a new instance of the buildfire carousel editor
-                ContentItem.editor = new Buildfire.components.carousel.editor("#carousel");
-                // this method will be called when a new item added to the list
-                ContentItem.editor.onAddItems = function (items) {
-                    if (!ContentItem.item.data.images)
-                        ContentItem.item.data.images = [];
-                    ContentItem.item.data.images.push.apply(ContentItem.item.data.images, items);
-                    $scope.$digest();
-                };
-                // this method will be called when an item deleted from the list
-                ContentItem.editor.onDeleteItem = function (item, index) {
-                    ContentItem.item.data.images.splice(index, 1);
-                    $scope.$digest();
-                };
-                // this method will be called when you edit item details
-                ContentItem.editor.onItemChange = function (item, index) {
-                    ContentItem.item.data.images.splice(index, 1, item);
-                    $scope.$digest();
-                };
-                // this method will be called when you change the order of items
-                ContentItem.editor.onOrderChange = function (item, oldIndex, newIndex) {
-                    var temp = ContentItem.item.data.images[oldIndex];
-                    ContentItem.item.data.images[oldIndex] = ContentItem.item.data.images[newIndex];
-                    ContentItem.item.data.images[newIndex] = temp;
-                    $scope.$digest();
-                };
                 // create a new instance of the buildfire action Items
                 ContentItem.linkEditor = new Buildfire.components.actionItems.sortableList("#actionItems");
                 // this method will be called when a new item added to the list
@@ -106,31 +80,29 @@
                     if (!ContentItem.item.data.links)
                         ContentItem.item.data.links = [];
                     ContentItem.item.data.links.push(items);
-                    $scope.$digest();
+                    if (!$scope.$$phase)$scope.$digest();
                 };
                 // this method will be called when an item deleted from the list
                 ContentItem.linkEditor.onDeleteItem = function (item, index) {
                     ContentItem.item.data.links.splice(index, 1);
-                    $scope.$digest();
+                    if (!$scope.$$phase)$scope.$digest();
                 };
                 // this method will be called when you edit item details
                 ContentItem.linkEditor.onItemChange = function (item, index) {
                     ContentItem.item.data.links.splice(index, 1, item);
-                    $scope.$digest();
+                    if (!$scope.$$phase)$scope.$digest();
                 };
                 // this method will be called when you change the order of items
                 ContentItem.linkEditor.onOrderChange = function (item, oldIndex, newIndex) {
                     var temp = ContentItem.item.data.links[oldIndex];
                     ContentItem.item.data.links[oldIndex] = ContentItem.item.data.links[newIndex];
                     ContentItem.item.data.links[newIndex] = temp;
-                    $scope.$digest();
+                    if (!$scope.$$phase)$scope.$digest();
                 };
 
                 /**
                  * Initialize the carousel and links
                  */
-                if (ContentItem.item.data.images)
-                    ContentItem.editor.loadItems(ContentItem.item.data.images);
                 if (ContentItem.item.data.links)
                     ContentItem.linkEditor.loadItems(ContentItem.item.data.links);
                 if (ContentItem.item.data.address && ContentItem.item.data.address.aName) {
@@ -166,8 +138,10 @@
                 function insertAndUpdate(_item) {
                     updating = true;
                     if (_item.id) {
+                        console.log('--------------------------------------insertAndUpdate _item.id',_item.id);
                         console.info('****************Item exist***********************');
                         Items.update(_item.id, _item.data).then(function (data) {
+                            console.info('$$$$$$$$$$$$$$$$$ UPDATE CALLED $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',_item.id, _item.data);
                             updating = false;
                             console.log('Data updated successfully---', data);
                         }, function (err) {
@@ -179,15 +153,23 @@
                         console.info('****************Item inserted***********************');
                         _item.data.rank = (placeInfoData.data.content.rankOfLastItemItems || 0) + 10;
                         _item.data.dateCreated = new Date();
+                        console.log('--------------------------------------insertAndUpdate _item.data.dateCreated',_item.data.dateCreated);
+
                         Items.insert(_item.data).then(function (data) {
+                            console.info('$$$$$$$$$$$$$$$$$ INSERT CALLED $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',_item.data);
+                       //     console.info('$$$$$$$$$$$$$$$$$ INSERT CALLED $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',_item.data);
                             updating = false;
                             if (data && data.id) {
                                 ContentItem.item.data.deepLinkUrl = Buildfire.deeplink.createLink({id: data.id});
+                                console.log('--------------------------------------insertAndUpdate  ContentItem.item.data.deepLinkUrl ', ContentItem.item.data.deepLinkUrl );
                                 ContentItem.item.id = data.id;
                                 updateMasterItem(ContentItem.item);
                                 placeInfoData.data.content.rankOfLastItemItems = _item.data.rank;
                                 PlaceInfo.save(placeInfoData.data).then(function (data) {
+                                    console.log('--------------------------------------insertAndUpdate   PlaceInfo.save(placeInfoData.data).then(function (data) ', data);
                                 }, function (err) {
+                                    console.log('--------------------------------------insertAndUpdate  resetItem ');
+
                                     resetItem();
                                     console.error('Error while getting----------', err);
                                 });
@@ -207,14 +189,18 @@
                  * @param _item
                  */
                 function updateItemsWithDelay(_item) {
+                    console.log('--------------------------------------updateItemsWithDelay item',item);
                     if (updating)
                         return;
                     if (tmrDelayForItem) {
                         clearTimeout(tmrDelayForItem);
                     }
                     ContentItem.isItemValid = isValidItem(ContentItem.item.data);
+                    console.log('--------------------------------------ContentItem.isItemValid',ContentItem.isItemValid);
                     if (_item && !isUnChanged(_item) && ContentItem.isItemValid) {
+                        console.log('--------------------------------------isUnChanged ',isUnChanged(_item));
                         tmrDelayForItem = setTimeout(function () {
+                            console.log('--------------------------------------insertAndUpdate called');
                             insertAndUpdate(_item);
                         }, 1000);
                     }
@@ -228,7 +214,7 @@
                                 console.error('Error:', error);
                             } else {
                                 ContentItem.item.data.listImage = result.selectedFiles && result.selectedFiles[0] || null;
-                                $scope.$digest();
+                                if (!$scope.$$phase)$scope.$digest();
                             }
                         };
                     Buildfire.imageLib.showDialog(options, listImgCB);
@@ -255,7 +241,7 @@
                     };
                     ContentItem.currentAddress = data.location;
                     ContentItem.currentCoordinates = data.coordinates;
-                    $scope.$digest();
+                    if (!$scope.$$phase)$scope.$digest();
                 };
                 ContentItem.setDraggedLocation = function (data) {
                     ContentItem.item.data.address = {
@@ -265,7 +251,7 @@
                     };
                     ContentItem.currentAddress = data.location;
                     ContentItem.currentCoordinates = data.coordinates;
-                    $scope.$digest();
+                    if (!$scope.$$phase)$scope.$digest();
                 };
                 ContentItem.setCoordinates = function () {
                     function successCallback(resp) {

@@ -194,6 +194,7 @@
                                 case PATHS.ITEM:
                                     url = url + "item";
                                     if (secId && id) {
+                                        //alert('b');
                                         url = url + "/" + secId + "/" + id;
                                     }
                                     else if (secId) {
@@ -238,17 +239,21 @@
                 var path = $location.path();
                 console.log(path);
                 if (path.indexOf('/items/') == 0) {
+                    //alert(1);
                     Location.goToHome();
                 }
                 else if (path.indexOf('/item/') == 0) {
-                    //Location.goToHome()
+                    //alert(2);
                     Location.go('#/items/' + path.split('/')[2]);
                 }
                 else {
                     if ($('.section-filter.whiteTheme').length == 0) // this means filter is applied
-                        buildfire.navigation.navigateHome();
+                    {//alert(3);
+                        buildfire.navigation._goBackOne();
+                    }
                     else {
-                       manuallyTransitionAnimation();
+                        //alert(4);
+                       //manuallyTransitionAnimation();
                         $rootScope.$broadcast(EVENTS.ROUTE_CHANGE_1, null);
                     }
                 }

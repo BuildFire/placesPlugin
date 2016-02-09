@@ -1,4 +1,4 @@
-<div id="carousel"></div>
+<div id="carousel" carousel-component images="ContentSections.info.data.content.images"></div>
 <hr class="none">
 <div class="item clearfix row">
     <div class="labels col-md-1 padding-right-zero pull-left">
@@ -130,7 +130,7 @@
                     <span class="btn-icon btn-link-icon btn-primary transition-third"
                           ng-click="ContentSections.deepLinkUrl(item.data.deepLinkUrl)"></span>
                     <span class="btn-icon btn-delete-icon btn-danger transition-third"
-                          ng-click="ContentSections.removeListSection($index)"></span>
+                          ng-click="ContentSections.removeListSection($index)"  onclick="clickMe(event)"></span>
                         </div>
                     </div>
                 </div>

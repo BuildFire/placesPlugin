@@ -22,10 +22,10 @@ describe('placesWidget: App', function () {
             expect(route.current.controller).toBe('WidgetSectionsCtrl')
         });
     });
-    xdescribe('Section route', function () {
+    describe('Section route', function () {
         beforeEach(inject(
             function ($httpBackend) {
-                $httpBackend.expectGET('templates/section.html')
+                $httpBackend.expectGET('templates/home.html')
                     .respond(200);
                 $httpBackend.expectGET('/items/:sectionId')
                     .respond(200);

@@ -321,13 +321,17 @@
 
             $httpProvider.interceptors.push(interceptor);
         }])
-        .run(['Location', 'Messaging', 'EVENTS', 'PATHS', function (Location, Messaging, EVENTS, PATHS) {
+        .run(['Location', 'Messaging', 'EVENTS', 'PATHS','$rootScope', function (Location, Messaging, EVENTS, PATHS,$rootScope) {
             // Handler to receive message from widget
             Messaging.onReceivedMessage = function (event) {
                 console.log('Event rcv-----on Control Side------------------------?????????????????????????????????---------------********************* in Control Panal side----', event);
                 if (event) {
                     switch (event.name) {
                         case EVENTS.ROUTE_CHANGE:
+                            if(event.message.dontPropagate){
+                                //alert(790);
+                                $rootScope.dontPropagate = true;
+                            }
                             var path = event.message.path,
                                 id = event.message.id,
                                 secId = event.message.secId;
@@ -341,6 +345,7 @@
                                     else if (secId) {
                                         url = url + "/" + secId;
                                     }
+
                                     break;
                                 case PATHS.HOME:
                                     url = url + "home";
@@ -349,6 +354,8 @@
                                     url = url + "items";
                                     if (secId != 'allitems') {
                                         url = url + "/" + secId;
+                                        //alert('aa');
+                                        //path = null;
                                     }
                                     else if (secId == 'allitems') {
                                         url = '#/allitems';
@@ -359,9 +366,10 @@
                                     break;
                                 default :
 
-                                    break
+                                    break;
                             }
-                            Location.go(url);
+                            //if (url)
+                                Location.go(url);
                             break;
                     }
                 }

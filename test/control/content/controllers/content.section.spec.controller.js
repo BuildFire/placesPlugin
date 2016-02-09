@@ -80,15 +80,15 @@ describe('Unit : Controller - ContentSectionCtrl', function () {
                         mainImage: '',
                         secTitle: '',
                         secSummary: '',
-                        itemListBGImage: '',
+                        itemListBGImage: 'bgimage.png',
                         sortBy: '',
                         rankOfLastItem: ''
                     }
                 },
                 Buildfire: {
                     imageLib: {
-                        showDialog: function () {
-                            return (null, {selectedFiles: ['']});
+                        showDialog: function (options, cb) {
+                            cb(null, {selectedFiles: ['']});
                         }
                     }
                     ,
@@ -99,7 +99,10 @@ describe('Unit : Controller - ContentSectionCtrl', function () {
                     },
                     components: {
                         images: {
-                            thumbnail: function () {
+                            thumbnail: function (id) {
+                                this.loadbackground = function (images) {
+                                };
+                                return this;
                             }
                         }
                     }
@@ -195,24 +198,108 @@ describe('Unit : Controller - ContentSectionCtrl', function () {
     });
 
 
-    /*xdescribe('ContentSection.selectListBGImage', function () {
+    describe('ContentSection.selectMainImage', function () {
 
 
-     it('it should pass if it changes the ListBGImage on correct input', function () {
-     ContentSection.selectListBGImage();
-     expect(ContentSection.section.data.itemListBGImage).toEqual('');
-     })
-     });
-
-     xdescribe('ContentSection.removeListBGImage', function () {
-
-
-     it('it should pass if it gives blank value to the ListBGImage', function () {
-     ContentSection.section.data.itemListBGImage = 'test';
-     ContentSection.removeListBGImage();
-     expect(ContentSection.section.data.itemListBGImage).toEqual('');
-     })
-     });*/
-
+        it('it should pass if it changes the selectMainImage on correct input', function () {
+            ContentSection.selectMainImage();
+            expect(ContentSection.section.data.itemListBGImage).toEqual('bgimage.png');
+        });
+        xit('it should pass if it changes the selectMainImage on Error case', function () {
+            Buildfire.imageLib.showDialog=function (options,cb) {
+                        cb({Error:'Error'}, null);
+                    };
+            ContentSection.selectMainImage();
+            expect(ContentSection.section.data.itemListBGImage).toEqual('bgimage.png');
+        });
+    });
 });
+describe('Unit : Controller - ContentSectionCtrl Undefined case', function () {
 
+// load the controller's module
+    beforeEach(module('placesContent'));
+
+    var $q, ContentSection, scope, $rootScope, $routeParams, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Location;
+
+    beforeEach(inject(function (_$q_, $controller, _$rootScope_, _DB_, _$timeout_, _COLLECTIONS_, _Orders_, _OrdersItems_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _$csv_, _Buildfire_, _Location_) {
+            scope = _$rootScope_.$new();
+            $rootScope = _$rootScope_;
+            DB = _DB_;
+            $timeout = _$timeout_;
+            COLLECTIONS = _COLLECTIONS_;
+            Orders = _Orders_;
+            OrdersItems = _OrdersItems_;
+            AppConfig = _AppConfig_;
+            Messaging = _Messaging_;
+            EVENTS = _EVENTS_;
+            PATHS = _PATHS_;
+            $csv = _$csv_;
+            Location = _Location_;
+            Buildfire = {
+                components: {
+                    carousel: {
+                        editor: function (a) {
+                            return {
+                                loadItems: function () {
+                                }
+                            }
+                        }
+                    },
+                    actionItems: {
+                        sortableList: {}
+                    }
+                }
+            };
+            $q = _$q_;
+            //Buildfire = _Buildfire_;
+            //PlaceInfoData = _PlaceInfoData_;
+
+            ContentSection = $controller('ContentSectionCtrl', {
+                $scope: scope,
+                //PlaceInfoData: {id: '1', data: {content: {sortBy: 'title'}}},
+                DB: DB,
+                $timeout: $timeout,
+                COLLECTIONS: COLLECTIONS,
+                Orders: Orders,
+                OrdersItems: OrdersItems,
+                AppConfig: AppConfig,
+                Messaging: Messaging,
+                EVENTS: EVENTS,
+                PATHS: PATHS,
+                $csv: $csv,
+                Location: Location,
+                placesInfo: null,
+                sectionInfo: null,
+                Buildfire: {
+                    imageLib: {
+                        showDialog: function () {
+                            return (null, {selectedFiles: ['']});
+                        }
+                    }
+                    ,
+                    appearance: {
+                        setHeaderVisibility: function () {
+
+                        }
+                    },
+                    components: {
+                        images: {
+                            thumbnail: function (id) {
+                                this.loadbackground = function (images) {
+                                };
+                                return this;
+                            }
+                        }
+                    }
+                }
+            });
+        })
+    )
+    ;
+
+    describe('Units: units should be Defined', function () {
+        it('it should pass if ContentSection is defined', function () {
+            expect(ContentSection).not.toBeUndefined();
+        });
+    });
+});

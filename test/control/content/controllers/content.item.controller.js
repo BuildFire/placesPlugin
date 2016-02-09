@@ -170,7 +170,8 @@ describe('Unit : placesContent content.item.controller.js', function () {
                 $rootScope.$digest();
                 expect(ContentItem.currentAddress).toEqual('noida');
             });
-        });describe('Function : ContentItem.setLocation ', function () {
+        });
+       describe('Function : ContentItem.setLocation ', function () {
             it('ContentItem.removeListImage should be called', function () {
                 var data = {
                     coordinates:['28','29'],
@@ -179,80 +180,6 @@ describe('Unit : placesContent content.item.controller.js', function () {
                 ContentItem.setLocation(data);
                 $rootScope.$digest();
                 expect(ContentItem.currentCoordinates).toEqual(['28','29']);
-            });
-        });
-
-        describe('Function : ContentItem.editor.onAddItems ', function () {
-            it('ContentItem.editor.onAddItems should be called', function () {
-                var items = [{
-                    action: null,
-                    imageUrl: "https://imagelibserver.s3.amazonaws.com/25935164-2add-11e5-9d04-02f7ca55c361/950a50c0-400a-11e5-9af5-3f5e0d725ccb.jpg"
-                }];
-                ContentItem.item.data.images = null;
-                ContentItem.editor.onAddItems(items);
-                $rootScope.$digest();
-                expect(ContentItem.item.data.images.length).toEqual(1);
-            });
-        });
-        describe('Function : ContentItem.editor.onDeleteItem ', function () {
-            it('ContentItem.editor.onDeleteItem should be called', function () {
-                var item = {
-                    action: null,
-                    imageUrl: "https://imagelibserver.s3.amazonaws.com/25935164-2add-11e5-9d04-02f7ca55c361/950a50c0-400a-11e5-9af5-3f5e0d725ccb.jpg"
-                };
-                ContentItem.item.data.images = [item];
-                ContentItem.editor.onDeleteItem(item, 0);
-                $rootScope.$digest();
-                expect(ContentItem.item.data.images.length).toEqual(0);
-            });
-        });
-        describe('Function : ContentItem.editor.onItemChange ', function () {
-            it('ContentItem.editor.onItemChange should be called', function () {
-                var item = {
-                    action: {
-                        name: 'self'
-                    },
-                    imageUrl: "https://imagelibserver.s3.amazonaws.com/25935164-2add-11e5-9d04-02f7ca55c361/950a50c0-400a-11e5-9af5-3f5e0d725ccb.jpg"
-                };
-                ContentItem.item.data.images = [{
-                    action: null,
-                    imageUrl: "https://imagelibserver.s3.amazonaws.com/25935164-2add-11e5-9d04-02f7ca55c361/950a50c0-400a-11e5-9af5-3f5e0d725ccb.jpg"
-                }];
-                ContentItem.editor.onItemChange(item, 0);
-                $rootScope.$digest();
-                expect(ContentItem.item.data.images[0]).toEqual({
-                    action: {
-                        name: 'self'
-                    },
-                    imageUrl: "https://imagelibserver.s3.amazonaws.com/25935164-2add-11e5-9d04-02f7ca55c361/950a50c0-400a-11e5-9af5-3f5e0d725ccb.jpg"
-                });
-            });
-        });
-        describe('Function : ContentItem.editor.onOrderChange ', function () {
-            it('ContentItem.editor.onOrderChange should be called', function () {
-                var item = {
-                    action: {
-                        name: 'self'
-                    },
-                    imageUrl: "https://imagelibserver.s3.amazonaws.com/25935164.jpg"
-                };
-                ContentItem.item.data.images = [
-                    {
-                        action: {
-                            name: 'self'
-                        },
-                        imageUrl: "https://imagelibserver.s3.amazonaws.com/25935164.jpg"
-                    },
-                    {
-                        action: null,
-                        imageUrl: "https://imagelibserver.s3.amazonaws.com/25935164-2add-11e5-9d04-02f7ca55c361/950a50c0-400a-11e5-9af5-3f5e0d725ccb.jpg"
-                    }];
-                ContentItem.editor.onOrderChange(item, 0, 1);
-                $rootScope.$digest();
-                expect(ContentItem.item.data.images[0]).toEqual({
-                    action: null,
-                    imageUrl: "https://imagelibserver.s3.amazonaws.com/25935164-2add-11e5-9d04-02f7ca55c361/950a50c0-400a-11e5-9af5-3f5e0d725ccb.jpg"
-                });
             });
         });
         describe('Function : ContentItem.linkEditor.onAddItems ', function () {

@@ -1,35 +1,35 @@
 /**
  * Create self executing funton to avoid global scope creation
  */
-(function (angular, tinymce,buildfire) {
+(function (angular, tinymce, buildfire) {
     'use strict';
     angular
         .module('placesContent')
     /**
      * Inject dependency
      */
-        .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'Buildfire', 'DB', 'COLLECTIONS', 'Modals', 'Orders', 'OrdersItems', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'placesInfo', 'sectionInfo', 'DEFAULT_DATA',
-            function ($scope, $routeParams, Buildfire, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo, sectionInfo, DEFAULT_DATA) {
+        .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'Buildfire', 'DB', 'COLLECTIONS', 'Modals', 'Orders', 'OrdersItems', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'placesInfo', 'sectionInfo', 'DEFAULT_DATA', '$rootScope',
+            function ($scope, $routeParams, Buildfire, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo, sectionInfo, DEFAULT_DATA, $rootScope) {
                 //Show the INT header part.
                 Buildfire.appearance.setHeaderVisibility(true);
 
 
-               //Scroll current view to top when page loaded.
-               buildfire.navigation.scrollTop();
+                //Scroll current view to top when page loaded.
+                buildfire.navigation.scrollTop();
                 /**
-                 * Create instance of Sections and Items db collection
+                 * Create instance of Sections,PlaceInfo and Items db collection
                  * @type {DB}
                  */
                 var searchOptions;
-                var Sections = new DB(COLLECTIONS.Sections)
-                    , Items = new DB(COLLECTIONS.Items)
-                    , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
-                    , tmrDelayForInfo = null
+                var ContentItems = this;
+                ContentItems.Sections = new DB(COLLECTIONS.Sections);
+                ContentItems.Items = new DB(COLLECTIONS.Items);
+                ContentItems.PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
+                var tmrDelayForInfo = null
                     , _skip = 0
                     , _limit = 10
                     , _maxLimit = 19;
 
-                var ContentItems = this;
                 if (sectionInfo != 'allitems')
                     ContentItems.sectionInfo = sectionInfo;
                 if (placesInfo) {
@@ -78,12 +78,12 @@
                             }
                             if (isRankChanged) {
                                 console.log('update in index');
-                                Items.update(draggedItem.id, draggedItem.data).then(function (updataeditem) {
+                                ContentItems.Items.update(draggedItem.id, draggedItem.data).then(function (updataeditem) {
                                     console.log('Updated item--------------------------------', updataeditem);
                                     if (ContentItems.sectionInfo) {
                                         ContentItems.sectionInfo.data.rankOfLastItem = maxRank;
                                         // Update the rankOfLastItem in a particular section
-                                        Sections.update(ContentItems.sectionInfo.id, ContentItems.sectionInfo.data).then(function (data) {
+                                        ContentItems.Sections.update(ContentItems.sectionInfo.id, ContentItems.sectionInfo.data).then(function (data) {
                                                 // Do Something on Success
                                             },
                                             function () {
@@ -150,7 +150,7 @@
                 }
 
                 function saveInfoData(_info) {
-                    PlaceInfo.save(_info.data).then(function (data) {
+                    ContentItems.PlaceInfo.save(_info.data).then(function (data) {
                         updateMasterInfoData(_info);
                     }, function (err) {
                         console.error('Error-------', err);
@@ -170,7 +170,7 @@
 
 
                 ContentItems.deepLinkUrl = function (url) {
-                  buildfire.navigation.scrollTop();
+                    buildfire.navigation.scrollTop();
                     Modals.DeeplinkPopupModal(url);
                 };
 
@@ -204,7 +204,7 @@
                     }
                     updateSearchOptions();
                     ContentItems.isBusy = true;
-                    Items.find(searchOptions).then(function success(result) {
+                    ContentItems.Items.find(searchOptions).then(function success(result) {
                         if (result.length <= _limit) {// to indicate there are more
                             ContentItems.noMore = true;
                         }
@@ -231,11 +231,11 @@
                     }
                     var item = ContentItems.items[index];
                     if ("undefined" !== typeof item) {
-                        buildfire.navigation.scrollTop();
+                        //buildfire.navigation.scrollTop();
 
                         Modals.removePopupModal({title: ''}).then(function (result) {
                             if (result) {
-                                Items.delete(item.id).then(function (data) {
+                                ContentItems.Items.delete(item.id).then(function (data) {
                                     ContentItems.items.splice(index, 1);
                                 }, function (err) {
                                     console.error('Error while deleting an item-----', err);
@@ -275,10 +275,10 @@
                 };
 
                 ContentItems.editSections = function (ind) {
-                    Sections.find({}).then(function (data) {
-                      buildfire.navigation.scrollTop();
+                    ContentItems.Sections.find({}).then(function (data) {
+                        buildfire.navigation.scrollTop();
                         Modals.editSectionModal(data, ContentItems.items[ind]).then(function (result) {
-                            Items.update(result.id, result.data).then(function () {
+                            ContentItems.Items.update(result.id, result.data).then(function () {
                                 _skip = 0;
                                 ContentItems.items = null;
                                 ContentItems.getMore();
@@ -299,14 +299,20 @@
                     Location.goToHome();
                 };
 
-                //syn with widget
-                Messaging.sendMessageToWidget({
-                    name: EVENTS.ROUTE_CHANGE,
-                    message: {
-                        path: PATHS.SECTION,
-                        secId: ContentItems.section
-                    }
-                });
+                if ($rootScope.dontPropagate === true) {
+                    $rootScope.dontPropagate = false;
+                }
+                else {
+                    //syn with widget
+                    Messaging.sendMessageToWidget({
+                        name: EVENTS.ROUTE_CHANGE,
+                        message: {
+                            path: PATHS.SECTION,
+                            secId: ContentItems.section
+                        }
+                    });
+                }
+
 
                 $scope.$watch(function () {
                     return ContentItems.info;

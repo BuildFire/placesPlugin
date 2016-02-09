@@ -196,7 +196,7 @@
                         }
                         if (result.selectedFiles && result.selectedFiles.length) {
                             ContentSection.section.data.mainImage = result.selectedFiles[0];
-                            $scope.$digest();
+                            if (!$scope.$$phase)$scope.$digest();
                         }
                     });
                 };

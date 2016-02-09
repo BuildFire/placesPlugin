@@ -139,6 +139,7 @@
                 calDistance(WidgetItem.locationData.currentCoordinates, [WidgetItem.item], WidgetItem.placeInfo.data.settings.showDistanceIn);
 
             WidgetItem.clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
+                    console.log('OnUpdate method called----------------------************************',event);
                     if (event.tag == 'items' && event.data) {
                         WidgetItem.item = event;
                         if (event.data.address && event.data.address.lng && event.data.address.lat) {
@@ -147,13 +148,13 @@
                         }
                         if (event.data.images)
                             initCarousel(event.data.images);
-                        $scope.$digest();
+                        if (!$scope.$$phase)$scope.$digest();
                     }
                     else if (event.tag == 'placeInfo' && event.data) {
                         if (event.data.settings)
                             calDistance(WidgetItem.locationData.currentCoordinates, [WidgetItem.item], event.data.settings.showDistanceIn);
                         WidgetItem.placeInfo = event;
-                        $scope.$digest();
+                        if (!$scope.$$phase)$scope.$digest();
                     }
                 }
             );
@@ -203,7 +204,7 @@
 
             var offCallMeFn = $rootScope.$on(EVENTS.ROUTE_CHANGE_1, function (e, data) {
                 Location.goToHome();
-                $scope.$apply();
+                if (!$scope.$$phase)$scope.$digest();
             });
 
             /**
