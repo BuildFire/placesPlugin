@@ -28,9 +28,10 @@
                     WidgetSections.selectedSections = [];
 
                     if ($routeParams.sectionId == 'allitems') {
-                        $timeout(function () {
+                        WidgetSections.showSections = false;
+                       /* $timeout(function () {
                             $('#allItemsOption').click();
-                        }, 500);
+                        }, 1000);*/
 
                     }
                 }
@@ -708,15 +709,27 @@
 
 
                     //syn with control side
-
                     Messaging.sendMessageToControl({
                         name: EVENTS.ROUTE_CHANGE,
                         message: {
                             path: PATHS.SECTION,
-                            secId: $routeParams.sectionId
+                            secId: $routeParams.sectionId,
+                            dontPropagate : true
                         }
                     });
                 }
+
+                WidgetSections.messageControlForSection = function (a) {
+                    //syn with control side
+                    Messaging.sendMessageToControl({
+                        name: EVENTS.ROUTE_CHANGE,
+                        message: {
+                            path: PATHS.SECTION,
+                            secId: a,
+                            dontPropagate : true
+                        }
+                    });
+                };
 
                 var offCallMeFn = $rootScope.$on(EVENTS.ROUTE_CHANGE_1, function (e, data) {
                     console.log('>>>>>>>>>>>>>>', data);

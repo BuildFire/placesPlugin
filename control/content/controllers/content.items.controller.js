@@ -1,21 +1,21 @@
 /**
  * Create self executing funton to avoid global scope creation
  */
-(function (angular, tinymce,buildfire) {
+(function (angular, tinymce, buildfire) {
     'use strict';
     angular
         .module('placesContent')
     /**
      * Inject dependency
      */
-        .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'Buildfire', 'DB', 'COLLECTIONS', 'Modals', 'Orders', 'OrdersItems', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'placesInfo', 'sectionInfo', 'DEFAULT_DATA',
-            function ($scope, $routeParams, Buildfire, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo, sectionInfo, DEFAULT_DATA) {
+        .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'Buildfire', 'DB', 'COLLECTIONS', 'Modals', 'Orders', 'OrdersItems', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'placesInfo', 'sectionInfo', 'DEFAULT_DATA', '$rootScope',
+            function ($scope, $routeParams, Buildfire, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo, sectionInfo, DEFAULT_DATA, $rootScope) {
                 //Show the INT header part.
                 Buildfire.appearance.setHeaderVisibility(true);
 
 
-               //Scroll current view to top when page loaded.
-               buildfire.navigation.scrollTop();
+                //Scroll current view to top when page loaded.
+                buildfire.navigation.scrollTop();
                 /**
                  * Create instance of Sections,PlaceInfo and Items db collection
                  * @type {DB}
@@ -170,7 +170,7 @@
 
 
                 ContentItems.deepLinkUrl = function (url) {
-                  buildfire.navigation.scrollTop();
+                    buildfire.navigation.scrollTop();
                     Modals.DeeplinkPopupModal(url);
                 };
 
@@ -276,7 +276,7 @@
 
                 ContentItems.editSections = function (ind) {
                     ContentItems.Sections.find({}).then(function (data) {
-                      buildfire.navigation.scrollTop();
+                        buildfire.navigation.scrollTop();
                         Modals.editSectionModal(data, ContentItems.items[ind]).then(function (result) {
                             ContentItems.Items.update(result.id, result.data).then(function () {
                                 _skip = 0;
@@ -299,14 +299,20 @@
                     Location.goToHome();
                 };
 
-                //syn with widget
-                Messaging.sendMessageToWidget({
-                    name: EVENTS.ROUTE_CHANGE,
-                    message: {
-                        path: PATHS.SECTION,
-                        secId: ContentItems.section
-                    }
-                });
+                if ($rootScope.dontPropagate === true) {
+                    $rootScope.dontPropagate = false;
+                }
+                else {
+                    //syn with widget
+                    Messaging.sendMessageToWidget({
+                        name: EVENTS.ROUTE_CHANGE,
+                        message: {
+                            path: PATHS.SECTION,
+                            secId: ContentItems.section
+                        }
+                    });
+                }
+
 
                 $scope.$watch(function () {
                     return ContentItems.info;
