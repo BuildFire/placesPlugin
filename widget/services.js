@@ -175,7 +175,12 @@
         .factory('GeoDistance', ['$q', '$http', function ($q, $http) {
             var _getDistance = function (origin, items, distanceUnit) {
                 var deferred = $q.defer();
-                var originMap = {lat: origin[1], lng: origin[0]};
+                var originMap;
+                if(origin && origin.length)
+                    originMap= {lat: origin[1], lng: origin[0]};
+                else{
+                    originMap={lat:121.88,lng:37.33};
+                }
                 var destinationsMap = [];
 
                 if (!origin || !Array.isArray(origin)) {

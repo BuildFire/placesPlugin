@@ -8,7 +8,7 @@
                 <div class="copy stretch pull-left" style="padding-left: 85px;">
                     <p class="margin-bottom-zero ellipsis margin-top-ten text-primary"><a ng-href="#/item/{{WidgetSections.selectedItem.data.sections[0]}}/{{WidgetSections.selectedItem.id}}" class="ellipsis text-primary">{{WidgetSections.selectedItem.data.itemTitle}}</a></p>
 
-                    <p class="margin-bottom-zero ellipsis">{{WidgetSections.selectedItem.data.summary}}</p>
+                    <p class="margin-bottom-zero text-primary ellipsis">{{WidgetSections.selectedItem.data.summary}}</p>
                 </div>
             </div>
             <div class="col-xs-3 padding-left-zero pull-right text-right margin-top-fifteen">
@@ -22,6 +22,6 @@
                      marker-callback="WidgetSections.selectedMarker"></div>
             </div>
         </div>
-        <div ng-include="'templates/layouts/bottom-menu.html'"></div>
+        <!--<div ng-include="'templates/layouts/bottom-menu.html'"></div>-->
     </div>
 </div>

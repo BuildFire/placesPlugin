@@ -1,7 +1,7 @@
 (function (angular, window) {
     angular
         .module('placesWidget')
-        .controller('WidgetItemCtrl', ['$scope', 'COLLECTIONS', 'DB', '$routeParams', 'Buildfire', '$rootScope', 'GeoDistance', 'Messaging', 'Location', 'EVENTS', 'PATHS', 'AppConfig', 'placesInfo', 'Orders', 'OrdersItems', 'item', function ($scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS, AppConfig, placesInfo, Orders, OrdersItems, item) {
+        .controller('WidgetItemCtrl', ['$scope', 'COLLECTIONS', 'DB', '$routeParams', 'Buildfire', '$rootScope', 'GeoDistance', 'Messaging', 'Location', 'EVENTS', 'PATHS', 'AppConfig', 'placesInfo', 'Orders', 'OrdersItems', 'item', '$timeout', function ($scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS, AppConfig, placesInfo, Orders, OrdersItems, item, $timeout) {
             var WidgetItem = this
                 , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
                 , Items = new DB(COLLECTIONS.Items)
@@ -74,8 +74,12 @@
                 currentCoordinates: null
             };
             if (WidgetItem.item.data) {
-                if (WidgetItem.item.data.images)
-                    initCarousel(WidgetItem.item.data.images);
+                if (WidgetItem.item.data.images) {
+                    $timeout(function () {
+                        initCarousel(WidgetItem.item.data.images);
+                    }, 1500);
+
+                }
                 itemLat = (WidgetItem.item.data.address && WidgetItem.item.data.address.lat) ? WidgetItem.item.data.address.lat : null;
                 itemLng = (WidgetItem.item.data.address && WidgetItem.item.data.address.lng) ? WidgetItem.item.data.address.lng : null;
                 if (itemLat && itemLng) {
@@ -84,10 +88,10 @@
 
             }
 
-            var getContextCb=function(err,data){
-                console.log('error-------------',err,'data--------------',data);
-                if(data && data.device)
-                WidgetItem.device=data.device;
+            var getContextCb = function (err, data) {
+                console.log('error-------------', err, 'data--------------', data);
+                if (data && data.device)
+                    WidgetItem.device = data.device;
             };
 
             Buildfire.getContext(getContextCb);
@@ -123,23 +127,23 @@
             else
                 getGeoLocation(); // get data if localStorage is not supported
 
-            $scope.$on("Carousel:LOADED", function () {
-                if (!WidgetItem.view) {
-                    console.log('if------', WidgetItem.view);
-                    WidgetItem.view = new Buildfire.components.carousel.view("#carousel", []);
-                }
-                if (WidgetItem.item && WidgetItem.item.data && WidgetItem.item.data.images && WidgetItem.view) {
-                    WidgetItem.view.loadItems(WidgetItem.item.data.images);
-                } else {
-                    WidgetItem.view.loadItems([]);
-                }
-            });
+            /* $scope.$on("Carousel:LOADED", function () {
+             if (!WidgetItem.view) {
+             console.log('if------', WidgetItem.view);
+             WidgetItem.view = new Buildfire.components.carousel.view("#carousel", []);
+             }
+             if (WidgetItem.item && WidgetItem.item.data && WidgetItem.item.data.images && WidgetItem.view) {
+             WidgetItem.view.loadItems(WidgetItem.item.data.images);
+             } else {
+             WidgetItem.view.loadItems([]);
+             }
+             });*/
 
             if (WidgetItem.locationData && WidgetItem.locationData.currentCoordinates)
                 calDistance(WidgetItem.locationData.currentCoordinates, [WidgetItem.item], WidgetItem.placeInfo.data.settings.showDistanceIn);
 
             WidgetItem.clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
-                    console.log('OnUpdate method called----------------------************************',event);
+                    console.log('OnUpdate method called----------------------************************', event);
                     if (event.tag == 'items' && event.data) {
                         WidgetItem.item = event;
                         if (event.data.address && event.data.address.lng && event.data.address.lat) {
@@ -151,9 +155,15 @@
                         if (!$scope.$$phase)$scope.$digest();
                     }
                     else if (event.tag == 'placeInfo' && event.data) {
+
                         if (event.data.settings)
                             calDistance(WidgetItem.locationData.currentCoordinates, [WidgetItem.item], event.data.settings.showDistanceIn);
                         WidgetItem.placeInfo = event;
+
+                        $timeout(function () {
+                            initCarousel(WidgetItem.item.data.images);
+                        }, 1500);
+
                         if (!$scope.$$phase)$scope.$digest();
                     }
                 }
@@ -162,9 +172,9 @@
             WidgetItem.openMap = function () {
                 if (WidgetItem.item && WidgetItem.item.data && WidgetItem.item.data.address)
                     if (WidgetItem.device && WidgetItem.device.platform == 'ios')
-                        Buildfire.navigation.openWindow('maps://maps.google.com/maps?daddr=' + WidgetItem.item.data.address.lat + ',' + WidgetItem.item.data.address.lng );
+                        Buildfire.navigation.openWindow('maps://maps.google.com/maps?daddr=' + WidgetItem.item.data.address.lat + ',' + WidgetItem.item.data.address.lng);
                     else
-                        Buildfire.navigation.openWindow('http://maps.google.com/maps?daddr='  + WidgetItem.item.data.address.lat + ',' + WidgetItem.item.data.address.lng );
+                        Buildfire.navigation.openWindow('http://maps.google.com/maps?daddr=' + WidgetItem.item.data.address.lat + ',' + WidgetItem.item.data.address.lng);
             };
 
             // Show Body Content when it is not blank
@@ -186,8 +196,13 @@
             });
 
             function initCarousel(images) {
-                if (WidgetItem.view) {
-                    WidgetItem.view.loadItems(images);
+                if (angular.element('#carousel').length) {
+                    if (WidgetItem.view && angular.element('#carousel').hasClass('plugin-slider')) {
+                        WidgetItem.view.loadItems(images);
+                    }
+                    else {
+                        WidgetItem.view = new Buildfire.components.carousel.view("#carousel", images);
+                    }
                 }
             }
 
