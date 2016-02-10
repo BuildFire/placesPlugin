@@ -59,8 +59,8 @@
         setTimeout(function(){$('.slide').hide().css("transform","translateX(" + $(window).width() + "px)").show();},500);
         setTimeout(function(){$('.slide').css("transform","translateX(0px)");},1000);
 */
-        $(".scrollable").css("transform","translateX(-" + $(window).width() + "px)");
-        setTimeout(function(){$('.scrollable').css("transform","translateX(0px)");},300);
+        $(".scrollable").hide().css("transform","translateX(" + $(window).width() + "px)").show();
+        setTimeout(function(){$('.scrollable').css("transform","translateX(0px)");},1000);
 
        /* $('.scrollable').hide();
         setTimeout(function(){$('.slide').show('slide', {direction: 'right'}, 375);},750);*/
