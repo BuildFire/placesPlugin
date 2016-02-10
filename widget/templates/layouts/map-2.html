@@ -1,4 +1,4 @@
-<div class="holder padding-zero has-bottom has-bottom-viewing map-layout2 height-hundred-pc">
+<div class="holder padding-zero has-bottom has-bottom-viewing height-hundred-pc">
     <div class="places-plugin">
         <div class="plugin-banner clearfix">
             <div ng-class="{'fix-map-layout2-info-bar':WidgetSections.selectedItem && WidgetSections.selectedItem.data.images.length == 0}"
@@ -9,8 +9,8 @@
             </div>
             <div ng-if="WidgetSections.selectedItem" class="info-bar titleBarBackgroundTheme padding-top-five padding-bottom-five" style="min-height: 45px;">
                 <div class="col-xs-9 pull-left">
-                    <a ng-href="#/item/{{WidgetSections.selectedItem.data.sections[0]}}/{{WidgetSections.selectedItem.id}}" class="margin-bottom-zero whiteTheme">{{WidgetSections.selectedItem.data.itemTitle}}</a>
-                    <p class="margin-bottom-zero ellipsis whiteTheme">{{WidgetSections.selectedItem.data.summary}}</p>
+                    <a ng-href="#/item/{{WidgetSections.selectedItem.data.sections[0]}}/{{WidgetSections.selectedItem.id}}" class="margin-bottom-zero text-primary">{{WidgetSections.selectedItem.data.itemTitle}}</a>
+                    <p class="margin-bottom-zero ellipsis text-primary">{{WidgetSections.selectedItem.data.summary}}</p>
                 </div>
                 <div class="col-xs-3 padding-left-zero pull-right text-right margin-top-five">
                     <span ng-click="WidgetSections.openInMap()" class="icon icon-location location-circle primaryTheme background-white"
