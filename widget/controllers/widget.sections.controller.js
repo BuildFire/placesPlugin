@@ -29,9 +29,9 @@
 
                     if ($routeParams.sectionId == 'allitems') {
                         WidgetSections.showSections = false;
-                       /* $timeout(function () {
-                            $('#allItemsOption').click();
-                        }, 1000);*/
+                        /* $timeout(function () {
+                         $('#allItemsOption').click();
+                         }, 1000);*/
 
                     }
                 }
@@ -60,8 +60,8 @@
                 WidgetSections.noMoreItems = false;
 
                 WidgetSections.showDescription = function () {
-                    console.log('Description------------------------',WidgetSections.placesInfo,WidgetSections.placesInfo.data.content.descriptionHTML);
-                    if (WidgetSections.placesInfo.data.content.descriptionHTML == '<p>&nbsp;<br></p>' || WidgetSections.placesInfo.data.content.descriptionHTML == '<p><br data-mce-bogus="1"></p>' || WidgetSections.placesInfo.data.content.descriptionHTML == "" )
+                    console.log('Description------------------------', WidgetSections.placesInfo, WidgetSections.placesInfo.data.content.descriptionHTML);
+                    if (WidgetSections.placesInfo.data.content.descriptionHTML == '<p>&nbsp;<br></p>' || WidgetSections.placesInfo.data.content.descriptionHTML == '<p><br data-mce-bogus="1"></p>' || WidgetSections.placesInfo.data.content.descriptionHTML == "")
                         return false;
                     else
                         return true;
@@ -511,8 +511,7 @@
 
                 /* Onclick event of items on the map view*/
                 WidgetSections.selectedMarker = function (itemIndex) {
-                    if(itemIndex === null)
-                    {
+                    if (itemIndex === null) {
                         WidgetSections.selectedItem = null;
                         $scope.$digest();
                         return;
@@ -643,7 +642,9 @@
 
                 $scope.$watch(function () {
                     return WidgetSections.currentView;
-                }, function(){ WidgetSections.selectedItem = null; }, true);
+                }, function () {
+                    WidgetSections.selectedItem = null;
+                }, true);
 
                 $scope.$on("Carousel:LOADED", function () {
                     if (!view) {
@@ -657,17 +658,21 @@
                     }
                 });
 
-               /* WidgetSections.increaseMaxDis = function () {
-                    $scope.distanceSlider.ceil = $scope.distanceSlider.ceil + 10;
-                    console.log($scope.distanceSlider.max, "$scope.distanceSlider.max-------------------");
-                    $scope.$digest();
-                };
-*/
+                /* WidgetSections.increaseMaxDis = function () {
+                 $scope.distanceSlider.ceil = $scope.distanceSlider.ceil + 10;
+                 console.log($scope.distanceSlider.max, "$scope.distanceSlider.max-------------------");
+                 $scope.$digest();
+                 };
+                 */
                 WidgetSections.getSectionId = function (arr) {
-                    if (arr.length)
-                        return arr[0];
-                    else
+                    if (arr.length == 0 || angular.element("#allItemsOption").hasClass('whiteTheme') || angular.element('.list-item.section-filter.whiteTheme').length == 0)
                         return 'allitems';
+                    else {
+                        if (angular.element('.list-item.section-filter.whiteTheme').length == 1 && angular.element("#allItemsOption").hasClass('whiteTheme') == false)
+                            return $('.list-item.section-filter.whiteTheme').attr('section-id');
+                        else
+                            return arr[0];
+                    }
                 };
 
                 $scope.$on("Map Carousel:LOADED", function () {
@@ -714,7 +719,7 @@
                         message: {
                             path: PATHS.SECTION,
                             secId: $routeParams.sectionId,
-                            dontPropagate : true
+                            dontPropagate: true
                         }
                     });
                 }
@@ -726,7 +731,7 @@
                         message: {
                             path: PATHS.SECTION,
                             secId: a,
-                            dontPropagate : true
+                            dontPropagate: true
                         }
                     });
                 };
