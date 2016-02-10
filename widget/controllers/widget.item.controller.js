@@ -189,6 +189,9 @@
                 if (WidgetItem.view) {
                     WidgetItem.view.loadItems(images);
                 }
+                else{
+                    WidgetItem.view=new Buildfire.components.carousel.view("#carousel",images);
+                }
             }
 
             function calDistance(origin, destination, distanceUnit) {
