@@ -179,7 +179,7 @@
                 if(origin && origin.length)
                     originMap= {lat: origin[1], lng: origin[0]};
                 else{
-                    originMap={lat:37.33,lng:121.88};
+                    originMap={lat:121.88,lng:37.33};
                 }
                 var destinationsMap = [];
 
