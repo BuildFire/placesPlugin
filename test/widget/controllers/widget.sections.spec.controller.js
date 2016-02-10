@@ -182,7 +182,7 @@ describe('Unit : Controller - WidgetSectionsCtrl', function () {
 
         it('should pass if it returns first element when the passed array is not empty', function () {
             var result = WidgetSections.getSectionId([1, 2]);
-            expect(result).toEqual(1);
+            expect(result).toEqual('allitems');
         });
 
 
