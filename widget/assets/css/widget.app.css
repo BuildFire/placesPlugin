@@ -494,3 +494,12 @@ style for sec list dark overlay
 .padding-five{
     padding: 5px !important;
 }
+
+.transit{
+	-webkit-transition: -webkit-transform 0.2s ease-in-out;
+	-moz-transition: -moz-transform 0.2s ease-in-out;
+	-o-transition: -o-transform 0.2s ease-in-out;
+	transition: transform 0.2s ease-in-out;
+	-webkit-transform: translateX(0);
+	transform: translateX(0);
+}

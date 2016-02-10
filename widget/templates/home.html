@@ -2,7 +2,7 @@
      ng-if="WidgetItem.item.data.backgroundImage && WidgetItem.deviceWidth != 0 && WidgetItem.deviceHeight != 0">
     <img ng-src="{{WidgetItem.item.data.backgroundImage |cropImage : WidgetItem.deviceWidth : WidgetItem.deviceHeight}}">
 </div>
-<div class="scrollable slide">
+<div class="scrollable transit">
     <div ng-switch="WidgetSections.currentView">
         <div ng-switch-when="list">
             <div ng-if="WidgetSections.placesInfo.data.design.secListLayout"
