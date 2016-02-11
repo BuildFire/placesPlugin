@@ -1,6 +1,45 @@
 describe('placesSettings: App', function () {
     beforeEach(module('placesSettings'));
     var location, route, rootScope;
+    beforeEach(module('placesSettings', function ($provide) {
+        $provide.service('Buildfire', function () {
+            this.datastore = jasmine.createSpyObj('datastore', ['get','getById']);
+            this.datastore.get.and.callFake(function (_tagName, callback) {
+                if (_tagName) {
+                    callback(null, {
+                        data: {
+                            design: {
+                                itemListLayout: 'layout1',
+                                bgImage: ''
+                            },
+                            content: {
+                                images: [{title: 'bg1.png'}]
+                            }
+                        }
+                    });
+                } else {
+                    callback('Error', null);
+                }
+            });
+            this.datastore.getById.and.callFake(function (_tagName,id, callback) {
+                if (_tagName) {
+                    callback(null, {
+                        data: {
+                            design: {
+                                itemListLayout: 'layout1',
+                                bgImage: ''
+                            },
+                            content: {
+                                images: [{title: 'bg1.png'}]
+                            }
+                        }
+                    });
+                } else {
+                    callback('Error', null);
+                }
+            });
+        });
+    }));
     beforeEach(inject(
         function( _$location_, _$route_, _$rootScope_ ) {
             location = _$location_;
