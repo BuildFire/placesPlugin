@@ -1,6 +1,69 @@
 describe('Unit : placesContent content.item.controller.js', function () {
     var ContentItem, scope, $rootScope, $controller, q, $timeout, $httpBackend, DB, Buildfire, COLLECTIONS, Location, $routeParams, Utils;
     beforeEach(module('placesContent'));
+    beforeEach(module('placesContent', function ($provide) {
+        $provide.service('Buildfire', function () {
+            this.datastore = jasmine.createSpyObj('datastore', ['get', 'save']);
+            this.appearance = jasmine.createSpyObj('appearance', ['setHeaderVisibility']);
+            this.appearance.setHeaderVisibility.and.callFake(function () {
+            });
+            this.datastore.get.and.callFake(function (_tagName, callback) {
+                if (_tagName) {
+                    callback(null, {
+                        data: {
+                            design: {
+                                bgImage: ''
+                            },
+                            content: {
+                                images: [{title: 'bg1.png'}]
+                            }
+                        }
+                    });
+                } else {
+                    callback('Error', null);
+                }
+            });
+            this.datastore.save.and.callFake(function (options, _tagName, callback) {
+                if (_tagName) {
+                    callback(null, [{
+                        data: {
+                            design: {
+                                backgroundImage: '',
+                                itemLayout: '',
+                                listLayout: ''
+                            },
+                            content: {
+                                sortBy: 'Newest'
+                            }
+                        }
+                    }]);
+                } else {
+                    callback('Error', null);
+                }
+            });
+            this.components = {
+                carousel: {
+                    editor: function (id) {
+                        this.loadItems = function () {
+                        }
+                    }
+                },
+                actionItems: {
+                    sortableList: function(id){
+                        this.loadItems=function () {
+                            console.log("sortableList.loadItems hasbeen called");
+                        };
+                        return this;
+                    }
+                },
+                images:{
+                    thumbnail:function(options){
+                        //cb([{title:'MNO.png'}],null);
+                    }
+                }
+            }
+        });
+    }));
 
     beforeEach(inject(function (_$rootScope_, _$q_, _$controller_, _DB_, _$httpBackend_, _$timeout_, _Buildfire_, _COLLECTIONS_, _Location_, _Utils_, _$routeParams_) {
         $rootScope = _$rootScope_;
@@ -10,70 +73,15 @@ describe('Unit : placesContent content.item.controller.js', function () {
         $timeout = _$timeout_;
         $httpBackend = _$httpBackend_;
         Utils = _Utils_;
-        Buildfire = {
-            components: {
-                carousel: {
-                    editor: {}
-                },
-                actionItems: {
-                    sortableList: {}
-                }
-            }
-        };
+        Buildfire =_Buildfire_;
         Location = _Location_;
         COLLECTIONS = _COLLECTIONS_;
         $rootScope = _$rootScope_;
         DB = _DB_;
-        Buildfire.components.carousel = jasmine.createSpyObj('Buildfire.components.carousel', ['editor', '', '']);
-        Buildfire.components.actionItems = jasmine.createSpyObj('Buildfire.components.actionItems', ['sortableList', '', '']);
-        Buildfire.components.carousel.editor.and.callFake(function () {
-            return {
-                loadItems: function () {
-                    console.log("editor.loadItems hasbeen called");
-                }
-            };
-        });
-        Buildfire.components.actionItems.sortableList.and.callFake(function () {
-            return {
-                loadItems: function () {
-                    console.log("sortableList.loadItems hasbeen called");
-                }
-            };
-        });
 
         ContentItem = $controller('ContentItemCtrl', {
             $scope: scope,
-            Buildfire: {
-                imageLib: {
-                    showDialog: function () {
-                        return (null, {selectedFiles: ['']});
-                    }
-                }
-                ,
-                appearance: {
-                    setHeaderVisibility: function () {
-
-                    }
-                },
-                components: {
-                    images: {
-                        thumbnail: function () {
-                        }
-                    },
-                    carousel: {
-                        editor: function () {
-                            var a = {loadItems:function(){}};
-                            return a;
-                        }
-                    },
-                    actionItems:{
-                        sortableList:function(){
-                            var a = {loadItems:function(){}};
-                            return a;
-                        }
-                    }
-                }
-            },
+            Buildfire: Buildfire,
             item: {
                 data: {
                     listImage: '',
@@ -101,15 +109,15 @@ describe('Unit : placesContent content.item.controller.js', function () {
                 sectionId: '123456'
             },
             Utils: Utils,
-            DEFAULT_DATA:{},
-            placesInfo:{}
+            DEFAULT_DATA: {},
+            placesInfo: {}
         });
     }));
 
     describe('Units:  DataStore.save returns success', function () {
-      /*  beforeEach(function () {
+        /*  beforeEach(function () {
 
-        });*/
+         });*/
 
         describe('Units: units should be Defined', function () {
             it('it should pass if ContentItem is defined', function () {
@@ -150,36 +158,38 @@ describe('Unit : placesContent content.item.controller.js', function () {
         describe('Function : ContentItem.setLocation ', function () {
             it('ContentItem.removeListImage should be called', function () {
                 var data = {
-                    coordinates:['28','29'],
-                    location:'noida'
+                    coordinates: ['28', '29'],
+                    location: 'noida'
                 };
                 ContentItem.setLocation(data);
                 $rootScope.$digest();
-                expect(ContentItem.item.data.address).toEqual({lng: '28',
+                expect(ContentItem.item.data.address).toEqual({
+                    lng: '28',
                     lat: '29',
-                    aName: 'noida'});
+                    aName: 'noida'
+                });
             });
         });
         describe('Function : ContentItem.setLocation ', function () {
             it('ContentItem.removeListImage should be called', function () {
                 var data = {
-                    coordinates:['28','29'],
-                    location:'noida'
+                    coordinates: ['28', '29'],
+                    location: 'noida'
                 };
                 ContentItem.setLocation(data);
                 $rootScope.$digest();
                 expect(ContentItem.currentAddress).toEqual('noida');
             });
         });
-       describe('Function : ContentItem.setLocation ', function () {
+        describe('Function : ContentItem.setLocation ', function () {
             it('ContentItem.removeListImage should be called', function () {
                 var data = {
-                    coordinates:['28','29'],
-                    location:'noida'
+                    coordinates: ['28', '29'],
+                    location: 'noida'
                 };
                 ContentItem.setLocation(data);
                 $rootScope.$digest();
-                expect(ContentItem.currentCoordinates).toEqual(['28','29']);
+                expect(ContentItem.currentCoordinates).toEqual(['28', '29']);
             });
         });
         describe('Function : ContentItem.linkEditor.onAddItems ', function () {
