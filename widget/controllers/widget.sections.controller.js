@@ -443,6 +443,11 @@
 
                 /// load items
                 function loadMapCarouselItems(carouselItems) {
+
+                    if (!mapview || angular.element("#mapCarousel").hasClass('plugin-slider') == false) {
+                        mapview = new Buildfire.components.carousel.view("#mapCarousel", []);  ///create new instance of buildfire carousel viewer
+                    }
+
                     // create an instance and pass it the items if you don't have items yet just pass []
                     if (mapview)
                         mapview.loadItems(carouselItems);
@@ -676,9 +681,9 @@
                 };
 
                 $scope.$on("Map Carousel:LOADED", function () {
-                    if (!mapview) {
+                    /*if (!mapview) {
                         mapview = new Buildfire.components.carousel.view("#mapCarousel", []);  ///create new instance of buildfire carousel viewer
-                    }
+                    }*/
                 });
 
                 if ($routeParams.sectionId) { // this case means the controller is serving the section view
