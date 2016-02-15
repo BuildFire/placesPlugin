@@ -3,7 +3,7 @@ describe('Unit : Controller - WidgetItemCtrl2', function () {
 // load the controller's module
     beforeEach(module('placesWidget'));
 
-    var $q, WidgetItem, scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS, AppConfig, placesInfo, Orders, OrdersItems, item;
+    var $q, WidgetItem, scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS, AppConfig, $timeout, Orders, OrdersItems, item;
 
     beforeEach(inject(function (_$q_, _$routeParams_, $controller, _$rootScope_, _Buildfire_, _DB_, _COLLECTIONS_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _Location_, _Orders_, _GeoDistance_, _$timeout_, _OrdersItems_) {
             scope = _$rootScope_.$new();
@@ -21,6 +21,7 @@ describe('Unit : Controller - WidgetItemCtrl2', function () {
             GeoDistance = _GeoDistance_;
             Buildfire = _Buildfire_;
             $rootScope = _$rootScope_;
+            $timeout=_$timeout_;
             WidgetItem = $controller('WidgetItemCtrl', {
                 $scope: scope,
                 $routeParams: $routeParams,
@@ -44,8 +45,11 @@ describe('Unit : Controller - WidgetItemCtrl2', function () {
     ;
 
     describe('Units: units should be Defined', function () {
-        xit('it should pass if WidgetSections is defined', function () {
+        it('it should pass if WidgetSections is defined', function () {
             expect(WidgetItem).not.toBeUndefined();
+        });
+        it('it should pass if $timeout', function () {
+          $timeout.flush();
         });
     });
 });

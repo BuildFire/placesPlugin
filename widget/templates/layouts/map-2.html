@@ -9,13 +9,13 @@
             </div>
             <div ng-if="WidgetSections.selectedItem" class="info-bar titleBarBackgroundTheme padding-top-five padding-bottom-five" style="min-height: 45px;">
                 <div class="col-xs-9 pull-left">
-                    <a ng-href="#/item/{{WidgetSections.selectedItem.data.sections[0]}}/{{WidgetSections.selectedItem.id}}" class="margin-bottom-zero text-primary">{{WidgetSections.selectedItem.data.itemTitle}}</a>
-                    <p class="margin-bottom-zero ellipsis text-primary">{{WidgetSections.selectedItem.data.summary}}</p>
+                    <a ng-href="#/item/{{WidgetSections.selectedItem.data.sections[0]}}/{{WidgetSections.selectedItem.id}}" class="margin-bottom-zero titleBarTextAndIcons">{{WidgetSections.selectedItem.data.itemTitle}}</a>
+                    <p class="margin-bottom-zero ellipsis titleBarTextAndIcons">{{WidgetSections.selectedItem.data.summary}}</p>
                 </div>
                 <div class="col-xs-3 padding-left-zero pull-right text-right margin-top-five">
                     <span ng-click="WidgetSections.openInMap()" class="icon icon-location location-circle primaryTheme background-white"
                           ></span><br>
-                    <span class="font-size-small">{{WidgetSections.selectedItemDistance}}</span>
+                    <span class="font-size-small titleBarTextAndIcons">{{WidgetSections.selectedItemDistance}}</span>
                 </div>
             </div>
         </div>
