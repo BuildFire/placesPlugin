@@ -169,6 +169,18 @@
                 }
             );
 
+            WidgetItem.openLinks = function (actionItems) {
+                if (actionItems && actionItems.length) {
+                    var options = {};
+                    var callback = function (error, result) {
+                        if (error) {
+                            console.error('Error:', error);
+                        }
+                    };
+                    Buildfire.actionItems.list(actionItems, options, callback);
+                }
+            };
+
             WidgetItem.openMap = function () {
                 if (WidgetItem.item && WidgetItem.item.data && WidgetItem.item.data.address)
                     if (WidgetItem.device && WidgetItem.device.platform == 'ios')
