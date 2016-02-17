@@ -1,4 +1,4 @@
-(function (angular) {
+(function (angular, window) {
     angular
         .module('placesWidget')
         .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance', '$routeParams', '$timeout', 'placesInfo', 'OrdersItems', '$filter',
@@ -629,7 +629,6 @@
                         Buildfire.navigation.openWindow("maps://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lat + "," + WidgetSections.selectedItem.data.address.lng, '_system');
                     else
                         Buildfire.navigation.openWindow("http://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lat + "," + WidgetSections.selectedItem.data.address.lng, '_system');
-
                 };
 
                 WidgetSections.refreshLocation = function () {
@@ -778,4 +777,4 @@
             }
         ])
     ;
-})(window.angular, undefined);
+})(window.angular, window);
