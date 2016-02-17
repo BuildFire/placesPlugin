@@ -145,14 +145,18 @@
             WidgetItem.clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
                     console.log('OnUpdate method called----------------------************************', event);
                     if (event.tag == 'items' && event.data) {
-                        WidgetItem.item = event;
-                        if (event.data.address && event.data.address.lng && event.data.address.lat) {
-                            WidgetItem.itemData.currentCoordinates = [event.data.address.lng, event.data.address.lat];
-                            calDistance(WidgetItem.locationData.currentCoordinates, [event], WidgetItem.placeInfo.data.settings.showDistanceIn);
-                        }
-                        if (event.data.images)
-                            initCarousel(event.data.images);
-                        if (!$scope.$$phase)$scope.$digest();
+                        $timeout(function () {
+                            $scope.imagesUpdated = false;
+                            WidgetItem.item = event;
+                            if (event.data.address && event.data.address.lng && event.data.address.lat) {
+                                WidgetItem.itemData.currentCoordinates = [event.data.address.lng, event.data.address.lat];
+                                calDistance(WidgetItem.locationData.currentCoordinates, [event], WidgetItem.placeInfo.data.settings.showDistanceIn);
+                            }
+                            if (event.data.images)
+                                initCarousel(event.data.images);
+                            if (!$scope.$$phase)$scope.$digest();
+                            $scope.imagesUpdated = !!event.data.images;
+                        },0);
                     }
                     else if (event.tag == 'placeInfo' && event.data) {
 
