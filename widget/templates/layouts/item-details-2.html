@@ -28,8 +28,8 @@
             </div>
         </div>
         <div class="padded text-center" ng-if="WidgetItem.showBodyContent()">
-            <!--<a class="text-primary">Contact info</a>
-            <hr class="small">-->
+            <a class="text-primary" ng-if="WidgetItem.item.data.links.length" ng-click="WidgetItem.openLinks(WidgetItem.item.data.links)">Contact info</a>
+            <hr class="small">
             <p id="description" class="text-left" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml"></p>
         </div>
     </div>
