@@ -624,11 +624,11 @@
                 };
 
                 WidgetSections.openInMap = function () {
-                    console.log('openInMap-------------------------method called------------',WidgetSections.selectedItem);
+                    console.log('openInMap-------------------------method called------------', WidgetSections.selectedItem);
                     if (buildfire.context.device && buildfire.context.device.platform == 'ios')
-                        window.open("maps://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lat + "," + WidgetSections.selectedItem.data.address.lng);
+                        Buildfire.navigation.openWindow("maps://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lat + "," + WidgetSections.selectedItem.data.address.lng, '_system');
                     else
-                        window.open("http://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lat + "," + WidgetSections.selectedItem.data.address.lng);
+                        Buildfire.navigation.openWindow("http://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lat + "," + WidgetSections.selectedItem.data.address.lng, '_system');
 
                 };
 
