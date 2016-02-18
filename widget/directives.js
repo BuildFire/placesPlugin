@@ -1,4 +1,4 @@
-(function (angular) {
+(function (angular,buildfire) {
     angular
         .module('placesWidget')
         .directive("buildFireCarousel", ["$rootScope", '$timeout', function ($rootScope, $timeout) {
@@ -393,4 +393,4 @@
                 });
             };
         }]);
-})(window.angular, undefined);
+})(window.angular,window.buildfire);

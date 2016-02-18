@@ -35,4 +35,4 @@
             MAP: "map",
             LIST: "list"
         });
-})(window.angular, undefined);
+})(window.angular);
