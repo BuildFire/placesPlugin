@@ -1,18 +1,18 @@
 <div ng-class="WidgetSections.showMenu ? 'active' : ''" class="bottom fixed-bottom clearfix transition-third">
     <div>
         <div class="extra-links">
-            <a ng-click="WidgetSections.refreshLocation()" class="my-location bg-primary" style="opacity: 1 !important;">
+            <a ng-click="WidgetSections.refreshLocation()" class="my-location titleBarBackgroundTheme" style="opacity: 1 !important;">
                 <span class="icon icon-aim whiteTheme"></span>
             </a>
         </div>
     </div>
-    <div class="col-xs-6 pull-left text-center transition-third bg-primary">
+    <div class="col-xs-6 pull-left text-center transition-third titleBarBackgroundTheme">
         <a ng-click="WidgetSections.currentView = (WidgetSections.currentView == 'map') ? 'list' : 'map';"
            class="whiteTheme">
             {{WidgetSections.currentView == 'map' ? 'List' : 'Map'}}
         </a>
     </div>
-    <div class="col-xs-6 pull-left text-center transition-third bg-primary">
+    <div class="col-xs-6 pull-left text-center transition-third titleBarBackgroundTheme">
         <a ng-click="WidgetSections.showMenu = !WidgetSections.showMenu" class="whiteTheme">Filter</a>
     </div>
     <div class="col-xs-12 pull-left hidden-content">
@@ -32,12 +32,12 @@
             <div ng-class="WidgetSections.menuTab == 'Category' ? 'active' : ''" class="category-tab tab">
                 <a id="allItemsOption"
                    ng-show="WidgetSections.placesInfo.data.content.showAllItems"
-                   ng-class="(WidgetSections.selectedSections.length == 0 && WidgetSections.showSections == false) ? 'bg-primary whiteTheme' : ''"
+                   ng-class="(WidgetSections.selectedSections.length == 0 && WidgetSections.showSections == false) ? 'titleBarBackgroundTheme whiteTheme' : ''"
                    ng-click="WidgetSections.resetSectionFilter()" class="list-item section-filter">All Locations</a>
                 <a ng-click="WidgetSections.toggleSectionSelection($index)"
                    ng-repeat="item in WidgetSections.sections | unique : 'id'"
                    class="list-item section-filter"
-                   ng-class="WidgetSections.selectedSections.indexOf(item.id) > -1 ? 'bg-primary whiteTheme':''"
+                   ng-class="WidgetSections.selectedSections.indexOf(item.id) > -1 ? 'titleBarBackgroundTheme whiteTheme':''"
                    section-id="{{item.id}}">{{item.data.secTitle}}</a>
             </div>
             <div ng-class="WidgetSections.menuTab == 'Sorting' ? 'active' : ''" class="sorting-tab tab padded">
@@ -65,11 +65,11 @@
                     <div class="toggle-btns border-radius-four overflow-hidden">
                         <div ng-click="WidgetSections.sortOnClosest = false"
                              class="col-xs-6 padding-zero text-center"
-                             ng-class="WidgetSections.sortOnClosest ? '' : 'bg-primary'">
+                             ng-class="WidgetSections.sortOnClosest ? '' : 'titleBarBackgroundTheme'">
                             <a ng-class="WidgetSections.sortOnClosest ? '' : 'whiteTheme'">Default</a>
                         </div>
                         <div ng-hide="WidgetSections.locationData.currentCoordinates == null"
-                             ng-class="!WidgetSections.sortOnClosest ? '' : 'bg-primary'"
+                             ng-class="!WidgetSections.sortOnClosest ? '' : 'titleBarBackgroundTheme'"
                              ng-class="WidgetSections.sortOnClosest ? '' : 'active'"
                              ng-click="WidgetSections.sortOnClosest = true" class="col-xs-6 padding-zero text-center">
                             <a ng-class="WidgetSections.sortOnClosest ? 'whiteTheme' : ''">Closest to Me</a>

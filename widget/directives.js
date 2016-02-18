@@ -273,7 +273,7 @@
                                 scope.isCarouselInitiated = true;
                             }
                             scope.$apply();
-                        }, 100);
+                        }, 0);
                     }
 
                     initCarousel();

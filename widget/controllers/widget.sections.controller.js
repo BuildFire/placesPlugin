@@ -1,4 +1,4 @@
-(function (angular) {
+(function (angular, window) {
     angular
         .module('placesWidget')
         .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance', '$routeParams', '$timeout', 'OrdersItems', '$filter', 'ViewStack',
@@ -647,11 +647,11 @@
                 };
 
                 WidgetSections.openInMap = function () {
+                    console.log('openInMap-------------------------method called------------', WidgetSections.selectedItem);
                     if (buildfire.context.device && buildfire.context.device.platform == 'ios')
-                        window.open("maps://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lng + "," + WidgetSections.selectedItem.data.address.lat);
+                        Buildfire.navigation.openWindow("maps://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lat + "," + WidgetSections.selectedItem.data.address.lng, '_system');
                     else
-                        window.open("http://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lng + "," + WidgetSections.selectedItem.data.address.lat);
-
+                        Buildfire.navigation.openWindow("http://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lat + "," + WidgetSections.selectedItem.data.address.lng, '_system');
                 };
 
                 WidgetSections.refreshLocation = function () {
@@ -860,4 +860,4 @@
             }
         ])
     ;
-})(window.angular, undefined);
+})(window.angular, window);
