@@ -1,6 +1,6 @@
 (function (angular, buildfire, location) {
     'use strict';
-    //created mediaCenterWidget module
+    //created placesWidgetServices module
     var settings, appId;
     var Settings = {
         setSettings: function (newSettings) {
