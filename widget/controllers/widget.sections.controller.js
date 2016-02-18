@@ -829,7 +829,7 @@
                         WidgetSections.placesInfo = data;
 
                         if (!view) {
-                            //$("#carousel").html("").attr('style','').attr('class','');
+                            $("#carousel").parent().html("<div id='carousel'></div>");
                             view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
                         }
                         if (view && WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings.defaultView) {
