@@ -360,22 +360,31 @@
 
                 WidgetSections.applyOnUpdateWatcher();
 
+                $scope.distanceSlider = {
+                    min: 0,
+                    max: 300,
+                    ceil: 310, //upper limit
+                    floor: 0
+                };
+
                 function initPage() {
                     if (WidgetSections.placesInfo.data.settings && WidgetSections.placesInfo.data.settings.showDistanceIn == 'mi')
-                        $scope.distanceSlider = {
+                    {
+                    $scope.distanceSlider = {
                             min: 0,
                             max: 300,
                             ceil: 310, //upper limit
                             floor: 0
                         };
-                    else
+                    }
+                    else {
                         $scope.distanceSlider = {
                             min: 0,
                             max: 483,
                             ceil: 499, //upper limit
                             floor: 0
                         };
-
+                    }
                     WidgetSections.currentView = (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings) ? WidgetSections.placesInfo.data.settings.defaultView : null;
                     if (WidgetSections.currentView) {
                         switch (WidgetSections.currentView) {
