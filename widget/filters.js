@@ -1,6 +1,6 @@
-(function (angular, buildfire, location) {
+(function (angular, buildfire) {
     "use strict";
-    //created mediaCenterWidget module
+    //created placesWidgetFilters module
     angular
         .module('placesWidgetFilters', [])
         .filter('resizeImage', [function () {
@@ -43,5 +43,4 @@
                 return output;
             };
         });
-    ;
-})(window.angular, window.buildfire, window.location);
+})(window.angular, window.buildfire);

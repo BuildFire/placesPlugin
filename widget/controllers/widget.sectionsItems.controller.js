@@ -1,4 +1,4 @@
-(function (angular) {
+(function (angular,window) {
     angular
         .module('placesWidget')
         .controller('WidgetSectionsItemsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance', '$routeParams', '$timeout', 'OrdersItems', '$filter', 'ViewStack',
@@ -841,4 +841,4 @@
             }
         ])
     ;
-})(window.angular, undefined);
+})(window.angular, window);
