@@ -1,16 +1,26 @@
 (function (angular) {
     angular
         .module('placesWidget')
-        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance', '$routeParams', '$timeout', 'OrdersItems', '$filter', 'ViewStack',
+        .controller('WidgetSectionsItemsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance', '$routeParams', '$timeout', 'OrdersItems', '$filter', 'ViewStack',
             function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $routeParams, $timeout, OrdersItems, $filter, ViewStack) {
                 var WidgetSections = this;
-                WidgetSections.sectionId = $routeParams.sectionId;
+
+                var vs = ViewStack.getCurrentView();
+                if (vs.sectionId) {
+                    if (vs.sectionId != 'allitems')
+                        WidgetSections.selectedSections = [vs.sectionId];
+                    else
+                        WidgetSections.selectedSections = [];
+
+                    $timeout(function () {
+                        WidgetSections.showBtmMenu = true;
+                    }, 1000);
+                }
+
                 WidgetSections.showMenu = false;
                 WidgetSections.menuTab = 'Category';
                 WidgetSections.filterUnapplied = true;
-                //WidgetSections.mainViewBtmMenu = true;
-                //WidgetSections.selectedSections = [];
-
+                WidgetSections.showSections = false;
                 WidgetSections.onSliderChange = function () {
                     WidgetSections.filterUnapplied = false; // this tells us that the slider has been set by the user
                 };
@@ -31,16 +41,6 @@
                         itemId: itemId
                     });
                 };
-
-
-                WidgetSections.showSections = true;
-
-                var vs = ViewStack.getCurrentView();
-                console.log('>>>>vs<<<<', vs);
-
-
-                WidgetSections.selectedSections = [];
-                WidgetSections.showBtmMenu = true;
 
 
                 WidgetSections.placesInfo = null;
@@ -77,12 +77,14 @@
                  * loadMoreItems method loads the sections in list page.
                  */
                 WidgetSections.loadMoreItems = function () {
+                    console.log('lakshayfilter', WidgetSections.selectedSections);
                     console.log('items load called');
                     if (WidgetSections.noMoreItems || WidgetSections.isBusyItems) {
                         //alert('not loading items');
                         console.log('but no more items');
                         return;
                     }
+                    console.log('>>searchOptionsItems<<', searchOptionsItems);
                     updateGetOptionsItems();
                     WidgetSections.isBusyItems = true;
                     Items.find(searchOptionsItems).then(function success(result) {
@@ -194,6 +196,19 @@
                     PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
 
 
+                if (vs.sectionId != 'allitems') {
+                    Sections.getById(vs.sectionId).then(function (d) {
+                        console.log('secListBGImage',d);
+                        if (d)
+                            WidgetSections.secListBGImage = d.data.itemListBGImage;
+                        else
+                            WidgetSections.secListBGImage = null;
+                    }, function () {
+                        WidgetSections.secListBGImage = null;
+                    });
+                }
+
+
                 /**
                  * updateGetOptions method checks whether sort options changed or not.
                  * @returns {boolean}
@@ -284,10 +299,7 @@
                 /**
                  * Buildfire.datastore.onUpdate method calls when Data is changed.
                  */
-                var clearOnUpdateListener;
-
-                WidgetSections.applyOnUpdateWatcher = function() {
-                clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
+                var clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
                     console.log('Event in ------------------', event);
                     if (event.tag === "placeInfo") {
                         console.log('update happened in placeInfo');
@@ -356,9 +368,6 @@
                         refreshSections();
                     }
                 });
-            }
-
-                WidgetSections.applyOnUpdateWatcher();
 
                 function initPage() {
                     if (WidgetSections.placesInfo.data.settings && WidgetSections.placesInfo.data.settings.showDistanceIn == 'mi')
@@ -387,7 +396,7 @@
                                 break;
                         }
                     }
-                    loadAllItemsOfSections();
+                    ///loadAllItemsOfSections();
                 }
 
                 (function () {
@@ -630,14 +639,13 @@
                     else {
                         WidgetSections.selectedSections.splice(WidgetSections.selectedSections.indexOf(id), 1);
                         if (!WidgetSections.showSections && WidgetSections.selectedSections.length == 0) {
-                            WidgetSections.showSections = true;
+                            //WidgetSections.showSections = true;
                         }
                     }
                 };
 
                 WidgetSections.resetSectionFilter = function () {
                     if (!WidgetSections.showSections && WidgetSections.selectedSections.length == 0) {
-                        WidgetSections.showSections = true;
                         return;
                     }
                     WidgetSections.showSections = false;
@@ -677,17 +685,17 @@
                     WidgetSections.selectedItem = null;
                 }, true);
 
-                $scope.$on("Carousel:LOADED", function () {
-                    if (!view) {
-                        view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
-                    }
-                    if (view && WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings.defaultView) {
-                        initCarousel(WidgetSections.placesInfo.data.settings.defaultView)
-                    }
-                    else {
-                        view.loadItems([]);
-                    }
-                });
+                /*$scope.$on("Carousel:LOADED", function () {
+                 if (!view) {
+                 view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
+                 }
+                 if (view && WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings.defaultView) {
+                 initCarousel(WidgetSections.placesInfo.data.settings.defaultView)
+                 }
+                 else {
+                 view.loadItems([]);
+                 }
+                 });*/
 
                 /* WidgetSections.increaseMaxDis = function () {
                  $scope.distanceSlider.ceil = $scope.distanceSlider.ceil + 10;
@@ -712,47 +720,47 @@
                      }*/
                 });
 
-               /* if ($routeParams.sectionId) { // this case means the controller is serving the section view
+                /*  if ($routeParams.sectionId) { // this case means the controller is serving the section view
 
 
-                    /!*  if ($routeParams.sectionId == 'allitems') {
-                     WidgetSections.selectedSections = [];
-                     }
-                     else {
-                     WidgetSections.selectedSections = [$routeParams.sectionId];
-                     console.log(WidgetSections.selectedSections);
-                     }
-                     *!/
+                 /!*  if ($routeParams.sectionId == 'allitems') {
+                 WidgetSections.selectedSections = [];
+                 }
+                 else {
+                 WidgetSections.selectedSections = [$routeParams.sectionId];
+                 console.log(WidgetSections.selectedSections);
+                 }
+                 *!/
 
-                    // have to get sections explicitly in item list view
-                    WidgetSections.sections = [];
-                    if ($routeParams.sectionId != 'allitems') {
-                        Sections.getById($routeParams.sectionId).then(function (data) {
-                                WidgetSections.sectionInfo = data;
-                            }
-                            ,
-                            function (err) {
-                                // do somthing on err
-                            }
-                        )
-                        ;
-                    }
-                    Sections.find({}).then(function success(result) {
-                        WidgetSections.sections = result;
+                 // have to get sections explicitly in item list view
+                 WidgetSections.sections = [];
+                 if ($routeParams.sectionId != 'allitems') {
+                 Sections.getById($routeParams.sectionId).then(function (data) {
+                 WidgetSections.sectionInfo = data;
+                 }
+                 ,
+                 function (err) {
+                 // do somthing on err
+                 }
+                 )
+                 ;
+                 }
+                 Sections.find({}).then(function success(result) {
+                 WidgetSections.sections = result;
 
-                    }, function () {
-                    });
+                 }, function () {
+                 });
 
 
-                    //syn with control side
-                    /!*  Messaging.sendMessageToControl({
-                     name: EVENTS.ROUTE_CHANGE,
-                     message: {
-                     path: PATHS.SECTION,
-                     secId: $routeParams.sectionId
-                     }
-                     });*!/
-                }*/
+                 //syn with control side
+                 /!*  Messaging.sendMessageToControl({
+                 name: EVENTS.ROUTE_CHANGE,
+                 message: {
+                 path: PATHS.SECTION,
+                 secId: $routeParams.sectionId
+                 }
+                 });*!/
+                 }*/
 
                 /*   WidgetSections.messageControlForSection = function (a) {
                  //syn with control side
@@ -789,66 +797,39 @@
                  if (!$scope.$$phase)$scope.$digest();
                  });*/
 
-                Messaging.onReceivedMessage = function (event) {
-                    if (event) {
-                        switch (event.name) {
+                /* Messaging.onReceivedMessage = function (event) {
+                 if (event) {
+                 switch (event.name) {
 
-                            case EVENTS.ROUTE_CHANGE:
-                                var path = event.message.path,
-                                    id = event.message.id,
-                                    secId = event.message.secId;
-                                switch (path) {
-                                    case PATHS.ITEM:
-                                        ViewStack.push({
-                                            template: "item",
-                                            sectionId: secId,
-                                            itemId: id
-                                        });
-                                        break;
-                                    case PATHS.HOME:
-                                        ViewStack.popAllViews();
-                                        //applyOnUpdateWatcher();
-                                        break;
-                                    case PATHS.SECTION:
-                                        ViewStack.push({
-                                            template: "section",
-                                            sectionId: secId
-                                        });
-                                    default :
-                                        break;
-                                }
-                                $scope.$apply();
+                 case EVENTS.ROUTE_CHANGE:
+                 var path = event.message.path,
+                 id = event.message.id,
+                 secId = event.message.secId;
+                 switch (path) {
+                 case PATHS.ITEM:
+                 ViewStack.push({
+                 template: "item",
+                 sectionId: secId,
+                 itemId: id
+                 });
+                 break;
+                 case PATHS.HOME:
+                 ViewStack.popAllViews();
+                 break;
+                 case PATHS.SECTION:
+                 ViewStack.push({
+                 template: "section",
+                 sectionId: secId
+                 });
+                 default :
+                 break;
+                 }
+                 $scope.$apply();
 
-                                break;
-                        }
-                    }
-                };
-
-                WidgetSections.reloadPlacesInfo = function () {
-                    PlaceInfo.get().then(function (data) {
-                        WidgetSections.placesInfo = data;
-
-                        if (!view) {
-                            //$("#carousel").html("").attr('style','').attr('class','');
-                            view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
-                        }
-                        if (view && WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings.defaultView) {
-                            initCarousel(WidgetSections.placesInfo.data.settings.defaultView)
-                        }
-                        else {
-                            view.loadItems([]);
-                        }
-
-                    }, function () {
-                        WidgetSections.placesInfo = _placesInfoData;
-                        if (!view) {
-                            view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
-                        }
-                        view.loadItems([]);
-                    });
-
-
-                };
+                 break;
+                 }
+                 }
+                 };*/
 
                 /**
                  * will called when controller scope has been destroyed.

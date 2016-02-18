@@ -299,19 +299,15 @@
                     Location.goToHome();
                 };
 
-                if ($rootScope.dontPropagate === true) {
-                    $rootScope.dontPropagate = false;
-                }
-                else {
-                    //syn with widget
-                    Messaging.sendMessageToWidget({
-                        name: EVENTS.ROUTE_CHANGE,
-                        message: {
-                            path: PATHS.SECTION,
-                            secId: ContentItems.section
-                        }
-                    });
-                }
+
+                //syn with widget
+                Messaging.sendMessageToWidget({
+                    name: EVENTS.ROUTE_CHANGE,
+                    message: {
+                        path: PATHS.SECTION,
+                        secId: ContentItems.section
+                    }
+                });
 
 
                 $scope.$watch(function () {

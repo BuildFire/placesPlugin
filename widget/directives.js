@@ -290,5 +290,107 @@
                     });
                 }
             }
-        });
+        })
+        .directive("viewSwitcher", ["ViewStack", "$rootScope", '$compile', "$templateCache",
+            function (ViewStack, $rootScope, $compile, $templateCache) {
+                return {
+                    restrict: 'AE',
+                    link: function (scope, elem, attrs) {
+                        var views = 0;
+                        manageDisplay();
+                        $rootScope.$on('VIEW_CHANGED', function (e, type, view) {
+                            if (type === 'PUSH') {
+                                var newScope = $rootScope.$new();
+                                newScope.currentItemListLayout = "templates/" + view.template + ".html";
+
+                                var _newView = '<div  id="' + view.template + '" ><div class="no-scroll slide content dynamic-view" data-back-img="{{backgroundImage}}" ng-if="currentItemListLayout" ng-include="currentItemListLayout"></div></div>';
+                                if (view.params && view.params.controller) {
+                                    _newView = '<div id="' + view.template + '" ><div class="no-scroll slide content dynamic-view" data-back-img="{{backgroundImage}}" ng-if="currentItemListLayout" ng-include="currentItemListLayout" ng-controller="' + view.params.controller + '" ></div></div>';
+                                }
+                                var parTpl = $compile(_newView)(newScope);
+                                if (view.params && view.params.shouldUpdateTemplate) {
+                                    newScope.$on("ITEM_LIST_LAYOUT_CHANGED", function (evt, layout, needDigest) {
+                                        newScope.currentItemListLayout = "templates/" + layout + ".html";
+                                        if (needDigest) {
+                                            newScope.$digest();
+                                        }
+                                    });
+                                }
+                                $(elem).append(parTpl);
+                                views++;
+                                showHideMainBtmMenu();
+
+                            } else if (type === 'POP') {
+                                var _elToRemove = $(elem).find('#' + view.template),
+                                    _child = _elToRemove.children("div").eq(0);
+
+                                _child.addClass("ng-leave ng-leave-active");
+                                _child.on("webkitTransitionEnd transitionend oTransitionEnd", function (e) {
+                                    _elToRemove.remove();
+                                    views--;
+                                    showHideMainBtmMenu();
+                                });
+
+                                //$(elem).find('#' + view.template).remove();
+                            }
+                            else if (type === 'POPALL') {
+                                console.log(view);
+                                angular.forEach(view, function (value, key) {
+                                    $(elem).find('#' + value.template).remove();
+                                });
+                                views = 0;
+                                showHideMainBtmMenu();
+                            }
+                            manageDisplay();
+                        });
+
+                        function manageDisplay() {
+                            if (views) {
+                                $(elem).removeClass("ng-hide");
+                            } else {
+                                $(elem).addClass("ng-hide");
+                            }
+                        }
+
+                        function  showHideMainBtmMenu(){
+                            if (views) {
+                                $("#mainViewBtmMenu").hide();
+                            } else {
+                                $("#mainViewBtmMenu").show();
+                                $("#onUpdateListener").click();
+                            }
+
+                       /*     var vs = ViewStack.getCurrentView();
+                            switch(vs.template){
+                                case 'section':break;
+                                case 'item':break;
+                                case undefined:break;
+
+                            }*/
+                        }
+
+                    }
+                };
+            }])
+        .directive('backImg', ["$filter", "$rootScope", function ($filter, $rootScope) {
+            return function (scope, element, attrs) {
+                attrs.$observe('backImg', function (value) {
+                    console.log('bgimag',value);
+                    var img = '';
+                    if (value) {
+                        img = $filter("cropImage")(value, $rootScope.deviceWidth, $rootScope.deviceHeight, true);
+                        element.attr("style", 'background:url(' + img + ') !important');
+                        element.css({
+                            'background-size': 'cover'
+                        });
+                    }
+                    else {
+                        element.attr("style", 'background-color:white');
+                        element.css({
+                            'background-size': 'cover'
+                        });
+                    }
+                });
+            };
+        }]);
 })(window.angular, undefined);

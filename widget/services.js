@@ -197,7 +197,7 @@
                 }
 
                 items.forEach(function (_dest) {
-                    if (_dest.data && _dest.data.address && _dest.data.address.lat && _dest.data.address.lng)
+                    if (_dest && _dest.data && _dest.data.address && _dest.data.address.lat && _dest.data.address.lng)
                         destinationsMap.push({lat: _dest.data.address.lat, lng: _dest.data.address.lng});
                     else
                         destinationsMap.push({lat: 0, lng: 0});
@@ -223,5 +223,49 @@
             return {
                 getDistance: _getDistance
             }
+        }])
+        .factory('ViewStack', ['$rootScope', function ($rootScope) {
+            var views = [];
+            var viewMap = {};
+            return {
+                push: function (view) {
+                    if (viewMap[view.template]) {
+                       /* views = [];
+                        viewMap = {};*/
+
+                        views.push(view);
+                        $rootScope.$broadcast('VIEW_CHANGED', 'PUSH', view);
+                        views = views.slice(-1);
+                        viewMap = {};
+                        viewMap[view.template] = 1;
+                        $("div[view-switcher]").find('div:not(:last)').remove();
+                        console.log('views>>>',views);
+                    }
+                    else {
+                        viewMap[view.template] = 1;
+                        views.push(view);
+                        $rootScope.$broadcast('VIEW_CHANGED', 'PUSH', view);
+                    }
+                    return view;
+                },
+                pop: function () {
+                    $rootScope.$broadcast('BEFORE_POP', views[views.length - 1]);
+                    var view = views.pop();
+                    delete viewMap[view.template];
+                    $rootScope.$broadcast('VIEW_CHANGED', 'POP', view);
+                    return view;
+                },
+                hasViews: function () {
+                    return !!views.length;
+                },
+                getCurrentView: function () {
+                    return views.length && views[views.length - 1] || {};
+                },
+                popAllViews: function () {
+                    $rootScope.$broadcast('VIEW_CHANGED', 'POPALL', views);
+                    views = [];
+                    viewMap = {};
+                }
+            };
         }]);
 })(window.angular, window.buildfire, window.location);
