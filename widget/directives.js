@@ -62,7 +62,7 @@
                                 return {
                                     url: _imageUrl,
                                     // This marker is 20 pixels wide by 32 pixels high.
-                                    size: new google.maps.Size(20, 20),
+                                    scaledSize: new google.maps.Size(20,20),
                                     // The origin for this image is (0, 0).
                                     origin: new google.maps.Point(0, 0),
                                     // The anchor for this image is the base of the flagpole at (0, 32).
@@ -73,6 +73,7 @@
                             var selectedLocation = null;
 
                             var currentLocationIconImageUrl = 'assets/images/google_marker_blue_icon.png';
+                            //var currentLocationIconImageUrl = 'assets/images/blue.png';
                             var placeLocationIconImageUrl = 'assets/images/google_marker_red_icon.png';
                             var selectedLocationIconImageUrl = 'assets/images/google_marker_green_icon.png';
 
@@ -96,7 +97,8 @@
                                     },
                                     map: map,
                                     icon: currentLocationIcon,
-                                    shape: shape
+                                    shape: shape,
+                                    optimized: false
                                 });
                             }
 
@@ -118,7 +120,8 @@
                                             icon: placeLocationIcon,
                                             shape: shape,
                                             title: _place.data.itemTitle,
-                                            zIndex: _index
+                                            zIndex: _index,
+                                            optimized: false
                                         });
                                         marker.addListener('click', function () {
                                             var _this = this;
@@ -220,7 +223,8 @@
                                     },
                                     map: map,
                                     icon: placeLocationIcon,
-                                    shape: shape
+                                    shape: shape,
+                                    optimized:false
                                 });
                                 marker.addListener('click', function () {
                                     openInMap(scope.locationData.currentCoordinates[1], scope.locationData.currentCoordinates[0]);
