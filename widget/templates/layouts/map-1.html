@@ -6,14 +6,14 @@
                     <img default-image ng-src="{{WidgetSections.selectedItem.data.listImage | cropImage : 80:60 }}">
                 </div>
                 <div class="copy stretch pull-left" style="padding-left: 85px;" ng-style="{'top':(!WidgetSections.selectedItem.data.summary? '9px':'')}">
-                    <p class="margin-bottom-zero ellipsis margin-top-ten text-primary"><a ng-href="#/item/{{WidgetSections.selectedItem.data.sections[0]}}/{{WidgetSections.selectedItem.id}}" class="ellipsis text-primary">{{WidgetSections.selectedItem.data.itemTitle}}</a></p>
+                    <p class="margin-bottom-zero ellipsis margin-top-ten text-primary"><a ng-href="#/item/{{WidgetSections.selectedItem.data.sections[0]}}/{{WidgetSections.selectedItem.id}}" class="ellipsis titleBarTheme">{{WidgetSections.selectedItem.data.itemTitle}}</a></p>
 
-                    <p class="margin-bottom-zero text-primary ellipsis">{{WidgetSections.selectedItem.data.summary}}</p>
+                    <p class="margin-bottom-zero titleBarTheme ellipsis">{{WidgetSections.selectedItem.data.summary}}</p>
                 </div>
             </div>
             <div class="col-xs-3 padding-left-zero pull-right text-right margin-top-fifteen">
-                <span ng-click="WidgetSections.openInMap()" class="icon icon-location location-circle primaryBackgroundTheme whiteTheme"></span><br>
-                <span class="font-size-small">{{WidgetSections.selectedItemDistance}}</span>
+                <span ng-click="WidgetSections.openInMap()" class="icon icon-location location-circle titleBarBackgroundTheme whiteTheme"></span><br>
+                <span class="font-size-small titleBarTheme">{{WidgetSections.selectedItemDistance}}</span>
             </div>
         </div>
         <div class="location-map">
