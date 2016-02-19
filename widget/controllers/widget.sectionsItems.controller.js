@@ -6,6 +6,7 @@
                 var WidgetSections = this;
                 WidgetSections.removeShowSectionsArea = true;
                 var vs = ViewStack.getCurrentView();
+                WidgetSections.selectedSection=vs.sectionId;
                 if (vs.sectionId) {
                     if (vs.sectionId != 'allitems')
                         WidgetSections.selectedSections = [vs.sectionId];
