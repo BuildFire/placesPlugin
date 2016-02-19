@@ -354,8 +354,6 @@
                                     url = url + "items";
                                     if (secId != 'allitems') {
                                         url = url + "/" + secId;
-                                        //alert('aa');
-                                        //path = null;
                                     }
                                     else if (secId == 'allitems') {
                                         url = '#/allitems';

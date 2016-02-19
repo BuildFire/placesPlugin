@@ -356,7 +356,7 @@
                         refreshSections();
                     }
                 });
-            }
+            };
 
                 WidgetSections.applyOnUpdateWatcher();
 
@@ -400,8 +400,6 @@
                 }
 
                 (function () {
-
-
                     PlaceInfo.get().then(function (data) {
                         WidgetSections.placesInfo = data;
                         initPage();
@@ -409,8 +407,6 @@
                         WidgetSections.placesInfo = _placesInfoData;
                         initPage();
                     });
-
-
                 })();
 
 

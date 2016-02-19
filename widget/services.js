@@ -176,10 +176,10 @@
             var _getDistance = function (origin, items, distanceUnit) {
                 var deferred = $q.defer();
                 var originMap;
-                if(origin && origin.length)
-                    originMap= {lat: origin[1], lng: origin[0]};
-                else{
-                    originMap={lat:121.88,lng:37.33};
+                if (origin && origin.length)
+                    originMap = {lat: origin[1], lng: origin[0]};
+                else {
+                    originMap = {lat: 121.88, lng: 37.33};
                 }
                 var destinationsMap = [];
 
@@ -224,14 +224,23 @@
                 getDistance: _getDistance
             }
         }])
-        .factory('ViewStack', ['$rootScope', function ($rootScope) {
+        .factory('ViewStack', ['$rootScope', 'EVENTS', 'Messaging', function ($rootScope, EVENTS, Messaging) {
             var views = [];
             var viewMap = {};
             return {
                 push: function (view) {
+                    console.log('View----------------------changed----------------', view);
+                    Messaging.sendMessageToControl({
+                        name: EVENTS.ROUTE_CHANGE,
+                        message: {
+                            path: view.template,
+                            secId: view.sectionId,
+                            id: view.itemId
+                        }
+                    });
                     if (viewMap[view.template]) {
-                       /* views = [];
-                        viewMap = {};*/
+                        /* views = [];
+                         viewMap = {};*/
 
                         views.push(view);
                         $rootScope.$broadcast('VIEW_CHANGED', 'PUSH', view);
@@ -239,7 +248,7 @@
                         viewMap = {};
                         viewMap[view.template] = 1;
                         $("div[view-switcher]").find('div:not(:last)').remove();
-                        console.log('views>>>',views);
+                        console.log('views>>>', views);
                     }
                     else {
                         viewMap[view.template] = 1;
