@@ -56,12 +56,22 @@
                 WidgetItem.placeInfo = placesInfo;
             }
             else {*/
-                WidgetItem.placeInfo = _infoData;
+              /*  WidgetItem.placeInfo = _infoData;*/
             //}
 
             var vs = ViewStack.getCurrentView();
 
             if (vs.itemId && vs.sectionId) {
+                PlaceInfo.get().then(function(info){
+                    console.log('Places Info in Item Page--------------------------------',info);
+                    if(info)
+                    WidgetItem.placeInfo=info;
+                    else{
+                        WidgetItem.placeInfo=_infoData;
+                    }
+                },function(err){
+                    WidgetItem.placeInfo=_infoData;
+                });
                 Items.getById(vs.itemId).then(function (d) {
                     if (d)
                         WidgetItem.item = d;
@@ -152,7 +162,7 @@
              }
              });*/
 
-            if (WidgetItem.locationData && WidgetItem.locationData.currentCoordinates)
+            if (WidgetItem.locationData && WidgetItem.locationData.currentCoordinates && WidgetItem.placeInfo && WidgetItem.placeInfo.data && WidgetItem.placeInfo.data.settings)
                 calDistance(WidgetItem.locationData.currentCoordinates, [WidgetItem.item], WidgetItem.placeInfo.data.settings.showDistanceIn);
 
             WidgetItem.clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
@@ -225,12 +235,12 @@
             });*/
 
             function initCarousel(images) {
-                if (angular.element('#carousel').length) {
-                    if (WidgetItem.view && angular.element('#carousel').hasClass('plugin-slider')) {
+                if (angular.element('#carouselItemDetails').length) {
+                    if (WidgetItem.view && angular.element('#carouselItemDetails').hasClass('plugin-slider')) {
                         WidgetItem.view.loadItems(images);
                     }
                     else {
-                        WidgetItem.view = new Buildfire.components.carousel.view("#carousel", images);
+                        WidgetItem.view = new Buildfire.components.carousel.view("#carouselItemDetails", images);
                     }
                 }
             }
