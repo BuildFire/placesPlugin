@@ -276,7 +276,9 @@
 
                 ContentItems.editSections = function (ind) {
                     ContentItems.Sections.find({}).then(function (data) {
+                        console.log('Sections--------------------------------------popup',data);
                         buildfire.navigation.scrollTop();
+                        if(data && data.length>0)
                         Modals.editSectionModal(data, ContentItems.items[ind]).then(function (result) {
                             ContentItems.Items.update(result.id, result.data).then(function () {
                                 _skip = 0;

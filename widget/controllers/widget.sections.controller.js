@@ -703,6 +703,7 @@
 
 
                 Messaging.onReceivedMessage = function (event) {
+                    console.log('OMMMMM Messaging.onReceivedMessage----------------------Widget Side?????????????????????????????????-------',event);
                     if (event) {
                         switch (event.name) {
 
@@ -710,6 +711,17 @@
                                 var path = event.message.path,
                                     id = event.message.id,
                                     secId = event.message.secId;
+                                var currentView=ViewStack.getCurrentView();
+                                if(id && currentView.itemId){
+                                    if(currentView.sectionId==secId && currentView.itemId==id && currentView.template==path)
+                                        break;
+                                }
+                                else{
+                                    if(!currentView.itemId && currentView.sectionId==secId && currentView.template==path)
+                                        break;
+                                }
+
+                                console.log('CUREEEEEEEEEEEEEEEEEEEEEEEEEEENTTTTTTTTTTTTTTT VIEWWWWWWWWWWWWWWWWW------------',currentView);
                                 switch (path) {
                                     case PATHS.ITEM:
                                         ViewStack.push({
