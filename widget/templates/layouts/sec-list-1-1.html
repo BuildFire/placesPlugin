@@ -1,11 +1,11 @@
 <div class="holder padding-zero has-bottom text-overlay">
     <div class="places-plugin layout1">
-        <div ng-show="WidgetSections.showSections" class="plugin-banner clearfix">
+        <div ng-if="WidgetSections.removeShowSectionsArea != true" ng-show="WidgetSections.showSections" class="plugin-banner clearfix">
             <div class="plugin-slide text-center">
                 <div id="carousel" build-fire-carousel=""></div>
             </div>
         </div>
-        <div ng-show="WidgetSections.showSections" class="text-left padded padding-bottom-zero clearfix"
+        <div  ng-show="WidgetSections.showSections" class="text-left padded padding-bottom-zero clearfix"
              ng-if="WidgetSections.showDescription()">
             <p class="margin-bottom-zero" id="description"
                ng-bind-html="WidgetSections.placesInfo.data.content.descriptionHTML | safeHtml"></p>
@@ -96,7 +96,6 @@
                  </div>-->
             </div>
         </div>
-       <!-- <div ng-include="'templates/layouts/bottom-menu.html'"></div>-->
     </div>
 </div>
 

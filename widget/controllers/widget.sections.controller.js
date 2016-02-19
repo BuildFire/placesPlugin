@@ -4,6 +4,7 @@
         .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance', '$routeParams', '$timeout', 'OrdersItems', '$filter', 'ViewStack',
             function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $routeParams, $timeout, OrdersItems, $filter, ViewStack) {
                 var WidgetSections = this;
+                WidgetSections.removeShowSectionsArea = false;
                 WidgetSections.sectionId = $routeParams.sectionId;
                 WidgetSections.showMenu = false;
                 WidgetSections.menuTab = 'Category';
@@ -19,7 +20,8 @@
                     WidgetSections.mainViewBtmMenu = false;
                     ViewStack.push({
                         template: "section",
-                        sectionId: id
+                        sectionId: id,
+                        currentView: WidgetSections.currentView
                     });
                 };
 
@@ -79,7 +81,6 @@
                 WidgetSections.loadMoreItems = function () {
                     console.log('items load called');
                     if (WidgetSections.noMoreItems || WidgetSections.isBusyItems) {
-                        //alert('not loading items');
                         console.log('but no more items');
                         return;
                     }
@@ -256,29 +257,26 @@
                 };
 
                 var initCarousel = function (_defaultView) {
-                    switch (_defaultView) {
-                        case DEFAULT_VIEWS.LIST:
-                            if (currentLayout !== WidgetSections.placesInfo.data.design.secListLayout) {
-                                currentLayout = WidgetSections.placesInfo.data.design.secListLayout;
-                            }
-                            if (WidgetSections.placesInfo && WidgetSections.placesInfo.data.content.images.length) {
-                                loadItems(WidgetSections.placesInfo.data.content.images);
-                            } else {
-                                loadItems([]);
-                            }
-                            break;
-                        case DEFAULT_VIEWS.MAP:
-                            if (currentLayout !== WidgetSections.placesInfo.data.design.mapLayout) {
-                                currentLayout = WidgetSections.placesInfo.data.design.mapLayout;
-                            }
-                            if (WidgetSections.selectedItem && WidgetSections.selectedItem.data.images.length) {
-                                loadItems(WidgetSections.selectedItem.data.images);
-                            } else {
-                                loadItems([]);
-                            }
+                    console.log('akh', WidgetSections.placesInfo);
+                    //alert(currentLayout);
+                    if (currentLayout.indexOf('list') != -1) {
 
-                            break;
+                        if (WidgetSections.placesInfo && WidgetSections.placesInfo.data.content.images.length) {
+                            loadItems(WidgetSections.placesInfo.data.content.images);
+                        } else {
+                            loadItems([]);
+                        }
+                    } else {
+
+
+                        if (WidgetSections.selectedItem && WidgetSections.selectedItem.data.images.length) {
+                            loadMapCarouselItems(WidgetSections.selectedItem.data.images);
+                        } else {
+                            loadMapCarouselItems([]);
+                        }
+
                     }
+
                 };
 
                 /**
@@ -286,77 +284,77 @@
                  */
                 var clearOnUpdateListener;
 
-                WidgetSections.applyOnUpdateWatcher = function() {
-                clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
-                    console.log('Event in ------------------', event);
-                    if (event.tag === "placeInfo") {
-                        console.log('update happened in placeInfo');
+                WidgetSections.applyOnUpdateWatcher = function () {
+                    clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
+                        console.log('Event in ------------------', event);
+                        if (event.tag === "placeInfo") {
+                            console.log('update happened in placeInfo');
 
-                        if (event.data) {
+                            if (event.data) {
 
-                            if (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings) {
-                                if (event.data.settings.showDistanceIn != WidgetSections.placesInfo.data.settings.showDistanceIn)
-                                    $window.location.reload();
+                                if (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings) {
+                                    if (event.data.settings.showDistanceIn != WidgetSections.placesInfo.data.settings.showDistanceIn)
+                                        $window.location.reload();
 
-                                var sortByItemsChange = false;
-                                if (event.data.content.sortByItems != WidgetSections.placesInfo.data.content.sortByItems)
-                                    sortByItemsChange = true;
+                                    var sortByItemsChange = false;
+                                    if (event.data.content.sortByItems != WidgetSections.placesInfo.data.content.sortByItems)
+                                        sortByItemsChange = true;
+                                }
+                                WidgetSections.placesInfo = event;
+
+                                if (sortByItemsChange)
+                                    filterChanged();
+
+                                WidgetSections.selectedItem = null;
+                                WidgetSections.selectedItemDistance = null;
+                                WidgetSections.currentView = WidgetSections.placesInfo.data.settings.defaultView;
+                                if (!$scope.$$phase)$scope.$digest();
+                                refreshSections();
+
+
+                                $timeout(function () {
+                                    var carousel = $("#carousel").html();
+                                    // set carousel in case of design layout change
+
+                                    // $("#carousel").length checks if element is there on the page
+                                    if ($("#carousel").length > 0 && carousel.trim() == '') {
+                                        view = new Buildfire.components.carousel.view("#carousel", []); ///create new instance of buildfire carousel viewer
+                                    }
+                                    if (view) {
+                                        view.loadItems(event.data.content.images);
+                                    }
+                                }, 1500);
                             }
-                            WidgetSections.placesInfo = event;
-
-                            if (sortByItemsChange)
-                                filterChanged();
-
+                        }
+                        else if (event.tag === "items") {
+                            if (event.data) {
+                                $timeout(function () {
+                                    filterChanged();
+                                }, 1500);
+                                if (event.data.address && event.data.address.lng && event.data.address.lat) {
+                                    loadAllItemsOfSections();
+                                }
+                            } else if (event.id && WidgetSections.locationData.items) {
+                                for (var _index = 0; _index < WidgetSections.locationData.items.length; _index++) {
+                                    if (WidgetSections.locationData.items[_index].id == event.id) {
+                                        WidgetSections.locationData.items.splice(_index, 1);
+                                        break;
+                                    }
+                                }
+                                WidgetSections.selectedItem = null;
+                                WidgetSections.selectedItemDistance = null;
+                                if (!$scope.$$phase)$scope.$digest();
+                            }
+                        }
+                        else {
+                            view = null;
                             WidgetSections.selectedItem = null;
                             WidgetSections.selectedItemDistance = null;
-                            WidgetSections.currentView = WidgetSections.placesInfo.data.settings.defaultView;
-                            if (!$scope.$$phase)$scope.$digest();
+                            currentLayout = '';
                             refreshSections();
-
-
-                            $timeout(function () {
-                                var carousel = $("#carousel").html();
-                                // set carousel in case of design layout change
-
-                                // $("#carousel").length checks if element is there on the page
-                                if ($("#carousel").length > 0 && carousel.trim() == '') {
-                                    view = new Buildfire.components.carousel.view("#carousel", []); ///create new instance of buildfire carousel viewer
-                                }
-                                if (view) {
-                                    view.loadItems(event.data.content.images);
-                                }
-                            }, 1500);
                         }
-                    }
-                    else if (event.tag === "items") {
-                        if (event.data) {
-                            $timeout(function () {
-                                filterChanged();
-                            }, 1500);
-                            if (event.data.address && event.data.address.lng && event.data.address.lat) {
-                                loadAllItemsOfSections();
-                            }
-                        } else if (event.id && WidgetSections.locationData.items) {
-                            for (var _index = 0; _index < WidgetSections.locationData.items.length; _index++) {
-                                if (WidgetSections.locationData.items[_index].id == event.id) {
-                                    WidgetSections.locationData.items.splice(_index, 1);
-                                    break;
-                                }
-                            }
-                            WidgetSections.selectedItem = null;
-                            WidgetSections.selectedItemDistance = null;
-                            if (!$scope.$$phase)$scope.$digest();
-                        }
-                    }
-                    else {
-                        view = null;
-                        WidgetSections.selectedItem = null;
-                        WidgetSections.selectedItemDistance = null;
-                        currentLayout = '';
-                        refreshSections();
-                    }
-                });
-            }
+                    });
+                }
 
                 WidgetSections.applyOnUpdateWatcher();
 
@@ -368,9 +366,8 @@
                 };
 
                 function initPage() {
-                    if (WidgetSections.placesInfo.data.settings && WidgetSections.placesInfo.data.settings.showDistanceIn == 'mi')
-                    {
-                    $scope.distanceSlider = {
+                    if (WidgetSections.placesInfo.data.settings && WidgetSections.placesInfo.data.settings.showDistanceIn == 'mi') {
+                        $scope.distanceSlider = {
                             min: 0,
                             max: 300,
                             ceil: 310, //upper limit
@@ -429,22 +426,6 @@
 
 
                 function getGeoLocation() {
-                    /*alert('came to check geo location ');
-                     if (navigator.geolocation) {
-
-                     navigator.geolocation.getCurrentPosition(function (position) {
-                     $scope.$apply(function () {
-                     //WidgetSections.sortOnClosest = true;// will be true if user allows location
-                     WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
-                     localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
-                     });
-                     }, function (error) {
-                     console.error('Error while getting location', error);
-                     });
-                     }*/
-                    // else - in this case, default coords will be used
-
-
                     Buildfire.geo.getCurrentPosition(
                         null,
                         function (err, position) {
@@ -469,8 +450,10 @@
                 /// load items
                 function loadItems(carouselItems) {
                     // create an instance and pass it the items if you don't have items yet just pass []
-                    if (view)
+                    if (view) {
                         view.loadItems(carouselItems);
+                    }
+
                 }
 
                 /// load items
@@ -682,7 +665,8 @@
 
                 $scope.$watch(function () {
                     return WidgetSections.currentView;
-                }, function () {
+                }, function (view) {
+                    currentLayout = view;
                     WidgetSections.selectedItem = null;
                 }, true);
 
@@ -690,8 +674,8 @@
                     if (!view) {
                         view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
                     }
-                    if (view && WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings.defaultView) {
-                        initCarousel(WidgetSections.placesInfo.data.settings.defaultView)
+                    else if (view && WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings.defaultView) {
+                        initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
                     }
                     else {
                         view.loadItems([]);
@@ -721,82 +705,6 @@
                      }*/
                 });
 
-               /* if ($routeParams.sectionId) { // this case means the controller is serving the section view
-
-
-                    /!*  if ($routeParams.sectionId == 'allitems') {
-                     WidgetSections.selectedSections = [];
-                     }
-                     else {
-                     WidgetSections.selectedSections = [$routeParams.sectionId];
-                     console.log(WidgetSections.selectedSections);
-                     }
-                     *!/
-
-                    // have to get sections explicitly in item list view
-                    WidgetSections.sections = [];
-                    if ($routeParams.sectionId != 'allitems') {
-                        Sections.getById($routeParams.sectionId).then(function (data) {
-                                WidgetSections.sectionInfo = data;
-                            }
-                            ,
-                            function (err) {
-                                // do somthing on err
-                            }
-                        )
-                        ;
-                    }
-                    Sections.find({}).then(function success(result) {
-                        WidgetSections.sections = result;
-
-                    }, function () {
-                    });
-
-
-                    //syn with control side
-                    /!*  Messaging.sendMessageToControl({
-                     name: EVENTS.ROUTE_CHANGE,
-                     message: {
-                     path: PATHS.SECTION,
-                     secId: $routeParams.sectionId
-                     }
-                     });*!/
-                }*/
-
-                /*   WidgetSections.messageControlForSection = function (a) {
-                 //syn with control side
-                 Messaging.sendMessageToControl({
-                 name: EVENTS.ROUTE_CHANGE,
-                 message: {
-                 path: PATHS.SECTION,
-                 secId: a,
-                 dontPropagate: true
-                 }
-                 });
-                 };*/
-
-                /*var offCallMeFn = $rootScope.$on(EVENTS.ROUTE_CHANGE_1, function (e, data) {
-                 console.log('>>>>>>>>>>>>>>', data);
-                 manuallyTransitionAnimation();
-                 if (data) {
-
-                 if (data.toString() === 'allitems') {
-                 $('#allItemsOption').click();
-                 }
-                 else {
-                 WidgetSections.sectionId = data.toString();
-                 WidgetSections.selectedSections = [data.toString()];
-                 }
-                 WidgetSections.showSections = false;
-                 if (!$scope.$$phase)$scope.$digest();
-                 }
-                 else {
-                 WidgetSections.selectedSections = [];
-                 WidgetSections.showSections = true;
-                 }
-                 console.log('<<<<<<<<<<<<<<', WidgetSections.selectedSections);
-                 if (!$scope.$$phase)$scope.$digest();
-                 });*/
 
                 Messaging.onReceivedMessage = function (event) {
                     if (event) {
@@ -836,7 +744,7 @@
                 WidgetSections.reloadPlacesInfo = function () {
                     PlaceInfo.get().then(function (data) {
                         WidgetSections.placesInfo = data;
-
+                        currentLayout = WidgetSections.placesInfo.data.settings.defaultView;
                         if (!view) {
                             $("#carousel").parent().html("<div id='carousel'></div>");
                             view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer

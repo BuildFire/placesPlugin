@@ -208,7 +208,7 @@
                     origins: [originMap],
                     destinations: destinationsMap,
                     travelMode: google.maps.TravelMode.DRIVING,
-                    unitSystem: distanceUnit == 'kilometers' ? google.maps.UnitSystem.METRIC : google.maps.UnitSystem.IMPERIAL,
+                    unitSystem: distanceUnit == 'km' ? google.maps.UnitSystem.METRIC : google.maps.UnitSystem.IMPERIAL,
                     avoidHighways: false,
                     avoidTolls: false
                 }, function (response, status) {

@@ -1,10 +1,10 @@
-(function (angular,window) {
+(function (angular, window) {
     angular
         .module('placesWidget')
         .controller('WidgetSectionsItemsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance', '$routeParams', '$timeout', 'OrdersItems', '$filter', 'ViewStack',
             function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $routeParams, $timeout, OrdersItems, $filter, ViewStack) {
                 var WidgetSections = this;
-
+                WidgetSections.removeShowSectionsArea = true;
                 var vs = ViewStack.getCurrentView();
                 if (vs.sectionId) {
                     if (vs.sectionId != 'allitems')
@@ -44,7 +44,13 @@
 
 
                 WidgetSections.placesInfo = null;
-                WidgetSections.currentView = null;
+
+                if (!vs.currentView)
+                    WidgetSections.currentView = null;
+                else {
+                    WidgetSections.currentView = vs.currentView;
+                }
+
                 WidgetSections.selectedItem = null;
                 WidgetSections.selectedItemDistance = null;
                 WidgetSections.sortOnClosest = false; // default value
@@ -77,17 +83,13 @@
                  * loadMoreItems method loads the sections in list page.
                  */
                 WidgetSections.loadMoreItems = function () {
-                    console.log('lakshayfilter', WidgetSections.selectedSections);
-                    console.log('items load called');
                     if (WidgetSections.placesInfo == null || WidgetSections.noMoreItems || WidgetSections.isBusyItems) {
-                        //alert('not loading items');
                         console.log('but no more items');
                         return;
                     }
 
                     updateGetOptionsItems();
 
-                    console.log('>>searchOptionsItems<<', searchOptionsItems);
                     WidgetSections.isBusyItems = true;
                     Items.find(searchOptionsItems).then(function success(result) {
                         WidgetSections.isBusyItems = false;
@@ -108,11 +110,8 @@
                             });
                         }
 
-                        console.log('result', result);
-                        console.log('WidgetSections.locationData.items BEFORE', WidgetSections.locationData.items);
                         var items = WidgetSections.locationData.items ? WidgetSections.locationData.items.concat(result) : result;
                         WidgetSections.locationData.items = $filter('unique')(items, 'id');
-                        console.log('WidgetSections.locationData.items AFTER', WidgetSections.locationData.items);
                     }, function fail() {
                         WidgetSections.isBusyItems = false;
                         console.error('error in item fetch');
@@ -200,7 +199,7 @@
 
                 if (vs.sectionId != 'allitems') {
                     Sections.getById(vs.sectionId).then(function (d) {
-                        console.log('secListBGImage',d);
+                        console.log('secListBGImage', d);
                         if (d)
                             WidgetSections.secListBGImage = d.data.itemListBGImage;
                         else
@@ -235,9 +234,9 @@
                  */
                 var updateGetOptionsItems = function () {
                     var _sortBy = (WidgetSections.placesInfo && WidgetSections.placesInfo.data) ? WidgetSections.placesInfo.data.content.sortByItems : Orders.ordersMap.Default;
-                    console.log('items order sortby',_sortBy);
+                    console.log('items order sortby', _sortBy);
                     var order = OrdersItems.getOrder(_sortBy);
-                    console.log('items order',order);
+                    console.log('items order', order);
                     if (order) {
                         var sort = {};
                         sort[order.key] = order.order;
@@ -274,32 +273,6 @@
                     }
                 };
 
-                var initCarousel = function (_defaultView) {
-                    switch (_defaultView) {
-                        case DEFAULT_VIEWS.LIST:
-                            if (currentLayout !== WidgetSections.placesInfo.data.design.secListLayout) {
-                                currentLayout = WidgetSections.placesInfo.data.design.secListLayout;
-                            }
-                            if (WidgetSections.placesInfo && WidgetSections.placesInfo.data.content.images.length) {
-                                loadItems(WidgetSections.placesInfo.data.content.images);
-                            } else {
-                                loadItems([]);
-                            }
-                            break;
-                        case DEFAULT_VIEWS.MAP:
-                            if (currentLayout !== WidgetSections.placesInfo.data.design.mapLayout) {
-                                currentLayout = WidgetSections.placesInfo.data.design.mapLayout;
-                            }
-                            if (WidgetSections.selectedItem && WidgetSections.selectedItem.data.images.length) {
-                                loadItems(WidgetSections.selectedItem.data.images);
-                            } else {
-                                loadItems([]);
-                            }
-
-                            break;
-                    }
-                };
-
                 /**
                  * Buildfire.datastore.onUpdate method calls when Data is changed.
                  */
@@ -325,7 +298,10 @@
 
                             WidgetSections.selectedItem = null;
                             WidgetSections.selectedItemDistance = null;
+
+                            //if (WidgetSections.currentView == null)
                             WidgetSections.currentView = WidgetSections.placesInfo.data.settings.defaultView;
+
                             if (!$scope.$$phase)$scope.$digest();
                             refreshSections();
 
@@ -373,6 +349,13 @@
                     }
                 });
 
+                $scope.distanceSlider = {
+                    min: 0,
+                    max: 300,
+                    ceil: 310, //upper limit
+                    floor: 0
+                };
+
                 function initPage() {
                     if (WidgetSections.placesInfo.data.settings && WidgetSections.placesInfo.data.settings.showDistanceIn == 'mi')
                         $scope.distanceSlider = {
@@ -389,7 +372,8 @@
                             floor: 0
                         };
 
-                    WidgetSections.currentView = (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings) ? WidgetSections.placesInfo.data.settings.defaultView : null;
+                    if (WidgetSections.currentView == null)
+                        WidgetSections.currentView = (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings) ? WidgetSections.placesInfo.data.settings.defaultView : null;
                     if (WidgetSections.currentView) {
                         switch (WidgetSections.currentView) {
                             case DEFAULT_VIEWS.LIST:
@@ -400,8 +384,6 @@
                                 break;
                         }
                     }
-                    WidgetSections.locationData.items.push({});
-                    WidgetSections.locationData.items.pop();
                     WidgetSections.loadMoreItems();
                 }
 
@@ -461,6 +443,8 @@
                     // create an instance and pass it the items if you don't have items yet just pass []
                     if (view)
                         view.loadItems(carouselItems);
+                    else
+                        alert('no view');
                 }
 
                 /// load items
@@ -547,7 +531,6 @@
                         return;
                     }
                     WidgetSections.selectedItem = WidgetSections.locationData.items[itemIndex];
-                    initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
 
                     GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, [WidgetSections.selectedItem], '').then(function (result) {
                         console.log('Distance---------------------', result);
@@ -675,24 +658,7 @@
                     WidgetSections.selectedItem = null;
                 }, true);
 
-                /*$scope.$on("Carousel:LOADED", function () {
-                 if (!view) {
-                 view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
-                 }
-                 if (view && WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings.defaultView) {
-                 initCarousel(WidgetSections.placesInfo.data.settings.defaultView)
-                 }
-                 else {
-                 view.loadItems([]);
-                 }
-                 });*/
 
-                /* WidgetSections.increaseMaxDis = function () {
-                 $scope.distanceSlider.ceil = $scope.distanceSlider.ceil + 10;
-                 console.log($scope.distanceSlider.max, "$scope.distanceSlider.max-------------------");
-                 $scope.$digest();
-                 };
-                 */
                 WidgetSections.getSectionId = function (arr) {
                     if (arr.length == 0 || angular.element("#allItemsOption").hasClass('whiteTheme') || angular.element('.list-item.section-filter.whiteTheme').length == 0)
                         return 'allitems';
@@ -704,122 +670,12 @@
                     }
                 };
 
-                $scope.$on("Map Carousel:LOADED", function () {
-                    /*if (!mapview) {
-                     mapview = new Buildfire.components.carousel.view("#mapCarousel", []);  ///create new instance of buildfire carousel viewer
-                     }*/
-                });
-
-                /*  if ($routeParams.sectionId) { // this case means the controller is serving the section view
-
-
-                 /!*  if ($routeParams.sectionId == 'allitems') {
-                 WidgetSections.selectedSections = [];
-                 }
-                 else {
-                 WidgetSections.selectedSections = [$routeParams.sectionId];
-                 console.log(WidgetSections.selectedSections);
-                 }
-                 *!/
-
-                 // have to get sections explicitly in item list view
-                 WidgetSections.sections = [];
-                 if ($routeParams.sectionId != 'allitems') {
-                 Sections.getById($routeParams.sectionId).then(function (data) {
-                 WidgetSections.sectionInfo = data;
-                 }
-                 ,
-                 function (err) {
-                 // do somthing on err
-                 }
-                 )
-                 ;
-                 }
-                 Sections.find({}).then(function success(result) {
-                 WidgetSections.sections = result;
-
-                 }, function () {
+                /*  $scope.$on("Map Carousel:LOADED", function () {
+                 /!*if (!mapview) {
+                 mapview = new Buildfire.components.carousel.view("#mapCarousel", []);  ///create new instance of buildfire carousel viewer
+                 }*!/
                  });
-
-
-                 //syn with control side
-                 /!*  Messaging.sendMessageToControl({
-                 name: EVENTS.ROUTE_CHANGE,
-                 message: {
-                 path: PATHS.SECTION,
-                 secId: $routeParams.sectionId
-                 }
-                 });*!/
-                 }*/
-
-                /*   WidgetSections.messageControlForSection = function (a) {
-                 //syn with control side
-                 Messaging.sendMessageToControl({
-                 name: EVENTS.ROUTE_CHANGE,
-                 message: {
-                 path: PATHS.SECTION,
-                 secId: a,
-                 dontPropagate: true
-                 }
-                 });
-                 };*/
-
-                /*var offCallMeFn = $rootScope.$on(EVENTS.ROUTE_CHANGE_1, function (e, data) {
-                 console.log('>>>>>>>>>>>>>>', data);
-                 manuallyTransitionAnimation();
-                 if (data) {
-
-                 if (data.toString() === 'allitems') {
-                 $('#allItemsOption').click();
-                 }
-                 else {
-                 WidgetSections.sectionId = data.toString();
-                 WidgetSections.selectedSections = [data.toString()];
-                 }
-                 WidgetSections.showSections = false;
-                 if (!$scope.$$phase)$scope.$digest();
-                 }
-                 else {
-                 WidgetSections.selectedSections = [];
-                 WidgetSections.showSections = true;
-                 }
-                 console.log('<<<<<<<<<<<<<<', WidgetSections.selectedSections);
-                 if (!$scope.$$phase)$scope.$digest();
-                 });*/
-
-                /* Messaging.onReceivedMessage = function (event) {
-                 if (event) {
-                 switch (event.name) {
-
-                 case EVENTS.ROUTE_CHANGE:
-                 var path = event.message.path,
-                 id = event.message.id,
-                 secId = event.message.secId;
-                 switch (path) {
-                 case PATHS.ITEM:
-                 ViewStack.push({
-                 template: "item",
-                 sectionId: secId,
-                 itemId: id
-                 });
-                 break;
-                 case PATHS.HOME:
-                 ViewStack.popAllViews();
-                 break;
-                 case PATHS.SECTION:
-                 ViewStack.push({
-                 template: "section",
-                 sectionId: secId
-                 });
-                 default :
-                 break;
-                 }
-                 $scope.$apply();
-
-                 break;
-                 }
-                 }
-                 };*/
+                 */
 
                 /**
                  * will called when controller scope has been destroyed.
