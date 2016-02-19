@@ -79,13 +79,15 @@
                 WidgetSections.loadMoreItems = function () {
                     console.log('lakshayfilter', WidgetSections.selectedSections);
                     console.log('items load called');
-                    if (WidgetSections.noMoreItems || WidgetSections.isBusyItems) {
+                    if (WidgetSections.placesInfo == null || WidgetSections.noMoreItems || WidgetSections.isBusyItems) {
                         //alert('not loading items');
                         console.log('but no more items');
                         return;
                     }
-                    console.log('>>searchOptionsItems<<', searchOptionsItems);
+
                     updateGetOptionsItems();
+
+                    console.log('>>searchOptionsItems<<', searchOptionsItems);
                     WidgetSections.isBusyItems = true;
                     Items.find(searchOptionsItems).then(function success(result) {
                         WidgetSections.isBusyItems = false;
@@ -233,7 +235,9 @@
                  */
                 var updateGetOptionsItems = function () {
                     var _sortBy = (WidgetSections.placesInfo && WidgetSections.placesInfo.data) ? WidgetSections.placesInfo.data.content.sortByItems : Orders.ordersMap.Default;
-                    var order = Orders.getOrder(_sortBy);
+                    console.log('items order sortby',_sortBy);
+                    var order = OrdersItems.getOrder(_sortBy);
+                    console.log('items order',order);
                     if (order) {
                         var sort = {};
                         sort[order.key] = order.order;
@@ -396,7 +400,9 @@
                                 break;
                         }
                     }
-                    ///loadAllItemsOfSections();
+                    WidgetSections.locationData.items.push({});
+                    WidgetSections.locationData.items.pop();
+                    WidgetSections.loadMoreItems();
                 }
 
                 (function () {
@@ -429,22 +435,6 @@
 
 
                 function getGeoLocation() {
-                    /*alert('came to check geo location ');
-                     if (navigator.geolocation) {
-
-                     navigator.geolocation.getCurrentPosition(function (position) {
-                     $scope.$apply(function () {
-                     //WidgetSections.sortOnClosest = true;// will be true if user allows location
-                     WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
-                     localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
-                     });
-                     }, function (error) {
-                     console.error('Error while getting location', error);
-                     });
-                     }*/
-                    // else - in this case, default coords will be used
-
-
                     Buildfire.geo.getCurrentPosition(
                         null,
                         function (err, position) {
