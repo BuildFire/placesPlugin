@@ -715,7 +715,8 @@
                                         ViewStack.push({
                                             template: "item",
                                             sectionId: secId,
-                                            itemId: id
+                                            itemId: id,
+                                            dontPropagate:true
                                         });
                                         break;
                                     case PATHS.HOME:
@@ -725,7 +726,8 @@
                                     case PATHS.SECTION:
                                         ViewStack.push({
                                             template: "section",
-                                            sectionId: secId
+                                            sectionId: secId,
+                                            dontPropagate:true
                                         });
                                     default :
                                         break;

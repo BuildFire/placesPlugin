@@ -329,7 +329,6 @@
                     switch (event.name) {
                         case EVENTS.ROUTE_CHANGE:
                             if(event.message.dontPropagate){
-                                //alert(790);
                                 $rootScope.dontPropagate = true;
                             }
                             var path = event.message.path,

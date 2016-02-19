@@ -223,7 +223,7 @@
 
             buildfire.navigation.onBackButtonClick = function () {
                 if (ViewStack.hasViews()) {
-                    ViewStack.pop();
+                    ViewStack.pop({propagate:true});
                 } else {
                     buildfire.navigation._goBackOne();
                 }

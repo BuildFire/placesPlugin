@@ -230,14 +230,17 @@
             return {
                 push: function (view) {
                     console.log('View----------------------changed----------------', view);
-                    Messaging.sendMessageToControl({
-                        name: EVENTS.ROUTE_CHANGE,
-                        message: {
-                            path: view.template,
-                            secId: view.sectionId,
-                            id: view.itemId
-                        }
-                    });
+                    if (view.dontPropagate != true) {
+                        Messaging.sendMessageToControl({
+                            name: EVENTS.ROUTE_CHANGE,
+                            message: {
+                                path: view.template,
+                                secId: view.sectionId,
+                                id: view.itemId,
+                                dontPropagate:true
+                            }
+                        });
+                    }
                     if (viewMap[view.template]) {
                         /* views = [];
                          viewMap = {};*/
@@ -257,33 +260,36 @@
                     }
                     return view;
                 },
-                pop: function () {
+                pop: function (param) {
                     $rootScope.$broadcast('BEFORE_POP', views[views.length - 1]);
                     var view = views.pop();
-                    var newView=views[views.length-1];
-                    console.log('POP CALLED_----------------------------------------',view,'Views---------------------------',views);
+                    var newView = views[views.length - 1];
+                    console.log('POP CALLED_----------------------------------------', view, 'Views---------------------------', views);
                     delete viewMap[view.template];
-                    if(newView){
-                        Messaging.sendMessageToControl({
-                            name: EVENTS.ROUTE_CHANGE,
-                            message: {
-                                path: newView.template,
-                                secId: newView.sectionId,
-                                id: newView.itemId
-                            }
-                        });
+                    if (param && param.propagate == true) {
+                        if (newView) {
+                            Messaging.sendMessageToControl({
+                                name: EVENTS.ROUTE_CHANGE,
+                                message: {
+                                    path: newView.template,
+                                    secId: newView.sectionId,
+                                    id: newView.itemId,
+                                    dontPropagate:true
+                                }
+                            });
+                        }
+                        else {
+                            Messaging.sendMessageToControl({
+                                name: EVENTS.ROUTE_CHANGE,
+                                message: {
+                                    path: "HOME",
+                                    secId: null,
+                                    id: null,
+                                dontPropagate:true
+                                }
+                            });
+                        }
                     }
-                    else{
-                        Messaging.sendMessageToControl({
-                            name: EVENTS.ROUTE_CHANGE,
-                            message: {
-                                path: "HOME",
-                                secId: null,
-                                id: null
-                            }
-                        });
-                    }
-
                     $rootScope.$broadcast('VIEW_CHANGED', 'POP', view);
                     return view;
                 },

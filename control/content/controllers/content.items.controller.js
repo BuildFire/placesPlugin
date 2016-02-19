@@ -300,7 +300,9 @@
                 };
 
 
-                //syn with widget
+                if($rootScope.dontPropagate == true)
+                    $rootScope.dontPropagate = false;
+                else
                 Messaging.sendMessageToWidget({
                     name: EVENTS.ROUTE_CHANGE,
                     message: {
