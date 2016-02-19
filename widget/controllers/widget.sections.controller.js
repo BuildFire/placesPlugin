@@ -667,15 +667,17 @@
                 }, true);
 
                 $scope.$on("Carousel:LOADED", function () {
-                    if (!view) {
-                        view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
-                    }
-                    else if (view && WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings.defaultView) {
-                        initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
-                    }
-                    else {
-                        view.loadItems([]);
-                    }
+                    $timeout(function () {
+                        if (!view) {
+                            view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
+                        }
+                        else if (view && WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings.defaultView) {
+                            initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
+                        }
+                        else {
+                            view.loadItems([]);
+                        }
+                    }, 1500);
                 });
 
                 /* WidgetSections.increaseMaxDis = function () {
