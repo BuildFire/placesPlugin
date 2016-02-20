@@ -218,7 +218,7 @@
 
             // Show Body Content when it is not blank
             WidgetItem.showBodyContent = function () {
-                if (WidgetItem.item.data.bodyContent == '<p>&nbsp;<br></p>' || WidgetItem.item.data.bodyContent == '<p><br data-mce-bogus="1"></p>' || WidgetItem.item.data.bodyContent=='')
+                if ((WidgetItem.item && WidgetItem.item.data) &&(WidgetItem.item.data.bodyContent == '<p>&nbsp;<br></p>' || WidgetItem.item.data.bodyContent == '<p><br data-mce-bogus="1"></p>' || WidgetItem.item.data.bodyContent==''))
                     return false;
                 else
                     return true;
