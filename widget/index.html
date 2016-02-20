@@ -48,15 +48,21 @@
 
 </head>
 <body class="no-scroll">
+
 <div class="infinite-scroll-parent height-hundred-pc">
-    <!--back-img="{{WidgetSections.placesInfo.data.design.secListBGImage}}"-->
+    <div class="content slide relative height-hundred-pc">
+        <div ng-controller="WidgetSectionsCtrl as WidgetSections">
+            <div class="" ng-include="'templates/home.html'"></div>
+        </div>
+    </div>
+</div>
+<!--<div view-switcher=""></div>-->
+<!--<div class="infinite-scroll-parent height-hundred-pc">
+    &lt;!&ndash;back-img="{{WidgetSections.placesInfo.data.design.secListBGImage}}"&ndash;&gt;
         <div ng-controller="WidgetSectionsCtrl as WidgetSections" class="content slide relative height-hundred-pc">
             <div class="" ng-include="'templates/home.html'"></div>
         </div>
-   <!-- <div view-switcher="">
-
-    </div>-->
-    <!--<div ng-hide="showLandingPage" class="content slide relative" ng-view=""></div>-->
-</div>
+   &lt;!&ndash; &ndash;&gt;
+</div>-->
 </body>
 </html>
