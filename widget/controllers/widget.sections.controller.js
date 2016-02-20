@@ -258,8 +258,7 @@
 
                 var initCarousel = function (_defaultView) {
                     console.log('akh', WidgetSections.placesInfo);
-                    //alert(currentLayout);
-                    if (currentLayout.indexOf('list') != -1) {
+                    if (currentLayout == '' || currentLayout == null || currentLayout.indexOf('list') != -1) {
 
                         if (WidgetSections.placesInfo && WidgetSections.placesInfo.data.content.images.length) {
                             loadItems(WidgetSections.placesInfo.data.content.images);
@@ -401,21 +400,23 @@
                         WidgetSections.placesInfo = data;
                         initPage();
                         //alert('called');
-                        if (!view) {
-                            view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
-                        }
-                        else if (view && WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings.defaultView) {
-                            initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
-                        }
-                        else {
-                            view.loadItems([]);
-                        }
+                        /* if (!view) {
+                         view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
+                         }
+                         if (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings.defaultView) {
+
+                         alert('balloon');
+                         initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
+                         }
+                         else {
+                         view.loadItems([]);
+                         }*/
                     }, function () {
                         WidgetSections.placesInfo = _placesInfoData;
                         initPage();
-                        if (!view) {
-                            view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
-                        }
+                        /*  if (!view) {
+                         view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
+                         }*/
                     });
                 })();
 
@@ -681,25 +682,17 @@
 
                 $scope.$on("Carousel:LOADED", function () {
                     $timeout(function () {
-                        if (!view) {
+                        if (!view)
                             view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
-                        }
-                        else if (view && WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings.defaultView) {
+
+                        if (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings.defaultView)
                             initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
-                        }
-                        else {
+                        else
                             view.loadItems([]);
-                        }
-                    }, 1500);
+                    }, 1000);
                 });
 
-                /* WidgetSections.increaseMaxDis = function () {
-                 $scope.distanceSlider.ceil = $scope.distanceSlider.ceil + 10;
-                 console.log($scope.distanceSlider.max, "$scope.distanceSlider.max-------------------");
-                 $scope.$digest();
-                 };
-                 */
-                WidgetSections.getSectionId = function (arr) {
+               /* WidgetSections.getSectionId = function (arr) {
                     if (arr.length == 0 || angular.element("#allItemsOption").hasClass('whiteTheme') || angular.element('.list-item.section-filter.whiteTheme').length == 0)
                         return 'allitems';
                     else {
@@ -708,7 +701,7 @@
                         else
                             return arr[0];
                     }
-                };
+                };*/
 
                 $scope.$on("Map Carousel:LOADED", function () {
                     /*if (!mapview) {
@@ -718,7 +711,7 @@
 
 
                 Messaging.onReceivedMessage = function (event) {
-                    console.log('OMMMMM Messaging.onReceivedMessage----------------------Widget Side?????????????????????????????????-------',event);
+                    console.log('OMMMMM Messaging.onReceivedMessage----------------------Widget Side?????????????????????????????????-------', event);
                     if (event) {
                         switch (event.name) {
 
@@ -726,24 +719,24 @@
                                 var path = event.message.path,
                                     id = event.message.id,
                                     secId = event.message.secId;
-                                var currentView=ViewStack.getCurrentView();
-                                if(id && currentView.itemId){
-                                    if(currentView.sectionId==secId && currentView.itemId==id && currentView.template==path)
+                                var currentView = ViewStack.getCurrentView();
+                                if (id && currentView.itemId) {
+                                    if (currentView.sectionId == secId && currentView.itemId == id && currentView.template == path)
                                         break;
                                 }
-                                else{
-                                    if(!currentView.itemId && currentView.sectionId==secId && currentView.template==path)
+                                else {
+                                    if (!currentView.itemId && currentView.sectionId == secId && currentView.template == path)
                                         break;
                                 }
 
-                                console.log('CUREEEEEEEEEEEEEEEEEEEEEEEEEEENTTTTTTTTTTTTTTT VIEWWWWWWWWWWWWWWWWW------------',currentView);
+                                console.log('CUREEEEEEEEEEEEEEEEEEEEEEEEEEENTTTTTTTTTTTTTTT VIEWWWWWWWWWWWWWWWWW------------', currentView);
                                 switch (path) {
                                     case PATHS.ITEM:
                                         ViewStack.push({
                                             template: "item",
                                             sectionId: secId,
                                             itemId: id,
-                                            dontPropagate:true
+                                            dontPropagate: true
                                         });
                                         break;
                                     case PATHS.HOME:
@@ -754,7 +747,7 @@
                                         ViewStack.push({
                                             template: "section",
                                             sectionId: secId,
-                                            dontPropagate:true
+                                            dontPropagate: true
                                         });
                                     default :
                                         break;

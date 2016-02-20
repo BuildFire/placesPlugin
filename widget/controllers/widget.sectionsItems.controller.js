@@ -660,7 +660,7 @@
                 }, true);
 
 
-                WidgetSections.getSectionId = function (arr) {
+                /*WidgetSections.getSectionId = function (arr) {
                     if (arr.length == 0 || angular.element("#allItemsOption").hasClass('whiteTheme') || angular.element('.list-item.section-filter.whiteTheme').length == 0)
                         return 'allitems';
                     else {
@@ -671,7 +671,7 @@
                     }
                 };
 
-                /*  $scope.$on("Map Carousel:LOADED", function () {
+                  $scope.$on("Map Carousel:LOADED", function () {
                  /!*if (!mapview) {
                  mapview = new Buildfire.components.carousel.view("#mapCarousel", []);  ///create new instance of buildfire carousel viewer
                  }*!/
