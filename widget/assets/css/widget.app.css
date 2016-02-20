@@ -482,7 +482,7 @@ style for sec list dark overlay
     height:100% !important;
 }
 
-/*.slide.infinite-scroll-parent {
+.slide.infinite-scroll-parent {
     transform: none !important;
     -webkit-transform: none !important;
 }
@@ -490,19 +490,19 @@ style for sec list dark overlay
 .slide.infinite-scroll-parent.ng-enter,.slide.infinite-scroll-parent.ng-enter-active {
     -webkit-transform: translateX(0);
     transform: translateX(0);
-}*/
+}
 .padding-five{
     padding: 5px !important;
 }
 
-/*.transit{
+.transit{
 	-webkit-transition: -webkit-transform 0.2s ease-in-out;
 	-moz-transition: -moz-transform 0.2s ease-in-out;
 	-o-transition: -o-transform 0.2s ease-in-out;
 	transition: transform 0.2s ease-in-out;
 	-webkit-transform: translateX(0);
 	transform: translateX(0);
-}*/
+}
 
 .dynamic-view{
 	z-index: 10;

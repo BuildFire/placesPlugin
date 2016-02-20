@@ -51,12 +51,12 @@
 
 <div class="infinite-scroll-parent height-hundred-pc">
     <div class="content slide relative height-hundred-pc">
-        <div ng-controller="WidgetSectionsCtrl as WidgetSections">
-            <div class="" ng-include="'templates/home.html'"></div>
+        <div back-img="{{WidgetSections.placesInfo.data.design.secListBGImage}}" ng-controller="WidgetSectionsCtrl as WidgetSections">
+            <div class="height-hundred-pc" ng-include="'templates/home.html'"></div>
         </div>
     </div>
 </div>
-<!--<div view-switcher=""></div>-->
+<div view-switcher=""></div>
 <!--<div class="infinite-scroll-parent height-hundred-pc">
     &lt;!&ndash;back-img="{{WidgetSections.placesInfo.data.design.secListBGImage}}"&ndash;&gt;
         <div ng-controller="WidgetSectionsCtrl as WidgetSections" class="content slide relative height-hundred-pc">

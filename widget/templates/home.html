@@ -1,7 +1,7 @@
 <div  class="scrollable">
     <div ng-switch="WidgetSections.currentView">
         <div ng-switch-when="list">
-            <div ng-if="WidgetSections.placesInfo.data.design.secListLayout"
+            <div class="" ng-if="WidgetSections.placesInfo.data.design.secListLayout"
                  ng-include="'templates/layouts/' + WidgetSections.placesInfo.data.design.secListLayout+ '.html'">
             </div>
         </div>
@@ -11,9 +11,9 @@
             </div>
         </div>
     </div>
-    <div id="onUpdateListener" ng-click="WidgetSections.applyOnUpdateWatcher();WidgetSections.reloadPlacesInfo();" class="ng-hide"></div>
+    <!--<div id="onUpdateListener" ng-click="WidgetSections.applyOnUpdateWatcher();WidgetSections.reloadPlacesInfo();" class="ng-hide"></div>-->
 </div>
 
-<div id="mainViewBtmMenu" class="holder padding-zero">
+<div  class="holder padding-zero">
     <div ng-include="'templates/layouts/bottom-menu.html'"></div>
 </div>
