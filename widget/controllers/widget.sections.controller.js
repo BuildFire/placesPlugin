@@ -400,9 +400,22 @@
                     PlaceInfo.get().then(function (data) {
                         WidgetSections.placesInfo = data;
                         initPage();
+                        //alert('called');
+                        if (!view) {
+                            view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
+                        }
+                        else if (view && WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings.defaultView) {
+                            initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
+                        }
+                        else {
+                            view.loadItems([]);
+                        }
                     }, function () {
                         WidgetSections.placesInfo = _placesInfoData;
                         initPage();
+                        if (!view) {
+                            view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
+                        }
                     });
                 })();
 
