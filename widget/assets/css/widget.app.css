@@ -115,7 +115,7 @@
 	height:35px;
 	width:35px;
 	color:#fff;
-	z-index:13;
+	/*z-index:13;*/
 	opacity:0.8;
 }
 .holder .bottom .extra-links a.view-type{
@@ -145,7 +145,7 @@
 	width:100%;
 	padding:10px 0;
 	opacity:0.85;
-	z-index:9;
+	z-index:0 !important;
 }
 .holder .info-bar{
 	background:rgba(0,0,0,0.8);
@@ -502,4 +502,8 @@ style for sec list dark overlay
 	transition: transform 0.2s ease-in-out;
 	-webkit-transform: translateX(0);
 	transform: translateX(0);
+}
+
+.dynamic-view{
+	z-index: 10;
 }

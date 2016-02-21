@@ -1,11 +1,11 @@
 <div class="holder padding-zero has-bottom text-overlay">
     <div class="places-plugin layout1">
-        <div ng-show="WidgetSections.showSections" class="plugin-banner clearfix">
+        <div ng-if="WidgetSections.removeShowSectionsArea != true" ng-show="WidgetSections.showSections" class="plugin-banner clearfix">
             <div class="plugin-slide text-center">
                 <div id="carousel" build-fire-carousel=""></div>
             </div>
         </div>
-        <div ng-show="WidgetSections.showSections" class="text-left padded padding-bottom-zero clearfix"
+        <div  ng-show="WidgetSections.showSections" class="text-left padded padding-bottom-zero clearfix"
              ng-if="WidgetSections.showDescription()">
             <p class="margin-bottom-zero" id="description"
                ng-bind-html="WidgetSections.placesInfo.data.content.descriptionHTML | safeHtml"></p>
@@ -19,8 +19,7 @@
                     <div ng-if="WidgetSections.placesInfo.data.content.showAllItems"
                          class="plugin-banner has-info-bar clearfix "
                          style="min-height: 10px">
-                        <a onclick="manuallyTransitionAnimation()"
-                           ng-click="WidgetSections.showSections = false;$('#allItemsOption').click();WidgetSections.messageControlForSection('allitems');">
+                        <a ng-click="WidgetSections.showItems('allitems')">
                             <div class="plugin-slide text-center">
                                 <img ng-if="WidgetSections.placesInfo.data.content.allItemImage"
                                      ng-src="{{WidgetSections.placesInfo.data.content.allItemImage | cropImage:WidgetSections.deviceWidth:192}}">
@@ -39,8 +38,7 @@
                     <div ng-repeat="item in WidgetSections.sections | unique: 'id'"
                          class="plugin-banner has-info-bar clearfix"
                          style="min-height: 10px">
-                        <a onclick="manuallyTransitionAnimation()"
-                           ng-click="WidgetSections.selectedSections = [item.id];WidgetSections.showSections = false;WidgetSections.messageControlForSection(item.id);">
+                        <a ng-click="WidgetSections.showItems(item.id);">
                             <div class="plugin-slide text-center">
                                 <img ng-if="item.data.mainImage"
                                      ng-src="{{item.data.mainImage | cropImage:WidgetSections.deviceWidth:192}}">
@@ -98,7 +96,6 @@
                  </div>-->
             </div>
         </div>
-       <!-- <div ng-include="'templates/layouts/bottom-menu.html'"></div>-->
     </div>
 </div>
 

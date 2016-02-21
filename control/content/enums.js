@@ -27,8 +27,8 @@
             Items: "items"
         })
         .constant('PATHS', {
-            ITEM: "ITEM",
-            SECTION: "SECTION",
+            ITEM: "item",
+            SECTION: "section",
             HOME: "HOME"
         })
         .constant('GOOGLE_KEYS', {
@@ -92,4 +92,4 @@
             }
         });
 
-})(window.angular, undefined);
+})(window.angular);

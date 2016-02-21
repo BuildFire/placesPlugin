@@ -1,6 +1,6 @@
 <div class="holder padding-zero text-overlay">
     <div class="places-plugin layout3">
-        <div ng-show="WidgetSections.showSections" class="media-center-banner clearfix ">
+        <div ng-if="WidgetSections.removeShowSectionsArea != true" ng-show="WidgetSections.showSections" class="media-center-banner clearfix ">
             <div class="plugin-slide text-center">
                 <div id="carousel" build-fire-carousel=""></div>
             </div>
@@ -16,7 +16,7 @@
                          infinite-scroll-disabled="WidgetSections.noMoreSections"
                          infinite-scroll="WidgetSections.loadMoreSections()">
                         <div class="list-item" ng-if="WidgetSections.placesInfo.data.content.showAllItems">
-                            <a onclick="manuallyTransitionAnimation()" ng-click="WidgetSections.showSections = false;$('#allItemsOption').click();WidgetSections.messageControlForSection('allitems');">
+                            <a ng-click="WidgetSections.showItems('allitems');">
                                 <div class="list-item-media text-left overflow-hidden">
                                     <div ng-if="WidgetSections.placesInfo.data.content.allItemImage"
                                          class="list-media-holder pull-left">
@@ -32,7 +32,7 @@
                             </a>
                         </div>
                         <div class="list-item" ng-repeat="item in WidgetSections.sections | unique: 'id'">
-                            <a onclick="manuallyTransitionAnimation()" ng-click="WidgetSections.selectedSections = [item.id];WidgetSections.showSections = false;WidgetSections.messageControlForSection(item.id);">
+                            <a ng-click="WidgetSections.showItems(item.id);">
                                 <div class="list-item-media text-left overflow-hidden">
                                     <div ng-if="item.data.mainImage" class="list-media-holder pull-left">
                                         <img default-image ng-src="{{item.data.mainImage | cropImage :110 :60}}">

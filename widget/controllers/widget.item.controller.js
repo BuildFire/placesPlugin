@@ -1,7 +1,7 @@
 (function (angular, window) {
     angular
         .module('placesWidget')
-        .controller('WidgetItemCtrl', ['$scope', 'COLLECTIONS', 'DB', '$routeParams', 'Buildfire', '$rootScope', 'GeoDistance', 'Messaging', 'Location', 'EVENTS', 'PATHS', 'AppConfig', 'placesInfo', 'Orders', 'OrdersItems', 'item', '$timeout', function ($scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS, AppConfig, placesInfo, Orders, OrdersItems, item, $timeout) {
+        .controller('WidgetItemCtrl', ['$scope', 'COLLECTIONS', 'DB', '$routeParams', 'Buildfire', '$rootScope', 'GeoDistance', 'Messaging', 'Location', 'EVENTS', 'PATHS', 'AppConfig', 'Orders', 'OrdersItems', '$timeout', 'ViewStack' , function ($scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS, AppConfig, Orders, OrdersItems, $timeout,ViewStack) {
             var WidgetItem = this
                 , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
                 , Items = new DB(COLLECTIONS.Items)
@@ -52,19 +52,56 @@
                     }
                 };
 
-            if (placesInfo) {
+          /*  if (placesInfo) { to be done lakshay
                 WidgetItem.placeInfo = placesInfo;
             }
-            else {
-                WidgetItem.placeInfo = _infoData;
+            else {*/
+              /*  WidgetItem.placeInfo = _infoData;*/
+            //}
+
+            var vs = ViewStack.getCurrentView();
+
+            if (vs.itemId && vs.sectionId) {
+                PlaceInfo.get().then(function(info){
+                    console.log('Places Info in Item Page--------------------------------',info);
+                    if(info)
+                    WidgetItem.placeInfo=info;
+                    else{
+                        WidgetItem.placeInfo=_infoData;
+                    }
+                },function(err){
+                    WidgetItem.placeInfo=_infoData;
+                });
+                Items.getById(vs.itemId).then(function (d) {
+                    if (d)
+                        WidgetItem.item = d;
+                    else
+                        WidgetItem.item = _itemData;
+                    initItem();
+                }, function () {
+                    WidgetItem.item = _itemData;
+                    initItem();
+                });
+
             }
 
-            if (item) {
-                WidgetItem.item = item;
+
+            function initItem() {
+                if (WidgetItem.item.data) {
+                    if (WidgetItem.item.data.images) {
+                        $timeout(function () {
+                            initCarousel(WidgetItem.item.data.images);
+                        }, 1500);
+
+                    }
+                    itemLat = (WidgetItem.item.data.address && WidgetItem.item.data.address.lat) ? WidgetItem.item.data.address.lat : null;
+                    itemLng = (WidgetItem.item.data.address && WidgetItem.item.data.address.lng) ? WidgetItem.item.data.address.lng : null;
+                    if (itemLat && itemLng) {
+                        WidgetItem.itemData.currentCoordinates = [itemLng, itemLat];
+                    }
+                }
             }
-            else {
-                WidgetItem.item = _itemData;
-            }
+
             WidgetItem.itemData = {
                 items: null,
                 currentCoordinates: null
@@ -73,20 +110,6 @@
                 items: null,
                 currentCoordinates: null
             };
-            if (WidgetItem.item.data) {
-                if (WidgetItem.item.data.images) {
-                    $timeout(function () {
-                        initCarousel(WidgetItem.item.data.images);
-                    }, 1500);
-
-                }
-                itemLat = (WidgetItem.item.data.address && WidgetItem.item.data.address.lat) ? WidgetItem.item.data.address.lat : null;
-                itemLng = (WidgetItem.item.data.address && WidgetItem.item.data.address.lng) ? WidgetItem.item.data.address.lng : null;
-                if (itemLat && itemLng) {
-                    WidgetItem.itemData.currentCoordinates = [itemLng, itemLat];
-                }
-
-            }
 
             var getContextCb = function (err, data) {
                 console.log('error-------------', err, 'data--------------', data);
@@ -139,7 +162,7 @@
              }
              });*/
 
-            if (WidgetItem.locationData && WidgetItem.locationData.currentCoordinates)
+            if (WidgetItem.locationData && WidgetItem.locationData.currentCoordinates && WidgetItem.placeInfo && WidgetItem.placeInfo.data && WidgetItem.placeInfo.data.settings)
                 calDistance(WidgetItem.locationData.currentCoordinates, [WidgetItem.item], WidgetItem.placeInfo.data.settings.showDistanceIn);
 
             WidgetItem.clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
@@ -195,13 +218,13 @@
 
             // Show Body Content when it is not blank
             WidgetItem.showBodyContent = function () {
-                if (WidgetItem.item.data.bodyContent == '<p>&nbsp;<br></p>' || WidgetItem.item.data.bodyContent == '<p><br data-mce-bogus="1"></p>')
+                if ((WidgetItem.item && WidgetItem.item.data) &&(WidgetItem.item.data.bodyContent == '<p>&nbsp;<br></p>' || WidgetItem.item.data.bodyContent == '<p><br data-mce-bogus="1"></p>' || WidgetItem.item.data.bodyContent==''))
                     return false;
                 else
                     return true;
             };
 
-            //syn with widget side
+           /* //syn with widget side
             Messaging.sendMessageToControl({
                 name: EVENTS.ROUTE_CHANGE,
                 message: {
@@ -209,15 +232,15 @@
                     id: $routeParams.itemId,
                     secId: $routeParams.sectionId
                 }
-            });
+            });*/
 
             function initCarousel(images) {
-                if (angular.element('#carousel').length) {
-                    if (WidgetItem.view && angular.element('#carousel').hasClass('plugin-slider')) {
+                if (angular.element('#carouselItemDetails').length) {
+                    if (WidgetItem.view && angular.element('#carouselItemDetails').hasClass('plugin-slider')) {
                         WidgetItem.view.loadItems(images);
                     }
                     else {
-                        WidgetItem.view = new Buildfire.components.carousel.view("#carousel", images);
+                        WidgetItem.view = new Buildfire.components.carousel.view("#carouselItemDetails", images);
                     }
                 }
             }

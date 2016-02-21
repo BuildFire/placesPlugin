@@ -31,7 +31,7 @@
 
             $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|cdvfile|file):/);
 
-            $routeProvider
+           /* $routeProvider
                 .when('/', {
                     templateUrl: 'templates/home.html',
                     controllerAs: 'WidgetSections',
@@ -148,7 +148,7 @@
                         }
                     }
                 })
-                .otherwise('/');
+                .otherwise('/');*/
 
             var interceptor = ['$q', function ($q) {
                 var counter = 0;
@@ -180,8 +180,8 @@
             $httpProvider.interceptors.push(interceptor);
 
         }])
-        .run(['Location', 'Messaging', 'EVENTS', 'PATHS', '$location', '$rootScope', function (Location, Messaging, EVENTS, PATHS, $location, $rootScope) {
-            Messaging.onReceivedMessage = function (event) {
+        .run(['Location', 'Messaging', 'EVENTS', 'PATHS', '$location', '$rootScope','ViewStack', function (Location, Messaging, EVENTS, PATHS, $location, $rootScope,ViewStack) {
+           /* Messaging.onReceivedMessage = function (event) {
                 console.log('Widget syn called-----', event);
                 if (event) {
                     switch (event.name) {
@@ -189,44 +189,30 @@
                             var path = event.message.path,
                                 id = event.message.id,
                                 secId = event.message.secId;
-                            var url = "#/";
                             switch (path) {
                                 case PATHS.ITEM:
-                                    url = url + "item";
-                                    if (secId && id) {
-                                        //alert('b');
-                                        url = url + "/" + secId + "/" + id;
-                                    }
-                                    else if (secId) {
-                                        url = url + "/" + secId;
-                                    }
+                                        ViewStack.push({
+                                            template: "item",
+                                            sectionId: secId,
+                                            itemId: id
+                                        });
                                     break;
                                 case PATHS.HOME:
-                                    $rootScope.$broadcast(EVENTS.ROUTE_CHANGE_1, null);
-                                    return;
-                                    //Location.goToHome();
+
                                     break;
                                 case PATHS.SECTION:
-                                    if (window.location.href.indexOf('/item/') == -1) {
-                                        $rootScope.$broadcast(EVENTS.ROUTE_CHANGE_1, secId);
-                                        return;
-                                    }
-                                    if (secId) {
-                                        url = url + "items" + "/" + secId;
-                                    }
-                                    else {
-                                        url = url + "home";
-                                    }
-                                    break;
-                                default :
+                                        ViewStack.push({
+                                            template: "section",
+                                            sectionId: secId
+                                        });
 
-                                    break
+                                default :
+                                    break;
                             }
-                            Location.go(url);
                             break;
                     }
                 }
-            };
+            };*/
             buildfire.deeplink.getData(function (data) {
                 if (data) {
                     console.log('data---', data);
@@ -236,6 +222,14 @@
             });
 
             buildfire.navigation.onBackButtonClick = function () {
+                if (ViewStack.hasViews()) {
+                    ViewStack.pop({propagate:true});
+                } else {
+                    buildfire.navigation._goBackOne();
+                }
+            };
+
+           /* buildfire.navigation.onBackButtonClick = function () {
                 var path = $location.path();
                 console.log(path);
                 if (path.indexOf('/items/') == 0) {
@@ -257,6 +251,6 @@
                         $rootScope.$broadcast(EVENTS.ROUTE_CHANGE_1, null);
                     }
                 }
-            }
+            }*/
         }]);
 })(window.angular, window.buildfire);

@@ -5,8 +5,8 @@
     'use strict';
     angular
         .module('placesContent')
-        .controller('ContentItemCtrl', ['$scope', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout', 'EVENTS', 'PATHS', 'Messaging', 'item', 'placesInfo', 'DEFAULT_DATA',
-            function ($scope, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout, EVENTS, PATHS, Messaging, item, placesInfo, DEFAULT_DATA) {
+        .controller('ContentItemCtrl', ['$scope', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout', 'EVENTS', 'PATHS', 'Messaging', 'item', 'placesInfo', 'DEFAULT_DATA','$rootScope',
+            function ($scope, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout, EVENTS, PATHS, Messaging, item, placesInfo, DEFAULT_DATA,$rootScope) {
 
                 //Hide the INT header part.
                 Buildfire.appearance.setHeaderVisibility(false);
@@ -294,7 +294,9 @@
                 }
 
 
-                //syn with widget
+                if($rootScope.dontPropagate == true)
+                    $rootScope.dontPropagate = false;
+                else
                 Messaging.sendMessageToWidget({
                     name: EVENTS.ROUTE_CHANGE,
                     message: {

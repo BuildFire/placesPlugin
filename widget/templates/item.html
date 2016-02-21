@@ -1,11 +1,7 @@
-<div class="overlay background"
-     ng-if="WidgetItem.item.data.backgroundImage && WidgetItem.deviceWidth != 0 && WidgetItem.deviceHeight != 0">
-    <img ng-src="{{WidgetItem.item.data.backgroundImage |cropImage : WidgetItem.deviceWidth : WidgetItem.deviceHeight}}">
-</div>
-<div class="scrollable">
-    <div ng-if="WidgetItem.placeInfo.data.design.itemDetailsLayout"
-         ng-include="'templates/layouts/' + WidgetItem.placeInfo.data.design.itemDetailsLayout+ '.html'">
-    </div>
+<div class="scrollable" back-img="{{WidgetItem.item.data.backgroundImage}}" ng-controller="WidgetItemCtrl as WidgetItem">
+        <div ng-if="WidgetItem.placeInfo.data.design.itemDetailsLayout"
+             ng-include="'templates/layouts/' + WidgetItem.placeInfo.data.design.itemDetailsLayout+ '.html'">
+        </div>
 </div>
 <script>
     function openInMap(lat, lng) {

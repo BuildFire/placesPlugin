@@ -1,17 +1,27 @@
 (function (angular, window) {
     angular
         .module('placesWidget')
-        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance', '$routeParams', '$timeout', 'OrdersItems', '$filter', 'ViewStack',
+        .controller('WidgetSectionsItemsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance', '$routeParams', '$timeout', 'OrdersItems', '$filter', 'ViewStack',
             function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $routeParams, $timeout, OrdersItems, $filter, ViewStack) {
                 var WidgetSections = this;
-                WidgetSections.removeShowSectionsArea = false;
-                WidgetSections.sectionId = $routeParams.sectionId;
+                WidgetSections.removeShowSectionsArea = true;
+                var vs = ViewStack.getCurrentView();
+                WidgetSections.selectedSection=vs.sectionId;
+                if (vs.sectionId) {
+                    if (vs.sectionId != 'allitems')
+                        WidgetSections.selectedSections = [vs.sectionId];
+                    else
+                        WidgetSections.selectedSections = [];
+
+                    $timeout(function () {
+                        WidgetSections.showBtmMenu = true;
+                    }, 1000);
+                }
+
                 WidgetSections.showMenu = false;
                 WidgetSections.menuTab = 'Category';
                 WidgetSections.filterUnapplied = true;
-                //WidgetSections.mainViewBtmMenu = true;
-                //WidgetSections.selectedSections = [];
-
+                WidgetSections.showSections = false;
                 WidgetSections.onSliderChange = function () {
                     WidgetSections.filterUnapplied = false; // this tells us that the slider has been set by the user
                 };
@@ -20,8 +30,7 @@
                     WidgetSections.mainViewBtmMenu = false;
                     ViewStack.push({
                         template: "section",
-                        sectionId: id,
-                        currentView: WidgetSections.currentView
+                        sectionId: id
                     });
                 };
 
@@ -35,18 +44,14 @@
                 };
 
 
-                WidgetSections.showSections = true;
-
-                var vs = ViewStack.getCurrentView();
-                console.log('>>>>vs<<<<', vs);
-
-
-                WidgetSections.selectedSections = [];
-                WidgetSections.showBtmMenu = true;
-
-
                 WidgetSections.placesInfo = null;
-                WidgetSections.currentView = null;
+
+                if (!vs.currentView)
+                    WidgetSections.currentView = null;
+                else {
+                    WidgetSections.currentView = vs.currentView;
+                }
+
                 WidgetSections.selectedItem = null;
                 WidgetSections.selectedItemDistance = null;
                 WidgetSections.sortOnClosest = false; // default value
@@ -79,12 +84,13 @@
                  * loadMoreItems method loads the sections in list page.
                  */
                 WidgetSections.loadMoreItems = function () {
-                    console.log('items load called');
-                    if (WidgetSections.noMoreItems || WidgetSections.isBusyItems) {
+                    if (WidgetSections.placesInfo == null || WidgetSections.noMoreItems || WidgetSections.isBusyItems) {
                         console.log('but no more items');
                         return;
                     }
+
                     updateGetOptionsItems();
+
                     WidgetSections.isBusyItems = true;
                     Items.find(searchOptionsItems).then(function success(result) {
                         WidgetSections.isBusyItems = false;
@@ -105,11 +111,8 @@
                             });
                         }
 
-                        console.log('result', result);
-                        console.log('WidgetSections.locationData.items BEFORE', WidgetSections.locationData.items);
                         var items = WidgetSections.locationData.items ? WidgetSections.locationData.items.concat(result) : result;
                         WidgetSections.locationData.items = $filter('unique')(items, 'id');
-                        console.log('WidgetSections.locationData.items AFTER', WidgetSections.locationData.items);
                     }, function fail() {
                         WidgetSections.isBusyItems = false;
                         console.error('error in item fetch');
@@ -195,6 +198,19 @@
                     PlaceInfo = new DB(COLLECTIONS.PlaceInfo);
 
 
+                if (vs.sectionId != 'allitems') {
+                    Sections.getById(vs.sectionId).then(function (d) {
+                        console.log('secListBGImage', d);
+                        if (d)
+                            WidgetSections.secListBGImage = d.data.itemListBGImage;
+                        else
+                            WidgetSections.secListBGImage = null;
+                    }, function () {
+                        WidgetSections.secListBGImage = null;
+                    });
+                }
+
+
                 /**
                  * updateGetOptions method checks whether sort options changed or not.
                  * @returns {boolean}
@@ -219,7 +235,9 @@
                  */
                 var updateGetOptionsItems = function () {
                     var _sortBy = (WidgetSections.placesInfo && WidgetSections.placesInfo.data) ? WidgetSections.placesInfo.data.content.sortByItems : Orders.ordersMap.Default;
-                    var order = Orders.getOrder(_sortBy);
+                    console.log('items order sortby', _sortBy);
+                    var order = OrdersItems.getOrder(_sortBy);
+                    console.log('items order', order);
                     if (order) {
                         var sort = {};
                         sort[order.key] = order.order;
@@ -256,106 +274,81 @@
                     }
                 };
 
-                var initCarousel = function (_defaultView) {
-                    console.log('akh', WidgetSections.placesInfo);
-                    if (currentLayout == '' || currentLayout == null || currentLayout.indexOf('list') != -1) {
-
-                        if (WidgetSections.placesInfo && WidgetSections.placesInfo.data.content.images.length) {
-                            loadItems(WidgetSections.placesInfo.data.content.images);
-                        } else {
-                            loadItems([]);
-                        }
-                    } else {
-
-
-                        if (WidgetSections.selectedItem && WidgetSections.selectedItem.data.images.length) {
-                            loadMapCarouselItems(WidgetSections.selectedItem.data.images);
-                        } else {
-                            loadMapCarouselItems([]);
-                        }
-
-                    }
-
-                };
-
                 /**
                  * Buildfire.datastore.onUpdate method calls when Data is changed.
                  */
-                var clearOnUpdateListener;
+                var clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
+                    console.log('Event in ------------------', event);
+                    if (event.tag === "placeInfo") {
+                        console.log('update happened in placeInfo');
 
-                WidgetSections.applyOnUpdateWatcher = function () {
-                    clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
-                        console.log('Event in ------------------', event);
-                        if (event.tag === "placeInfo") {
-                            console.log('update happened in placeInfo');
+                        if (event.data) {
 
-                            if (event.data) {
+                            if (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings) {
+                                if (event.data.settings.showDistanceIn != WidgetSections.placesInfo.data.settings.showDistanceIn)
+                                    $window.location.reload();
 
-                                if (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings) {
-                                    if (event.data.settings.showDistanceIn != WidgetSections.placesInfo.data.settings.showDistanceIn)
-                                        $window.location.reload();
-
-                                    var sortByItemsChange = false;
-                                    if (event.data.content.sortByItems != WidgetSections.placesInfo.data.content.sortByItems)
-                                        sortByItemsChange = true;
-                                }
-                                WidgetSections.placesInfo = event;
-
-                                if (sortByItemsChange)
-                                    filterChanged();
-
-                                WidgetSections.selectedItem = null;
-                                WidgetSections.selectedItemDistance = null;
-                                WidgetSections.currentView = WidgetSections.placesInfo.data.settings.defaultView;
-                                if (!$scope.$$phase)$scope.$digest();
-                                refreshSections();
-
-
-                                $timeout(function () {
-                                    var carousel = $("#carousel").html();
-                                    // set carousel in case of design layout change
-
-                                    // $("#carousel").length checks if element is there on the page
-                                    if ($("#carousel").length > 0 && carousel.trim() == '') {
-                                        view = new Buildfire.components.carousel.view("#carousel", []); ///create new instance of buildfire carousel viewer
-                                    }
-                                    if (view) {
-                                        view.loadItems(event.data.content.images);
-                                    }
-                                }, 1500);
+                                var sortByItemsChange = false;
+                                if (event.data.content.sortByItems != WidgetSections.placesInfo.data.content.sortByItems)
+                                    sortByItemsChange = true;
                             }
-                        }
-                        else if (event.tag === "items") {
-                            if (event.data) {
-                                $timeout(function () {
-                                    filterChanged();
-                                }, 1500);
-                                if (event.data.address && event.data.address.lng && event.data.address.lat) {
-                                    loadAllItemsOfSections();
-                                }
-                            } else if (event.id && WidgetSections.locationData.items) {
-                                for (var _index = 0; _index < WidgetSections.locationData.items.length; _index++) {
-                                    if (WidgetSections.locationData.items[_index].id == event.id) {
-                                        WidgetSections.locationData.items.splice(_index, 1);
-                                        break;
-                                    }
-                                }
-                                WidgetSections.selectedItem = null;
-                                WidgetSections.selectedItemDistance = null;
-                                if (!$scope.$$phase)$scope.$digest();
-                            }
-                        }
-                        else {
-                            view = null;
+                            WidgetSections.placesInfo = event;
+
+                            if (sortByItemsChange)
+                                filterChanged();
+
                             WidgetSections.selectedItem = null;
                             WidgetSections.selectedItemDistance = null;
-                            currentLayout = '';
-                            refreshSections();
-                        }
-                    });
-                }
 
-                WidgetSections.applyOnUpdateWatcher();
+                            //if (WidgetSections.currentView == null)
+                            WidgetSections.currentView = WidgetSections.placesInfo.data.settings.defaultView;
+
+                            if (!$scope.$$phase)$scope.$digest();
+                            refreshSections();
+
+
+                            $timeout(function () {
+                                var carousel = $("#carousel").html();
+                                // set carousel in case of design layout change
+
+                                // $("#carousel").length checks if element is there on the page
+                                if ($("#carousel").length > 0 && carousel.trim() == '') {
+                                    view = new Buildfire.components.carousel.view("#carousel", []); ///create new instance of buildfire carousel viewer
+                                }
+                                if (view) {
+                                    view.loadItems(event.data.content.images);
+                                }
+                            }, 1500);
+                        }
+                    }
+                    else if (event.tag === "items") {
+                        if (event.data) {
+                            $timeout(function () {
+                                filterChanged();
+                            }, 1500);
+                            if (event.data.address && event.data.address.lng && event.data.address.lat) {
+                                loadAllItemsOfSections();
+                            }
+                        } else if (event.id && WidgetSections.locationData.items) {
+                            for (var _index = 0; _index < WidgetSections.locationData.items.length; _index++) {
+                                if (WidgetSections.locationData.items[_index].id == event.id) {
+                                    WidgetSections.locationData.items.splice(_index, 1);
+                                    break;
+                                }
+                            }
+                            WidgetSections.selectedItem = null;
+                            WidgetSections.selectedItemDistance = null;
+                            if (!$scope.$$phase)$scope.$digest();
+                        }
+                    }
+                    else {
+                        view = null;
+                        WidgetSections.selectedItem = null;
+                        WidgetSections.selectedItemDistance = null;
+                        currentLayout = '';
+                        refreshSections();
+                    }
+                });
 
                 $scope.distanceSlider = {
                     min: 0,
@@ -365,23 +358,23 @@
                 };
 
                 function initPage() {
-                    if (WidgetSections.placesInfo.data.settings && WidgetSections.placesInfo.data.settings.showDistanceIn == 'mi') {
+                    if (WidgetSections.placesInfo.data.settings && WidgetSections.placesInfo.data.settings.showDistanceIn == 'mi')
                         $scope.distanceSlider = {
                             min: 0,
                             max: 300,
                             ceil: 310, //upper limit
                             floor: 0
                         };
-                    }
-                    else {
+                    else
                         $scope.distanceSlider = {
                             min: 0,
                             max: 483,
                             ceil: 499, //upper limit
                             floor: 0
                         };
-                    }
-                    WidgetSections.currentView = (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings) ? WidgetSections.placesInfo.data.settings.defaultView : null;
+
+                    if (WidgetSections.currentView == null)
+                        WidgetSections.currentView = (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings) ? WidgetSections.placesInfo.data.settings.defaultView : null;
                     if (WidgetSections.currentView) {
                         switch (WidgetSections.currentView) {
                             case DEFAULT_VIEWS.LIST:
@@ -392,32 +385,21 @@
                                 break;
                         }
                     }
-                    loadAllItemsOfSections();
+                    WidgetSections.loadMoreItems();
                 }
 
                 (function () {
+
+
                     PlaceInfo.get().then(function (data) {
                         WidgetSections.placesInfo = data;
                         initPage();
-                        //alert('called');
-                        /* if (!view) {
-                         view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
-                         }
-                         if (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings.defaultView) {
-
-                         alert('balloon');
-                         initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
-                         }
-                         else {
-                         view.loadItems([]);
-                         }*/
                     }, function () {
                         WidgetSections.placesInfo = _placesInfoData;
                         initPage();
-                        /*  if (!view) {
-                         view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
-                         }*/
                     });
+
+
                 })();
 
 
@@ -460,10 +442,10 @@
                 /// load items
                 function loadItems(carouselItems) {
                     // create an instance and pass it the items if you don't have items yet just pass []
-                    if (view) {
+                    if (view)
                         view.loadItems(carouselItems);
-                    }
-
+                    else
+                        alert('no view');
                 }
 
                 /// load items
@@ -550,7 +532,6 @@
                         return;
                     }
                     WidgetSections.selectedItem = WidgetSections.locationData.items[itemIndex];
-                    initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
 
                     GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, [WidgetSections.selectedItem], '').then(function (result) {
                         console.log('Distance---------------------', result);
@@ -632,14 +613,13 @@
                     else {
                         WidgetSections.selectedSections.splice(WidgetSections.selectedSections.indexOf(id), 1);
                         if (!WidgetSections.showSections && WidgetSections.selectedSections.length == 0) {
-                            WidgetSections.showSections = true;
+                            //WidgetSections.showSections = true;
                         }
                     }
                 };
 
                 WidgetSections.resetSectionFilter = function () {
                     if (!WidgetSections.showSections && WidgetSections.selectedSections.length == 0) {
-                        WidgetSections.showSections = true;
                         return;
                     }
                     WidgetSections.showSections = false;
@@ -649,11 +629,11 @@
                 };
 
                 WidgetSections.openInMap = function () {
-                    console.log('openInMap-------------------------method called------------', WidgetSections.selectedItem);
                     if (buildfire.context.device && buildfire.context.device.platform == 'ios')
-                        Buildfire.navigation.openWindow("maps://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lat + "," + WidgetSections.selectedItem.data.address.lng, '_system');
+                        window.open("maps://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lng + "," + WidgetSections.selectedItem.data.address.lat);
                     else
-                        Buildfire.navigation.openWindow("http://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lat + "," + WidgetSections.selectedItem.data.address.lng, '_system');
+                        window.open("http://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lng + "," + WidgetSections.selectedItem.data.address.lat);
+
                 };
 
                 WidgetSections.refreshLocation = function () {
@@ -675,24 +655,12 @@
 
                 $scope.$watch(function () {
                     return WidgetSections.currentView;
-                }, function (view) {
-                    currentLayout = view;
+                }, function () {
                     WidgetSections.selectedItem = null;
                 }, true);
 
-                $scope.$on("Carousel:LOADED", function () {
-                    $timeout(function () {
-                        if (!view)
-                            view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
 
-                        if (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings.defaultView)
-                            initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
-                        else
-                            view.loadItems([]);
-                    }, 1000);
-                });
-
-               /* WidgetSections.getSectionId = function (arr) {
+                /*WidgetSections.getSectionId = function (arr) {
                     if (arr.length == 0 || angular.element("#allItemsOption").hasClass('whiteTheme') || angular.element('.list-item.section-filter.whiteTheme').length == 0)
                         return 'allitems';
                     else {
@@ -701,89 +669,14 @@
                         else
                             return arr[0];
                     }
-                };*/
-
-                $scope.$on("Map Carousel:LOADED", function () {
-                    /*if (!mapview) {
-                     mapview = new Buildfire.components.carousel.view("#mapCarousel", []);  ///create new instance of buildfire carousel viewer
-                     }*/
-                });
-
-
-                Messaging.onReceivedMessage = function (event) {
-                    console.log('OMMMMM Messaging.onReceivedMessage----------------------Widget Side?????????????????????????????????-------', event);
-                    if (event) {
-                        switch (event.name) {
-
-                            case EVENTS.ROUTE_CHANGE:
-                                var path = event.message.path,
-                                    id = event.message.id,
-                                    secId = event.message.secId;
-                                var currentView = ViewStack.getCurrentView();
-                                if (id && currentView.itemId) {
-                                    if (currentView.sectionId == secId && currentView.itemId == id && currentView.template == path)
-                                        break;
-                                }
-                                else {
-                                    if (!currentView.itemId && currentView.sectionId == secId && currentView.template == path)
-                                        break;
-                                }
-
-                                console.log('CUREEEEEEEEEEEEEEEEEEEEEEEEEEENTTTTTTTTTTTTTTT VIEWWWWWWWWWWWWWWWWW------------', currentView);
-                                switch (path) {
-                                    case PATHS.ITEM:
-                                        ViewStack.push({
-                                            template: "item",
-                                            sectionId: secId,
-                                            itemId: id,
-                                            dontPropagate: true
-                                        });
-                                        break;
-                                    case PATHS.HOME:
-                                        ViewStack.popAllViews();
-                                        //applyOnUpdateWatcher();
-                                        break;
-                                    case PATHS.SECTION:
-                                        ViewStack.push({
-                                            template: "section",
-                                            sectionId: secId,
-                                            dontPropagate: true
-                                        });
-                                    default :
-                                        break;
-                                }
-                                $scope.$apply();
-
-                                break;
-                        }
-                    }
                 };
 
-                WidgetSections.reloadPlacesInfo = function () {
-                    PlaceInfo.get().then(function (data) {
-                        WidgetSections.placesInfo = data;
-                        currentLayout = WidgetSections.placesInfo.data.settings.defaultView;
-                        if (!view) {
-                            $("#carousel").parent().html("<div id='carousel'></div>");
-                            view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
-                        }
-                        if (view && WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings.defaultView) {
-                            initCarousel(WidgetSections.placesInfo.data.settings.defaultView)
-                        }
-                        else {
-                            view.loadItems([]);
-                        }
-
-                    }, function () {
-                        WidgetSections.placesInfo = _placesInfoData;
-                        if (!view) {
-                            view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
-                        }
-                        view.loadItems([]);
-                    });
-
-
-                };
+                  $scope.$on("Map Carousel:LOADED", function () {
+                 /!*if (!mapview) {
+                 mapview = new Buildfire.components.carousel.view("#mapCarousel", []);  ///create new instance of buildfire carousel viewer
+                 }*!/
+                 });
+                 */
 
                 /**
                  * will called when controller scope has been destroyed.

@@ -2,7 +2,7 @@
     <div class="places-plugin item-list2">
         <div class="plugin-banner has-info-bar clearfix">
             <div class="plugin-slide text-center">
-                <div id="carousel" build-fire-carousel=""></div>
+                <div id="carouselItemDetails" build-fire-carousel=""></div>
             </div>
             <div class="plugin-copy clearfix">
                 <div class="col-xs-8 text-left pull-left">
@@ -27,7 +27,7 @@
                     {{WidgetItem.item.data.addressTitle+" "+WidgetItem.item.data.address.aName}}</p>
             </div>
         </div>
-        <div class="padded text-center" ng-if="WidgetItem.showBodyContent()">
+        <div class="padded text-center" ng-if="(WidgetItem.showBodyContent() || WidgetItem.item.data.links.length)">
             <a class="text-primary" ng-if="WidgetItem.item.data.links.length" ng-click="WidgetItem.openLinks(WidgetItem.item.data.links)">Contact info</a>
             <hr class="small">
             <p id="description" class="text-left" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml"></p>

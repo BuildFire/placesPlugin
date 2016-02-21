@@ -48,13 +48,13 @@ describe('Unit : Controller - WidgetItemCtrl', function () {
     describe('WidgetItem.showBodyContent', function () {
 
         it('should pass if it returns true when description is not the default html', function () {
-            WidgetItem.item.data.bodyContent = 'a';
+            WidgetItem.item={data:{bodyContent : 'a'}};
             var result = WidgetItem.showBodyContent();
             expect(result).toEqual(true);
         });
 
         it('should pass if it returns true when description is not the default html', function () {
-            WidgetItem.item.data.bodyContent = '<p>&nbsp;<br></p>';
+            WidgetItem.item={data:{bodyContent : '<p>&nbsp;<br></p>'}};
             var result = WidgetItem.showBodyContent();
             expect(result).not.toEqual(true);
         });

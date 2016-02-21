@@ -35,6 +35,7 @@
 
     <!--controllers js-->
     <script src="controllers/widget.sections.controller.js"></script>
+    <script src="controllers/widget.sectionsItems.controller.js"></script>
     <script src="controllers/widget.item.controller.js"></script>
 
 
@@ -46,24 +47,16 @@
     <link rel="stylesheet" href="../../../styles/transitionAnimation.css">
 
 </head>
-<!--<body class="scrollable customBackground" ng-style="currentBackgroundImage">-->
 <body class="no-scroll">
-<div class="infinite-scroll-parent height-hundred-pc">
-    <div class="content slide relative height-hundred-pc" ng-view=""></div>
-</div>
-</body>
-<script>
-    function manuallyTransitionAnimation(){
-        // applied css transitions (jquery slide flickers on iphone)
-       /* $(".slide").css("transform","translateX(-" + $(window).width() + "px)");
-        setTimeout(function(){$('.slide').hide().css("transform","translateX(" + $(window).width() + "px)").show();},500);
-        setTimeout(function(){$('.slide').css("transform","translateX(0px)");},1000);
-*/
-        $(".scrollable").hide().css("transform","translateX(" + $(window).width() + "px)").show();
-        setTimeout(function(){$('.scrollable').css("transform","translateX(0px)");},1000);
 
-       /* $('.scrollable').hide();
-        setTimeout(function(){$('.slide').show('slide', {direction: 'right'}, 375);},750);*/
-    }
-</script>
+<div class="infinite-scroll-parent height-hundred-pc">
+    <div class="content slide relative height-hundred-pc">
+        <div  class="height-hundred-pc" back-img="{{WidgetSections.placesInfo.data.design.secListBGImage}}" ng-controller="WidgetSectionsCtrl as WidgetSections">
+            <div class="height-hundred-pc" ng-include="'templates/home.html'"></div>
+        </div>
+    </div>
+</div>
+<div class="height-hundred-pc" view-switcher=""></div>
+
+</body>
 </html>

@@ -3,13 +3,13 @@
          infinite-scroll="WidgetSections.loadMoreItems()"
          infinit-scroll-disabled="WidgetSections.noMore">
         <div class="plugin-banner has-info-bar clearfix" ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
-            <a ng-href="#/item/{{WidgetSections.getSectionId(item.data.sections)}}/{{item.id}}">
+            <a ng-click="WidgetSections.showItemDetails(WidgetSections.selectedSection,item.id)">
                 <div class="plugin-slide text-center">
                     <img ng-if="item.data.listImage" ng-src="{{item.data.listImage | cropImage:WidgetSections.deviceWidth:192}}">
                 </div>
                 <div class="plugin-copy border-bottom-grey clearfix">
                     <div class="col-xs-8 text-left pull-left padding-five">
-                        <p class="margin-bottom-zero ellipsis"><span class="primaryTheme">{{item.data.itemTitle}}</span></p>
+                        <p class="margin-bottom-zero ellipsis"><span class="titleBarTheme">{{item.data.itemTitle}}</span></p>
 
                         <p class="margin-bottom-zero ellipsis"><span class="primaryTheme">{{item.data.summary}}</span></p>
                     </div>

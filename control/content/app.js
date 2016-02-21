@@ -329,7 +329,6 @@
                     switch (event.name) {
                         case EVENTS.ROUTE_CHANGE:
                             if(event.message.dontPropagate){
-                                //alert(790);
                                 $rootScope.dontPropagate = true;
                             }
                             var path = event.message.path,
@@ -354,8 +353,6 @@
                                     url = url + "items";
                                     if (secId != 'allitems') {
                                         url = url + "/" + secId;
-                                        //alert('aa');
-                                        //path = null;
                                     }
                                     else if (secId == 'allitems') {
                                         url = '#/allitems';

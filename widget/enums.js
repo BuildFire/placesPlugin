@@ -27,12 +27,12 @@
             Items: "items"
         })
         .constant('PATHS', {
-            ITEM: "ITEM",
-            SECTION: "SECTION",
+            ITEM: "item",
+            SECTION: "section",
             HOME: "HOME"
         })
         .constant('DEFAULT_VIEWS', {
             MAP: "map",
             LIST: "list"
         });
-})(window.angular, undefined);
+})(window.angular);

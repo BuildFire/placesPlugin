@@ -143,7 +143,7 @@
                  * @returns {*|boolean}
                  */
                 function isUnChanged(obj) {
-                    console.clear();
+                    //console.clear();
                     console.log('obj', obj);
                     console.log('ContentItems.masterInfoData', ContentItems.masterInfoData);
                     return angular.equals(obj, ContentItems.masterInfoData);
@@ -276,7 +276,9 @@
 
                 ContentItems.editSections = function (ind) {
                     ContentItems.Sections.find({}).then(function (data) {
+                        console.log('Sections--------------------------------------popup',data);
                         buildfire.navigation.scrollTop();
+                        if(data && data.length>0)
                         Modals.editSectionModal(data, ContentItems.items[ind]).then(function (result) {
                             ContentItems.Items.update(result.id, result.data).then(function () {
                                 _skip = 0;
@@ -299,19 +301,17 @@
                     Location.goToHome();
                 };
 
-                if ($rootScope.dontPropagate === true) {
+
+                if($rootScope.dontPropagate == true)
                     $rootScope.dontPropagate = false;
-                }
-                else {
-                    //syn with widget
-                    Messaging.sendMessageToWidget({
-                        name: EVENTS.ROUTE_CHANGE,
-                        message: {
-                            path: PATHS.SECTION,
-                            secId: ContentItems.section
-                        }
-                    });
-                }
+                else
+                Messaging.sendMessageToWidget({
+                    name: EVENTS.ROUTE_CHANGE,
+                    message: {
+                        path: PATHS.SECTION,
+                        secId: ContentItems.section
+                    }
+                });
 
 
                 $scope.$watch(function () {
