@@ -307,9 +307,9 @@
                                 var newScope = $rootScope.$new();
                                 newScope.currentItemListLayout = "templates/" + view.template + ".html";
 
-                                var _newView = '<div  id="' + view.template + '" ><div class="no-scroll slide content dynamic-view" data-back-img="{{backgroundImage}}" ng-if="currentItemListLayout" ng-include="currentItemListLayout"></div></div>';
+                                var _newView = '<div  id="' + view.template + '" ><div class="no-scroll slide content dynamic-view height-hundred-pc" data-back-img="{{backgroundImage}}" ng-if="currentItemListLayout" ng-include="currentItemListLayout"></div></div>';
                                 if (view.params && view.params.controller) {
-                                    _newView = '<div id="' + view.template + '" ><div class="no-scroll slide content dynamic-view" data-back-img="{{backgroundImage}}" ng-if="currentItemListLayout" ng-include="currentItemListLayout" ng-controller="' + view.params.controller + '" ></div></div>';
+                                    _newView = '<div id="' + view.template + '" ><div class="no-scroll slide content dynamic-view height-hundred-pc" data-back-img="{{backgroundImage}}" ng-if="currentItemListLayout" ng-include="currentItemListLayout" ng-controller="' + view.params.controller + '" ></div></div>';
                                 }
                                 var parTpl = $compile(_newView)(newScope);
                                 if (view.params && view.params.shouldUpdateTemplate) {
