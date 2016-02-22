@@ -101,7 +101,7 @@
                 Buildfire.actionItems.execute(actionItem);
             };
 
-            function getGeoLocation() {
+         /*   function getGeoLocation() {
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (position) {
                         console.log('uesr Location---------', position);
@@ -113,6 +113,27 @@
                     });
                 }
                 // else - in this case, default coords will be used
+            }*/
+
+            function getGeoLocation() {
+
+                Buildfire.geo.getCurrentPosition(
+                    null,
+                    function (err, position) {
+                        if (err) {
+                            console.error(err);
+                        }
+                        else {
+                            console.log('uesr Location---------', position);
+                            $scope.$apply(function () {
+                                WidgetItem.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
+                                localStorage.setItem('userLocation', JSON.stringify(WidgetItem.locationData.currentCoordinates));
+                                console.log(WidgetItem.locationData.currentCoordinates, 'USERLocation');
+                            });
+                        }
+                    }
+                );
+
             }
 
             if (typeof(Storage) !== "undefined") {
