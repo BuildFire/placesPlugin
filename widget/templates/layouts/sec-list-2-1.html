@@ -20,7 +20,7 @@
                         <div class="plugin-banner clearfix border-bottom-grey">
                             <div class="plugin-slide text-center"
                                  ng-if="WidgetSections.placesInfo.data.content.allItemImage">
-                                <img ng-src="{{WidgetSections.placesInfo.data.content.allItemImage | cropImage:WidgetSections.deviceWidth:192}}">
+                                <img load-image="16x9" data-final-src="{{WidgetSections.placesInfo.data.content.allItemImage | cropImage:WidgetSections.deviceWidth:192}}">
                             </div>
                         </div>
                         <div class="padded text-left">
@@ -32,7 +32,7 @@
                     <a ng-click="WidgetSections.showItems(item.id);">
                         <div class="plugin-banner clearfix border-bottom-grey">
                             <div class="plugin-slide text-center" ng-if="item.data.mainImage">
-                                <img ng-src="{{item.data.mainImage | cropImage:WidgetSections.deviceWidth:192}}">
+                                <img load-image="16x9" data-final-src="{{item.data.mainImage | cropImage:WidgetSections.deviceWidth:192}}">
                             </div>
                         </div>
                         <div class="padded text-left">
