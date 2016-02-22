@@ -396,5 +396,20 @@
                     }
                 });
             };
+        }])
+        .directive("loadImage", [function () {
+            return {
+                restrict: 'A',
+                link: function (scope, element, attrs) {
+                    element.attr("src","assets/images/" + attrs.loadImage + ".png");
+
+                    var elem = $("<img>");
+                    elem[0].onload = function () {
+                        element.attr("src", attrs.finalSrc);
+                        elem.remove();
+                    };
+                    elem.attr("src", attrs.finalSrc);
+                }
+            };
         }]);
 })(window.angular,window.buildfire);
