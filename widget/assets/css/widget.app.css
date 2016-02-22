@@ -507,3 +507,7 @@ style for sec list dark overlay
 .dynamic-view{
 	z-index: 10;
 }
+
+.info-bar-map-details-2-fix{
+	z-index: 1 !important;
+}

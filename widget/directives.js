@@ -307,9 +307,9 @@
                                 var newScope = $rootScope.$new();
                                 newScope.currentItemListLayout = "templates/" + view.template + ".html";
 
-                                var _newView = '<div class="height-hundred-pc"  id="' + view.template + '" ><div class="slide content dynamic-view height-hundred-pc" data-back-img="{{backgroundImage}}" ng-if="currentItemListLayout" ng-include="currentItemListLayout"></div></div>';
+                                var _newView = '<div class="height-hundred-pc"  id="' + view.template + '" ><div class="no-scroll slide content dynamic-view height-hundred-pc" data-back-img="{{backgroundImage}}" ng-if="currentItemListLayout" ng-include="currentItemListLayout"></div></div>';
                                 if (view.params && view.params.controller) {
-                                    _newView = '<div class="height-hundred-pc" id="' + view.template + '" ><div class="slide content dynamic-view height-hundred-pc" data-back-img="{{backgroundImage}}" ng-if="currentItemListLayout" ng-include="currentItemListLayout" ng-controller="' + view.params.controller + '" ></div></div>';
+                                    _newView = '<div class="height-hundred-pc" id="' + view.template + '" ><div class="no-scroll slide content dynamic-view height-hundred-pc" data-back-img="{{backgroundImage}}" ng-if="currentItemListLayout" ng-include="currentItemListLayout" ng-controller="' + view.params.controller + '" ></div></div>';
                                 }
                                 var parTpl = $compile(_newView)(newScope);
                                 if (view.params && view.params.shouldUpdateTemplate) {
@@ -395,6 +395,21 @@
                         });
                     }
                 });
+            };
+        }])
+        .directive("loadImage", [function () {
+            return {
+                restrict: 'A',
+                link: function (scope, element, attrs) {
+                    element.attr("src","assets/images/" + attrs.loadImage + ".png");
+
+                    var elem = $("<img>");
+                    elem[0].onload = function () {
+                        element.attr("src", attrs.finalSrc);
+                        elem.remove();
+                    };
+                    elem.attr("src", attrs.finalSrc);
+                }
             };
         }]);
 })(window.angular,window.buildfire);

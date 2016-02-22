@@ -21,8 +21,8 @@
                          style="min-height: 10px">
                         <a ng-click="WidgetSections.showItems('allitems')">
                             <div class="plugin-slide text-center">
-                                <img ng-if="WidgetSections.placesInfo.data.content.allItemImage"
-                                     ng-src="{{WidgetSections.placesInfo.data.content.allItemImage | cropImage:WidgetSections.deviceWidth:192}}">
+                                <img load-image="16x9"
+                                     data-final-src="{{WidgetSections.placesInfo.data.content.allItemImage | cropImage:WidgetSections.deviceWidth:192}}" ng-if="WidgetSections.placesInfo.data.content.allItemImage">
                                 <img ng-if="!WidgetSections.placesInfo.data.content.allItemImage"
                                      src="assets/images/16x9.png">
                             </div>
@@ -40,8 +40,8 @@
                          style="min-height: 10px">
                         <a ng-click="WidgetSections.showItems(item.id);">
                             <div class="plugin-slide text-center">
-                                <img ng-if="item.data.mainImage"
-                                     ng-src="{{item.data.mainImage | cropImage:WidgetSections.deviceWidth:192}}">
+                                <img ng-if="item.data.mainImage" load-image="16x9"
+                                     data-final-src="{{item.data.mainImage | cropImage : WidgetSections.deviceWidth:192}}">
                                 <img ng-if="!item.data.mainImage" src="assets/images/16x9.png">
                             </div>
                             <div class="info-bar blackBackgroundTheme">
