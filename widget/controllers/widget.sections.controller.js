@@ -762,7 +762,7 @@
                 WidgetSections.reloadPlacesInfo = function () {
                     PlaceInfo.get().then(function (data) {
                         WidgetSections.placesInfo = data;
-                        currentLayout = WidgetSections.placesInfo.data.settings.defaultView;
+                        currentLayout = WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings && WidgetSections.placesInfo.data.settings.defaultView;
                         if (!view) {
                             $("#carousel").parent().html("<div id='carousel'></div>");
                             view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer

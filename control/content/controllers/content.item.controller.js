@@ -162,7 +162,7 @@
                             if (data && data.id) {
                                 ContentItem.item.data.deepLinkUrl = Buildfire.deeplink.createLink({id: data.id});
                                 console.log('--------------------------------------insertAndUpdate  ContentItem.item.data.deepLinkUrl ', ContentItem.item.data.deepLinkUrl );
-                                ContentItem.item.id = data.id;
+                                _item.id = data.id;
                                 updateMasterItem(ContentItem.item);
                                 placeInfoData.data.content.rankOfLastItemItems = _item.data.rank;
                                 PlaceInfo.save(placeInfoData.data).then(function (data) {
@@ -195,6 +195,7 @@
                     if (tmrDelayForItem) {
                         clearTimeout(tmrDelayForItem);
                     }
+
                     ContentItem.isItemValid = isValidItem(ContentItem.item.data);
                     console.log('--------------------------------------ContentItem.isItemValid',ContentItem.isItemValid);
                     if (_item && !isUnChanged(_item) && ContentItem.isItemValid) {
