@@ -168,7 +168,7 @@
                                 updating = false;
                             }
                         }, function (err) {
-                            resetItem();
+                            //resetItem();
                             updating = false;
                             //isNewItemInserted = false;
                         });
