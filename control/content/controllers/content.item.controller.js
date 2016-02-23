@@ -183,7 +183,7 @@
                     if (updating)
                         return;
                     if (tmrDelayForItem) {
-                        clearTimeout(tmrDelayForItem);
+                       $timeout.cancel(tmrDelayForItem);
                     }
                     ContentItem.isItemValid = isValidItem(ContentItem.item.data);
                     if (_item && !isUnChanged(_item) && ContentItem.isItemValid) {
