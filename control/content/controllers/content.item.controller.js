@@ -187,7 +187,7 @@
                     }
                     ContentItem.isItemValid = isValidItem(ContentItem.item.data);
                     if (_item && !isUnChanged(_item) && ContentItem.isItemValid) {
-                        tmrDelayForItem = setTimeout(function () {
+                        tmrDelayForItem = $timeout(function () {
                             insertAndUpdate(_item);
                         }, 300);
                     }
