@@ -143,9 +143,6 @@
                  * @returns {*|boolean}
                  */
                 function isUnChanged(obj) {
-                    console.clear();
-                    console.log('obj', obj);
-                    console.log('ContentItems.masterInfoData', ContentItems.masterInfoData);
                     return angular.equals(obj, ContentItems.masterInfoData);
                 }
 
