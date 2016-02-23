@@ -150,13 +150,13 @@
                         });
                     }
                     else {
-                        console.info('****************Item inserted***********************');
+                        console.info('****************Item inserting***********************');
                         _item.data.rank = (placeInfoData.data.content.rankOfLastItemItems || 0) + 10;
                         _item.data.dateCreated = new Date();
                         console.log('--------------------------------------insertAndUpdate _item.data.dateCreated',_item.data.dateCreated);
 
                         Items.insert(_item.data).then(function (data) {
-                            console.info('$$$$$$$$$$$$$$$$$ INSERT CALLED $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',data);
+                            console.info('$$$$$$$$$$$$$$$$$ INSERTED CALLED $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',data);
                        //     console.info('$$$$$$$$$$$$$$$$$ INSERT CALLED $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',_item.data);
                             if (data && data.id) {
                                 ContentItem.item.data.deepLinkUrl = Buildfire.deeplink.createLink({id: data.id});
@@ -168,7 +168,7 @@
                                     updating = false;
                                     console.log('--------------------------------------insertAndUpdate   PlaceInfo.save(placeInfoData.data).then(function (data) ', data);
                                 }, function (err) {
-                                    console.log('--------------------------------------insertAndUpdate  resetItem ');
+                                    console.log('--------------------------------------insertAndUpdate  PlaceInfo.save resetItem ');
                                     resetItem();
                                     updating = false;
                                     console.error('Error while getting----------', err);
@@ -190,20 +190,20 @@
                  * @param _item
                  */
                 function updateItemsWithDelay(_item) {
-                    console.log('--------------------------------------updateItemsWithDelay item',item);
+                    //console.log('--------------------------------------updateItemsWithDelay item',item);
                     if (updating)
                         return;
                     if (tmrDelayForItem) {
                         clearTimeout(tmrDelayForItem);
                     }
                     ContentItem.isItemValid = isValidItem(ContentItem.item.data);
-                    console.log('--------------------------------------ContentItem.isItemValid',ContentItem.isItemValid);
+                    //console.log('--------------------------------------ContentItem.isItemValid',ContentItem.isItemValid);
                     if (_item && !isUnChanged(_item) && ContentItem.isItemValid) {
                         console.log('--------------------------------------isUnChanged ',isUnChanged(_item));
                         tmrDelayForItem = setTimeout(function () {
-                            console.log('--------------------------------------insertAndUpdate called');
+                            //console.log('--------------------------------------insertAndUpdate called');
                             insertAndUpdate(_item);
-                        }, 1000);
+                        }, 300);
                     }
                 }
 
