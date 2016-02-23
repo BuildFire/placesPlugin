@@ -156,9 +156,8 @@
                         console.log('--------------------------------------insertAndUpdate _item.data.dateCreated',_item.data.dateCreated);
 
                         Items.insert(_item.data).then(function (data) {
-                            console.info('$$$$$$$$$$$$$$$$$ INSERT CALLED $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',_item.data);
+                            console.info('$$$$$$$$$$$$$$$$$ INSERT CALLED $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',data);
                        //     console.info('$$$$$$$$$$$$$$$$$ INSERT CALLED $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',_item.data);
-                            updating = false;
                             if (data && data.id) {
                                 ContentItem.item.data.deepLinkUrl = Buildfire.deeplink.createLink({id: data.id});
                                 console.log('--------------------------------------insertAndUpdate  ContentItem.item.data.deepLinkUrl ', ContentItem.item.data.deepLinkUrl );
@@ -166,16 +165,18 @@
                                 updateMasterItem(ContentItem.item);
                                 placeInfoData.data.content.rankOfLastItemItems = _item.data.rank;
                                 PlaceInfo.save(placeInfoData.data).then(function (data) {
+                                    updating = false;
                                     console.log('--------------------------------------insertAndUpdate   PlaceInfo.save(placeInfoData.data).then(function (data) ', data);
                                 }, function (err) {
                                     console.log('--------------------------------------insertAndUpdate  resetItem ');
-
                                     resetItem();
+                                    updating = false;
                                     console.error('Error while getting----------', err);
                                 });
                             }
                             else {
                                 resetItem();
+                                updating = false;
                             }
                         }, function (err) {
                             updating = false;
