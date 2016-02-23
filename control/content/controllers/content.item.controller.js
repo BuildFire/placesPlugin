@@ -164,13 +164,13 @@
                                 });
                             }
                             else {
-                                isNewItemInserted = false;
+                                //isNewItemInserted = false;
                                 updating = false;
                             }
                         }, function (err) {
                             resetItem();
                             updating = false;
-                            isNewItemInserted = false;
+                            //isNewItemInserted = false;
                         });
                     }
                 }
