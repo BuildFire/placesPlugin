@@ -1,4 +1,4 @@
-(function (angular,buildfire) {
+(function (angular, buildfire) {
     angular
         .module('placesWidget')
         .directive("buildFireCarousel", ["$rootScope", '$timeout', function ($rootScope, $timeout) {
@@ -25,8 +25,9 @@
             return {
                 template: "<div></div>",
                 replace: true,
-                scope: {locationData: '=locationData', markerCallback: '=markerCallback'},
+                scope: {locationData: '=locationData', markerCallback: '=markerCallback', filter: '=filter', filterUnapplied: '=filterUnapplied'},
                 link: function (scope, elem, attrs) {
+                    var newClustererMap = '';
                     elem.css('min-height', '596px').css('width', '100%');
                     scope.$watch('locationData', function (newValue, oldValue) {
                         if (newValue) {
@@ -34,7 +35,7 @@
                             var mapCenterLat = (scope.locationData && scope.locationData.currentCoordinates && scope.locationData.currentCoordinates.length && scope.locationData.currentCoordinates[1]) ? scope.locationData.currentCoordinates[1] : 41.8718;
 
                             // Create the map.
-                            var map = new google.maps.Map(elem[0], {
+                            map = new google.maps.Map(elem[0], {
                                 streetViewControl: false,
                                 mapTypeControl: false,
                                 zoom: 5,
@@ -62,7 +63,7 @@
                                 return {
                                     url: _imageUrl,
                                     // This marker is 20 pixels wide by 32 pixels high.
-                                    scaledSize: new google.maps.Size(20,20),
+                                    scaledSize: new google.maps.Size(20, 20),
                                     // The origin for this image is (0, 0).
                                     origin: new google.maps.Point(0, 0),
                                     // The anchor for this image is the base of the flagpole at (0, 32).
@@ -102,7 +103,7 @@
                                 });
                             }
 
-                            var placeLocationMarkers = [];
+                            placeLocationMarkers = [];
                             if (scope.locationData && scope.locationData.items && scope.locationData.items.length) {
                                 for (var _index = 0; _index < scope.locationData.items.length; _index++) {
 
@@ -121,7 +122,8 @@
                                             shape: shape,
                                             title: _place.data.itemTitle,
                                             zIndex: _index,
-                                            optimized: false
+                                            optimized: false,
+                                            dist: _place.data.distanceText
                                         });
                                         marker.addListener('click', function () {
                                             var _this = this;
@@ -137,7 +139,7 @@
                                     }
                                 }
                             }
-                            var markerCluster = new MarkerClusterer(map, placeLocationMarkers);
+                            markerCluster = new MarkerClusterer(map, placeLocationMarkers);
 
 
                             map.addListener('click', function () {
@@ -147,6 +149,24 @@
                                 }
                             });
                         }
+                    }, true);
+
+                    //scope.firstTimeFilter = true;
+                    scope.$watch('filter', function () {
+
+                        if (scope.filterUnapplied) {
+                            //scope.firstTimeFilter = false;
+                            return;
+                        }
+                        var newClustererMarkers = [];
+                        for (var i = 0; i < placeLocationMarkers.length; i++) {
+                            placeLocationMarkers[i].setVisible((Number(placeLocationMarkers[i].dist.split(' ')[0]) >= scope.filter.min && Number(placeLocationMarkers[i].dist.split(' ')[0]) <= scope.filter.max));
+                            newClustererMarkers.push(placeLocationMarkers[i]);
+                        }
+                        markerCluster.clearMarkers();
+                        markerCluster.addMarkers(newClustererMarkers,true);
+                        markerCluster.setIgnoreHidden(true);
+                        markerCluster.repaint();
                     }, true);
                 }
             }
@@ -224,7 +244,7 @@
                                     map: map,
                                     icon: placeLocationIcon,
                                     shape: shape,
-                                    optimized:false
+                                    optimized: false
                                 });
                                 marker.addListener('click', function () {
                                     openInMap(scope.locationData.currentCoordinates[1], scope.locationData.currentCoordinates[0]);
@@ -356,7 +376,7 @@
                             }
                         }
 
-                        function  showHideMainBtmMenu(){
+                        function showHideMainBtmMenu() {
                             if (views) {
                                 $("#mainViewBtmMenu").hide();
                             } else {
@@ -364,13 +384,13 @@
                                 $("#onUpdateListener").click();
                             }
 
-                       /*     var vs = ViewStack.getCurrentView();
-                            switch(vs.template){
-                                case 'section':break;
-                                case 'item':break;
-                                case undefined:break;
+                            /*     var vs = ViewStack.getCurrentView();
+                             switch(vs.template){
+                             case 'section':break;
+                             case 'item':break;
+                             case undefined:break;
 
-                            }*/
+                             }*/
                         }
 
                     }
@@ -379,7 +399,7 @@
         .directive('backImg', ["$filter", "$rootScope", function ($filter, $rootScope) {
             return function (scope, element, attrs) {
                 attrs.$observe('backImg', function (value) {
-                    console.log('bgimag',value);
+                    console.log('bgimag', value);
                     var img = '';
                     if (value) {
                         img = $filter("cropImage")(value, $rootScope.deviceWidth, $rootScope.deviceHeight, true);
@@ -401,7 +421,7 @@
             return {
                 restrict: 'A',
                 link: function (scope, element, attrs) {
-                    element.attr("src","assets/images/" + attrs.loadImage + ".png");
+                    element.attr("src", "assets/images/" + attrs.loadImage + ".png");
 
                     var elem = $("<img>");
                     elem[0].onload = function () {
@@ -412,4 +432,4 @@
                 }
             };
         }]);
-})(window.angular,window.buildfire);
+})(window.angular, window.buildfire);
