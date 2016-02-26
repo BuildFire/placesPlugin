@@ -83,14 +83,18 @@
             <span>Address</span>
         </div>
         <div class="main col-md-9 pull-right">
-            <input type="text" class="form-control"
+            <input id="googleMapAutocomplete" type="text" class="form-control"
                    placeholder="Enter Street Address or Lat/Long Coordinates"
                    google-location-search callback-fn="ContentItem.setLocation(data)"
                    ng-model="ContentItem.currentAddress"
                    ng-enter="ContentItem.setCoordinates()"
+                   ng-paste="ContentItem.locationAutocompletePaste()"
                    ng-change="ContentItem.clearData()">
             <br/>
-
+            <div class="alert alert-danger alert-sm text-center"
+                 ng-show="ContentItem.validCopyAddressFailure">Please enter valid
+                address
+            </div>
             <div class="alert alert-danger alert-sm text-center"
                  ng-show="ContentItem.validCoordinatesFailure">Please enter valid
                 coordinates

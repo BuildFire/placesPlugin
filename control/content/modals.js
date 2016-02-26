@@ -5,7 +5,7 @@
     }
     angular
         .module('placesModals', ['placesFilters', 'ui.bootstrap'])
-        .factory('Modals', ['$modal', '$q', function ($modal, $q) {
+        .factory('Modals', ['$modal', '$q','$timeout', function ($modal, $q,$timeout) {
             return {
                 removePopupModal: function (info) {
                     var removePopupDeferred = $q.defer();
@@ -101,8 +101,13 @@
 
             };
         }])
-        .controller('RemovePopupCtrl', ['$scope', '$modalInstance', 'Info', function ($scope, $modalInstance, Info) {
+        .controller('RemovePopupCtrl', ['$scope', '$modalInstance', 'Info','$timeout', function ($scope, $modalInstance, Info,$timeout) {
             console.log('RemovePopup Controller called-----');
+            $timeout(function () {
+                console.log('Modal Top Changed');
+                var top =  Info.event.pageY-50;
+                $('.modal-dialog.modal-sm').offset({top: top, left: 0});
+            }, 700);
             $scope.ok = function () {
                 $modalInstance.close('yes');
             };

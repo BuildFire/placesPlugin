@@ -23,7 +23,8 @@
             <div class="map-holder"
                  ng-class="{'fix-map-layout2-top':WidgetSections.selectedItem && WidgetSections.selectedItem.data.images.length}">
                 <div google-map class="google-map-fix" location-data="WidgetSections.locationData"
-                     marker-callback="WidgetSections.selectedMarker"></div>
+                     marker-callback="WidgetSections.selectedMarker" filter="distanceSlider"
+                     filterUnapplied="WidgetSections.filterUnapplied"></div>
             </div>
         </div>
         <!--<div ng-include="'templates/layouts/bottom-menu.html'"></div>-->
