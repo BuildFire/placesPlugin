@@ -21,10 +21,6 @@
                                 }
                             }
                         });
-                    $timeout(function () {
-                        var top =  info.event.pageY-50;
-                        $('.modal-dialog.modal-sm').offset({top: top, left: 0});
-                    }, 30);
                     removePopupModal.result.then(function (imageInfo) {
                         removePopupDeferred.resolve(imageInfo);
                     }, function (err) {
@@ -105,8 +101,13 @@
 
             };
         }])
-        .controller('RemovePopupCtrl', ['$scope', '$modalInstance', 'Info', function ($scope, $modalInstance, Info) {
+        .controller('RemovePopupCtrl', ['$scope', '$modalInstance', 'Info','$timeout', function ($scope, $modalInstance, Info,$timeout) {
             console.log('RemovePopup Controller called-----');
+            $timeout(function () {
+                console.log('Modal Top Changed');
+                var top =  Info.event.pageY-50;
+                $('.modal-dialog.modal-sm').offset({top: top, left: 0});
+            }, 30);
             $scope.ok = function () {
                 $modalInstance.close('yes');
             };
