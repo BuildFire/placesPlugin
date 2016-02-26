@@ -460,8 +460,18 @@
                 /// load items
                 function loadItems(carouselItems) {
                     // create an instance and pass it the items if you don't have items yet just pass []
+                    var carousel = $("#carousel").html();
+                    // set carousel in case of design layout change
+
+                    // $("#carousel").length checks if element is there on the page
+                    if ($("#carousel").length > 0 && carousel.trim() == '') {
+                        view = new Buildfire.components.carousel.view("#carousel", []); ///create new instance of buildfire carousel viewer
+                    }
                     if (view) {
                         view.loadItems(carouselItems);
+                    }
+                    else{
+                        view=new Buildfire.components.carousel.view("#carousel", carouselItems);
                     }
 
                 }
