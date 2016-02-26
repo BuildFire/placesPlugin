@@ -221,7 +221,7 @@
                  * ContentItems.removeListItem() used to delete an item from section list
                  * @param index tells the index of item to be deleted.
                  */
-                ContentItems.removeListItem = function (index) {
+                ContentItems.removeListItem = function (index,event) {
 
                     if ("undefined" == typeof index) {
                         return;
@@ -230,7 +230,7 @@
                     if ("undefined" !== typeof item) {
                         //buildfire.navigation.scrollTop();
 
-                        Modals.removePopupModal({title: ''}).then(function (result) {
+                        Modals.removePopupModal({title: '',event:event}).then(function (result) {
                             if (result) {
                                 ContentItems.Items.delete(item.id).then(function (data) {
                                     ContentItems.items.splice(index, 1);

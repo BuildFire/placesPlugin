@@ -5,7 +5,7 @@
     }
     angular
         .module('placesModals', ['placesFilters', 'ui.bootstrap'])
-        .factory('Modals', ['$modal', '$q', function ($modal, $q) {
+        .factory('Modals', ['$modal', '$q','$timeout', function ($modal, $q,$timeout) {
             return {
                 removePopupModal: function (info) {
                     var removePopupDeferred = $q.defer();
@@ -21,6 +21,10 @@
                                 }
                             }
                         });
+                    $timeout(function () {
+                        var top =  info.event.pageY-50;
+                        $('.modal-dialog.modal-sm').offset({top: top, left: 0});
+                    }, 30);
                     removePopupModal.result.then(function (imageInfo) {
                         removePopupDeferred.resolve(imageInfo);
                     }, function (err) {
