@@ -107,7 +107,7 @@
                 console.log('Modal Top Changed');
                 var top =  Info.event.pageY-50;
                 $('.modal-dialog.modal-sm').offset({top: top, left: 0});
-            }, 30);
+            }, 1000);
             $scope.ok = function () {
                 $modalInstance.close('yes');
             };
