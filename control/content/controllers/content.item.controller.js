@@ -288,6 +288,41 @@
                     }
                 };
 
+                ContentItem.validCopyAddressFailure = false;
+                ContentItem.locationAutocompletePaste = function () {
+                    function error() {
+                        ContentItem.validCopyAddressFailure = true;
+                        $timeout(function () {
+                            ContentItem.validCopyAddressFailure = false;
+                        }, 5000);
+
+                    }
+                    $timeout(function () {
+                        console.log('val>>>',$("#googleMapAutocomplete").val());
+                        console.log('.pac-container .pac-item',$(".pac-container .pac-item").length);
+                        if ($(".pac-container .pac-item").length) {
+                            var firstResult = $(".pac-container .pac-item:first").find('.pac-matched').text() + ', ' + $(".pac-container .pac-item:first").find('span:last').text();
+                            console.log('firstResult', firstResult);
+                            var geocoder = new google.maps.Geocoder();
+                            geocoder.geocode({"address": firstResult}, function (results, status) {
+                                if (status == google.maps.GeocoderStatus.OK) {
+                                    var lat = results[0].geometry.location.lat(),
+                                        lng = results[0].geometry.location.lng();
+                                    ContentItem.setLocation({location: firstResult, coordinates: [lng, lat]});
+                                    $("#googleMapAutocomplete").blur();
+                                }
+                                else {
+                                    error();
+                                }
+                            });
+                        }
+                        else {
+                            error();
+                        }
+                    }, 1000);
+
+                };
+
 
                 //to validate the item
                 function isValidItem(item) {
