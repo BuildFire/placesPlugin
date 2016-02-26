@@ -34,7 +34,7 @@
                             <a ng-click="WidgetSections.showItems(item.id);">
                                 <div class="list-item-media text-left overflow-hidden">
                                     <div ng-if="item.data.mainImage" class="list-media-holder pull-left">
-                                        <img default-image ng-src="{{item.data.mainImage | cropImage :110 :60}}">
+                                        <img load-image="239x100" data-final-src="{{item.data.mainImage | cropImage :110 :60}}" style="width: 110px;height: 60px;">>
                                     </div>
                                     <div class="list-item-copy text-left padding-left-ten padding-right-ten">
                                         <p class="ellipsis margin-zero text-primary margin-top-five"><span
