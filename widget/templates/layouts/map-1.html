@@ -20,7 +20,8 @@
         <div class="location-map">
             <div class="map-holder" ng-class="{'fix-map-layout1-top':WidgetSections.selectedItem}">
                 <div google-map class="google-map-fix" location-data="WidgetSections.locationData"
-                     marker-callback="WidgetSections.selectedMarker"></div>
+                     marker-callback="WidgetSections.selectedMarker" filter="distanceSlider"
+                     filterUnapplied="WidgetSections.filterUnapplied"></div>
             </div>
         </div>
         <!--<div ng-include="'templates/layouts/bottom-menu.html'"></div>-->
