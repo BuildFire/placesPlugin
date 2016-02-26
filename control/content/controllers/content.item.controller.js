@@ -1,7 +1,7 @@
 /**
  * Create self executing function to avoid global scope creation
  */
-(function (angular, tinymce,buildfire) {
+(function (angular, tinymce, buildfire) {
     'use strict';
     angular
         .module('placesContent')
@@ -10,6 +10,7 @@
 
                 //Hide the INT header part.
                 Buildfire.appearance.setHeaderVisibility(false);
+                var isNewItemInserted = false;
 
                 //Scroll current view to top when page loaded.
                 buildfire.navigation.scrollTop();
@@ -136,50 +137,53 @@
                 }
 
                 function insertAndUpdate(_item) {
+                    console.log('4 New Item Inserted--------------------------------------------_item--',_item);
                     updating = true;
                     if (_item.id) {
-                        console.log('--------------------------------------insertAndUpdate _item.id',_item.id);
-                        console.info('****************Item exist***********************');
+                        console.log('5 if (_item.id) {--------------------------------------------_item--',_item);
                         Items.update(_item.id, _item.data).then(function (data) {
-                            console.info('$$$$$$$$$$$$$$$$$ UPDATE CALLED $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',_item.id, _item.data);
+                            console.log('6 Updated--------------------------------------------data--',data);
                             updating = false;
-                            console.log('Data updated successfully---', data);
                         }, function (err) {
+                            console.error('7 Updated- Error-------------------------------------------err--',err);
                             updating = false;
-                            console.log('Error while updating data---', err);
+                            //console.log('Error while updating data---', err);
                         });
                     }
-                    else {
-                        console.info('****************Item inserted***********************');
+                    else if(!isNewItemInserted){
+                        console.log('8 New Item-----------------------isNewItemInserted----------------data--',isNewItemInserted);
+
+                        isNewItemInserted = true;
                         _item.data.rank = (placeInfoData.data.content.rankOfLastItemItems || 0) + 10;
                         _item.data.dateCreated = new Date();
-                        console.log('--------------------------------------insertAndUpdate _item.data.dateCreated',_item.data.dateCreated);
-
                         Items.insert(_item.data).then(function (data) {
-                            console.info('$$$$$$$$$$$$$$$$$ INSERT CALLED $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',_item.data);
-                       //     console.info('$$$$$$$$$$$$$$$$$ INSERT CALLED $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',_item.data);
-                            updating = false;
+                            console.log('9 ----------- New Item Inserted--------------------------------------------',data);
                             if (data && data.id) {
+                                console.log('10 New Item Inserted--------------------------------------------data--',data);
                                 ContentItem.item.data.deepLinkUrl = Buildfire.deeplink.createLink({id: data.id});
-                                console.log('--------------------------------------insertAndUpdate  ContentItem.item.data.deepLinkUrl ', ContentItem.item.data.deepLinkUrl );
-                                _item.id = data.id;
+                                ContentItem.item.id = data.id;
                                 updateMasterItem(ContentItem.item);
+                                console.log('11 New Item Inserted--------------------------------------------data--',data);
                                 placeInfoData.data.content.rankOfLastItemItems = _item.data.rank;
                                 PlaceInfo.save(placeInfoData.data).then(function (data) {
-                                    console.log('--------------------------------------insertAndUpdate   PlaceInfo.save(placeInfoData.data).then(function (data) ', data);
+                                    console.log('12 Place Info Save Inserted--------------------------------------------data--',data);
+                                    updating = false;
                                 }, function (err) {
-                                    console.log('--------------------------------------insertAndUpdate  resetItem ');
-
-                                    resetItem();
-                                    console.error('Error while getting----------', err);
+                                    console.error('13 Place Info Save Inserted--------------------------------------------data--',err);
+                                    updating = false;
                                 });
                             }
                             else {
-                                resetItem();
+                                console.log('14 Inserted Successs without ID --------------------------------------------data--',data);
+
+                                //isNewItemInserted = false;
+                                updating = false;
                             }
                         }, function (err) {
+                            console.error('15  Inserted Error--------------------------------------------err--',err);
+                            //resetItem();
                             updating = false;
-                            console.log('Error---', err);
+                            //isNewItemInserted = false;
                         });
                     }
                 }
@@ -189,21 +193,19 @@
                  * @param _item
                  */
                 function updateItemsWithDelay(_item) {
-                    console.log('--------------------------------------updateItemsWithDelay item',item);
+                    console.log('1 New Item Inserted--------------------------------------------updating--',updating);
                     if (updating)
                         return;
                     if (tmrDelayForItem) {
-                        clearTimeout(tmrDelayForItem);
+                       $timeout.cancel(tmrDelayForItem);
                     }
-
+                    console.log('2 New Item Inserted--------------------------------------------updating--',updating);
                     ContentItem.isItemValid = isValidItem(ContentItem.item.data);
-                    console.log('--------------------------------------ContentItem.isItemValid',ContentItem.isItemValid);
                     if (_item && !isUnChanged(_item) && ContentItem.isItemValid) {
-                        console.log('--------------------------------------isUnChanged ',isUnChanged(_item));
-                        tmrDelayForItem = setTimeout(function () {
-                            console.log('--------------------------------------insertAndUpdate called');
+                        tmrDelayForItem = $timeout(function () {
+                            console.log('3 New Item Inserted--------------------------------------------updating--',updating);
                             insertAndUpdate(_item);
-                        }, 1000);
+                        }, 300);
                     }
                 }
 
@@ -347,4 +349,4 @@
                     return ContentItem.item;
                 }, updateItemsWithDelay, true);
             }]);
-})(window.angular, window.tinymce,window.buildfire);
+})(window.angular, window.tinymce, window.buildfire);
