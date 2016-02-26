@@ -141,7 +141,7 @@
                         }
                         else {
                             var link = document.createElement("a");
-                            if (link.download !== undefined) {
+                            //if (link.download !== undefined) { // commented to make it work on safari
                                 var url = URL.createObjectURL(blob);
                                 link.setAttribute("href", url);
                                 link.setAttribute("download", name);
@@ -149,7 +149,7 @@
                                 document.body.appendChild(link);
                                 link.click();
                                 document.body.removeChild(link);
-                            }
+                         //   }
                         }
                     },
                     import: function (header, name) {
