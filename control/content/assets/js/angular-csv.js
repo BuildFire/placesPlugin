@@ -1,4 +1,4 @@
-(function (angular, URL, navigator) {
+(function (angular, URL, navigator, window) {
     //created bngCsv module
     angular
         .module('bngCsv', ['ui.bootstrap'])
@@ -141,7 +141,7 @@
                         }
                         else {
                             var link = document.createElement("a");
-                           // if (link.download !== undefined) {
+                            if (link.download !== undefined) {
                                 var url = URL.createObjectURL(blob);
                                 link.setAttribute("href", url);
                                 link.setAttribute("download", name);
@@ -149,7 +149,10 @@
                                 document.body.appendChild(link);
                                 link.click();
                                 document.body.removeChild(link);
-                            //}
+                            }
+                            else {
+                                window.open('data:attachment/csv;charset=utf-8,' + encodeURI([csv])); // Only for safari
+                            }
                         }
                     },
                     import: function (header, name) {
@@ -218,4 +221,4 @@
                 $modalInstance.dismiss('Dismiss');
             };
         }])
-})(window.angular, window.URL, window.navigator);
+})(window.angular, window.URL, window.navigator, window);
