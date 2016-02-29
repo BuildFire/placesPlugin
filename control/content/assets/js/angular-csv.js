@@ -1,4 +1,4 @@
-(function (angular, URL, navigator, window) {
+(function (angular, URL, navigator, window, buildfire) {
     //created bngCsv module
     angular
         .module('bngCsv', ['ui.bootstrap'])
@@ -151,7 +151,7 @@
                                 document.body.removeChild(link);
                             }
                             else {
-                                window.open('data:attachment/csv;charset=utf-8,' + encodeURI([csv])); // Only for safari
+                                buildfire.navigation.openWindow('data:attachment/csv;charset=utf-8,' + encodeURI(csv),'_blank'); // Only for safari
                             }
                         }
                     },
@@ -221,4 +221,4 @@
                 $modalInstance.dismiss('Dismiss');
             };
         }])
-})(window.angular, window.URL, window.navigator, window);
+})(window.angular, window.URL, window.navigator, window, window.buildfire);
