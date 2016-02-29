@@ -331,7 +331,7 @@
 .map-layout2 .places-plugin .location-map .map-holder {
     padding: 0 !important;
     z-index: 1 !important;
-    height: 89%;
+    height: 100%;
     top: 0;
 }
 
