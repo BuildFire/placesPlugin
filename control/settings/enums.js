@@ -16,8 +16,34 @@
             }
         })
         .constant('COLLECTIONS', {
-            PlaceInfo: "placeInfo",
-            Sections: "sections",
-            Items:"items"
+            PlaceInfo: "placeInfo"
+        })
+        .constant('DEFAULT_DATA', {
+            PLACE_INFO: {
+                data: {
+                    content: {
+                        images: [],
+                        descriptionHTML: '<p>&nbsp;<br></p>',
+                        description: '<p>&nbsp;<br></p>',
+                        sortBy: 'Manually',
+                        rankOfLastItem: '',
+                        rankOfLastItemItems: '',
+                        sortByItems: 'Manually',
+                        showAllItems: 'true',
+                        allItemImage: ''
+                    },
+                    design: {
+                        secListLayout: "sec-list-1-1",
+                        mapLayout: "map-1",
+                        itemListLayout: "item-list-1",
+                        itemDetailsLayout: "item-details-1",
+                        secListBGImage: ""
+                    },
+                    settings: {
+                        defaultView: "list",
+                        showDistanceIn: "mi"
+                    }
+                }
+            }
         });
 })(window.angular, undefined);
