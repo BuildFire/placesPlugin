@@ -219,6 +219,15 @@
 
                         Items.find({filter: {"$json.itemTitle": {"$regex": '/*'}}}).then(function (items) {
                             console.log('Items in epxort--------------------------', items);
+
+                            if (items.length == 0) {
+
+                                Object.keys(allSections).forEach(function(key,index) {
+                                    json.push(allSections[key]);
+                                });
+                            }
+                            else {
+
                             for (var _ind = 0; _ind < items.length; _ind++) {
                                 items[_ind].data.address = items[_ind].data.address.aName;
                                 if (items[_ind].data.sections.length > 1) {
@@ -245,6 +254,7 @@
                                 }
 
                             }
+                        }
                             console.log('Json in export csv-----------------', json);
                             var csv = $csv.jsonToCsv(angular.toJson(json), {
                                 header: header
