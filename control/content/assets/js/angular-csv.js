@@ -140,40 +140,17 @@
                             navigator.msSaveBlob(blob, name);
                         }
                         else {
-
-
-
                             var link = document.createElement("a");
                             if (link.download !== undefined) {
                                 var url = URL.createObjectURL(blob);
                                 link.setAttribute("href", url);
                                 link.setAttribute("download", name);
+                                //link.setAttribute("target", "_blank");
                                 link.style.visibility = 'hidden';
                                 document.body.appendChild(link);
-
-                                var ua = navigator.userAgent.toLowerCase();
-                                if (ua.indexOf('safari') != -1) {
-                                    if (ua.indexOf('chrome') > -1) {
-                                        {}
-                                    } else {
-                                        {
-                                            link.setAttribute("target", "_blank");
-                                            link.click();
-                                            //document.body.removeChild(link);
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    link.click();
-                                    document.body.removeChild(link);
-                                }
-
-
+                                link.click();
+                                document.body.removeChild(link);
                             }
-                          /*  else {
-                                buildfire.navigation.openWindow('data:attachment/csv;charset=utf-8,' + encodeURI(csv),'_blank'); // Only for safari
-                            }*/
                         }
                     },
                     import: function (header, name) {
