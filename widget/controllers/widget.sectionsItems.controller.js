@@ -1,12 +1,12 @@
 (function (angular, window) {
     angular
         .module('placesWidget')
-        .controller('WidgetSectionsItemsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance', '$routeParams', '$timeout', 'OrdersItems', '$filter', 'ViewStack',
-            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $routeParams, $timeout, OrdersItems, $filter, ViewStack) {
+        .controller('WidgetSectionsItemsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance', '$timeout', 'OrdersItems', '$filter', 'ViewStack',
+            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $timeout, OrdersItems, $filter, ViewStack) {
                 var WidgetSections = this;
                 WidgetSections.removeShowSectionsArea = true;
                 var vs = ViewStack.getCurrentView();
-                WidgetSections.selectedSection=vs.sectionId;
+                WidgetSections.selectedSection = vs.sectionId;
                 if (vs.sectionId) {
                     if (vs.sectionId != 'allitems')
                         WidgetSections.selectedSections = [vs.sectionId];
@@ -503,10 +503,6 @@
                         // all items selected
                         itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
                     }
-                    /* else if ($routeParams.sectionId == 'allitems') {
-                     // all items selected
-                     itemFilter = {"$json.itemTitle": {"$regex": '/!*'}};
-                     }*/
                     searchOptionsItems.filter = itemFilter;
                     refreshItems();
                     WidgetSections.loadMoreItems();
@@ -661,17 +657,17 @@
 
 
                 /*WidgetSections.getSectionId = function (arr) {
-                    if (arr.length == 0 || angular.element("#allItemsOption").hasClass('whiteTheme') || angular.element('.list-item.section-filter.whiteTheme').length == 0)
-                        return 'allitems';
-                    else {
-                        if (angular.element('.list-item.section-filter.whiteTheme').length == 1 && angular.element("#allItemsOption").hasClass('whiteTheme') == false)
-                            return $('.list-item.section-filter.whiteTheme').attr('section-id');
-                        else
-                            return arr[0];
-                    }
-                };
+                 if (arr.length == 0 || angular.element("#allItemsOption").hasClass('whiteTheme') || angular.element('.list-item.section-filter.whiteTheme').length == 0)
+                 return 'allitems';
+                 else {
+                 if (angular.element('.list-item.section-filter.whiteTheme').length == 1 && angular.element("#allItemsOption").hasClass('whiteTheme') == false)
+                 return $('.list-item.section-filter.whiteTheme').attr('section-id');
+                 else
+                 return arr[0];
+                 }
+                 };
 
-                  $scope.$on("Map Carousel:LOADED", function () {
+                 $scope.$on("Map Carousel:LOADED", function () {
                  /!*if (!mapview) {
                  mapview = new Buildfire.components.carousel.view("#mapCarousel", []);  ///create new instance of buildfire carousel viewer
                  }*!/
