@@ -32,6 +32,11 @@ describe('Unit : Controller - ContentSectionCtrl', function () {
                     actionItems: {
                         sortableList: {}
                     }
+                },
+                navigation: {
+                    scrollTop: function () {
+                        console.log('scroll Top called');
+                    }
                 }
             };
             $q = _$q_;
@@ -104,6 +109,11 @@ describe('Unit : Controller - ContentSectionCtrl', function () {
                                 };
                                 return this;
                             }
+                        }
+                    },
+                    navigation: {
+                        scrollTop: function () {
+                            console.log('scroll Top called');
                         }
                     }
                 }
@@ -206,9 +216,9 @@ describe('Unit : Controller - ContentSectionCtrl', function () {
             expect(ContentSection.section.data.itemListBGImage).toEqual('bgimage.png');
         });
         xit('it should pass if it changes the selectMainImage on Error case', function () {
-            Buildfire.imageLib.showDialog=function (options,cb) {
-                        cb({Error:'Error'}, null);
-                    };
+            Buildfire.imageLib.showDialog = function (options, cb) {
+                cb({Error: 'Error'}, null);
+            };
             ContentSection.selectMainImage();
             expect(ContentSection.section.data.itemListBGImage).toEqual('bgimage.png');
         });
@@ -247,6 +257,11 @@ describe('Unit : Controller - ContentSectionCtrl Undefined case', function () {
                     },
                     actionItems: {
                         sortableList: {}
+                    }
+                },
+                navigation: {
+                    scrollTop: function () {
+                        console.log('scroll Top called');
                     }
                 }
             };
@@ -289,6 +304,11 @@ describe('Unit : Controller - ContentSectionCtrl Undefined case', function () {
                                 };
                                 return this;
                             }
+                        }
+                    },
+                    navigation: {
+                        scrollTop: function () {
+                            console.log('scroll Top called');
                         }
                     }
                 }

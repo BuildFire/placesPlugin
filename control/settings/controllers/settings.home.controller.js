@@ -2,31 +2,8 @@
     'use strict';
     angular
         .module('placesSettings')
-        .controller('SettingsHomeCtrl', ['$scope', 'Orders', 'COLLECTIONS', 'DB', '$timeout', 'OrdersItems', 'placesInfo', function ($scope, Orders, COLLECTIONS, DB, $timeout, OrdersItems, placesInfo) {
+        .controller('SettingsHomeCtrl', ['$scope', 'Orders', 'COLLECTIONS', 'DEFAULT_DATA', 'DB', '$timeout', 'OrdersItems', 'placesInfo', function ($scope, Orders, COLLECTIONS, DEFAULT_DATA, DB, $timeout, OrdersItems, placesInfo) {
             var SettingsHome = this
-                , _data = {
-                    content: {
-                        images: [],
-                        descriptionHTML: '<p>&nbsp;<br></p>',
-                        description: '<p>&nbsp;<br></p>',
-                        sortBy: Orders.ordersMap.Manually,
-                        rankOfLastItem: '',
-                        sortByItems: OrdersItems.ordersMap.Newest,
-                        showAllItems: 'true',
-                        allItemImage: ''
-                    },
-                    design: {
-                        secListLayout: "sec-list-1-1",
-                        mapLayout: "map-1",
-                        itemListLayout: "item-list-1",
-                        itemDetailsLayout: "item-details-1",
-                        secListBGImage: ""
-                    },
-                    settings: {
-                        defaultView: "list",
-                        showDistanceIn: "mi"
-                    }
-                }
                 , tmrDelay = null;
             SettingsHome._placeCenter = new DB(COLLECTIONS.PlaceInfo);
 
@@ -37,7 +14,7 @@
                 SettingsHome._lastSaved = angular.copy(SettingsHome.placeInfo);
             }
             else {
-                SettingsHome.placeInfo = {data: angular.copy(_data)};
+                SettingsHome.placeInfo = {data: angular.copy(DEFAULT_DATA.PLACE_INFO)};
                 SettingsHome._lastSaved = angular.copy(SettingsHome.placeInfo);
             }
 
@@ -54,7 +31,7 @@
             var updatefn = function (newObj) {
                 if (newObj) {
                     if (tmrDelay) {
-                        clearTimeout(tmrDelay);
+                        $timeout.cancel(tmrDelay);
                     }
                     if (isUnchanged(newObj)) {
                         return;
@@ -64,16 +41,15 @@
                             SettingsHome._placeCenter.update(newObj.id, newObj.data).then(function (result) {
                                 SettingsHome._lastSaved = angular.copy(SettingsHome.placeInfo);
                             }, function (err) {
-                                console.log(err);
+                                console.error(err);
                                 SettingsHome.placeInfo = angular.copy(SettingsHome._lastSaved);
                             });
                         }, 500);
                     } else {
                         tmrDelay = $timeout(function () {
                             SettingsHome._placeCenter.save(SettingsHome.placeInfo.data).then(function success(result) {
-                                init();
                             }, function fail(err) {
-                                console.log(err);
+                                console.error(err);
                             });
                         }, 500);
                     }

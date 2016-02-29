@@ -1,7 +1,7 @@
 (function (angular, window) {
     angular
         .module('placesWidget')
-        .controller('WidgetItemCtrl', ['$scope', 'COLLECTIONS', 'DB', '$routeParams', 'Buildfire', '$rootScope', 'GeoDistance', 'Messaging', 'Location', 'EVENTS', 'PATHS', 'AppConfig', 'Orders', 'OrdersItems', '$timeout', 'ViewStack' , function ($scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS, AppConfig, Orders, OrdersItems, $timeout,ViewStack) {
+        .controller('WidgetItemCtrl', ['$scope', 'COLLECTIONS', 'DB', 'Buildfire', '$rootScope', 'GeoDistance', 'Messaging', 'Location', 'EVENTS', 'PATHS', 'AppConfig', 'Orders', 'OrdersItems', '$timeout', 'ViewStack', function ($scope, COLLECTIONS, DB, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS, AppConfig, Orders, OrdersItems, $timeout, ViewStack) {
             var WidgetItem = this
                 , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
                 , Items = new DB(COLLECTIONS.Items)
@@ -52,25 +52,25 @@
                     }
                 };
 
-          /*  if (placesInfo) { to be done lakshay
-                WidgetItem.placeInfo = placesInfo;
-            }
-            else {*/
-              /*  WidgetItem.placeInfo = _infoData;*/
+            /*  if (placesInfo) { to be done lakshay
+             WidgetItem.placeInfo = placesInfo;
+             }
+             else {*/
+            /*  WidgetItem.placeInfo = _infoData;*/
             //}
 
             var vs = ViewStack.getCurrentView();
 
             if (vs.itemId && vs.sectionId) {
-                PlaceInfo.get().then(function(info){
-                    console.log('Places Info in Item Page--------------------------------',info);
-                    if(info)
-                    WidgetItem.placeInfo=info;
-                    else{
-                        WidgetItem.placeInfo=_infoData;
+                PlaceInfo.get().then(function (info) {
+                    console.log('Places Info in Item Page--------------------------------', info);
+                    if (info)
+                        WidgetItem.placeInfo = info;
+                    else {
+                        WidgetItem.placeInfo = _infoData;
                     }
-                },function(err){
-                    WidgetItem.placeInfo=_infoData;
+                }, function (err) {
+                    WidgetItem.placeInfo = _infoData;
                 });
                 Items.getById(vs.itemId).then(function (d) {
                     if (d)
@@ -158,18 +158,6 @@
             else
                 getGeoLocation(); // get data if localStorage is not supported
 
-            /* $scope.$on("Carousel:LOADED", function () {
-             if (!WidgetItem.view) {
-             console.log('if------', WidgetItem.view);
-             WidgetItem.view = new Buildfire.components.carousel.view("#carousel", []);
-             }
-             if (WidgetItem.item && WidgetItem.item.data && WidgetItem.item.data.images && WidgetItem.view) {
-             WidgetItem.view.loadItems(WidgetItem.item.data.images);
-             } else {
-             WidgetItem.view.loadItems([]);
-             }
-             });*/
-
             if (WidgetItem.locationData && WidgetItem.locationData.currentCoordinates && WidgetItem.placeInfo && WidgetItem.placeInfo.data && WidgetItem.placeInfo.data.settings)
                 calDistance(WidgetItem.locationData.currentCoordinates, [WidgetItem.item], WidgetItem.placeInfo.data.settings.showDistanceIn);
 
@@ -187,7 +175,7 @@
                                 initCarousel(event.data.images);
                             if (!$scope.$$phase)$scope.$digest();
                             $scope.imagesUpdated = !!event.data.images;
-                        },0);
+                        }, 0);
                     }
                     else if (event.tag == 'placeInfo' && event.data) {
 
@@ -226,21 +214,12 @@
 
             // Show Body Content when it is not blank
             WidgetItem.showBodyContent = function () {
-                if ((WidgetItem.item && WidgetItem.item.data) &&(WidgetItem.item.data.bodyContent == '<p>&nbsp;<br></p>' || WidgetItem.item.data.bodyContent == '<p><br data-mce-bogus="1"></p>' || WidgetItem.item.data.bodyContent==''))
+                if ((WidgetItem.item && WidgetItem.item.data) && (WidgetItem.item.data.bodyContent == '<p>&nbsp;<br></p>' || WidgetItem.item.data.bodyContent == '<p><br data-mce-bogus="1"></p>' || WidgetItem.item.data.bodyContent == ''))
                     return false;
                 else
                     return true;
             };
 
-           /* //syn with widget side
-            Messaging.sendMessageToControl({
-                name: EVENTS.ROUTE_CHANGE,
-                message: {
-                    path: PATHS.ITEM,
-                    id: $routeParams.itemId,
-                    secId: $routeParams.sectionId
-                }
-            });*/
 
             function initCarousel(images) {
                 if (angular.element('#carouselItemDetails').length) {
@@ -279,4 +258,5 @@
         }
         ])
     ;
-})(window.angular, window);
+})
+(window.angular, window);

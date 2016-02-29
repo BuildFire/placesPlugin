@@ -3,9 +3,9 @@ describe('Unit : Controller - WidgetItemCtrl2', function () {
 // load the controller's module
     beforeEach(module('placesWidget'));
 
-    var $q, WidgetItem, scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS, AppConfig, $timeout, Orders, OrdersItems, item;
+    var $q, WidgetItem, scope, COLLECTIONS, DB, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS, AppConfig, $timeout, Orders, OrdersItems, item;
 
-    beforeEach(inject(function (_$q_, _$routeParams_, $controller, _$rootScope_, _Buildfire_, _DB_, _COLLECTIONS_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _Location_, _Orders_, _GeoDistance_, _$timeout_, _OrdersItems_) {
+    beforeEach(inject(function (_$q_, $controller, _$rootScope_, _Buildfire_, _DB_, _COLLECTIONS_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _Location_, _Orders_, _GeoDistance_, _$timeout_, _OrdersItems_) {
             scope = _$rootScope_.$new();
             DB = _DB_;
             COLLECTIONS = _COLLECTIONS_;
@@ -17,14 +17,12 @@ describe('Unit : Controller - WidgetItemCtrl2', function () {
             Location = _Location_;
             $q = _$q_;
             AppConfig = _AppConfig_;
-            $routeParams = _$routeParams_;
             GeoDistance = _GeoDistance_;
             Buildfire = _Buildfire_;
             $rootScope = _$rootScope_;
             $timeout=_$timeout_;
             WidgetItem = $controller('WidgetItemCtrl', {
                 $scope: scope,
-                $routeParams: $routeParams,
                 DB: DB,
                 COLLECTIONS: COLLECTIONS,
                 Buildfire: Buildfire,

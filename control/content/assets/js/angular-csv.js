@@ -1,4 +1,4 @@
-(function (angular, URL, navigator) {
+(function (angular, URL, navigator, window, buildfire) {
     //created bngCsv module
     angular
         .module('bngCsv', ['ui.bootstrap'])
@@ -145,6 +145,7 @@
                                 var url = URL.createObjectURL(blob);
                                 link.setAttribute("href", url);
                                 link.setAttribute("download", name);
+                                //link.setAttribute("target", "_blank");
                                 link.style.visibility = 'hidden';
                                 document.body.appendChild(link);
                                 link.click();
@@ -218,4 +219,4 @@
                 $modalInstance.dismiss('Dismiss');
             };
         }])
-})(window.angular, window.URL, window.navigator);
+})(window.angular, window.URL, window.navigator, window, window.buildfire);

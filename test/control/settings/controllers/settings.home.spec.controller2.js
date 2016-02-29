@@ -16,6 +16,7 @@ describe("SettingsHomeCtrl", function () {
                 $scope: $scope,
                 COLLECTIONS: $injector.get('COLLECTIONS'),
                 DB: $injector.get('DB'),
+                DEFAULT_DATA: {PLACES_INFO:{}},
                 placesInfo:null,
                 $timeout: $injector.get('$timeout'),
                 Buildfire: $injector.get('Buildfire')

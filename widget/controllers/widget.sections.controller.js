@@ -1,11 +1,10 @@
 (function (angular, window) {
     angular
         .module('placesWidget')
-        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance', '$routeParams', '$timeout', 'OrdersItems', '$filter', 'ViewStack',
-            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $routeParams, $timeout, OrdersItems, $filter, ViewStack) {
+        .controller('WidgetSectionsCtrl', ['$scope', '$window', 'DB', 'COLLECTIONS', '$rootScope', 'Buildfire', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'Orders', 'DEFAULT_VIEWS', 'GeoDistance', '$timeout', 'OrdersItems', '$filter', 'ViewStack',
+            function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $timeout, OrdersItems, $filter, ViewStack) {
                 var WidgetSections = this;
                 WidgetSections.removeShowSectionsArea = false;
-                WidgetSections.sectionId = $routeParams.sectionId;
                 WidgetSections.showMenu = false;
                 WidgetSections.menuTab = 'Category';
                 WidgetSections.filterUnapplied = true;
@@ -399,24 +398,9 @@
                     PlaceInfo.get().then(function (data) {
                         WidgetSections.placesInfo = data;
                         initPage();
-                        //alert('called');
-                        /* if (!view) {
-                         view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
-                         }
-                         if (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings.defaultView) {
-
-                         alert('balloon');
-                         initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
-                         }
-                         else {
-                         view.loadItems([]);
-                         }*/
                     }, function () {
                         WidgetSections.placesInfo = _placesInfoData;
                         initPage();
-                        /*  if (!view) {
-                         view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
-                         }*/
                     });
                 })();
 
@@ -424,7 +408,6 @@
                 if (typeof(Storage) !== "undefined") {
                     var userLocation = localStorage.getItem('user_location');
                     if (userLocation) {
-                        //WidgetSections.sortOnClosest = true;// will be true if user allows location
                         WidgetSections.locationData.currentCoordinates = JSON.parse(userLocation);
                     }
                     else
@@ -470,8 +453,8 @@
                     if (view) {
                         view.loadItems(carouselItems);
                     }
-                    else{
-                        view=new Buildfire.components.carousel.view("#carousel", carouselItems);
+                    else {
+                        view = new Buildfire.components.carousel.view("#carousel", carouselItems);
                     }
 
                 }
@@ -531,10 +514,6 @@
                         // all items selected
                         itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
                     }
-                    /* else if ($routeParams.sectionId == 'allitems') {
-                     // all items selected
-                     itemFilter = {"$json.itemTitle": {"$regex": '/!*'}};
-                     }*/
                     searchOptionsItems.filter = itemFilter;
                     refreshItems();
                     WidgetSections.loadMoreItems();
@@ -700,23 +679,6 @@
                         else
                             view.loadItems([]);
                     }, 1000);
-                });
-
-               /* WidgetSections.getSectionId = function (arr) {
-                    if (arr.length == 0 || angular.element("#allItemsOption").hasClass('whiteTheme') || angular.element('.list-item.section-filter.whiteTheme').length == 0)
-                        return 'allitems';
-                    else {
-                        if (angular.element('.list-item.section-filter.whiteTheme').length == 1 && angular.element("#allItemsOption").hasClass('whiteTheme') == false)
-                            return $('.list-item.section-filter.whiteTheme').attr('section-id');
-                        else
-                            return arr[0];
-                    }
-                };*/
-
-                $scope.$on("Map Carousel:LOADED", function () {
-                    /*if (!mapview) {
-                     mapview = new Buildfire.components.carousel.view("#mapCarousel", []);  ///create new instance of buildfire carousel viewer
-                     }*/
                 });
 
 

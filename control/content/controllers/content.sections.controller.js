@@ -219,10 +219,20 @@
 
                         Items.find({filter: {"$json.itemTitle": {"$regex": '/*'}}}).then(function (items) {
                             console.log('Items in epxort--------------------------', items);
+
+                            if (items.length == 0) {
+
+                                Object.keys(allSections).forEach(function(key,index) {
+                                    json.push(allSections[key]);
+                                });
+                            }
+                            else {
+
                             for (var _ind = 0; _ind < items.length; _ind++) {
                                 items[_ind].data.address = items[_ind].data.address.aName;
                                 if (items[_ind].data.sections.length > 1) {
                                     for (var _i = 0; _i < items[_ind].data.sections.length; _i++) {
+                                        allSections[items[_ind].data.sections[_i]].done = true;
                                         items[_ind].data.secTitle = allSections[items[_ind].data.sections[_i]].secTitle;
                                         items[_ind].data.secSummary = allSections[items[_ind].data.sections[_i]].secSummary;
                                         items[_ind].data.mainImage = allSections[items[_ind].data.sections[_i]].mainImage;
@@ -234,6 +244,7 @@
                                 }
                                 else {
                                     if (allSections[items[_ind].data.sections[0]]) {
+                                        allSections[items[_ind].data.sections[0]].done = true;
                                         items[_ind].data.secTitle = allSections[items[_ind].data.sections[0]].secTitle;
                                         items[_ind].data.secSummary = allSections[items[_ind].data.sections[0]].secSummary;
                                         items[_ind].data.mainImage = allSections[items[_ind].data.sections[0]].mainImage;
@@ -245,6 +256,14 @@
                                 }
 
                             }
+
+                                Object.keys(allSections).forEach(function(key,index) {
+                                    if(allSections[key].done != true)
+                                    json.push(allSections[key]);
+                                });
+
+
+                        }
                             console.log('Json in export csv-----------------', json);
                             var csv = $csv.jsonToCsv(angular.toJson(json), {
                                 header: header

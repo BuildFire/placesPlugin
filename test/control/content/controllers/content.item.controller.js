@@ -41,6 +41,11 @@ describe('Unit : placesContent content.item.controller.js', function () {
                     callback('Error', null);
                 }
             });
+            this.navigation={
+                scrollTop:function(){
+                    console.log('scroll Top called');
+                }
+            };
             this.components = {
                 carousel: {
                     editor: function (id) {
