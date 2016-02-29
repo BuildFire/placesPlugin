@@ -3,9 +3,9 @@ describe('Unit : Controller - ContentSectionsCtrl', function () {
 // load the controller's module
     beforeEach(module('placesContent'));
 
-    var $q, ContentSections, scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, placesInfo,Utils;
+    var $q, ContentSections, scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, placesInfo, Utils;
 
-    beforeEach(inject(function (_$q_, $controller, _$rootScope_, _DB_, _$timeout_, _COLLECTIONS_, _Orders_, _OrdersItems_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _$csv_, _Buildfire_, _Modals_,_Utils_) {
+    beforeEach(inject(function (_$q_, $controller, _$rootScope_, _DB_, _$timeout_, _COLLECTIONS_, _Orders_, _OrdersItems_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _$csv_, _Buildfire_, _Modals_, _Utils_) {
             scope = _$rootScope_.$new();
             DB = _DB_;
             $timeout = _$timeout_;
@@ -58,14 +58,22 @@ describe('Unit : Controller - ContentSectionsCtrl', function () {
                         },
                         carousel: {
                             editor: function () {
-                                var a = {loadItems:function(){}};
+                                var a = {
+                                    loadItems: function () {
+                                    }
+                                };
                                 return a;
                             }
                         }
+                    },
+                    navigation: {
+                        scrollTop: function () {
+                            console.log('scroll Top called');
+                        }
                     }
                 },
-                Utils:_Utils_,
-                DEFAULT_DATA : {}
+                Utils: _Utils_,
+                DEFAULT_DATA: {}
             });
         })
     )
@@ -233,7 +241,7 @@ xdescribe('Unit : Controller - ContentSectionsCtrl - First time plugin setup - N
 
     var $q, ContentSections, scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, placesInfo;
 
-    beforeEach(inject(function (_$q_, $controller, _$rootScope_,_Buildfire_, _DB_, _$timeout_, _COLLECTIONS_, _Orders_, _OrdersItems_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _$csv_, _Modals_) {
+    beforeEach(inject(function (_$q_, $controller, _$rootScope_, _Buildfire_, _DB_, _$timeout_, _COLLECTIONS_, _Orders_, _OrdersItems_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _$csv_, _Modals_) {
             scope = _$rootScope_.$new();
             DB = _DB_;
             $timeout = _$timeout_;

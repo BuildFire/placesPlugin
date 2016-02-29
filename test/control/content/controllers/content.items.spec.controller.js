@@ -3,9 +3,9 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
 // load the controller's module
     beforeEach(module('placesContent'));
 
-    var $q, ContentItems, scope, $routeParams, $rootScope,Buildfire, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo;
+    var $q, ContentItems, scope, $routeParams, $rootScope, Buildfire, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo;
 
-    beforeEach(inject(function (_$q_, _$routeParams_, $controller,_Buildfire_, _$rootScope_, _DB_, _COLLECTIONS_, _Modals_, _Orders_, _OrdersItems_, _Messaging_, _EVENTS_, _PATHS_, _Location_) {
+    beforeEach(inject(function (_$q_, _$routeParams_, $controller, _Buildfire_, _$rootScope_, _DB_, _COLLECTIONS_, _Modals_, _Orders_, _OrdersItems_, _Messaging_, _EVENTS_, _PATHS_, _Location_) {
             scope = _$rootScope_.$new();
             $rootScope = _$rootScope_;
             DB = _DB_;
@@ -18,7 +18,7 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
             Location = _Location_;
             $q = _$q_;
             Modals = _Modals_;
-            Buildfire=_Buildfire_;
+            Buildfire = _Buildfire_;
             //placesInfo = {data: {content: {}}};
             $routeParams = _$routeParams_;
 
@@ -47,7 +47,10 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
                         },
                         carousel: {
                             editor: function () {
-                                var a = {loadItems:function(){}};
+                                var a = {
+                                    loadItems: function () {
+                                    }
+                                };
                                 return a;
                             }
                         }
@@ -140,13 +143,13 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
     });
     describe('Function : ContentItems.removeListItem ', function () {
         it('ContentItems.removeListItem should be called', function () {
-            ContentItems.items=[{}];
+            ContentItems.items = [{}];
             ContentItems.removeListItem(1);
         });
     });
     describe('Function : ContentItems.removeListItem undefined case ', function () {
         it('ContentItems.removeListItem should be called', function () {
-            ContentItems.items=[{}];
+            ContentItems.items = [{}];
             ContentItems.removeListItem();
         });
     });
@@ -164,12 +167,12 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
     xdescribe('ContentItems.editSections', function () {
         var Sections;
         beforeEach(inject(function () {
-             spy = spyOn(window.Sections, 'find').and.callFake(function () {
-             console.log(786);
-             var deferred = $q.defer();
-             deferred.resolve('Remote call result');
-             return deferred.promise;
-             });
+            spy = spyOn(window.Sections, 'find').and.callFake(function () {
+                console.log(786);
+                var deferred = $q.defer();
+                deferred.resolve('Remote call result');
+                return deferred.promise;
+            });
 
             Sections = jasmine.createSpy().and.callFake(function () {
                 console.log(786);
@@ -216,7 +219,7 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
                     },
                     links: [],
                     backgroundImage: '',
-                    rank:20
+                    rank: 20
                 }
             }, {
                 data: {
@@ -235,7 +238,7 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
                     },
                     links: [],
                     backgroundImage: '',
-                    rank:30
+                    rank: 30
                 }
             }, {
                 data: {
@@ -254,20 +257,21 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
                     },
                     links: [],
                     backgroundImage: '',
-                    rank:40
+                    rank: 40
                 }
             }];
-            ContentItems.Items={update:function(id,data){
-                var deferred = $q.defer();
-                deferred.resolve({id:id,data:data});
-                return deferred.promise;
-            }};
+            ContentItems.Items = {
+                update: function (id, data) {
+                    var deferred = $q.defer();
+                    deferred.resolve({id: id, data: data});
+                    return deferred.promise;
+                }
+            };
             ContentItems.itemSortableOptions.stop({}, ui);
             //expect(ContentItems.itemSortableOptions.stop).toHaveBeenCalled();
         });
     });
-    describe('Function called ContentItems.itemSortableOptions.stop when pre available', function ()
-    {
+    describe('Function called ContentItems.itemSortableOptions.stop when pre available', function () {
         it('it should pass if ContentItems.itemSortableOptions.stop calls has been called', function () {
             var ui = {
                 item: {
@@ -293,7 +297,7 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
                     },
                     links: [],
                     backgroundImage: '',
-                    rank:20
+                    rank: 20
                 }
             }, {
                 data: {
@@ -312,20 +316,21 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
                     },
                     links: [],
                     backgroundImage: '',
-                    rank:30
+                    rank: 30
                 }
             }];
-            ContentItems.Items={update:function(id,data){
-                var deferred = $q.defer();
-                deferred.resolve({id:id,data:data});
-                return deferred.promise;
-            }};
+            ContentItems.Items = {
+                update: function (id, data) {
+                    var deferred = $q.defer();
+                    deferred.resolve({id: id, data: data});
+                    return deferred.promise;
+                }
+            };
             ContentItems.itemSortableOptions.stop({}, ui);
             //expect(ContentItems.itemSortableOptions.stop).toHaveBeenCalled();
         });
     });
-    describe('Function called ContentItems.itemSortableOptions.stop when next available', function ()
-    {
+    describe('Function called ContentItems.itemSortableOptions.stop when next available', function () {
         it('it should pass if ContentItems.itemSortableOptions.stop calls has been called', function () {
             var ui = {
                 item: {
@@ -351,7 +356,7 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
                     },
                     links: [],
                     backgroundImage: '',
-                    rank:20
+                    rank: 20
                 }
             }, {
                 data: {
@@ -370,14 +375,16 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
                     },
                     links: [],
                     backgroundImage: '',
-                    rank:30
+                    rank: 30
                 }
             }];
-            ContentItems.Items={update:function(id,data){
-                var deferred = $q.defer();
-                deferred.resolve({id:id,data:data});
-                return deferred.promise;
-            }};
+            ContentItems.Items = {
+                update: function (id, data) {
+                    var deferred = $q.defer();
+                    deferred.resolve({id: id, data: data});
+                    return deferred.promise;
+                }
+            };
             ContentItems.itemSortableOptions.stop({}, ui);
             //expect(ContentItems.itemSortableOptions.stop).toHaveBeenCalled();
         });
@@ -388,9 +395,9 @@ describe('Unit : Controller - ContentItemsCtrl Undefined values case', function 
 // load the controller's module
     beforeEach(module('placesContent'));
 
-    var $q, ContentItems, scope, $routeParams, $rootScope,Buildfire, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo;
+    var $q, ContentItems, scope, $routeParams, $rootScope, Buildfire, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo;
 
-    beforeEach(inject(function (_$q_, _$routeParams_, $controller,_Buildfire_, _$rootScope_, _DB_, _COLLECTIONS_, _Modals_, _Orders_, _OrdersItems_, _Messaging_, _EVENTS_, _PATHS_, _Location_) {
+    beforeEach(inject(function (_$q_, _$routeParams_, $controller, _Buildfire_, _$rootScope_, _DB_, _COLLECTIONS_, _Modals_, _Orders_, _OrdersItems_, _Messaging_, _EVENTS_, _PATHS_, _Location_) {
             scope = _$rootScope_.$new();
             $rootScope = _$rootScope_;
             DB = _DB_;
@@ -403,13 +410,13 @@ describe('Unit : Controller - ContentItemsCtrl Undefined values case', function 
             Location = _Location_;
             $q = _$q_;
             Modals = _Modals_;
-            Buildfire=_Buildfire_;
+            Buildfire = _Buildfire_;
             //placesInfo = {data: {content: {}}};
             $routeParams = _$routeParams_;
 
             ContentItems = $controller('ContentItemsCtrl', {
                 $scope: scope,
-                $routeParams: {sectionId:'section1'},
+                $routeParams: {sectionId: 'section1'},
                 DB: DB,
                 COLLECTIONS: COLLECTIONS,
                 Orders: Orders,
@@ -432,9 +439,17 @@ describe('Unit : Controller - ContentItemsCtrl Undefined values case', function 
                         },
                         carousel: {
                             editor: function () {
-                                var a = {loadItems:function(){}};
+                                var a = {
+                                    loadItems: function () {
+                                    }
+                                };
                                 return a;
                             }
+                        }
+                    },
+                    navigation: {
+                        scrollTop: function () {
+                            console.log('scroll Top called');
                         }
                     }
                 },

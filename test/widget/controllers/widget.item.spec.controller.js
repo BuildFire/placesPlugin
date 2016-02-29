@@ -3,11 +3,10 @@ describe('Unit : Controller - WidgetItemCtrl', function () {
 // load the controller's module
     beforeEach(module('placesWidget'));
 
-    var $q, WidgetItem, scope, COLLECTIONS, DB, $routeParams, Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS, AppConfig, placesInfo, Orders, OrdersItems, item;
+    var $q, WidgetItem, scope, COLLECTIONS, DB,  Buildfire, $rootScope, GeoDistance, Messaging, Location, EVENTS, PATHS, AppConfig, placesInfo, Orders, OrdersItems, item;
 
-    beforeEach(inject(function (_$q_, _$routeParams_, $controller, _$rootScope_, _COLLECTIONS_, _DB_, _Buildfire_, _GeoDistance_, _Messaging_, _Location_, _EVENTS_, _PATHS_, _AppConfig_, _Orders_, _OrdersItems_) {
+    beforeEach(inject(function (_$q_, $controller, _$rootScope_, _COLLECTIONS_, _DB_, _Buildfire_, _GeoDistance_, _Messaging_, _Location_, _EVENTS_, _PATHS_, _AppConfig_, _Orders_, _OrdersItems_) {
             $q = _$q_;
-            $routeParams = _$routeParams_;
             scope = _$rootScope_.$new();
 
             COLLECTIONS = _COLLECTIONS_;
@@ -25,7 +24,6 @@ describe('Unit : Controller - WidgetItemCtrl', function () {
 
             WidgetItem = $controller('WidgetItemCtrl', {
                 $scope: scope,
-                $routeParams: $routeParams,
                 DB: DB,
                 COLLECTIONS: COLLECTIONS,
                 Orders: Orders,

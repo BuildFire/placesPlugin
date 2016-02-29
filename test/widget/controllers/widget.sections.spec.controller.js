@@ -3,7 +3,7 @@ describe('Unit : Controller - WidgetSectionsCtrl', function () {
 // load the controller's module
     beforeEach(module('placesWidget'));
 
-    var $q, WidgetSections, scope, $rootScope, DB, COLLECTIONS, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $routeParams, $timeout, placesInfo, OrdersItems;
+    var $q, WidgetSections, scope, $rootScope, DB, COLLECTIONS, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $timeout, placesInfo, OrdersItems;
     var bf = {
         geo: {
             getCurrentPosition: jasmine.createSpy()
@@ -19,7 +19,7 @@ describe('Unit : Controller - WidgetSectionsCtrl', function () {
         }
     };
 
-    beforeEach(inject(function (_$q_, $controller, _$rootScope_, _DB_, _COLLECTIONS_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _Location_, _Orders_, _DEFAULT_VIEWS_, _GeoDistance_, _$routeParams_, _$timeout_, _OrdersItems_) {
+    beforeEach(inject(function (_$q_, $controller, _$rootScope_, _DB_, _COLLECTIONS_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _Location_, _Orders_, _DEFAULT_VIEWS_, _GeoDistance_, _$timeout_, _OrdersItems_) {
             $rootScope = _$rootScope_;
             scope = _$rootScope_.$new();
             DB = _DB_;
@@ -32,12 +32,10 @@ describe('Unit : Controller - WidgetSectionsCtrl', function () {
             Location = _Location_;
             $q = _$q_;
             AppConfig = _AppConfig_;
-            $routeParams = _$routeParams_;
             DEFAULT_VIEWS = _DEFAULT_VIEWS_;
             GeoDistance = _GeoDistance_;
             WidgetSections = $controller('WidgetSectionsCtrl', {
                 $scope: scope,
-                $routeParams: {sectionId: 'sectio1'},
                 DB: DB,
                 COLLECTIONS: COLLECTIONS,
                 Orders: Orders,
@@ -294,7 +292,7 @@ describe('Unit : Controller - WidgetSectionsCtrl Null Case', function () {
 // load the controller's module
     beforeEach(module('placesWidget'));
 
-    var $q, WidgetSections, scope, $window, DB, COLLECTIONS, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $routeParams, $timeout, placesInfo, OrdersItems;
+    var $q, WidgetSections, scope, $window, DB, COLLECTIONS, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $timeout, placesInfo, OrdersItems;
     var bf = {
         geo: {
             getCurrentPosition: jasmine.createSpy()
@@ -305,7 +303,7 @@ describe('Unit : Controller - WidgetSectionsCtrl Null Case', function () {
         }
     };
 
-    beforeEach(inject(function (_$q_, $controller, _$rootScope_, _DB_, _COLLECTIONS_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _Location_, _Orders_, _DEFAULT_VIEWS_, _GeoDistance_, _$routeParams_, _$timeout_, _OrdersItems_) {
+    beforeEach(inject(function (_$q_, $controller, _$rootScope_, _DB_, _COLLECTIONS_, _AppConfig_, _Messaging_, _EVENTS_, _PATHS_, _Location_, _Orders_, _DEFAULT_VIEWS_, _GeoDistance_, _$timeout_, _OrdersItems_) {
             scope = _$rootScope_.$new();
             DB = _DB_;
             COLLECTIONS = _COLLECTIONS_;
@@ -317,12 +315,10 @@ describe('Unit : Controller - WidgetSectionsCtrl Null Case', function () {
             Location = _Location_;
             $q = _$q_;
             AppConfig = _AppConfig_;
-            $routeParams = _$routeParams_;
             DEFAULT_VIEWS = _DEFAULT_VIEWS_;
             GeoDistance = _GeoDistance_;
             WidgetSections = $controller('WidgetSectionsCtrl', {
                 $scope: scope,
-                $routeParams: {sectionId: 'allitems'},
                 DB: DB,
                 COLLECTIONS: COLLECTIONS,
                 Orders: Orders,
