@@ -10,9 +10,10 @@
                 //Hide the INT header part.
                 Buildfire.appearance.setHeaderVisibility(false);
 
-                //Scroll current view to top when page loaded.
-                buildfire.navigation.scrollTop();
+                var isNewSectionInserted = false;
 
+                //Scroll current view to top when page loaded.
+                Buildfire.navigation.scrollTop();
                 /**
                  * ContentSection._Sections is an instance of Sections db collection
                  * @type {DB}
@@ -134,7 +135,8 @@
                             console.log('Error while updating data---', err);
                         });
                     }
-                    else {
+                    else if(!isNewSectionInserted) {
+                        isNewSectionInserted=true;
                         console.info('****************Section inserted***********************');
                         _item.data.rank = (placeInfoData.data.content.rankOfLastItem || 0) + 10;
                         _item.data.dateCreated = new Date();
@@ -150,6 +152,7 @@
                                 console.error('Error while getting----------', err);
                             });
                         }, function (err) {
+                            isNewSectionInserted=false;
                             resetItem();
                             updating = false;
                             console.log('Error---', err);
