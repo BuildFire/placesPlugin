@@ -152,8 +152,18 @@
                                 document.body.removeChild(link);
                             }
                             else{
-                                window.open('data:attachment/csv;charset=utf-8,' + encodeURI([csv]),'_self');//for safari only
+                                var url = URL.createObjectURL(blob);
+                                link.setAttribute("href", url);
+                                link.setAttribute("download", name);
+                                //link.setAttribute("target", "_blank");
+                                link.style.visibility = 'hidden';
+                                document.body.appendChild(link);
+                                link.click();
+                                document.body.removeChild(link);
                             }
+                            /*else{
+                                window.open('data:attachment/csv;charset=utf-8,' + encodeURI([csv]),'_self');//for safari only
+                            }*/
                         }
                     },
                     import: function (header, name) {
