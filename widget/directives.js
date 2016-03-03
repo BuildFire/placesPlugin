@@ -1,4 +1,4 @@
-(function (angular, buildfire) {
+(function (angular, buildfire,window) {
     angular
         .module('placesWidget')
         .directive("buildFireCarousel", ["$rootScope", '$timeout', function ($rootScope, $timeout) {
@@ -402,7 +402,8 @@
                     console.log('bgimag', value);
                     var img = '';
                     if (value) {
-                        img = $filter("cropImage")(value, $rootScope.deviceWidth, $rootScope.deviceHeight, true);
+                        img = $filter("cropImage")(value, window.innerWidth, window.innerHeight, true);
+                        console.log('******************************************$rootScope.deviceWidth,$rootScope.deviceHeight:',$rootScope.deviceWidth,$rootScope.deviceHeight,window.innerHeight,window.innerWidth,window.outerHeight,window.outerWidth);
                         element.attr("style", 'background:url(' + img + ') !important');
                         element.css({
                             'background-size': 'cover'
@@ -432,4 +433,4 @@
                 }
             };
         }]);
-})(window.angular, window.buildfire);
+})(window.angular, window.buildfire,window);
