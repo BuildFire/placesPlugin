@@ -406,13 +406,13 @@
                         console.log('******************************************$rootScope.deviceWidth,$rootScope.deviceHeight:',$rootScope.deviceWidth,$rootScope.deviceHeight,window.innerHeight,window.innerWidth,window.outerHeight,window.outerWidth);
                         element.attr("style", 'background:url(' + img + ') !important');
                         element.css({
-                            'background-size': 'cover'
+                            'background-size': 'cover !important'
                         });
                     }
                     else {
                         element.attr("style", 'background-color:white');
                         element.css({
-                            'background-size': 'cover'
+                            'background-size': 'cover !important'
                         });
                     }
                 });
