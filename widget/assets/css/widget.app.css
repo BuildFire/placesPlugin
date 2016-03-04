@@ -511,3 +511,7 @@ style for sec list dark overlay
 .info-bar-map-details-2-fix{
 	z-index: 1 !important;
 }
+
+.test{
+	-webkit-transform:translateZ(0) !important;
+}
