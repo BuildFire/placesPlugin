@@ -402,7 +402,7 @@
                     console.log('bgimag', value);
                     var img = '';
                     if (value) {
-                        img = $filter("cropImage")(value, window.innerWidth, window.innerHeight, true);
+                        img = $filter("cropImage")(value, window.innerWidth/2, window.innerHeight/2, true);
                         console.log('******************************************$rootScope.deviceWidth,$rootScope.deviceHeight:',$rootScope.deviceWidth,$rootScope.deviceHeight,window.innerHeight,window.innerWidth,window.outerHeight,window.outerWidth);
                         element.attr("style", 'background:url(' + img + ') !important');
                         element.css({
