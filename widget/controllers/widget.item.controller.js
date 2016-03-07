@@ -166,15 +166,40 @@
                     if (event.tag == 'items' && event.data) {
                         $timeout(function () {
                             $scope.imagesUpdated = false;
-                            WidgetItem.item = event;
-                            if (event.data.address && event.data.address.lng && event.data.address.lat) {
-                                WidgetItem.itemData.currentCoordinates = [event.data.address.lng, event.data.address.lat];
-                                calDistance(WidgetItem.locationData.currentCoordinates, [event], WidgetItem.placeInfo.data.settings.showDistanceIn);
+                            if (WidgetItem.placeInfo && WidgetItem.placeInfo.data && WidgetItem.placeInfo.data.design && WidgetItem.placeInfo.data.design.itemDetailsLayout == 'item-details-3') {
+                                WidgetItem.item.data.itemTitle = event.data.itemTitle;
+                                WidgetItem.item.data.listImage = event.data.listImage;
+                                WidgetItem.item.data.summary = event.data.summary;
+                                WidgetItem.item.data.sections = event.data.sections;
+                                WidgetItem.item.data.bodyContent = event.data.bodyContent;
+                                WidgetItem.item.data.bodyContentHTML = event.data.bodyContentHTML;
+                                WidgetItem.item.data.addressTitle = event.data.addressTitle;
+                                WidgetItem.item.data.address = event.data.address;
+                                WidgetItem.item.data.links = event.data.links;
+                                WidgetItem.item.data.backgroundImage = event.data.backgroundImage;
+                                if (!angular.equals(event.data.images, WidgetItem.item.data.images)) {
+                                    console.log('Images are not equals--------------', WidgetItem.item.data.images, event.data.images);
+                                    WidgetItem.item.data.images = event.data.images;
+                                    initCarousel(event.data.images);
+                                    $scope.imagesUpdated = !!event.data.images;
+                                }
+                                if (event.data.address && event.data.address.lng && event.data.address.lat) {
+                                    WidgetItem.itemData.currentCoordinates = [event.data.address.lng, event.data.address.lat];
+                                    calDistance(WidgetItem.locationData.currentCoordinates, [event], WidgetItem.placeInfo.data.settings.showDistanceIn);
+                                }
                             }
-                            if (event.data.images)
-                                initCarousel(event.data.images);
-                            if (!$scope.$$phase)$scope.$digest();
-                            $scope.imagesUpdated = !!event.data.images;
+                            else {
+                                WidgetItem.item = event;
+                                if (event.data.address && event.data.address.lng && event.data.address.lat) {
+                                    WidgetItem.itemData.currentCoordinates = [event.data.address.lng, event.data.address.lat];
+                                    calDistance(WidgetItem.locationData.currentCoordinates, [event], WidgetItem.placeInfo.data.settings.showDistanceIn);
+                                }
+                                if (event.data.images)
+                                    initCarousel(event.data.images);
+                                if (!$scope.$$phase)$scope.$digest();
+                                $scope.imagesUpdated = !!event.data.images;
+
+                            }
                         }, 0);
                     }
                     else if (event.tag == 'placeInfo' && event.data) {
