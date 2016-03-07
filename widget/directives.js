@@ -1,4 +1,4 @@
-(function (angular, buildfire,window) {
+(function (angular, buildfire, window) {
     angular
         .module('placesWidget')
         .directive("buildFireCarousel", ["$rootScope", '$timeout', function ($rootScope, $timeout) {
@@ -25,7 +25,12 @@
             return {
                 template: "<div></div>",
                 replace: true,
-                scope: {locationData: '=locationData', markerCallback: '=markerCallback', filter: '=filter', filterUnapplied: '=filterUnapplied'},
+                scope: {
+                    locationData: '=locationData',
+                    markerCallback: '=markerCallback',
+                    filter: '=filter',
+                    filterUnapplied: '=filterUnapplied'
+                },
                 link: function (scope, elem, attrs) {
                     var newClustererMap = '';
                     elem.css('min-height', '596px').css('width', '100%');
@@ -164,7 +169,7 @@
                             newClustererMarkers.push(placeLocationMarkers[i]);
                         }
                         markerCluster.clearMarkers();
-                        markerCluster.addMarkers(newClustererMarkers,true);
+                        markerCluster.addMarkers(newClustererMarkers, true);
                         markerCluster.setIgnoreHidden(true);
                         markerCluster.repaint();
                     }, true);
@@ -272,44 +277,43 @@
                 }
             };
         })
-        .directive('imageCarousel', function () {
+        .directive('imageCarousel', function ($timeout) {
             return {
                 restrict: 'A',
+                scope: {},
                 link: function (scope, elem, attrs) {
                     scope.carousel = null;
-                    scope.isCarouselInitiated = false;
+                    scope.timeout = null;
                     function initCarousel() {
+                        if (scope.timeout) {
+                            $timeout.cancel(scope.timeout);
+                        }
+                        if (scope.carousel) {
+                            scope.carousel.trigger("destroy.owl.carousel");
+                            $(elem).find(".owl-stage-outer").remove();
+                        }
                         scope.carousel = null;
-                        setTimeout(function () {
+                        scope.timeout = $timeout(function () {
                             var obj = {
                                 'slideSpeed': 300,
                                 'dots': false,
                                 'autoplay': true,
                                 'margin': 10
                             };
-
-                            var totalImages = parseInt(attrs.imageCarousel, 10);
-                            if (totalImages) {
-                                if (totalImages > 1) {
-                                    obj['loop'] = true;
-                                }
-                                scope.carousel = $(elem).owlCarousel(obj);
-                                scope.isCarouselInitiated = true;
+                            var totalImages = Number(attrs.imageCarousel);
+                            if (totalImages > 1) {
+                                obj['loop'] = true;
                             }
-                            scope.$apply();
-                        }, 0);
+                            scope.carousel = $(elem).owlCarousel(obj);
+                        }, 100);
                     }
 
                     initCarousel();
-
-                    scope.$watch("imagesUpdated", function (newVal, oldVal) {
+                    attrs.$observe("imageCarousel", function (newVal, oldVal) {
                         if (newVal) {
-                            if (scope.isCarouselInitiated) {
-                                scope.carousel.trigger("destroy.owl.carousel");
-                                scope.isCarouselInitiated = false;
+                            if (scope.carousel) {
+                                initCarousel();
                             }
-                            $(elem).find(".owl-stage-outer").remove();
-                            initCarousel();
                         }
                     });
                 }
@@ -403,7 +407,7 @@
                     var img = '';
                     if (value) {
                         img = $filter("cropImage")(value, window.innerWidth, window.innerHeight, true);
-                        console.log('******************************************$rootScope.deviceWidth,$rootScope.deviceHeight:',$rootScope.deviceWidth,$rootScope.deviceHeight,window.innerHeight,window.innerWidth,window.outerHeight,window.outerWidth);
+                        console.log('******************************************$rootScope.deviceWidth,$rootScope.deviceHeight:', $rootScope.deviceWidth, $rootScope.deviceHeight, window.innerHeight, window.innerWidth, window.outerHeight, window.outerWidth);
                         element.attr("style", 'background:url(' + img + ') !important');
                         element.css({
                             'background-size': 'cover !important'
@@ -433,4 +437,4 @@
                 }
             };
         }]);
-})(window.angular, window.buildfire,window);
+})(window.angular, window.buildfire, window);

@@ -165,7 +165,6 @@
                     console.log('OnUpdate method called----------------------************************', event);
                     if (event.tag == 'items' && event.data) {
                         $timeout(function () {
-                            $scope.imagesUpdated = false;
                             if (WidgetItem.placeInfo && WidgetItem.placeInfo.data && WidgetItem.placeInfo.data.design && WidgetItem.placeInfo.data.design.itemDetailsLayout == 'item-details-3') {
                                 WidgetItem.item.data.itemTitle = event.data.itemTitle;
                                 WidgetItem.item.data.listImage = event.data.listImage;
@@ -181,7 +180,6 @@
                                     console.log('Images are not equals--------------', WidgetItem.item.data.images, event.data.images);
                                     WidgetItem.item.data.images = event.data.images;
                                     initCarousel(event.data.images);
-                                    $scope.imagesUpdated = !!event.data.images;
                                 }
                                 if (event.data.address && event.data.address.lng && event.data.address.lat) {
                                     WidgetItem.itemData.currentCoordinates = [event.data.address.lng, event.data.address.lat];
@@ -197,8 +195,6 @@
                                 if (event.data.images)
                                     initCarousel(event.data.images);
                                 if (!$scope.$$phase)$scope.$digest();
-                                $scope.imagesUpdated = !!event.data.images;
-
                             }
                         }, 0);
                     }
