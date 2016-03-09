@@ -78,10 +78,10 @@
 
                             var selectedLocation = null;
 
-                            var currentLocationIconImageUrl = 'assets/images/google_marker_blue_icon.png';
-                            //var currentLocationIconImageUrl = 'assets/images/blue.png';
-                            var placeLocationIconImageUrl = 'assets/images/google_marker_red_icon.png';
-                            var selectedLocationIconImageUrl = 'assets/images/google_marker_green_icon.png';
+                            var currentLocationIconImageUrl = 'assets/.images/google_marker_blue_icon.png';
+                            //var currentLocationIconImageUrl = 'assets/.images/blue.png';
+                            var placeLocationIconImageUrl = 'assets/.images/google_marker_red_icon.png';
+                            var selectedLocationIconImageUrl = 'assets/.images/google_marker_green_icon.png';
 
                             var currentLocationIcon = getCustomMarkerIcon(currentLocationIconImageUrl);
                             var placeLocationIcon = getCustomMarkerIcon(placeLocationIconImageUrl);
@@ -227,7 +227,7 @@
                                 }
                             }
 
-                            var placeLocationIconImageUrl = 'assets/images/google_marker_red_icon.png';
+                            var placeLocationIconImageUrl = 'assets/.images/google_marker_red_icon.png';
 
                             var placeLocationIcon = getCustomMarkerIcon(placeLocationIconImageUrl);
 
@@ -270,7 +270,7 @@
                     attrs.$observe('ngSrc', function (ngSrc) {
 
                         if (!ngSrc) {
-                            element.attr('src', 'assets/images/placeholder.png'); // set default image
+                            element.attr('src', 'assets/.images/placeholder.png'); // set default image
                         }
 
                     });
@@ -426,7 +426,7 @@
             return {
                 restrict: 'A',
                 link: function (scope, element, attrs) {
-                    element.attr("src", "assets/images/" + attrs.loadImage + ".png");
+                    element.attr("src", "assets/.images/" + attrs.loadImage + ".png");
 
                     var elem = $("<img>");
                     elem[0].onload = function () {
