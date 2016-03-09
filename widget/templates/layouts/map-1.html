@@ -4,7 +4,7 @@
             <div class="col-xs-9 pull-left padding-left-zero">
                 <div class="pull-left">
                     <img ng-if="WidgetSections.selectedItem.data.listImage" load-image="4x3" data-final-src="{{WidgetSections.selectedItem.data.listImage | cropImage : 80:60}}" style="height: 60px;width: 80px">
-                    <img ng-if="!WidgetSections.selectedItem.data.listImage" src="assets/images/4x3.png" style="height: 60px;width: 80px">
+                    <img ng-if="!WidgetSections.selectedItem.data.listImage" src="assets/.images/4x3.png" style="height: 60px;width: 80px">
                 </div>
                 <div class="copy stretch pull-left" style="padding-left: 85px;" ng-style="{'top':(!WidgetSections.selectedItem.data.summary? '9px':'')}">
                     <p class="margin-bottom-zero ellipsis margin-top-ten text-primary"><a ng-click="WidgetSections.showItemDetails((WidgetSections.selectedItem.data.sections[0]||'allitems'),WidgetSections.selectedItem.id)" class="ellipsis titleBarTheme">{{WidgetSections.selectedItem.data.itemTitle}}</a></p>
