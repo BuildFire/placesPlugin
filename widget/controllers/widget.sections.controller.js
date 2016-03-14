@@ -480,7 +480,8 @@
                         return;
                     }
                     if (_items && _items.length) {
-                        GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, _items, WidgetSections.placesInfo.data.settings.showDistanceIn).then(function (result) {
+                        var distanceIn = (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings && WidgetSections.placesInfo.data.settings.showDistanceIn) || 'mi';
+                        GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, _items, distanceIn).then(function (result) {
                             console.log('distance result', result);
                             for (var _ind = 0; _ind < WidgetSections.locationData.items.length; _ind++) {
                                 if (_items && _items[_ind]) {

@@ -29,6 +29,11 @@ describe('Unit : Controller - ContentItemsCtrl', function () {
                 COLLECTIONS: COLLECTIONS,
                 Orders: Orders,
                 Buildfire: {
+                    history:{
+                        push:function(){},
+                        onPop:function(){},
+                        pop:function(){}
+                    },
                     imageLib: {
                         showDialog: function () {
                             return (null, {selectedFiles: ['']});
@@ -421,6 +426,11 @@ describe('Unit : Controller - ContentItemsCtrl Undefined values case', function 
                 COLLECTIONS: COLLECTIONS,
                 Orders: Orders,
                 Buildfire: {
+                    history:{
+                        push:function(){},
+                        onPop:function(){},
+                        pop:function(){}
+                    },
                     imageLib: {
                         showDialog: function () {
                             return (null, {selectedFiles: ['']});

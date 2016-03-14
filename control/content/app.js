@@ -321,14 +321,14 @@
 
             $httpProvider.interceptors.push(interceptor);
         }])
-        .run(['Location', 'Messaging', 'EVENTS', 'PATHS','$rootScope', function (Location, Messaging, EVENTS, PATHS,$rootScope) {
+        .run(['Location', 'Messaging', 'EVENTS', 'PATHS', '$rootScope', 'Buildfire', function (Location, Messaging, EVENTS, PATHS, $rootScope, Buildfire) {
             // Handler to receive message from widget
             Messaging.onReceivedMessage = function (event) {
                 console.log('Event rcv-----on Control Side------------------------?????????????????????????????????---------------********************* in Control Panal side----', event);
                 if (event) {
                     switch (event.name) {
                         case EVENTS.ROUTE_CHANGE:
-                            if(event.message.dontPropagate){
+                            if (event.message.dontPropagate) {
                                 $rootScope.dontPropagate = true;
                             }
                             var path = event.message.path,
@@ -347,6 +347,7 @@
 
                                     break;
                                 case PATHS.HOME:
+                                    Buildfire.history.pop();
                                     url = url + "home";
                                     break;
                                 case PATHS.SECTION:
@@ -366,11 +367,26 @@
                                     break;
                             }
                             //if (url)
-                                Location.go(url);
+                            Location.go(url);
                             break;
                     }
                 }
             };
+            Buildfire.history.onPop(function (data, err) {
+                $rootScope.popped = true;
+                console.log('Buildfire.history.onPop called--------------------------------------------', data);
+                if (data && data.options && data.label) {
+                    if (data.label == 'Items') {
+                        if (data.options.sectionId == 'allitems')
+                            Location.go('#/allitems');
+                        else
+                            Location.go('#/items/' + data.options.sectionId);
+                    }
+                }
+                else
+                    Location.goToHome();
+
+            });
         }]);
 })
 (window.angular, window.buildfire);
