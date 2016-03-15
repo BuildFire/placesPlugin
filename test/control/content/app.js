@@ -38,6 +38,11 @@ describe('placesContent: App', function () {
                     callback('Error', null);
                 }
             });
+            this.history={
+                push:function(){},
+                onPop:function(){},
+                pop:function(){}
+            };
         });
     }));
     beforeEach(inject(

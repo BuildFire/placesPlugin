@@ -40,6 +40,11 @@ describe('Unit : Controller - ContentSectionsCtrl', function () {
                 $csv: $csv,
                 Modals: Modals,
                 Buildfire: {
+                    history:{
+                        push:function(){},
+                        onPop:function(){},
+                        pop:function(){}
+                    },
                     imageLib: {
                         showDialog: function () {
                             return (null, {selectedFiles: ['']});

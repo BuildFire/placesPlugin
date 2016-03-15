@@ -39,10 +39,12 @@
 
 
                 if (sectionInfo) {
+                    Buildfire.history.push('Edit Section',{});
                     ContentSection.section = sectionInfo;
                     updateMasterSection(ContentSection.section);
                 }
                 else {
+                    Buildfire.history.push('Add Section',{});
                     ContentSection.section = DEFAULT_DATA.SECTION;
                     updateMasterSection(ContentSection.section);
                 }
@@ -185,6 +187,7 @@
                  * done will close the single item view
                  */
                 ContentSection.done = function () {
+                    Buildfire.history.pop();
                     Location.goToHome();
                 };
 

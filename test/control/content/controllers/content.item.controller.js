@@ -66,7 +66,12 @@ describe('Unit : placesContent content.item.controller.js', function () {
                         //cb([{title:'MNO.png'}],null);
                     }
                 }
-            }
+            };
+            this.history={
+                push:function(){},
+                onPop:function(){},
+                pop:function(){}
+            };
         });
     }));
 

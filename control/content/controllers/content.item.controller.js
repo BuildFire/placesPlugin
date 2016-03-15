@@ -38,10 +38,12 @@
                 ContentItem.currentCoordinates = null;
 
                 if (item) {
+                    Buildfire.history.push('Edit Item',{});
                     ContentItem.item = item;
                     ContentItem.masterItem = angular.copy(ContentItem.item);
                 }
                 else {
+                    Buildfire.history.push('Add Item',{});
                     ContentItem.item = angular.copy(DEFAULT_DATA.ITEM);
                     if ($routeParams.sectionId != 'allitems')
                         ContentItem.item.data.sections.push($routeParams.sectionId);
@@ -212,12 +214,13 @@
                  * done will close the single item view
                  */
                 ContentItem.done = function () {
-                    if ($routeParams.sectionId != 'allitems') {
+                    Buildfire.history.pop();
+                /*    if ($routeParams.sectionId != 'allitems') {
                         Location.go('#/items/' + $routeParams.sectionId);
                     }
                     else {
                         Location.go('#/allitems')
-                    }
+                    }*/
                 };
                 ContentItem.setLocation = function (data) {
                     ContentItem.item.data.address = {

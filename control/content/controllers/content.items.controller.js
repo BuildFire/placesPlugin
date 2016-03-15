@@ -10,6 +10,7 @@
      */
         .controller('ContentItemsCtrl', ['$scope', '$routeParams', 'Buildfire', 'DB', 'COLLECTIONS', 'Modals', 'Orders', 'OrdersItems', 'Messaging', 'EVENTS', 'PATHS', 'Location', 'placesInfo', 'sectionInfo', 'DEFAULT_DATA', '$rootScope',
             function ($scope, $routeParams, Buildfire, DB, COLLECTIONS, Modals, Orders, OrdersItems, Messaging, EVENTS, PATHS, Location, placesInfo, sectionInfo, DEFAULT_DATA, $rootScope) {
+
                 //Show the INT header part.
                 Buildfire.appearance.setHeaderVisibility(true);
 
@@ -40,9 +41,17 @@
                     ContentItems.info = angular.copy(DEFAULT_DATA.PLACE_INFO);
                 }
                 if ($routeParams.sectionId) {
+                    if($rootScope.popped)
+                        $rootScope.popped = false;
+                    else
+                        Buildfire.history.push('Items',{sectionId:$routeParams.sectionId});
                     ContentItems.section = $routeParams.sectionId;
                 }
                 else {
+                    if($rootScope.popped)
+                        $rootScope.popped = false;
+                    else
+                    Buildfire.history.push('Items',{sectionId:'allitems'});
                     ContentItems.section = 'allitems';
                 }
                 ContentItems.isBusy = false;
@@ -295,7 +304,8 @@
                 };
 
                 ContentItems.done = function () {
-                    Location.goToHome();
+                    Buildfire.history.pop();
+                    //Location.goToHome();
                 };
 
 

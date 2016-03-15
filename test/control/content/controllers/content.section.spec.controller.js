@@ -20,6 +20,11 @@ describe('Unit : Controller - ContentSectionCtrl', function () {
             $csv = _$csv_;
             Location = _Location_;
             Buildfire = {
+                history:{
+                    push:function(){},
+                    pop:function(){},
+                    onPop:function(){}
+                },
                 components: {
                     carousel: {
                         editor: function (a) {
@@ -91,6 +96,11 @@ describe('Unit : Controller - ContentSectionCtrl', function () {
                     }
                 },
                 Buildfire: {
+                    history:{
+                        push:function(){},
+                        onPop:function(){},
+                        pop:function(){}
+                    },
                     imageLib: {
                         showDialog: function (options, cb) {
                             cb(null, {selectedFiles: ['']});
@@ -246,6 +256,11 @@ describe('Unit : Controller - ContentSectionCtrl Undefined case', function () {
             $csv = _$csv_;
             Location = _Location_;
             Buildfire = {
+                history:{
+                    push:function(){},
+                    pop:function(){},
+                    onPop:function(){}
+                },
                 components: {
                     carousel: {
                         editor: function (a) {
@@ -286,6 +301,11 @@ describe('Unit : Controller - ContentSectionCtrl Undefined case', function () {
                 placesInfo: null,
                 sectionInfo: null,
                 Buildfire: {
+                    history:{
+                        push:function(){},
+                        onPop:function(){},
+                        pop:function(){}
+                    },
                     imageLib: {
                         showDialog: function () {
                             return (null, {selectedFiles: ['']});
