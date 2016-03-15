@@ -39,8 +39,8 @@
                 data: {
                     content: {
                         images: [],
-                        descriptionHTML: '<p>&nbsp;<br></p>',
-                        description: '<p>&nbsp;<br></p>',
+                        descriptionHTML: '',
+                        description: '',
                         sortBy: 'Manually',
                         rankOfLastItem: '',
                         rankOfLastItemItems: '',
@@ -77,7 +77,7 @@
                     itemTitle: '',
                     images: [],
                     summary: '',
-                    bodyContent: '<p>&nbsp;<br></p>',
+                    bodyContent: '',
                     bodyContentHTML: '',
                     addressTitle: '',
                     sections: [],
