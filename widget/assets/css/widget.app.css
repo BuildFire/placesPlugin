@@ -511,3 +511,9 @@ style for sec list dark overlay
 .info-bar-map-details-2-fix{
 	z-index: 1 !important;
 }
+
+.layout3 .list-layout .list-item {
+	padding: 0;
+	border-bottom: 1px solid #ddd;
+	min-height: 71px;
+}
