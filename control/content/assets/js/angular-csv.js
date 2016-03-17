@@ -211,8 +211,10 @@
             ImportCSVPopup.fileData = "";
             ImportCSVPopup.ok = function () {
                 if (ImportCSVPopup.fileData) {
-                    var json = JSON.parse($csv.csvToJson(ImportCSVPopup.fileData, {header: header}));
-                    $modalInstance.close(json);
+                    //var json = JSON.parse($csv.csvToJson(ImportCSVPopup.fileData, {header: header}));
+                    var json=window.Papa.parse(ImportCSVPopup.fileData,{header:header});
+                    console.log('Json-------------------------------------------->>>>>>>>>>>>',json);
+                    $modalInstance.close(json.data);
                 }
                 else {
                     $modalInstance.close();
