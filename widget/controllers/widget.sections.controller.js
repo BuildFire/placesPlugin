@@ -679,7 +679,7 @@
                             initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
                         else
                             view.loadItems([]);
-                    }, 1000);
+                    }, 10);
                 });
 
 
