@@ -768,6 +768,12 @@
                  * @param value to be search.
                  */
                 ContentSections.searchListSection = function (value) {
+                    if(value){
+                        ContentSections.showSearchResults=true;
+                    }
+                    else{
+                        ContentSections.showSearchResults=false;
+                    }
                     searchOptions.skip = 0;
                     /*reset the skip value*/
                     ContentSections.noMore = false;

@@ -86,7 +86,7 @@
              infinite-scroll-disabled="ContentSections.noMore"
              infinite-scroll-container="'#scroll-infinite'">
             <div>
-                <div class="d-item double-line square-icon clearfix border-bottom-grey">
+                <div ng-if="!ContentSections.showSearchResults" class="d-item double-line square-icon clearfix border-bottom-grey">
 
                     <div>
                         <span class="icon icon-menu pull-left cursor-grab hidden-visibility"
@@ -143,6 +143,11 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div ng-show="(ContentSections.sections && ContentSections.sections.length == 0) && ContentSections.showSearchResults" class="tab-order draggable-list-view wide-list has-btn-link border-grey border-radius-four">
+            <div class="well text-center margin-bottom-zero border-none">
+                <p class="margin-zero">No sections found.</p>
             </div>
         </div>
     </div>
