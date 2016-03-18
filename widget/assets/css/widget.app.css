@@ -27,7 +27,7 @@
 	padding:8px;
 	text-decoration:none;
 }
-.places-plugin .bottom.fixed-bottom .col-xs-4 + .col-xs-4{
+.places-plugin .bottom.fixed-bottom .col-xs-4  .col-xs-4{
 	border-left:1px solid rgba(20, 20, 20, 0.25);
 }
 .places-plugin .bottom.fixed-bottom .col-xs-4.active{
@@ -50,8 +50,8 @@
 	padding-top:10px;
 	color:#5f5f5f;
 }
-.holder .bottom .hidden-content .tabs .tab + .tab,
-.notification-plugin .tabs .tab + .tab{
+.holder .bottom .hidden-content .tabs .tab  .tab,
+.notification-plugin .tabs .tab  .tab{
 	border-left:1px solid #e5e5e5;
 }
 .notification-plugin .tabs .tab.active a{
@@ -293,7 +293,7 @@
 	bottom:0;
 	border-bottom:1px solid #ddd !important;
 }
-.list-items .list-item + .list-item{
+.list-items .list-item  .list-item{
 	padding-top:10px;
 	margin-top:10px;
 }
@@ -371,12 +371,12 @@
 style for sec list dark overlay
 */
 .sec-list-dark-overlay {
-    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&amp;0+0,0.65+100 */
-    background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0.65))); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%); /* IE10+ */
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#0000000,000000100&amp;00,0.65100 */
+    background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%); /* FF3.6 */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0.65))); /* Chrome,Safari4 */
+    background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%); /* Chrome10,Safari5.1 */
+    background: -o-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%); /* Opera 11.10 */
+    background: -ms-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%); /* IE10 */
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#a6000000', GradientType=0); /* IE6-9 */
 
@@ -510,4 +510,82 @@ style for sec list dark overlay
 
 .info-bar-map-details-2-fix{
 	z-index: 1 !important;
+}
+
+.layout3 .list-layout{
+	/*border-top:1px solid #ddd;*/
+	position: relative;
+}
+
+.layout3 .list-layout:before{
+	content:'';
+	border-top:1px solid #ddd !important;
+	opacity:0.25;
+	top:0;
+	left:0;
+	position:absolute;
+	width:100%;
+}
+
+.layout3 .list-layout .list-item-media{
+	background:none;
+}
+.layout3 .list-layout .list-item-media .list-media-holder{
+	width:110px;
+	height:60px;
+	line-height:58px;
+	margin:inherit;
+	margin-right:10px;
+	background:#efefef;
+	border-radius:4px;
+	margin:5px 10px 5px 5px;
+	text-align:center;
+}
+.media-center-plugin.layout3 .list-layout .list-item-media .list-media-holder{
+	background:none;
+}
+html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holder{
+	line-height:60px;
+}
+.layout3 .list-layout .list-item-media .list-media-holder.square-icon{
+	width:60px;
+}
+.layout3 .list-layout .list-item-media .list-media-holder img{
+	max-width:100%;
+	max-height:100%;
+	vertical-align:middle;
+	border-radius:2px;
+}
+.layout3 .list-layout .list-item-media .list-media-holder .main-icon{
+	font-size:44px;
+	position:relative;
+	top:8px;
+}
+.layout3 .list-layout .list-item{
+	padding:0;
+	/*border-bottom:1px solid #ddd;*/
+	min-height:71px;
+	position: relative;
+}
+
+.list-items .list-item:before,
+.layout3 .list-layout .list-item:after{
+ 	content:'';
+ 	border-top:1px solid #ddd !important;
+ 	opacity:0.25;
+ 	top:0;
+ 	left:0;
+ 	width:100%;
+ 	position:absolute;
+ }
+
+.layout3 .list-layout .list-item:after{
+ 	border-top:none !important;
+ 	top:inherit;
+ 	bottom:0;
+ 	border-bottom:1px solid #ddd !important;
+ }
+
+.layout3 .list-layout .list-item-copy{
+	padding:6px 10px 5px;
 }

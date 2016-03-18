@@ -170,7 +170,8 @@
                 }
 
                 function isValidItem(item, index, array) {
-                    return item.secTitle || item.secSummary;
+                    console.log('Data----------------------------',item);
+                    return item['Section Title'];
                 }
 
                 function validateCsv(items) {
@@ -334,21 +335,21 @@
                             itemArray = [],
                             itemSecMap = [];
                         var addItem = function (row, data) {
+                            var images=[];
 
-                            row.images = row.images.replace(/ /g, '');
-                            if (row.images) {
-                                if (row.images.indexOf(',') < 0) {
-                                    row.images = [{
+                            row['Carousel images'] = row['Carousel images'].replace(/ /g, '');
+                            if (row['Carousel images']) {
+                                if (row['Carousel images'].indexOf(',') < 0) {
+                                    images.push({
                                         action: "noAction",
-                                        iconUrl: row.images,
+                                        iconUrl: row['Carousel images'],
                                         title: "image"
-                                    }];
+                                    });
                                 }
                                 else {
-                                    var tempImages = row.images.split(',');
-                                    row.images = [];
+                                    var tempImages = row['Carousel images'].split(',');
                                     angular.forEach(tempImages, function (itr) {
-                                        row.images.push({
+                                        images.push({
                                             action: "noAction",
                                             iconUrl: itr,
                                             title: "image"
@@ -356,31 +357,28 @@
                                     });
                                 }
                             }
-                            else {
-                                row.images = [];
-                            }
 
                             var links = [];
-                            if (row.webURL) {
+                            if (row['Web URL']) {
                                 links.push({
                                     title: "Link",
-                                    url: row.webURL,
+                                    url: row['Web URL'],
                                     action: "linkToWeb",
                                     openIn: "_blank"
                                 });
                             }
 
-                            if (row.sendToEmail) {
+                            if (row['Send to Email']) {
                                 links.push({
                                     title: "Send Email",
                                     subject: "",
                                     body: "",
-                                    email: row.sendToEmail,
+                                    email: row['Send to Email'],
                                     action: "sendEmail"
                                 });
                             }
 
-                            if (row.smsTextNumber) {
+                            if (row['SMS Text Number']) {
                                 links.push({
                                     title: "Send SMS",
                                     subject: "action Item SMS Example",
@@ -390,49 +388,56 @@
                                 });
                             }
 
-                            if (row.facebookURL) {
+                            if (row['Phone Number']) {
+                                links.push({
+                                    title: "Phone Number",
+                                    url: row['Phone Number'],
+                                    action: "Phone Number"
+                                });
+                            }
+                            if (row['Facebook URL']) {
                                 links.push({
                                     title: "Link to Facebook",
-                                    url: row.facebookURL,
+                                    url: row['Facebook URL'],
                                     action: "linkToSocialFacebook"
                                 });
                             }
 
-                            if (row.twitterURL) {
+                            if (row['Twitter URL']) {
                                 links.push({
                                     title: "Link to Twitter",
-                                    url: row.twitterURL,
+                                    url: row['Twitter URL'],
                                     action: "linkToSocialTwitter"
                                 });
                             }
 
-                            if (row.googlePlusURL) {
+                            if (row['Google+ URL']) {
                                 links.push({
                                     title: "Link to Google",
-                                    url: row.googlePlusURL,
+                                    url: row['Google+ URL'],
                                     action: "linkToSocialGoogle"
                                 });
                             }
 
-                            if (row.linkedinURL) {
+                            if (row['Linkedin URL']) {
                                 links.push({
                                     title: "Link to LinkedIn",
-                                    url: row.linkedinURL,
+                                    url: row['Linkedin URL'],
                                     action: "linkToSocialLinkedIn"
                                 });
                             }
 
-                            if (row.instagramURL) {
+                            if (row['Instagram URL']) {
                                 links.push({
                                     title: "Link to Instagram",
-                                    url: row.instagramURL,
+                                    url: row['Instagram URL'],
                                     action: "linkToSocialInstagram"
                                 });
                             }
 
-                            if (row.mapAddress) {
+                            if (row['Map Address']) {
 
-                                Utils.getCoordinatesFromAddress(row.mapAddress).then(function (coordinates) {
+                                Utils.getCoordinatesFromAddress(row['Map Address']).then(function (coordinates) {
                                     if (!coordinates) {
                                         return;
                                     }
@@ -442,18 +447,18 @@
                                             title: "Navigate to address title",
                                             lat: coordinates.data.results[0].geometry.location.lat,
                                             lng: coordinates.data.results[0].geometry.location.lng,
-                                            address: row.mapAddress,
+                                            address: row['Map Address'],
                                             action: "navigateToAddress"
                                         });
 
                                         Items.insert({
-                                            itemTitle: row.itemTitle,
-                                            summary: row.summary,
-                                            listImage: row.listImage,
-                                            images: row.images,
-                                            bodyContent: row.bodyContent,
-                                            addressTitle: row.addressTitle,
-                                            address: {aName: row.address, lat: ContentSections._lat, lng: ContentSections._lng},
+                                            itemTitle: row['Item Title'],
+                                            summary: row['Item Summary'],
+                                            listImage: row['List Image'],
+                                            images: images,
+                                            bodyContent: row['Body Content'],
+                                            addressTitle: row['Address Title'],
+                                            address: {aName: row['Address'], lat: ContentSections._lat, lng: ContentSections._lng},
                                             dateCreated: +new Date(),
                                             rank: rankSec,
                                             sections: [data.id],
@@ -472,12 +477,12 @@
                             }
                             else {
                                 Items.insert({
-                                    itemTitle: row.itemTitle,
-                                    summary: row.summary,
-                                    listImage: row.listImage,
-                                    images: row.images,
-                                    bodyContent: row.bodyContent,
-                                    addressTitle: row.addressTitle,
+                                    itemTitle: row['Item Title'],
+                                    summary: row['Item Summary'],
+                                    listImage: row['List Image'],
+                                    images: images,
+                                    bodyContent: row['Body Content'],
+                                    addressTitle: row['Address Title'],
                                     address: {aName: row.address, lat: ContentSections._lat, lng: ContentSections._lng},
                                     dateCreated: +new Date(),
                                     rank: rankSec,
@@ -499,12 +504,13 @@
                             angular.forEach(rows, function (row) {
                                 rankSec += 10;
                                 rankItem += 10;
-                                if (validateCsv(rows)) {
+                                if (isValidItem(row)) {
+                                    console.log('Data is valid----------------------------------------------');
                                     Sections.insert({
-                                        secTitle: row.secTitle,
-                                        mainImage: row.mainImage,
-                                        secSummary: row.secSummary,
-                                        itemListBGImage: row.itemListBGImage,
+                                        secTitle: row['Section Title'],
+                                        mainImage: row['Section Image'],
+                                        secSummary: row['Section Summary'],
+                                        itemListBGImage: row['Item List Background Image'],
                                         dateCreated: +new Date(),
                                         rank: rankSec
                                     }).then(function (data) {
@@ -532,8 +538,8 @@
                                              }, function (error) {
                                              console.log('Error----------', error);
                                              });*/
-                                            if (row.address != '') {
-                                                Utils.getCoordinatesFromAddress(row.address).then(function (coordinates) {
+                                            if (row['Address'] != '') {
+                                                Utils.getCoordinatesFromAddress(row['Address']).then(function (coordinates) {
                                                     if (!coordinates) {
                                                         ContentSections._lng = ContentSections._lat = 0;
                                                         return;
@@ -564,6 +570,7 @@
                                         $scope.$apply();
                                     });
                                 } else {
+                                    console.log('Data is InValid----------------------------------------------');
                                     //ContentHome.loading = false;
                                     ContentSections.csvDataInvalid = true;
                                     $timeout(function hideCsvDataError() {
@@ -761,6 +768,12 @@
                  * @param value to be search.
                  */
                 ContentSections.searchListSection = function (value) {
+                    if(value){
+                        ContentSections.showSearchResults=true;
+                    }
+                    else{
+                        ContentSections.showSearchResults=false;
+                    }
                     searchOptions.skip = 0;
                     /*reset the skip value*/
                     ContentSections.noMore = false;
