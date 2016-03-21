@@ -407,11 +407,11 @@
                     var img = '';
                     if (value) {
                         img = $filter("cropImage")(value, window.innerWidth, window.innerHeight, true);
-                        console.log('******************************************$rootScope.deviceWidth,$rootScope.deviceHeight:', $rootScope.deviceWidth, $rootScope.deviceHeight, window.innerHeight, window.innerWidth, window.outerHeight, window.outerWidth);
-                        element.attr("style", 'background:url(' + img + ') !important');
-                        element.css({
+                        console.log('***********************New---*******************$rootScope.deviceWidth,$rootScope.deviceHeight: window.innerHeight:', $rootScope.deviceWidth, $rootScope.deviceHeight, window.innerHeight, window.innerWidth, window.outerHeight, window.outerWidth);
+                        element.attr("style", 'background:url(' + img + ') !important;background-size: cover !important');
+                       /* element.css({
                             'background-size': 'cover !important'
-                        });
+                        });*/
                     }
                     else {
                         element.attr("style", 'background-color:white');
