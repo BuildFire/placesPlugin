@@ -243,16 +243,18 @@
                     if (!$scope.$$phase)$scope.$digest();
                 };
                 ContentItem.setCoordinates = function () {
+                    var latlng='';
+                    console.log('ng-enter---------------------called------------------',ContentItem.currentAddress);
                     function successCallback(resp) {
                         if (resp) {
                             ContentItem.item.data.address = {
-                                lng: ContentItem.currentAddress.split(",")[0].trim(),
-                                lat: ContentItem.currentAddress.split(",")[1].trim(),
+                                lng: ContentItem.currentAddress.split(",")[1].trim(),
+                                lat: ContentItem.currentAddress.split(",")[0].trim(),
                                 aName: ContentItem.currentAddress
                             };
-                            ContentItem.currentCoordinates = [ContentItem.currentAddress.split(",")[0].trim(), ContentItem.currentAddress.split(",")[1].trim()];
+                            ContentItem.currentCoordinates = [ContentItem.currentAddress.split(",")[1].trim(), ContentItem.currentAddress.split(",")[0].trim()];
                         } else {
-                            errorCallback();
+                            //errorCallback();
                         }
                     }
 
@@ -262,8 +264,11 @@
                             ContentItem.validCoordinatesFailure = false;
                         }, 5000);
                     }
+                    if(ContentItem.currentAddress){
+                        latlng=ContentItem.currentAddress.split(',')[1]+","+ContentItem.currentAddress.split(',')[0]
+                    }
 
-                    Utils.validLongLats(ContentItem.currentAddress).then(successCallback, errorCallback);
+                    Utils.validLongLats(latlng).then(successCallback, errorCallback);
                 };
                 ContentItem.clearData = function () {
                     if (!ContentItem.currentAddress) {
