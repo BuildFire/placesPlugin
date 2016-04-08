@@ -234,7 +234,7 @@
                  * @returns {boolean}
                  */
                 var updateGetOptionsItems = function () {
-                    var _sortBy = (WidgetSections.placesInfo && WidgetSections.placesInfo.data) ? WidgetSections.placesInfo.data.content.sortByItems : Orders.ordersMap.Default;
+                    var _sortBy = (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.content) ? WidgetSections.placesInfo.data.content.sortByItems : Orders.ordersMap.Default;
                     console.log('items order sortby', _sortBy);
                     var order = OrdersItems.getOrder(_sortBy);
                     console.log('items order', order);

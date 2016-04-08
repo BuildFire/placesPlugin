@@ -2,8 +2,8 @@
     'use strict';
     angular
         .module('placesContent')
-        .controller('ContentSectionsCtrl', ['$scope', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Modals', 'placesInfo', 'DEFAULT_DATA', 'Utils','$rootScope',
-            function ($scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, placesInfo, DEFAULT_DATA, Utils,$rootScope) {
+        .controller('ContentSectionsCtrl', ['$scope', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Modals', 'placesInfo', 'DEFAULT_DATA', 'Utils', '$rootScope',
+            function ($scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, placesInfo, DEFAULT_DATA, Utils, $rootScope) {
 
                 //Buildfire.history.push('Sections',{});
 
@@ -115,15 +115,15 @@
                     skin: 'lightgray',
                     trusted: true,
                     theme: 'modern',
-                    plugin_preview_width : "500",
-                    plugin_preview_height : "500"
+                    plugin_preview_width: "500",
+                    plugin_preview_height: "500"
                 };
                 /**
                  * ContentSections.noMore tells if all data has been loaded
                  */
                 ContentSections.noMore = false;
-               /* // create a new instance of the buildfire carousel editor
-                ContentSections.editor = new Buildfire.components.carousel.editor("#carousel");*/
+                /* // create a new instance of the buildfire carousel editor
+                 ContentSections.editor = new Buildfire.components.carousel.editor("#carousel");*/
 
                 var updateSearchOptions = function () {
                     var order;
@@ -172,8 +172,10 @@
                 }
 
                 function isValidItem(item, index, array) {
-                    console.log('Data----------------------------',item);
-                    return item['Section Title'];
+                    if (item['Section Title'])
+                        return true;
+                    else
+                        return false;
                 }
 
                 function validateCsv(items) {
@@ -227,48 +229,48 @@
 
                             if (items.length == 0) {
 
-                                Object.keys(allSections).forEach(function(key,index) {
+                                Object.keys(allSections).forEach(function (key, index) {
                                     json.push(allSections[key]);
                                 });
                             }
                             else {
 
-                            for (var _ind = 0; _ind < items.length; _ind++) {
-                                items[_ind].data.address = items[_ind].data.address.aName;
-                                if (items[_ind].data.sections.length > 1) {
-                                    for (var _i = 0; _i < items[_ind].data.sections.length; _i++) {
-                                        allSections[items[_ind].data.sections[_i]].done = true;
-                                        items[_ind].data.secTitle = allSections[items[_ind].data.sections[_i]].secTitle;
-                                        items[_ind].data.secSummary = allSections[items[_ind].data.sections[_i]].secSummary;
-                                        items[_ind].data.mainImage = allSections[items[_ind].data.sections[_i]].mainImage;
-                                        items[_ind].data.itemListBGImage = allSections[items[_ind].data.sections[_i]].itemListBGImage;
+                                for (var _ind = 0; _ind < items.length; _ind++) {
+                                    items[_ind].data.address = items[_ind].data.address.aName;
+                                    if (items[_ind].data.sections.length > 1) {
+                                        for (var _i = 0; _i < items[_ind].data.sections.length; _i++) {
+                                            allSections[items[_ind].data.sections[_i]].done = true;
+                                            items[_ind].data.secTitle = allSections[items[_ind].data.sections[_i]].secTitle;
+                                            items[_ind].data.secSummary = allSections[items[_ind].data.sections[_i]].secSummary;
+                                            items[_ind].data.mainImage = allSections[items[_ind].data.sections[_i]].mainImage;
+                                            items[_ind].data.itemListBGImage = allSections[items[_ind].data.sections[_i]].itemListBGImage;
 
+                                            json.push(items[_ind].data);
+                                        }
+
+                                    }
+                                    else {
+                                        if (allSections[items[_ind].data.sections[0]]) {
+                                            allSections[items[_ind].data.sections[0]].done = true;
+                                            items[_ind].data.secTitle = allSections[items[_ind].data.sections[0]].secTitle;
+                                            items[_ind].data.secSummary = allSections[items[_ind].data.sections[0]].secSummary;
+                                            items[_ind].data.mainImage = allSections[items[_ind].data.sections[0]].mainImage;
+                                            items[_ind].data.itemListBGImage = allSections[items[_ind].data.sections[0]].itemListBGImage;
+                                        }
+                                        else
+                                            items[_ind].data.secTitle = 'Default Section';
                                         json.push(items[_ind].data);
                                     }
 
                                 }
-                                else {
-                                    if (allSections[items[_ind].data.sections[0]]) {
-                                        allSections[items[_ind].data.sections[0]].done = true;
-                                        items[_ind].data.secTitle = allSections[items[_ind].data.sections[0]].secTitle;
-                                        items[_ind].data.secSummary = allSections[items[_ind].data.sections[0]].secSummary;
-                                        items[_ind].data.mainImage = allSections[items[_ind].data.sections[0]].mainImage;
-                                        items[_ind].data.itemListBGImage = allSections[items[_ind].data.sections[0]].itemListBGImage;
-                                    }
-                                    else
-                                        items[_ind].data.secTitle = 'Default Section';
-                                    json.push(items[_ind].data);
-                                }
 
-                            }
-
-                                Object.keys(allSections).forEach(function(key,index) {
-                                    if(allSections[key].done != true)
-                                    json.push(allSections[key]);
+                                Object.keys(allSections).forEach(function (key, index) {
+                                    if (allSections[key].done != true)
+                                        json.push(allSections[key]);
                                 });
 
 
-                        }
+                            }
                             console.log('Json in export csv-----------------', json);
                             var csv = $csv.jsonToCsv(angular.toJson(json), {
                                 header: header
@@ -330,368 +332,616 @@
                  */
                 ContentSections.openImportCSVDialog = function () {
                     buildfire.navigation.scrollTop();
-                    $csv.import(headerRow).then(function (rows) {
-                        console.log('Rows in Import CSV---------------------', rows);
-                        //ContentSections.loading = true;
-                        var secArray = [],
-                            itemArray = [],
-                            itemSecMap = [];
-                        var addItem = function (row, data) {
-                            var images=[];
 
-                            row['Carousel images'] = row['Carousel images'].replace(/ /g, '');
-                            if (row['Carousel images']) {
-                                if (row['Carousel images'].indexOf(',') < 0) {
-                                    images.push({
-                                        action: "noAction",
-                                        iconUrl: row['Carousel images'],
-                                        title: "image"
-                                    });
+                    var sectionNameArray = [];
+                    var sectionArray = [];
+                    var sectionItemsCollection = {};
+
+                    var rankSec = ContentSections.info.data.content.rankOfLastItem || 0;
+                    var rankItem = ContentSections.info.data.content.rankOfLastItemItems || 0;
+
+                    $csv.import(headerRow).then(function (rows) {
+                            console.log('Rows in Import CSV---------------------', rows);
+
+                            function addItems(secId, secTitle) {
+                                var secTitle_removedSpace = secTitle.replace(/ /g, '');
+                                var items = sectionItemsCollection[secTitle_removedSpace];
+                                if (items.length == 0) {
+                                    console.log('no items for ', secTitle);
+                                    return;
                                 }
-                                else {
-                                    var tempImages = row['Carousel images'].split(',');
-                                    angular.forEach(tempImages, function (itr) {
+
+                                if (secId === undefined) {
+                                    console.log('section id undefined', secTitle);
+                                }
+
+                                angular.forEach(items, function (item) {
+                                    rankItem = rankItem + 10;
+                                    item.sections = [secId];
+                                    item.rank = rankItem;
+                                });
+                                console.log('adding items', secTitle, items);
+                                Items.insert(items).then(function (items_added) {
+                                    console.log('items_added', items_added);
+                                });
+                            };
+
+                            var addItem = function (row, sec) {
+
+                                if (!row['Item Title']) {
+                                    return;
+                                }
+
+                                var images = [];
+
+
+                                if (row['Carousel images']) {
+                                    row['Carousel images'] = row['Carousel images'].replace(/ /g, '');
+                                    if (row['Carousel images'].indexOf(',') < 0) {
                                         images.push({
                                             action: "noAction",
-                                            iconUrl: itr,
+                                            iconUrl: row['Carousel images'],
                                             title: "image"
                                         });
+                                    }
+                                    else {
+                                        var tempImages = row['Carousel images'].split(',');
+                                        angular.forEach(tempImages, function (itr) {
+                                            images.push({
+                                                action: "noAction",
+                                                iconUrl: itr,
+                                                title: "image"
+                                            });
+                                        });
+                                    }
+                                }
+
+                                var links = [];
+                                if (row['Web URL']) {
+                                    links.push({
+                                        title: "Link",
+                                        url: row['Web URL'],
+                                        action: "linkToWeb",
+                                        openIn: "_blank"
                                     });
                                 }
-                            }
 
-                            var links = [];
-                            if (row['Web URL']) {
-                                links.push({
-                                    title: "Link",
-                                    url: row['Web URL'],
-                                    action: "linkToWeb",
-                                    openIn: "_blank"
-                                });
-                            }
+                                if (row['Send to Email']) {
+                                    links.push({
+                                        title: "Send Email",
+                                        subject: "",
+                                        body: "",
+                                        email: row['Send to Email'],
+                                        action: "sendEmail"
+                                    });
+                                }
 
-                            if (row['Send to Email']) {
-                                links.push({
-                                    title: "Send Email",
-                                    subject: "",
-                                    body: "",
-                                    email: row['Send to Email'],
-                                    action: "sendEmail"
-                                });
-                            }
+                                if (row['SMS Text Number']) {
+                                    links.push({
+                                        title: "Send SMS",
+                                        subject: "action Item SMS Example",
+                                        body: "We are testing action Item send SMS",
+                                        phoneNumber: row.smsTextNumber,
+                                        action: "sendSMS"
+                                    });
+                                }
 
-                            if (row['SMS Text Number']) {
-                                links.push({
-                                    title: "Send SMS",
-                                    subject: "action Item SMS Example",
-                                    body: "We are testing action Item send SMS",
-                                    phoneNumber: row.smsTextNumber,
-                                    action: "sendSMS"
-                                });
-                            }
+                                if (row['Phone Number']) {
+                                    links.push({
+                                        title: "Phone Number",
+                                        url: row['Phone Number'],
+                                        action: "Phone Number"
+                                    });
+                                }
+                                if (row['Facebook URL']) {
+                                    links.push({
+                                        title: "Link to Facebook",
+                                        url: row['Facebook URL'],
+                                        action: "linkToSocialFacebook"
+                                    });
+                                }
 
-                            if (row['Phone Number']) {
-                                links.push({
-                                    title: "Phone Number",
-                                    url: row['Phone Number'],
-                                    action: "Phone Number"
-                                });
-                            }
-                            if (row['Facebook URL']) {
-                                links.push({
-                                    title: "Link to Facebook",
-                                    url: row['Facebook URL'],
-                                    action: "linkToSocialFacebook"
-                                });
-                            }
+                                if (row['Twitter URL']) {
+                                    links.push({
+                                        title: "Link to Twitter",
+                                        url: row['Twitter URL'],
+                                        action: "linkToSocialTwitter"
+                                    });
+                                }
 
-                            if (row['Twitter URL']) {
-                                links.push({
-                                    title: "Link to Twitter",
-                                    url: row['Twitter URL'],
-                                    action: "linkToSocialTwitter"
-                                });
-                            }
+                                if (row['Google+ URL']) {
+                                    links.push({
+                                        title: "Link to Google",
+                                        url: row['Google+ URL'],
+                                        action: "linkToSocialGoogle"
+                                    });
+                                }
 
-                            if (row['Google+ URL']) {
-                                links.push({
-                                    title: "Link to Google",
-                                    url: row['Google+ URL'],
-                                    action: "linkToSocialGoogle"
-                                });
-                            }
+                                if (row['Linkedin URL']) {
+                                    links.push({
+                                        title: "Link to LinkedIn",
+                                        url: row['Linkedin URL'],
+                                        action: "linkToSocialLinkedIn"
+                                    });
+                                }
 
-                            if (row['Linkedin URL']) {
-                                links.push({
-                                    title: "Link to LinkedIn",
-                                    url: row['Linkedin URL'],
-                                    action: "linkToSocialLinkedIn"
-                                });
-                            }
+                                if (row['Instagram URL']) {
+                                    links.push({
+                                        title: "Link to Instagram",
+                                        url: row['Instagram URL'],
+                                        action: "linkToSocialInstagram"
+                                    });
+                                }
 
-                            if (row['Instagram URL']) {
-                                links.push({
-                                    title: "Link to Instagram",
-                                    url: row['Instagram URL'],
-                                    action: "linkToSocialInstagram"
-                                });
-                            }
+                                if (row['Map Address'] && false) {
 
-                            if (row['Map Address']) {
+                                    Utils.getCoordinatesFromAddress(row['Map Address']).then(function (coordinates) {
+                                        if (!coordinates) {
+                                            return;
+                                        }
+                                        console.log('coordinates', coordinates);
+                                        if (coordinates.data && coordinates.data.status == 'OK') {
+                                            links.push({
+                                                title: "Navigate to address title",
+                                                lat: coordinates.data.results[0].geometry.location.lat,
+                                                lng: coordinates.data.results[0].geometry.location.lng,
+                                                address: row['Map Address'],
+                                                action: "navigateToAddress"
+                                            });
 
-                                Utils.getCoordinatesFromAddress(row['Map Address']).then(function (coordinates) {
-                                    if (!coordinates) {
-                                        return;
-                                    }
-                                    console.log('coordinates', coordinates);
-                                    if (coordinates.data.status == 'OK') {
-                                        links.push({
-                                            title: "Navigate to address title",
-                                            lat: coordinates.data.results[0].geometry.location.lat,
-                                            lng: coordinates.data.results[0].geometry.location.lng,
-                                            address: row['Map Address'],
-                                            action: "navigateToAddress"
+
+                                            if (row['Address']) {
+                                                Utils.getCoordinatesFromAddress(row['Address']).then(function (coord) {
+                                                    if (!coord) {
+                                                        return;
+                                                    }
+                                                    console.log('original coordinates', coord);
+                                                    if (coord.data && coord.data.status == 'OK') {
+                                                        sectionItemsCollection[sec].push({
+                                                            itemTitle: row['Item Title'],
+                                                            summary: row['Item Summary'],
+                                                            listImage: row['List Image'],
+                                                            images: images,
+                                                            bodyContent: row['Body Content'],
+                                                            addressTitle: row['Address Title'],
+                                                            address: {
+                                                                aName: row['Address'],
+                                                                lat: coord.data.results[0].geometry.location.lat,
+                                                                lng: coord.data.results[0].geometry.location.lng
+                                                            },
+                                                            dateCreated: +new Date(),
+                                                            rank: rankSec,
+                                                            links: links
+                                                        });
+                                                    }
+                                                    else {
+                                                        sectionItemsCollection[sec].push({
+                                                            itemTitle: row['Item Title'],
+                                                            summary: row['Item Summary'],
+                                                            listImage: row['List Image'],
+                                                            images: images,
+                                                            bodyContent: row['Body Content'],
+                                                            addressTitle: row['Address Title'],
+                                                            address: {
+                                                                aName: row['Address'],
+                                                                lat: 0,
+                                                                lng: 0
+                                                            },
+                                                            dateCreated: +new Date(),
+                                                            rank: rankSec,
+                                                            links: links
+                                                        });
+                                                    }
+                                                }, function () {
+                                                    sectionItemsCollection[sec].push({
+                                                        itemTitle: row['Item Title'],
+                                                        summary: row['Item Summary'],
+                                                        listImage: row['List Image'],
+                                                        images: images,
+                                                        bodyContent: row['Body Content'],
+                                                        addressTitle: row['Address Title'],
+                                                        address: {aName: '', lat: 0, lng: 0},
+                                                        dateCreated: +new Date(),
+                                                        rank: rankSec,
+                                                        links: links
+                                                    });
+                                                });
+                                            }
+                                            else {
+                                                sectionItemsCollection[sec].push({
+                                                    itemTitle: row['Item Title'],
+                                                    summary: row['Item Summary'],
+                                                    listImage: row['List Image'],
+                                                    images: images,
+                                                    bodyContent: row['Body Content'],
+                                                    addressTitle: row['Address Title'],
+                                                    address: {aName: '', lat: 0, lng: 0},
+                                                    dateCreated: +new Date(),
+                                                    rank: rankSec,
+                                                    links: links
+                                                });
+                                            }
+                                        }
+                                    }, function () {
+                                        if (row['Address']) {
+                                            Utils.getCoordinatesFromAddress(row['Address']).then(function (coord) {
+                                                if (!coord) {
+                                                    return;
+                                                }
+                                                console.log('original coordinates', coord);
+                                                if (coord.data && coord.data.status == 'OK') {
+                                                    sectionItemsCollection[sec].push({
+                                                        itemTitle: row['Item Title'],
+                                                        summary: row['Item Summary'],
+                                                        listImage: row['List Image'],
+                                                        images: images,
+                                                        bodyContent: row['Body Content'],
+                                                        addressTitle: row['Address Title'],
+                                                        address: {
+                                                            aName: row['Address'],
+                                                            lat: coord.data.results[0].geometry.location.lat,
+                                                            lng: coord.data.results[0].geometry.location.lng
+                                                        },
+                                                        dateCreated: +new Date(),
+                                                        rank: rankSec,
+                                                        links: links
+                                                    });
+                                                }
+                                                else {
+                                                    sectionItemsCollection[sec].push({
+                                                        itemTitle: row['Item Title'],
+                                                        summary: row['Item Summary'],
+                                                        listImage: row['List Image'],
+                                                        images: images,
+                                                        bodyContent: row['Body Content'],
+                                                        addressTitle: row['Address Title'],
+                                                        address: {
+                                                            aName: row['Address'],
+                                                            lat: 0,
+                                                            lng: 0
+                                                        },
+                                                        dateCreated: +new Date(),
+                                                        rank: rankSec,
+                                                        links: links
+                                                    });
+                                                }
+                                            }, function () {
+                                                sectionItemsCollection[sec].push({
+                                                    itemTitle: row['Item Title'],
+                                                    summary: row['Item Summary'],
+                                                    listImage: row['List Image'],
+                                                    images: images,
+                                                    bodyContent: row['Body Content'],
+                                                    addressTitle: row['Address Title'],
+                                                    address: {aName: '', lat: 0, lng: 0},
+                                                    dateCreated: +new Date(),
+                                                    rank: rankSec,
+                                                    links: links
+                                                });
+                                            });
+                                        }
+                                        else {
+                                            sectionItemsCollection[sec].push({
+                                                itemTitle: row['Item Title'],
+                                                summary: row['Item Summary'],
+                                                listImage: row['List Image'],
+                                                images: images,
+                                                bodyContent: row['Body Content'],
+                                                addressTitle: row['Address Title'],
+                                                address: {aName: '', lat: 0, lng: 0},
+                                                dateCreated: +new Date(),
+                                                rank: rankSec,
+                                                links: links
+                                            });
+                                        }
+                                    });
+
+
+                                }
+                                else {
+                                    if (row['Address'] ) {
+                                        Utils.getCoordinatesFromAddress(row['Address']).then(function (coord) {
+                                            if (!coord) {
+                                                return;
+                                            }
+                                            console.log('original coordinates', coord);
+                                            if (coord.data && coord.data.status == 'OK') {
+                                                sectionItemsCollection[sec].push({
+                                                    itemTitle: row['Item Title'],
+                                                    summary: row['Item Summary'],
+                                                    listImage: row['List Image'],
+                                                    images: images,
+                                                    bodyContent: row['Body Content'],
+                                                    addressTitle: row['Address Title'],
+                                                    address: {
+                                                        aName: row['Address'],
+                                                        lat: coord.data.results[0].geometry.location.lat,
+                                                        lng: coord.data.results[0].geometry.location.lng
+                                                    },
+                                                    dateCreated: +new Date(),
+                                                    rank: rankSec,
+                                                    links: links
+                                                });
+                                            }
+                                            else {
+                                                sectionItemsCollection[sec].push({
+                                                    itemTitle: row['Item Title'],
+                                                    summary: row['Item Summary'],
+                                                    listImage: row['List Image'],
+                                                    images: images,
+                                                    bodyContent: row['Body Content'],
+                                                    addressTitle: row['Address Title'],
+                                                    address: {
+                                                        aName: row['Address'],
+                                                        lat: 0,
+                                                        lng: 0
+                                                    },
+                                                    dateCreated: +new Date(),
+                                                    rank: rankSec,
+                                                    links: links
+                                                });
+                                            }
+                                        }, function () {
+                                            console.log('problem in gmaps')
+                                            sectionItemsCollection[sec].push({
+                                                itemTitle: row['Item Title'],
+                                                summary: row['Item Summary'],
+                                                listImage: row['List Image'],
+                                                images: images,
+                                                bodyContent: row['Body Content'],
+                                                addressTitle: row['Address Title'],
+                                                address: {aName: '', lat: 0, lng: 0},
+                                                dateCreated: +new Date(),
+                                                rank: rankSec,
+                                                links: links
+                                            });
                                         });
-
-                                        Items.insert({
+                                    }
+                                    else {
+                                        sectionItemsCollection[sec].push({
                                             itemTitle: row['Item Title'],
                                             summary: row['Item Summary'],
                                             listImage: row['List Image'],
                                             images: images,
                                             bodyContent: row['Body Content'],
                                             addressTitle: row['Address Title'],
-                                            address: {aName: row['Address'], lat: ContentSections._lat, lng: ContentSections._lng},
+                                            address: {aName: row['Address'], lat: 0, lng: 0},
                                             dateCreated: +new Date(),
                                             rank: rankSec,
-                                            sections: [data.id],
                                             links: links
-                                        }).then(function (data) {
-                                            console.log('Item inserted using Import CSV-----', data);
-                                        }, function (error) {
-                                            console.log('Error----------', error);
                                         });
                                     }
-                                }, function () {
+                                }
+
+                            };
+
+                            if (rows && rows.length) {
+                                ContentSections.csvProcessing = true;
+                                angular.forEach(rows, function (row) {
+                                    if (isValidItem(row)) {
+                                        var secTitle = row['Section Title'];
+                                        var secTitle_spaceRemoved = secTitle.replace(/ /g, '');
+                                        if (sectionNameArray.indexOf(secTitle) == -1) {
+                                            sectionNameArray.push(secTitle);
+                                            sectionArray.push({
+                                                secTitle: row['Section Title'],
+                                                mainImage: row['Section Image'],
+                                                secSummary: row['Section Summary'],
+                                                itemListBGImage: row['Item List Background Image']
+                                            });
+
+                                            sectionItemsCollection[secTitle_spaceRemoved] = [];
+                                            addItem(row, secTitle_spaceRemoved);
+                                        }
+                                        else {
+                                            addItem(row, secTitle_spaceRemoved);
+                                        }
+                                    }
+                                });
+                                var index = -1;
+                                angular.forEach(sectionArray, function (sec) {
+
+                                    $timeout(function () {
+
+                                        rankSec = rankSec + 10;
+                                        Sections.insert({
+                                            secTitle: sec.secTitle,
+                                            mainImage: sec.mainImage,
+                                            secSummary: sec.secSummary,
+                                            itemListBGImage: sec.itemListBGImage,
+                                            dateCreated: +new Date(),
+                                            rank: rankSec
+                                        }).then(function (newlyCreated) {
+                                            if (++index == (sectionArray.length - 1)) {
+                                                $timeout(function () {
+                                                    ContentSections.csvProcessing = null;
+                                                    ContentSections.info.data.content.rankOfLastItem = rankSec;
+                                                    ContentSections.info.data.content.rankOfLastItemItems = rankItem;
+                                                    $timeout(function () {
+                                                        ContentSections.reloadSections();
+                                                    }, 2000);
+                                                }, 2000);
+                                            }
+                                            console.log('newlyCreated>>>', newlyCreated);
+                                            if (newlyCreated.id === undefined) {
+                                                console.error('no id for', sec.secTitle);
+                                            }
+                                            else
+                                                addItems(newlyCreated.id, sec.secTitle);
+
+
+                                        }, function () {
+
+                                        });
+                                    }, 100);
+
+
+                                    /* Sections.find({
+                                     filter: {
+                                     "$json.secTitle": {
+                                     "$eq": sec.secTitle
+                                     }
+                                     },
+                                     skip: 0,
+                                     limit: 1
+                                     }).then(function (found) {
+                                     console.log('found>>>', found);
+                                     if (found.length) {
+                                     addItems(found[0].id, sec.secTitle);
+                                     }
+                                     else {
+                                     console.log('add ', sec);
+                                     rankSec = rankSec + 10;
+                                     Sections.insert({
+                                     secTitle: sec.secTitle,
+                                     mainImage: sec.mainImage,
+                                     secSummary: sec.secSummary,
+                                     itemListBGImage: sec.itemListBGImage,
+                                     dateCreated: +new Date(),
+                                     rank: rankSec
+                                     }).then(function (newlyCreated) {
+                                     console.log('newlyCreated>>>', newlyCreated);
+                                     if (newlyCreated.id === undefined) {
+                                     debugger;
+                                     }
+                                     else
+                                     addItems(newlyCreated.id, sec.secTitle);
+                                     }, function () {
+
+                                     });
+                                     }
+                                     }, function () {
+
+                                     });*/
 
                                 });
-
-
                             }
                             else {
-                                Items.insert({
-                                    itemTitle: row['Item Title'],
-                                    summary: row['Item Summary'],
-                                    listImage: row['List Image'],
-                                    images: images,
-                                    bodyContent: row['Body Content'],
-                                    addressTitle: row['Address Title'],
-                                    address: {aName: row.address, lat: ContentSections._lat, lng: ContentSections._lng},
-                                    dateCreated: +new Date(),
-                                    rank: rankSec,
-                                    sections: [data.id],
-                                    links: links
-                                }).then(function (data) {
-                                    console.log('Item inserted using Import CSV-----', data);
-                                }, function (error) {
-                                    console.log('Error----------', error);
-                                });
+                                ContentSections.csvDataInvalid = true;
+                                $timeout(function hideCsvDataError() {
+                                    ContentSections.csvDataInvalid = null;
+                                }, 2000);
                             }
 
-
-                        };
-
-                        if (rows && rows.length) {
-                            var rankSec = ContentSections.info.data.content.rankOfLastItem || 0;
-                            var rankItem = ContentSections.info.data.content.rankOfLastItem || 0;
-                            angular.forEach(rows, function (row) {
-                                rankSec += 10;
-                                rankItem += 10;
-                                if (isValidItem(row)) {
-                                    console.log('Data is valid----------------------------------------------');
-                                    Sections.insert({
-                                        secTitle: row['Section Title'],
-                                        mainImage: row['Section Image'],
-                                        secSummary: row['Section Summary'],
-                                        itemListBGImage: row['Item List Background Image'],
-                                        dateCreated: +new Date(),
-                                        rank: rankSec
-                                    }).then(function (data) {
-                                        console.log('Sections inserted=--------------------', data);
-                                        //ContentSections.loading = false;
-                                        /* ContentSections.isBusy = false;
-                                         ContentSections.sections = [];
-                                         ContentSections.info.data.content.rankOfLastItem = rankSec;
-                                         ContentSections.getMore();*/
-                                        if (data && data.id) {
-                                            //alert(data.id);
-                                            /* Items.insert({
-                                             itemTitle: row.itemTitle,
-                                             summary: row.summary,
-                                             listImage: row.listImage,
-                                             images: row.images,
-                                             bodyContent: row.bodyContent,
-                                             addressTitle: row.addressTitle,
-                                             address: row.address,
-                                             dateCreated: +new Date(),
-                                             rank: rankSec,
-                                             sections: [data.id]
-                                             }).then(function (data) {
-                                             console.log('Item inserted using Import CSV-----', data);
-                                             }, function (error) {
-                                             console.log('Error----------', error);
-                                             });*/
-                                            if (row['Address'] != '') {
-                                                Utils.getCoordinatesFromAddress(row['Address']).then(function (coordinates) {
-                                                    if (!coordinates) {
-                                                        ContentSections._lng = ContentSections._lat = 0;
-                                                        return;
-                                                    }
-                                                    console.log('coordinates', coordinates);
-                                                    if (coordinates.data.status == 'OK') {
-                                                        ContentSections._lng = coordinates.data.results[0].geometry.location.lng;
-                                                        ContentSections._lat = coordinates.data.results[0].geometry.location.lat;
-                                                    }
-                                                    else {
-                                                        ContentSections._lng = ContentSections._lat = 0;
-                                                    }
-                                                    addItem(row, data);
-                                                }, function () {
-                                                    ContentSections._lng = ContentSections._lat = 0;
-                                                    addItem(row, data);
-                                                });
-                                            }
-                                            else {
-                                                ContentSections._lng = ContentSections._lat = 0;
-                                                addItem(row, data);
-                                            }
-                                            //addItem(row, data);
-                                        }
-                                    }, function errorHandler(error) {
-                                        console.error(error);
-                                        //ContentHome.loading = false;
-                                        $scope.$apply();
-                                    });
-                                } else {
-                                    console.log('Data is InValid----------------------------------------------');
-                                    //ContentHome.loading = false;
-                                    ContentSections.csvDataInvalid = true;
-                                    $timeout(function hideCsvDataError() {
-                                        ContentSections.csvDataInvalid = false;
-                                    }, 2000);
-                                }
-                            });
-                            /*for (var index = 0; index < rows.length; index++) {
-                             rankSec += 10;
-                             itemSecMap.push({sec: rows[index].secTitle, item: rows[index].itemTitle});
-                             secArray.push({
-                             secTitle: rows[index].secTitle,
-                             mainImage: rows[index].mainImage,
-                             secSummary: rows[index].secSummary,
-                             itemListBGImage: rows[index].itemListBGImage,
-                             dateCreated: +new Date(),
-                             rank: rankSec
-                             });
-                             itemArray.push({
-                             itemTitle: rows[index].itemTitle,
-                             summary: rows[index].summary,
-                             listImage: rows[index].listImage,
-                             images: rows[index].images,
-                             bodyContent: rows[index].bodyContent,
-                             addressTitle: rows[index].addressTitle,
-                             address: rows[index].address,
-                             webURL: rows[index].webURL,
-                             sendToEmail: rows[index].sendToEmail,
-                             smsTextNumber: rows[index].smsTextNumber,
-                             phoneNumber: rows[index].phoneNumber,
-                             facebookURL: rows[index].facebookURL,
-                             twitterURL: rows[index].twitterURL,
-                             instagramURL: rows[index].instagramURL,
-                             googlePlusURL: rows[index].googlePlusURL,
-                             linkedinURL: rows[index].linkedinURL,
-                             mapAddress: rows[index].mapAddress,
-                             dateCreated: +new Date(),
-                             rank: rankSec,
-                             sections:[]
-                             });
-                             }*/
-                            /* if (validateCsv(rows)) {
-                             Sections.insert(secArray).then(function (data) {
-                             console.log('Sections inserted=--------------------', data);
-                             //ContentSections.loading = false;
-                             ContentSections.isBusy = false;
-                             ContentSections.sections = [];
-                             ContentSections.info.data.content.rankOfLastItem = rankSec;
-                             ContentSections.getMore();
-                             if (data) {
-                             Items.insert(itemArray).then(function (data) {
-                             console.log('Item inserted using Import CSV-----', data);
-                             }, function (error) {
-                             console.log('Error----------', error);
-                             });
-                             }
-                             }, function errorHandler(error) {
-                             console.error(error);
-                             //ContentHome.loading = false;
-                             $scope.$apply();
-                             });
-                             } else {
-                             //ContentHome.loading = false;
-                             ContentSections.csvDataInvalid = true;
-                             $timeout(function hideCsvDataError() {
-                             ContentSections.csvDataInvalid = false;
-                             }, 2000);
-                             }*/
+                        }, function
+                            () {
                         }
-                        else {
+                    )
+                    ;
 
-                            //ContentHome.loading = false;
-                            $scope.$apply();
-                        }
 
-                        $timeout(function () {
-                            ContentSections.sections = [];
-                            ContentSections.isBusy = ContentSections.noMore = false;
-                            ContentSections.getMore();
-                        }, 4000);
-                    }, function (error) {
-                        //ContentHome.loading = false;
-                        $scope.$apply();
-                        //do something on cancel
-                    });
+                    /*  $csv.import(headerRow).then(function (rows) {
+                     console.log('Rows in Import CSV---------------------', rows);
+                     //ContentSections.loading = true;
+                     var secArray = [],
+                     itemArray = [],
+                     itemSecMap = [];
+                     var existingSectionNamesCollection = {};
+
+
+                     var checkIfSectionExistsAndReturnSectionId = function (sectionTitle) {
+                     var sectionTitle_removedSpace = sectionTitle.replace(/ /g, '');
+                     if (existingSectionNamesCollection[sectionTitle_removedSpace]) {
+                     return existingSectionNamesCollection[sectionTitle_removedSpace];
+                     }
+                     else {
+
+                     }
+                     };
+
+                     if (rows && rows.length) {
+                     var rankSec = ContentSections.info.data.content.rankOfLastItem || 0;
+                     var rankItem = ContentSections.info.data.content.rankOfLastItem || 0;
+                     angular.forEach(rows, function (row) {
+                     rankSec += 10;
+                     rankItem += 10;
+                     if (isValidItem(row)) {
+                     console.log('Data is valid----------------------------------------------');
+                     Sections.insert({
+                     secTitle: row['Section Title'],
+                     mainImage: row['Section Image'],
+                     secSummary: row['Section Summary'],
+                     itemListBGImage: row['Item List Background Image'],
+                     dateCreated: +new Date(),
+                     rank: rankSec
+                     }).then(function (data) {
+                     console.log('Sections inserted=--------------------', data);
+                     if (data && data.id) {
+                     if (row['Address'] != '') {
+                     Utils.getCoordinatesFromAddress(row['Address']).then(function (coordinates) {
+                     if (!coordinates) {
+                     ContentSections._lng = ContentSections._lat = 0;
+                     return;
+                     }
+                     console.log('coordinates', coordinates);
+                     if (coordinates.data.status == 'OK') {
+                     ContentSections._lng = coordinates.data.results[0].geometry.location.lng;
+                     ContentSections._lat = coordinates.data.results[0].geometry.location.lat;
+                     }
+                     else {
+                     ContentSections._lng = ContentSections._lat = 0;
+                     }
+                     addItem(row, data);
+                     }, function () {
+                     ContentSections._lng = ContentSections._lat = 0;
+                     addItem(row, data);
+                     });
+                     }
+                     else {
+                     ContentSections._lng = ContentSections._lat = 0;
+                     addItem(row, data);
+                     }
+                     //addItem(row, data);
+                     }
+                     }, function errorHandler(error) {
+                     console.error(error);
+                     //ContentHome.loading = false;
+                     $scope.$apply();
+                     });
+                     }
+                     else {
+                     console.log('Data is InValid----------------------------------------------');
+                     ContentSections.csvDataInvalid = true;
+                     $timeout(function hideCsvDataError() {
+                     ContentSections.csvDataInvalid = false;
+                     }, 2000);
+                     }
+                     });
+                     }
+                     else {
+                     $scope.$apply();
+                     }
+
+                     $timeout(function () {
+                     ContentSections.sections = [];
+                     ContentSections.isBusy = ContentSections.noMore = false;
+                     ContentSections.getMore();
+                     }, 4000);
+                     }, function (error) {
+                     //ContentHome.loading = false;
+                     $scope.$apply();
+                     //do something on cancel
+                     });*/
                 };
+
+
+                ContentSections.reloadSections = function () {
+                    ContentSections.sections = [];
+                    ContentSections.isBusy = ContentSections.noMore = false;
+                    ContentSections.getMore();
+                };
+
                 /**
                  * ContentSections.exportCSV() used to export people list data to CSV
                  */
                 ContentSections.exportCSV = function () {
                     exporter();
-                    /* var search = angular.copy(searchOptions);
-                     search.skip = 0;
-                     search.limit = _maxLimit + 1;
-                     getRecords(search,
-                     []
-                     , function (data) {
-                     if (data && data.length) {
-                     var persons = [];
-                     angular.forEach(angular.copy(data), function (value) {
-                     delete value.data.dateCreated;
-                     persons.push(value.data);
-                     });
-                     var csv = $csv.jsonToCsv(angular.toJson(persons), {
-                     header: header
-                     });
-                     $csv.download(csv, "Export.csv");
-                     }
-                     else {
-                     ContentSections.getTemplate();
-                     }
-                     records = [];
-                     });*/
                 };
                 /**
                  * ContentSections.removeListSection() used to delete an item from section list
                  * @param _index tells the index of item to be deleted.
                  */
-                ContentSections.removeListSection = function (_index,event) {
+                ContentSections.removeListSection = function (_index, event) {
 
                     if ("undefined" == typeof _index) {
                         return;
@@ -701,7 +951,7 @@
                     if ("undefined" !== typeof item) {
                         //buildfire.navigation.scrollTop();
 
-                        Modals.removePopupModal({title: '',event:event}).then(function (result) {
+                        Modals.removePopupModal({title: '', event: event}).then(function (result) {
                             if (result) {
                                 Sections.delete(item.id).then(function (data) {
                                     ContentSections.sections.splice(_index, 1);
@@ -770,11 +1020,11 @@
                  * @param value to be search.
                  */
                 ContentSections.searchListSection = function (value) {
-                    if(value){
-                        ContentSections.showSearchResults=true;
+                    if (value) {
+                        ContentSections.showSearchResults = true;
                     }
-                    else{
-                        ContentSections.showSearchResults=false;
+                    else {
+                        ContentSections.showSearchResults = false;
                     }
                     searchOptions.skip = 0;
                     /*reset the skip value*/
@@ -786,6 +1036,7 @@
                         value = '/*';
                     }
                     searchOptions.filter = {"$json.secTitle": {"$regex": value, "$options": "i"}};
+                    console.log('searching>>', angular.copy(searchOptions));
                     ContentSections.getMore();
                 };
                 /**
@@ -816,18 +1067,20 @@
                     });
                 };
 
-                if($rootScope.dontPropagate == true)
+                if ($rootScope.dontPropagate == true)
                     $rootScope.dontPropagate = false;
                 else
-                Messaging.sendMessageToWidget({
-                    name: EVENTS.ROUTE_CHANGE,
-                    message: {
-                        path: PATHS.HOME
-                    }
-                });
+                    Messaging.sendMessageToWidget({
+                        name: EVENTS.ROUTE_CHANGE,
+                        message: {
+                            path: PATHS.HOME
+                        }
+                    });
                 $scope.$watch(function () {
                     return ContentSections.info;
                 }, saveDataWithDelay, true);
 
-            }]);
+            }
+        ])
+    ;
 })(window.angular, window.buildfire);
