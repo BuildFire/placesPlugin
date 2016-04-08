@@ -14,7 +14,7 @@
                        ng-click="SelectImagePopup.selectImage()">
                         <span ng-if="!SelectImagePopup.PlaceInfo.data.content.allItemImage" class="add-icon hidden">+</span>
                         <img ng-if="SelectImagePopup.PlaceInfo.data.content.allItemImage"
-                             ng-src="{{SelectImagePopup.PlaceInfo.data.content.allItemImage | resizeImage : 82:110}}">
+                             load-image="16x9" data-final-src="{{SelectImagePopup.PlaceInfo.data.content.allItemImage | resizeImage : 82:110}}">
                     </a>
                 <span ng-if="SelectImagePopup.PlaceInfo.data.content.allItemImage" class="icon btn-delete-icon btn-danger transition-third"
                       ng-click="SelectImagePopup.removeImage()"></span>

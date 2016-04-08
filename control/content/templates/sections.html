@@ -106,9 +106,9 @@
                               ng-class="{ 'disabled': ContentSections.itemSortableOptions.disabled }"></span>
 
                         <div class="media-holder pull-left">
-                            <img ng-src="{{ContentSections.info.data.content.allItemImage | resizeImage : 50:50}}"
+                            <img load-image="1x1" data-final-src="{{ContentSections.info.data.content.allItemImage | resizeImage : 50:50}}"
                                  ng-if="ContentSections.info.data.content.allItemImage">
-                            <img src="assets/images/1x1.png" ng-if="!ContentSections.info.data.content.allItemImage">
+                            <img src="../../../../styles/media/holder-1x1.png" ng-if="!ContentSections.info.data.content.allItemImage">
                         </div>
                         <div class="copy pull-right">
                             <div class="col-md-7 padding-zero pull-left">
@@ -135,8 +135,8 @@
                           ng-class="{ 'disabled': ContentSections.itemSortableOptions.disabled }"></span>
 
                     <div class="media-holder pull-left">
-                        <img ng-src="{{item.data.mainImage | resizeImage : 50:50}}" ng-if="item.data.mainImage">
-                        <img src="assets/images/1x1.png" ng-if="!item.data.mainImage">
+                        <img load-image="1x1" data-final-src="{{item.data.mainImage | resizeImage : 50:50}}" ng-if="item.data.mainImage">
+                        <img src="../../../../styles/media/holder-1x1.png" ng-if="!item.data.mainImage">
                     </div>
                     <div class="copy pull-right">
                         <div class="col-md-7 padding-zero pull-left">
