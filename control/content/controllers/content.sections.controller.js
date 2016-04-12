@@ -547,7 +547,7 @@
                                                         return;
                                                     }
                                                     console.log('coordinates', coordinates);
-                                                    if (coordinates.data.status == 'OK') {
+                                                    if (coordinates.data && coordinates.data.status == 'OK') {
                                                         ContentSections._lng = coordinates.data.results[0].geometry.location.lng;
                                                         ContentSections._lat = coordinates.data.results[0].geometry.location.lat;
                                                     }
