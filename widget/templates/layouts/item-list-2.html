@@ -1,4 +1,4 @@
-    <div class="item-list2" infinite-scroll-distance="1"
+        <div class="item-list2" infinite-scroll-distance="1"
          data-infinite-container=".infinite-scroll-parent"
          infinite-scroll="WidgetSections.loadMoreItems()"
          infinit-scroll-disabled="WidgetSections.noMore">
@@ -9,13 +9,13 @@
                 </div>
                 <div class="plugin-copy border-bottom-grey clearfix">
                     <div class="col-xs-8 text-left pull-left padding-five">
-                        <p class="margin-bottom-zero ellipsis"><span class="titleBarTheme">{{item.data.itemTitle}}</span></p>
+                        <p class="margin-bottom-zero ellipsis"><span class="headerTextTheme">{{item.data.itemTitle}}</span></p>
 
-                        <p class="margin-bottom-zero ellipsis"><span class="primaryTheme">{{item.data.summary}}</span></p>
+                        <p class="margin-bottom-zero ellipsis"><span class="bodyTextTheme">{{item.data.summary}}</span></p>
                     </div>
                     <div class="col-xs-4 text-right pull-right padding-left-zero padding-top-five">
-                        <span class="primaryTheme icon icon-map-marker icon-sm"></span>
-                        <span class="miles primaryTheme">{{item.data.distanceText}}</span>
+                        <span class="titleBarTextAndIconsTheme icon icon-map-marker icon-sm"></span>
+                        <span class="miles titleBarTextAndIconsTheme">{{item.data.distanceText}}</span>
                     </div>
                 </div>
             </a>

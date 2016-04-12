@@ -37,8 +37,21 @@
        <span style="font-size: smaller">NOTE: Safari users need to rename the file to .csv to open the file.</span>
     </div>
 </div>
-<hr class="none">
+<hr ng-show="ContentSections.csvProcessing || ContentSections.csvDataInvalid" class="none">
+<div ng-show="ContentSections.csvProcessing || ContentSections.csvDataInvalid" class="item clearfix row">
+    <div class="main col-md-9 pull-right padding-left-zero row">
+        <div class="pull-left inner-main col-md-8 padding-zero">
+            <div  ng-show="ContentSections.csvProcessing" class="alert alert-success alert-sm text-center">
+                Importing CSV...
+            </div>
+            <div ng-show="ContentSections.csvDataInvalid" class="alert alert-danger alert-sm text-center">
+                Invalid CSV
+            </div>
+        </div>
+    </div>
+</div>
 
+<hr class="none">
 <div class="item clearfix row">
     <div class="labels col-md-1 padding-right-zero pull-left">
         <span>Sort</span>
@@ -93,9 +106,9 @@
                               ng-class="{ 'disabled': ContentSections.itemSortableOptions.disabled }"></span>
 
                         <div class="media-holder pull-left">
-                            <img ng-src="{{ContentSections.info.data.content.allItemImage | resizeImage : 50:50}}"
+                            <img load-image="1x1" data-final-src="{{ContentSections.info.data.content.allItemImage | resizeImage : 50:50}}"
                                  ng-if="ContentSections.info.data.content.allItemImage">
-                            <img src="assets/images/1x1.png" ng-if="!ContentSections.info.data.content.allItemImage">
+                            <img src="../../../../styles/media/holder-1x1.png" ng-if="!ContentSections.info.data.content.allItemImage">
                         </div>
                         <div class="copy pull-right">
                             <div class="col-md-7 padding-zero pull-left">
@@ -122,8 +135,8 @@
                           ng-class="{ 'disabled': ContentSections.itemSortableOptions.disabled }"></span>
 
                     <div class="media-holder pull-left">
-                        <img ng-src="{{item.data.mainImage | resizeImage : 50:50}}" ng-if="item.data.mainImage">
-                        <img src="assets/images/1x1.png" ng-if="!item.data.mainImage">
+                        <img load-image="1x1" data-final-src="{{item.data.mainImage | resizeImage : 50:50}}" ng-if="item.data.mainImage">
+                        <img src="../../../../styles/media/holder-1x1.png" ng-if="!item.data.mainImage">
                     </div>
                     <div class="copy pull-right">
                         <div class="col-md-7 padding-zero pull-left">

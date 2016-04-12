@@ -220,6 +220,7 @@
                             ContentItems.noMore = false;
                         }
                         ContentItems.items = ContentItems.items ? ContentItems.items.concat(result) : result;
+                        console.log('items>>>',angular.copy(ContentItems.items));
                         ContentItems.isBusy = false;
                     }, function fail() {
                         ContentItems.isBusy = false;
