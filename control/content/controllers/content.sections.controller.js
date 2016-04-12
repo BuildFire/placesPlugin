@@ -5,7 +5,6 @@
         .controller('ContentSectionsCtrl', ['$scope', 'DB', '$timeout', 'COLLECTIONS', 'Orders', 'OrdersItems', 'AppConfig', 'Messaging', 'EVENTS', 'PATHS', '$csv', 'Buildfire', 'Modals', 'placesInfo', 'DEFAULT_DATA', 'Utils', '$rootScope',
             function ($scope, DB, $timeout, COLLECTIONS, Orders, OrdersItems, AppConfig, Messaging, EVENTS, PATHS, $csv, Buildfire, Modals, placesInfo, DEFAULT_DATA, Utils, $rootScope) {
 
-                //Buildfire.history.push('Sections',{});
 
                 //Show the INT header part.
                 Buildfire.appearance.setHeaderVisibility(true);
