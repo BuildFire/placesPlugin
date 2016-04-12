@@ -378,10 +378,10 @@
                     if (WidgetSections.currentView) {
                         switch (WidgetSections.currentView) {
                             case DEFAULT_VIEWS.LIST:
-                                currentLayout = WidgetSections.placesInfo.data.design.secListLayout;
+                                currentLayout = WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.design && WidgetSections.placesInfo.data.design.secListLayout;
                                 break;
                             case DEFAULT_VIEWS.MAP:
-                                currentLayout = WidgetSections.placesInfo.data.design.mapLayout;
+                                currentLayout = WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.design && WidgetSections.placesInfo.data.design.mapLayout;
                                 break;
                         }
                     }

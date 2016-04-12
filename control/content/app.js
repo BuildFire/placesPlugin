@@ -347,7 +347,6 @@
 
                                     break;
                                 case PATHS.HOME:
-                                    Buildfire.history.pop();
                                     url = url + "home";
                                     break;
                                 case PATHS.SECTION:
@@ -372,21 +371,6 @@
                     }
                 }
             };
-            Buildfire.history.onPop(function (data, err) {
-                $rootScope.popped = true;
-                console.log('Buildfire.history.onPop called--------------------------------------------', data);
-                if (data && data.options && data.label) {
-                    if (data.label == 'Items') {
-                        if (data.options.sectionId == 'allitems')
-                            Location.go('#/allitems');
-                        else
-                            Location.go('#/items/' + data.options.sectionId);
-                    }
-                }
-                else
-                    Location.goToHome();
-
-            });
         }]);
 })
 (window.angular, window.buildfire);
