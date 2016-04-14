@@ -2,7 +2,7 @@
     <div class="places-plugin item-list2">
         <div class="plugin-banner has-info-bar clearfix">
             <div class="plugin-slide text-center">
-                <div id="carouselItemDetails" build-fire-carousel=""></div>
+                <div ng-style="WidgetItem.item.data.images.length > 0 ? {'min-height': (9 * deviceWidth / 16) + 'px' } : {}" id="carouselItemDetails" build-fire-carousel=""></div>
             </div>
             <div class="plugin-copy clearfix">
                 <div class="col-xs-8 text-left pull-left">
