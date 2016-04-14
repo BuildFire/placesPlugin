@@ -294,8 +294,8 @@
                         console.log('.pac-container .pac-item',$(".pac-container .pac-item").length);
                         if ($(".pac-container .pac-item").length) {
                             var firstResult = $(".pac-container .pac-item:first").find('.pac-matched').map(function(){
-                                    return $(this).text();
-                                }).get().join() + ', ' + $(".pac-container .pac-item:first").find('span:last').text();
+                                return $(this).text();
+                            }).get().join(); // + ', ' + $(".pac-container .pac-item:first").find('span:last').text();
                             console.log('firstResult', firstResult);
                             var geocoder = new google.maps.Geocoder();
                             geocoder.geocode({"address": firstResult}, function (results, status) {
