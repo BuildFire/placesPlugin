@@ -162,8 +162,8 @@
                     };
 
                 /*declare the device width heights*/
-                WidgetSections.deviceHeight = window.innerHeight;
-                WidgetSections.deviceWidth = window.innerWidth;
+                $rootScope.deviceHeight = window.innerHeight;
+                $rootScope.deviceWidth = window.innerWidth;
 
                 /*initialize the device width heights*/
                 var initDeviceSize = function (callback) {
