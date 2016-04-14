@@ -10,7 +10,7 @@
                 </a>
             </div>
             <div class="screen layoutgrid pull-right margin-left-zero border-grey border-radius-three">
-                <a ng-repeat="layout in DesignHome.layouts.secListLayouts"
+                <a ng-repeat="layout in DesignHome.layouts.secListLayouts" data-number="{{$index + 1}}"
                    class="layouticon border-radius-three default-background-hover text-center"
                    ng-click="DesignHome.changeLayout(layout.name,'secList')">
                     <img ng-src="../../resources/{{layout.name}}.png">
@@ -32,7 +32,7 @@
                 </a>
             </div>
             <div class="screen layoutgrid pull-right margin-left-zero border-grey border-radius-three">
-                <a ng-repeat="layout in DesignHome.layouts.mapLayouts"
+                <a ng-repeat="layout in DesignHome.layouts.mapLayouts" data-number="{{$index + 1}}"
                    class="layouticon border-radius-three default-background-hover text-center"
                    ng-click="DesignHome.changeLayout(layout.name,'map')">
                     <img ng-src="../../resources/{{layout.name}}.png">
@@ -54,7 +54,7 @@
                 </a>
             </div>
             <div class="screen layoutgrid pull-right margin-left-zero border-grey border-radius-three">
-                <a ng-repeat="layout in DesignHome.layouts.itemListLayouts"
+                <a ng-repeat="layout in DesignHome.layouts.itemListLayouts" data-number="{{$index + 1}}"
                    class="layouticon border-radius-three default-background-hover text-center"
                    ng-click="DesignHome.changeLayout(layout.name,'itemList')">
                     <img ng-src="../../resources/{{layout.name}}.png">
@@ -76,7 +76,7 @@
                 </a>
             </div>
             <div class="screen layoutgrid pull-right margin-left-zero border-grey border-radius-three">
-                <a ng-repeat="layout in DesignHome.layouts.itemLayouts"
+                <a ng-repeat="layout in DesignHome.layouts.itemLayouts" data-number="{{$index + 1}}"
                    class="layouticon border-radius-three default-background-hover text-center"
                    ng-click="DesignHome.changeLayout(layout.name,'itemDetails')">
                     <img ng-src="../../resources/{{layout.name}}.png">

@@ -18,9 +18,9 @@
                         <div class="list-item" ng-if="WidgetSections.placesInfo.data.content.showAllItems">
                             <a ng-click="WidgetSections.showItems('allitems');">
                                 <div class="list-item-media text-left overflow-hidden">
-                                    <div ng-if="WidgetSections.placesInfo.data.content.allItemImage"
-                                         class="list-media-holder pull-left">
-                                        <img ng-if="WidgetSections.placesInfo.data.content.allItemImage" load-image="239x1" data-final-src="{{WidgetSections.placesInfo.data.content.allItemImage | cropImage :110 :60}}" style="width: 110px;height: 60px;">
+                                    <div class="list-media-holder pull-left">
+                                        <img ng-if="WidgetSections.placesInfo.data.content.allItemImage" load-image="239x1" data-final-src="{{WidgetSections.placesInfo.data.content.allItemImage | cropImage :110 :60}}" style="width: 110px;height: 60px;" />
+                                        <img src="../../../styles/media/holder-16x9.png" ng-if="!WidgetSections.placesInfo.data.content.allItemImage"/>
                                     </div>
                                     <div class="list-item-copy text-left padding-left-ten padding-right-ten">
                                         <p class="ellipsis margin-zero text-primary margin-top-five"><span
@@ -33,8 +33,9 @@
                         <div class="list-item" ng-repeat="item in WidgetSections.sections | unique: 'id'">
                             <a ng-click="WidgetSections.showItems(item.id);">
                                 <div class="list-item-media text-left overflow-hidden">
-                                    <div ng-if="item.data.mainImage" class="list-media-holder pull-left">
-                                        <img load-image="239x1" data-final-src="{{item.data.mainImage | cropImage :110 :60}}" style="width: 110px;height: 60px;">>
+                                    <div class="list-media-holder pull-left">
+                                        <img ng-if="item.data.mainImage" load-image="239x1" data-final-src="{{item.data.mainImage | cropImage :110 :60}}" style="width: 110px;height: 60px;">
+                                        <img ng-if="!item.data.mainImage" src="../../../styles/media/holder-16x9.png"  style="width: 110px;height: 60px;">
                                     </div>
                                     <div class="list-item-copy text-left padding-left-ten padding-right-ten">
                                         <p class="ellipsis margin-zero text-primary margin-top-five"><span
