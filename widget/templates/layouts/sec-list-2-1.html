@@ -19,8 +19,9 @@
                     <a ng-click="WidgetSections.showItems('allitems');">
                         <div class="plugin-banner clearfix border-bottom-grey">
                             <div class="plugin-slide text-center"
-                                 ng-if="WidgetSections.placesInfo.data.content.allItemImage">
-                                <img load-image="16x9" data-final-src="{{WidgetSections.placesInfo.data.content.allItemImage | cropImage:WidgetSections.deviceWidth:192}}">
+                                 >
+                                <img ng-if="WidgetSections.placesInfo.data.content.allItemImage" load-image="16x9" data-final-src="{{WidgetSections.placesInfo.data.content.allItemImage | cropImage:WidgetSections.deviceWidth:192}}">
+                                <img ng-if="!WidgetSections.placesInfo.data.content.allItemImage" src="../../../styles/media/holder-16x9.png">
                             </div>
                         </div>
                         <div class="padded text-left">
@@ -31,8 +32,9 @@
                 <div ng-repeat="item in WidgetSections.sections | unique: 'id'">
                     <a ng-click="WidgetSections.showItems(item.id);">
                         <div class="plugin-banner clearfix border-bottom-grey">
-                            <div class="plugin-slide text-center" ng-if="item.data.mainImage">
-                                <img load-image="16x9" data-final-src="{{item.data.mainImage | cropImage:WidgetSections.deviceWidth:192}}">
+                            <div class="plugin-slide text-center">
+                                <img ng-if="item.data.mainImage" load-image="16x9" data-final-src="{{item.data.mainImage | cropImage:WidgetSections.deviceWidth:192}}">
+                                <img ng-if="!item.data.mainImage" src="../../../styles/media/holder-16x9.png">
                             </div>
                         </div>
                         <div class="padded text-left">

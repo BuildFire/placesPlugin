@@ -421,15 +421,15 @@
                                         subject: "action Item SMS Example",
                                         body: "We are testing action Item send SMS",
                                         phoneNumber: row.smsTextNumber,
-                                        action: "sendSMS"
+                                        action: "sendSms"
                                     });
                                 }
 
                                 if (row['Phone Number']) {
                                     links.push({
-                                        title: "Phone Number",
-                                        url: row['Phone Number'],
-                                        action: "Phone Number"
+                                        title: "Call Number",
+                                        phoneNumber: row['Phone Number'],
+                                        action: "callNumber"
                                     });
                                 }
                                 if (row['Facebook URL']) {
