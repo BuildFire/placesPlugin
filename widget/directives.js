@@ -412,9 +412,9 @@
                         img = $filter("cropImage")(value, window.innerWidth, window.innerHeight, true);
                         console.log('***********************New---*******************$rootScope.deviceWidth,$rootScope.deviceHeight: window.innerHeight:', $rootScope.deviceWidth, $rootScope.deviceHeight, window.innerHeight, window.innerWidth, window.outerHeight, window.outerWidth);
                         element.attr("style", 'background:url(' + img + ') !important;background-size: cover !important');
-                       /* element.css({
-                            'background-size': 'cover !important'
-                        });*/
+                        /* element.css({
+                         'background-size': 'cover !important'
+                         });*/
                     }
                     else {
                         element.attr("style", 'background-color:white');
@@ -428,22 +428,29 @@
         .directive("loadImage", [function () {
             return {
                 restrict: 'A',
+                //scope: {finalSrc:'=finalSrc'},
                 link: function (scope, element, attrs) {
-                    element.attr("src", "../../../styles/media/holder-" + attrs.loadImage + ".gif");
+                    var img, loadImage;
+                    img = null;
 
-                    var elem = $("<img>");
-                    elem[0].onload = function () {
-                        element.attr("src", attrs.finalSrc);
-                        elem.remove();
+                    loadImage = function () {
+                        element[0].src = "../../../styles/media/holder-" + attrs.loadImage + ".gif";
+
+                        img = new Image();
+                        img.src = attrs.finalSrc;
+
+                        img.onload = function () {
+                            element[0].src = attrs.finalSrc;
+                        };
                     };
-                    function changeSrc(info) {
-                        element.attr("src", attrs.finalSrc);
-                        elem.remove();
-                    }
-                    scope.$watch(function(val){
+
+                    scope.$watch((function () {
                         return attrs.finalSrc;
-                    }, changeSrc, true);
-                    elem.attr("src", attrs.finalSrc);
+                    }), function (newVal, oldVal) {
+                        //if (oldVal != newVal) {
+                        loadImage();
+                        //}
+                    });
                 }
             };
         }]);
