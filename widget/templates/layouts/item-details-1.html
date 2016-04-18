@@ -2,7 +2,7 @@
     <div class="places-plugin item-list2">
         <div class="plugin-banner has-info-bar clearfix">
             <div class="plugin-slide text-center">
-                <div id="carouselItemDetails" build-fire-carousel=""></div>
+                <div ng-style="WidgetItem.item.data.images.length > 0 ? {'min-height': (9 * deviceWidth / 16) + 'px' } : {}" id="carouselItemDetails" build-fire-carousel=""></div>
             </div>
             <div class="plugin-copy clearfix">
                 <div class="col-xs-8 text-left pull-left">
@@ -37,7 +37,7 @@
             <div class="dynamic-links" ng-repeat="link in WidgetItem.item.data.links">
                 <p ng-click="WidgetItem.executeAction(link)">
                     <span ng-if="!link.iconUrl" class="icon icon-cog"></span>
-                    <span ng-if="link.iconUrl" class="icon"><img ng-src="{{link.iconUrl | cropImage:17:17}}"/></span>
+                    <span ng-if="link.iconUrl" class="icon"><img load-image="1x1" data-final-src="{{link.iconUrl | cropImage:17:17}}"/></span>
                     {{link.title}}
                 </p>
             </div>

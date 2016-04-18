@@ -158,8 +158,8 @@
                     };
 
                 /*declare the device width heights*/
-                WidgetSections.deviceHeight = window.innerHeight;
-                WidgetSections.deviceWidth = window.innerWidth;
+                $rootScope.deviceHeight = window.innerHeight;
+                $rootScope.deviceWidth = window.innerWidth;
 
                 /*initialize the device width heights*/
                 var initDeviceSize = function (callback) {
@@ -380,7 +380,8 @@
                             floor: 0
                         };
                     }
-                    WidgetSections.currentView = (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings) ? WidgetSections.placesInfo.data.settings.defaultView : null;
+                    console.log('lakshay', WidgetSections.placesInfo);
+                    WidgetSections.currentView = (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings) ? WidgetSections.placesInfo.data.settings.defaultView : 'list';
                     if (WidgetSections.currentView) {
                         switch (WidgetSections.currentView) {
                             case DEFAULT_VIEWS.LIST:
@@ -396,7 +397,10 @@
 
                 (function () {
                     PlaceInfo.get().then(function (data) {
-                        WidgetSections.placesInfo = data;
+                        if (data.id)
+                            WidgetSections.placesInfo = data;
+                        else
+                            WidgetSections.placesInfo = _placesInfoData;
                         initPage();
                     }, function () {
                         WidgetSections.placesInfo = _placesInfoData;
@@ -679,7 +683,7 @@
                             initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
                         else
                             view.loadItems([]);
-                    }, 1000);
+                    }, 10);
                 });
 
 
@@ -734,13 +738,18 @@
 
                 WidgetSections.reloadPlacesInfo = function () {
                     PlaceInfo.get().then(function (data) {
-                        WidgetSections.placesInfo = data;
-                        currentLayout = WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings && WidgetSections.placesInfo.data.settings.defaultView;
+
+                        if (data.id)
+                            WidgetSections.placesInfo = data;
+                        else
+                            WidgetSections.placesInfo = _placesInfoData;
+                        currentLayout = WidgetSections.currentView = (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings) ? WidgetSections.placesInfo.data.settings.defaultView : 'list';
+                        console.log('WidgetSections.placesInfo>>>>',WidgetSections.placesInfo);
                         if (!view) {
                             $("#carousel").parent().html("<div id='carousel'></div>");
                             view = new Buildfire.components.carousel.view("#carousel", []);  ///create new instance of buildfire carousel viewer
                         }
-                        if (view && WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings.defaultView) {
+                        if (view && WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings && WidgetSections.placesInfo.data.settings.defaultView) {
                             initCarousel(WidgetSections.placesInfo.data.settings.defaultView)
                         }
                         else {

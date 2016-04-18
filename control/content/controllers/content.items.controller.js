@@ -41,17 +41,13 @@
                     ContentItems.info = angular.copy(DEFAULT_DATA.PLACE_INFO);
                 }
                 if ($routeParams.sectionId) {
-                    if($rootScope.popped)
+                    if ($rootScope.popped)
                         $rootScope.popped = false;
-                    else
-                        Buildfire.history.push('Items',{sectionId:$routeParams.sectionId});
                     ContentItems.section = $routeParams.sectionId;
                 }
                 else {
-                    if($rootScope.popped)
+                    if ($rootScope.popped)
                         $rootScope.popped = false;
-                    else
-                    Buildfire.history.push('Items',{sectionId:'allitems'});
                     ContentItems.section = 'allitems';
                 }
                 ContentItems.isBusy = false;
@@ -220,6 +216,7 @@
                             ContentItems.noMore = false;
                         }
                         ContentItems.items = ContentItems.items ? ContentItems.items.concat(result) : result;
+                        console.log('items>>>', angular.copy(ContentItems.items));
                         ContentItems.isBusy = false;
                     }, function fail() {
                         ContentItems.isBusy = false;
@@ -230,7 +227,7 @@
                  * ContentItems.removeListItem() used to delete an item from section list
                  * @param index tells the index of item to be deleted.
                  */
-                ContentItems.removeListItem = function (index,event) {
+                ContentItems.removeListItem = function (index, event) {
 
                     if ("undefined" == typeof index) {
                         return;
@@ -239,7 +236,7 @@
                     if ("undefined" !== typeof item) {
                         //buildfire.navigation.scrollTop();
 
-                        Modals.removePopupModal({title: '',event:event}).then(function (result) {
+                        Modals.removePopupModal({title: '', event: event}).then(function (result) {
                             if (result) {
                                 ContentItems.Items.delete(item.id).then(function (data) {
                                     ContentItems.items.splice(index, 1);
@@ -282,43 +279,42 @@
 
                 ContentItems.editSections = function (ind) {
                     ContentItems.Sections.find({}).then(function (data) {
-                        console.log('Sections--------------------------------------popup',data);
+                        console.log('Sections--------------------------------------popup', data);
                         buildfire.navigation.scrollTop();
-                        if(data && data.length>0)
-                        Modals.editSectionModal(data, ContentItems.items[ind]).then(function (result) {
-                            ContentItems.Items.update(result.id, result.data).then(function () {
-                                _skip = 0;
-                                ContentItems.items = null;
-                                ContentItems.getMore();
-                            }, function () {
-                                console.error('err happened');
+                        if (data && data.length > 0)
+                            Modals.editSectionModal(data, ContentItems.items[ind]).then(function (result) {
+                                ContentItems.Items.update(result.id, result.data).then(function () {
+                                    _skip = 0;
+                                    ContentItems.items = null;
+                                    ContentItems.getMore();
+                                }, function () {
+                                    console.error('err happened');
+                                });
+
+
+                            }, function (cancelData) {
+                                //do something on cancel
                             });
-
-
-                        }, function (cancelData) {
-                            //do something on cancel
-                        });
                     }, function (err) {
                     });
 
                 };
 
                 ContentItems.done = function () {
-                    Buildfire.history.pop();
-                    //Location.goToHome();
+                    Location.goToHome();
                 };
 
 
-                if($rootScope.dontPropagate == true)
+                if ($rootScope.dontPropagate == true)
                     $rootScope.dontPropagate = false;
                 else
-                Messaging.sendMessageToWidget({
-                    name: EVENTS.ROUTE_CHANGE,
-                    message: {
-                        path: PATHS.SECTION,
-                        secId: ContentItems.section
-                    }
-                });
+                    Messaging.sendMessageToWidget({
+                        name: EVENTS.ROUTE_CHANGE,
+                        message: {
+                            path: PATHS.SECTION,
+                            secId: ContentItems.section
+                        }
+                    });
 
 
                 $scope.$watch(function () {

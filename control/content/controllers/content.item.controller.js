@@ -38,12 +38,10 @@
                 ContentItem.currentCoordinates = null;
 
                 if (item) {
-                    Buildfire.history.push('Edit Item',{});
                     ContentItem.item = item;
                     ContentItem.masterItem = angular.copy(ContentItem.item);
                 }
                 else {
-                    Buildfire.history.push('Add Item',{});
                     ContentItem.item = angular.copy(DEFAULT_DATA.ITEM);
                     if ($routeParams.sectionId != 'allitems')
                         ContentItem.item.data.sections.push($routeParams.sectionId);
@@ -74,7 +72,9 @@
                     plugins: 'advlist autolink link image lists charmap print preview',
                     skin: 'lightgray',
                     trusted: true,
-                    theme: 'modern'
+                    theme: 'modern',
+                    plugin_preview_width : "500",
+                    plugin_preview_height : "500"
                 };
                 // create a new instance of the buildfire action Items
                 ContentItem.linkEditor = new Buildfire.components.actionItems.sortableList("#actionItems");
@@ -214,13 +214,12 @@
                  * done will close the single item view
                  */
                 ContentItem.done = function () {
-                    Buildfire.history.pop();
-                /*    if ($routeParams.sectionId != 'allitems') {
+                    if ($routeParams.sectionId != 'allitems') {
                         Location.go('#/items/' + $routeParams.sectionId);
                     }
                     else {
                         Location.go('#/allitems')
-                    }*/
+                    }
                 };
                 ContentItem.setLocation = function (data) {
                     ContentItem.item.data.address = {
@@ -243,16 +242,18 @@
                     if (!$scope.$$phase)$scope.$digest();
                 };
                 ContentItem.setCoordinates = function () {
+                    var latlng='';
+                    console.log('ng-enter---------------------called------------------',ContentItem.currentAddress);
                     function successCallback(resp) {
                         if (resp) {
                             ContentItem.item.data.address = {
-                                lng: ContentItem.currentAddress.split(",")[0].trim(),
-                                lat: ContentItem.currentAddress.split(",")[1].trim(),
+                                lng: ContentItem.currentAddress.split(",")[1].trim(),
+                                lat: ContentItem.currentAddress.split(",")[0].trim(),
                                 aName: ContentItem.currentAddress
                             };
-                            ContentItem.currentCoordinates = [ContentItem.currentAddress.split(",")[0].trim(), ContentItem.currentAddress.split(",")[1].trim()];
+                            ContentItem.currentCoordinates = [ContentItem.currentAddress.split(",")[1].trim(), ContentItem.currentAddress.split(",")[0].trim()];
                         } else {
-                            errorCallback();
+                            //errorCallback();
                         }
                     }
 
@@ -262,8 +263,11 @@
                             ContentItem.validCoordinatesFailure = false;
                         }, 5000);
                     }
+                    if(ContentItem.currentAddress){
+                        latlng=ContentItem.currentAddress.split(',')[1]+","+ContentItem.currentAddress.split(',')[0]
+                    }
 
-                    Utils.validLongLats(ContentItem.currentAddress).then(successCallback, errorCallback);
+                    Utils.validLongLats(latlng).then(successCallback, errorCallback);
                 };
                 ContentItem.clearData = function () {
                     if (!ContentItem.currentAddress) {
@@ -289,7 +293,9 @@
                         console.log('val>>>',$("#googleMapAutocomplete").val());
                         console.log('.pac-container .pac-item',$(".pac-container .pac-item").length);
                         if ($(".pac-container .pac-item").length) {
-                            var firstResult = $(".pac-container .pac-item:first").find('.pac-matched').text() + ', ' + $(".pac-container .pac-item:first").find('span:last').text();
+                            var firstResult = $(".pac-container .pac-item:first").find('.pac-matched').map(function(){
+                                return $(this).text();
+                            }).get().join(); // + ', ' + $(".pac-container .pac-item:first").find('span:last').text();
                             console.log('firstResult', firstResult);
                             var geocoder = new google.maps.Geocoder();
                             geocoder.geocode({"address": firstResult}, function (results, status) {

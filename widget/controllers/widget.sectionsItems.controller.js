@@ -162,8 +162,8 @@
                     };
 
                 /*declare the device width heights*/
-                WidgetSections.deviceHeight = window.innerHeight;
-                WidgetSections.deviceWidth = window.innerWidth;
+                $rootScope.deviceHeight = window.innerHeight;
+                $rootScope.deviceWidth = window.innerWidth;
 
                 /*initialize the device width heights*/
                 var initDeviceSize = function (callback) {
@@ -234,7 +234,7 @@
                  * @returns {boolean}
                  */
                 var updateGetOptionsItems = function () {
-                    var _sortBy = (WidgetSections.placesInfo && WidgetSections.placesInfo.data) ? WidgetSections.placesInfo.data.content.sortByItems : Orders.ordersMap.Default;
+                    var _sortBy = (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.content) ? WidgetSections.placesInfo.data.content.sortByItems : Orders.ordersMap.Default;
                     console.log('items order sortby', _sortBy);
                     var order = OrdersItems.getOrder(_sortBy);
                     console.log('items order', order);
@@ -378,10 +378,10 @@
                     if (WidgetSections.currentView) {
                         switch (WidgetSections.currentView) {
                             case DEFAULT_VIEWS.LIST:
-                                currentLayout = WidgetSections.placesInfo.data.design.secListLayout;
+                                currentLayout = WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.design && WidgetSections.placesInfo.data.design.secListLayout;
                                 break;
                             case DEFAULT_VIEWS.MAP:
-                                currentLayout = WidgetSections.placesInfo.data.design.mapLayout;
+                                currentLayout = WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.design && WidgetSections.placesInfo.data.design.mapLayout;
                                 break;
                         }
                     }
