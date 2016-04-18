@@ -511,3 +511,18 @@ style for sec list dark overlay
 .info-bar-map-details-2-fix{
 	z-index: 1 !important;
 }
+
+/* Dynamic Links Modal */
+.modal{
+	height:100%;
+	background:rgba(0,0,0,0.8);
+}
+.modal .modal-dialog{
+	position:relative;
+	top:48%;
+	transform:translateY(-50%) !important;
+	margin:0 15px !important;
+
+	max-height:89%;
+	overflow:auto;
+}
