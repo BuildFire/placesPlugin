@@ -79,12 +79,15 @@
                             var selectedLocation = null;
 
                             //var currentLocationIconImageUrl = 'assets/.images/google_marker_blue_icon.png';
-                            var currentLocationIconImageUrl = 'http://buildfire.imgix.net/b55ee984-a8e8-11e5-88d3-124798dea82d/e107a1f0-0164-11e6-87cb-a50957dff58d.png?fit=crop&w=300&h=300';
+                            //var currentLocationIconImageUrl = 'http://buildfire.imgix.net/b55ee984-a8e8-11e5-88d3-124798dea82d/e107a1f0-0164-11e6-87cb-a50957dff58d.png?fit=crop&w=300&h=300';
+                            var currentLocationIconImageUrl ='http://beta.app.buildfire.com/app/media/google_marker_blue_icon.png';
                             //var currentLocationIconImageUrl = 'assets/.images/blue.png';
                             //var placeLocationIconImageUrl = 'assets/.images/google_marker_red_icon.png';
-                            var placeLocationIconImageUrl = 'http://buildfire.imgix.net/b55ee984-a8e8-11e5-88d3-124798dea82d/dd222a60-0164-11e6-b415-d3bac8217c59.png?fit=crop&w=300&h=300';
+                            //var placeLocationIconImageUrl = 'http://buildfire.imgix.net/b55ee984-a8e8-11e5-88d3-124798dea82d/dd222a60-0164-11e6-b415-d3bac8217c59.png?fit=crop&w=300&h=300';
+                            var placeLocationIconImageUrl = 'http://beta.app.buildfire.com/app/media/google_marker_red_icon.png';
                             //var selectedLocationIconImageUrl = 'assets/.images/google_marker_green_icon.png';
-                            var selectedLocationIconImageUrl = 'http://buildfire.imgix.net/b55ee984-a8e8-11e5-88d3-124798dea82d/dcf96cb0-0164-11e6-b415-d3bac8217c59.png?fit=crop&w=300&h=300';
+                            //var selectedLocationIconImageUrl = 'http://buildfire.imgix.net/b55ee984-a8e8-11e5-88d3-124798dea82d/dcf96cb0-0164-11e6-b415-d3bac8217c59.png?fit=crop&w=300&h=300';
+                            var selectedLocationIconImageUrl = 'http://beta.app.buildfire.com/app/media/google_marker_green_icon.png';
 
                             var currentLocationIcon = getCustomMarkerIcon(currentLocationIconImageUrl);
                             var placeLocationIcon = getCustomMarkerIcon(placeLocationIconImageUrl);
@@ -412,9 +415,9 @@
                         img = $filter("cropImage")(value, window.innerWidth, window.innerHeight, true);
                         console.log('***********************New---*******************$rootScope.deviceWidth,$rootScope.deviceHeight: window.innerHeight:', $rootScope.deviceWidth, $rootScope.deviceHeight, window.innerHeight, window.innerWidth, window.outerHeight, window.outerWidth);
                         element.attr("style", 'background:url(' + img + ') !important;background-size: cover !important');
-                       /* element.css({
-                            'background-size': 'cover !important'
-                        });*/
+                        /* element.css({
+                         'background-size': 'cover !important'
+                         });*/
                     }
                     else {
                         element.attr("style", 'background-color:white');
@@ -428,22 +431,29 @@
         .directive("loadImage", [function () {
             return {
                 restrict: 'A',
+                //scope: {finalSrc:'=finalSrc'},
                 link: function (scope, element, attrs) {
-                    element.attr("src", "../../../styles/media/holder-" + attrs.loadImage + ".gif");
+                    var img, loadImage;
+                    img = null;
 
-                    var elem = $("<img>");
-                    elem[0].onload = function () {
-                        element.attr("src", attrs.finalSrc);
-                        elem.remove();
+                    loadImage = function () {
+                        element[0].src = "../../../styles/media/holder-" + attrs.loadImage + ".gif";
+
+                        img = new Image();
+                        img.src = attrs.finalSrc;
+
+                        img.onload = function () {
+                            element[0].src = attrs.finalSrc;
+                        };
                     };
-                    function changeSrc(info) {
-                        element.attr("src", attrs.finalSrc);
-                        elem.remove();
-                    }
-                    scope.$watch(function(val){
+
+                    scope.$watch((function () {
                         return attrs.finalSrc;
-                    }, changeSrc, true);
-                    elem.attr("src", attrs.finalSrc);
+                    }), function (newVal, oldVal) {
+                        //if (oldVal != newVal) {
+                        loadImage();
+                        //}
+                    });
                 }
             };
         }]);
