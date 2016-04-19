@@ -652,6 +652,7 @@
                 $scope.$watch(function () {
                     return WidgetSections.currentView;
                 }, function () {
+                    WidgetSections.refreshLocation();
                     WidgetSections.selectedItem = null;
                 }, true);
 

@@ -670,6 +670,7 @@
                 $scope.$watch(function () {
                     return WidgetSections.currentView;
                 }, function (view) {
+                    WidgetSections.refreshLocation();
                     currentLayout = view;
                     WidgetSections.selectedItem = null;
                 }, true);
