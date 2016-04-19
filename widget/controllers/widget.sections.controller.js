@@ -430,7 +430,7 @@
 
                                 console.error(err);
                             }
-                            else {
+                            else if(position && position.coords){
 
                                 $scope.$apply(function () {
 
@@ -439,6 +439,9 @@
                                     WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
                                     localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
                                 });
+                            }
+                            else{
+                                getGeoLocation();
                             }
                         }
                     );
