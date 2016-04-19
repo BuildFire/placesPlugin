@@ -2,18 +2,18 @@
     <div>
         <div class="extra-links">
             <a ng-click="WidgetSections.refreshLocation()" class="my-location titleBarBackgroundTheme" style="opacity: 1 !important;">
-                <span class="icon icon-aim whiteTheme"></span>
+                <span class="icon icon-aim titleBarTextAndIconsTheme"></span>
             </a>
         </div>
     </div>
     <div class="col-xs-6 pull-left text-center transition-third titleBarBackgroundTheme">
         <a ng-click="WidgetSections.currentView = (WidgetSections.currentView == 'map') ? 'list' : 'map';"
-           class="whiteTheme">
+           class="titleBarTextAndIconsTheme">
             {{WidgetSections.currentView == 'map' ? 'List' : 'Map'}}
         </a>
     </div>
     <div class="col-xs-6 pull-left text-center transition-third titleBarBackgroundTheme">
-        <a ng-click="WidgetSections.showMenu = !WidgetSections.showMenu" class="whiteTheme">Filter</a>
+        <a ng-click="WidgetSections.showMenu = !WidgetSections.showMenu" class="titleBarTextAndIconsTheme">Filter</a>
     </div>
     <div class="col-xs-12 pull-left hidden-content">
         <div class="tabs clearfix">
