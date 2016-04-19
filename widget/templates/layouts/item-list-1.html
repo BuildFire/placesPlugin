@@ -7,7 +7,7 @@
          ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
         <a ng-click="WidgetSections.showItemDetails(WidgetSections.selectedSection,item.id)">
             <div class="plugin-slide text-center">
-                <img ng-if="item.data.listImage" load-image="16x9" data-final-src="{{item.data.listImage | cropImage:WidgetSections.deviceWidth:192}}">
+                <img ng-if="item.data.listImage" load-image="16x9" data-final-src="{{item.data.listImage | cropImage:deviceWidth:192}}">
                 <img ng-if="!item.data.listImage" src="../../../styles/media/holder-16x9.png">
             </div>
             <div class="info-bar blackBackgroundTheme">

@@ -19,7 +19,8 @@
             ROUTE_CHANGE: "ROUTE_CHANGE",
             DESIGN_LAYOUT_CHANGE: "DESIGN_LAYOUT_CHANGE",
             DESIGN_BGIMAGE_CHANGE: "DESIGN_BGIMAGE_CHANGE",
-            ROUTE_CHANGE_1: "ROUTE_CHANGE_1"
+            ROUTE_CHANGE_1: "ROUTE_CHANGE_1",
+            ITEM_UPDATED: "ITEM_UPDATED"
         })
         .constant('COLLECTIONS', {
             PlaceInfo: "placeInfo",

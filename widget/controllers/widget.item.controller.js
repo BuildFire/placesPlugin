@@ -164,6 +164,7 @@
             WidgetItem.clearOnUpdateListener = Buildfire.datastore.onUpdate(function (event) {
                     console.log('OnUpdate method called----------------------************************', event);
                     if (event.tag == 'items' && event.data) {
+                        $rootScope.$broadcast(EVENTS.ITEM_UPDATED, event);
                         $timeout(function () {
                             if (WidgetItem.placeInfo && WidgetItem.placeInfo.data && WidgetItem.placeInfo.data.design && WidgetItem.placeInfo.data.design.itemDetailsLayout == 'item-details-3') {
                                 WidgetItem.item.data.itemTitle = event.data.itemTitle;

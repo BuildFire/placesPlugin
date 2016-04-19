@@ -775,6 +775,15 @@
                     clearOnUpdateListener.clear();
                     //offCallMeFn();
                 });
+                $rootScope.$on(EVENTS.ITEM_UPDATED, function (e, event) {
+                    WidgetSections.locationData.items.some(function(item, index) {
+                        if(item.id == event.id) {
+                            WidgetSections.locationData.items[index].data = event.data;
+                            if (!$scope.$$phase)$scope.$digest();
+                            return true;
+                        }
+                    })
+                });
             }
         ])
     ;
