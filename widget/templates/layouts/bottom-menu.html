@@ -1,18 +1,18 @@
 <div ng-class="WidgetSections.showMenu ? 'active' : ''" class="bottom fixed-bottom clearfix transition-third">
     <div>
         <div class="extra-links">
-            <a ng-click="WidgetSections.refreshLocation()" class="my-location titleBarBackgroundTheme" style="opacity: 1 !important;">
+            <a ng-click="WidgetSections.refreshLocation()" class="my-location titleBarTextAndIconsBackground" style="opacity: 1 !important;">
                 <span class="icon icon-aim titleBarTextAndIconsTheme"></span>
             </a>
         </div>
     </div>
-    <div class="col-xs-6 pull-left text-center transition-third titleBarBackgroundTheme">
+    <div class="col-xs-6 pull-left text-center transition-third titleBarTextAndIconsBackground">
         <a ng-click="WidgetSections.currentView = (WidgetSections.currentView == 'map') ? 'list' : 'map';"
            class="titleBarTextAndIconsTheme">
             {{WidgetSections.currentView == 'map' ? 'List' : 'Map'}}
         </a>
     </div>
-    <div class="col-xs-6 pull-left text-center transition-third titleBarBackgroundTheme">
+    <div class="col-xs-6 pull-left text-center transition-third titleBarTextAndIconsBackground">
         <a ng-click="WidgetSections.showMenu = !WidgetSections.showMenu" class="titleBarTextAndIconsTheme">Filter</a>
     </div>
     <div class="col-xs-12 pull-left hidden-content">
