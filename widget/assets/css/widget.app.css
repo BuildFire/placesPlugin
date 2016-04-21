@@ -146,6 +146,7 @@
 	padding:10px 0;
 	opacity:0.85;
 	z-index:0 !important;
+	transform:translate3d(0,0,0);
 }
 .holder .info-bar{
 	background:rgba(0,0,0,0.8);
@@ -592,11 +593,10 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
 /* Dynamic Links Modal */
 .modal{
 	height:100%;
-	background:rgba(0,0,0,0.8);
 }
 .modal .modal-dialog{
 	position:relative;
-	top:48%;
+	top:50%;
 	transform:translateY(-50%) !important;
 	margin:0 15px !important;
 
