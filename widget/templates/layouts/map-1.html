@@ -2,11 +2,11 @@
     <div class="places-plugin">
         <div class="item-info clearfix background-white" ng-if="WidgetSections.selectedItem">
             <div class="col-xs-9 pull-left padding-left-zero">
-                <div class="pull-left">
-                    <img ng-if="WidgetSections.selectedItem.data.listImage" load-image="4x3" data-final-src="{{WidgetSections.selectedItem.data.listImage | cropImage : 80:60}}" style="height: 60px;width: 80px">
-                    <img ng-if="!WidgetSections.selectedItem.data.listImage" src="../../../styles/media/holder-4x3.png" style="height: 60px;width: 80px">
+                <div ng-if="WidgetSections.selectedItem.data.listImage" class="pull-left">
+                    <img load-image="4x3" data-final-src="{{WidgetSections.selectedItem.data.listImage | cropImage : 80:60}}" style="height: 60px;width: 80px">
+                    <!--<img ng-if="!WidgetSections.selectedItem.data.listImage" src="../../../styles/media/holder-4x3.png" style="height: 60px;width: 80px">-->
                 </div>
-                <div class="copy stretch pull-left" style="padding-left: 85px;" ng-style="{'top':(!WidgetSections.selectedItem.data.summary? '9px':'')}">
+                <div class="copy stretch pull-left" ng-style="WidgetSections.selectedItem.data.listImage ? {'padding-left': '85px'} : {'padding-left': '10px'}" ng-style="{'top':(!WidgetSections.selectedItem.data.summary? '9px':'')}">
                     <p class="margin-bottom-zero ellipsis margin-top-ten text-primary"><a ng-click="WidgetSections.showItemDetails((WidgetSections.selectedItem.data.sections[0]||'allitems'),WidgetSections.selectedItem.id)" class="ellipsis titleBarTheme">{{WidgetSections.selectedItem.data.itemTitle}}</a></p>
 
                     <p class="margin-bottom-zero titleBarTheme ellipsis">{{WidgetSections.selectedItem.data.summary}}</p>
