@@ -425,7 +425,7 @@
 
                                 console.error(err);
                             }
-                            else {
+                            else if(position && position.coords){
 
                                 $scope.$apply(function () {
 
@@ -434,6 +434,9 @@
                                     WidgetSections.locationData.currentCoordinates = [position.coords.longitude, position.coords.latitude];
                                     localStorage.setItem('user_location', JSON.stringify(WidgetSections.locationData.currentCoordinates));
                                 });
+                            }
+                            else{
+                                getGeoLocation();
                             }
                         }
                     );
@@ -652,6 +655,7 @@
                 $scope.$watch(function () {
                     return WidgetSections.currentView;
                 }, function () {
+                    WidgetSections.refreshLocation();
                     WidgetSections.selectedItem = null;
                 }, true);
 
@@ -680,6 +684,15 @@
                 $scope.$on("$destroy", function () {
                     clearOnUpdateListener.clear();
                     //offCallMeFn();
+                });
+                $rootScope.$on(EVENTS.ITEM_UPDATED, function (e, event) {
+                    WidgetSections.locationData.items.some(function(item, index) {
+                        if(item.id == event.id) {
+                            WidgetSections.locationData.items[index].data = event.data;
+                            if (!$scope.$$phase)$scope.$digest();
+                            return true;
+                        }
+                    })
                 });
             }
         ])
