@@ -337,7 +337,12 @@
 
 .fix-map-layout2-top {
     height: 65% !important;
-    top: 193px !important;
+    top: 54px !important;
+}
+
+.fix-map-layout2-top-with-carousel {
+	height: 65% !important;
+	top: 193px !important;
 }
 
 .fix-map-layout1-top {
