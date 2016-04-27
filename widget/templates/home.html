@@ -1,3 +1,4 @@
+<!--
 <div class="scrollable backgroundColorTheme">
     <div ng-switch="WidgetSections.currentView">
         <div ng-switch-when="list">
@@ -8,6 +9,27 @@
         <div ng-switch-when="map">
             <div ng-if="WidgetSections.placesInfo.data.design.mapLayout"
                  ng-include="'templates/layouts/' + WidgetSections.placesInfo.data.design.mapLayout+ '.html'">
+            </div>
+        </div>
+    </div>
+    <div id="onUpdateListener" ng-click="WidgetSections.applyOnUpdateWatcher();WidgetSections.reloadPlacesInfo();" class="ng-hide"></div>
+</div>
+<div class="holder padding-zero">
+    <div ng-include="'templates/layouts/bottom-menu.html'"></div>
+</div>
+-->
+<div class="scrollable backgroundColorTheme">
+    <div class="flip-container">
+        <div id="flipper">
+            <div ng-class="WidgetSections.placesInfo.data.settings.defaultView == 'list' ? 'front' : 'back'">
+                <div class=""
+                     ng-include="'templates/layouts/' + WidgetSections.placesInfo.data.design.secListLayout+ '.html'">
+                </div>
+            </div>
+            <div ng-class="WidgetSections.placesInfo.data.settings.defaultView == 'list' ? 'back' : 'front'">
+                <div
+                        ng-include="'templates/layouts/' + WidgetSections.placesInfo.data.design.mapLayout+ '.html'">
+                </div>
             </div>
         </div>
     </div>
