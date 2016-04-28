@@ -120,7 +120,7 @@
 }
 .holder .bottom .extra-links a.view-type{
 	top:-95px;
-	
+
 	top:-45px;
 	left:inherit;
 	right:10px;
@@ -162,7 +162,7 @@
 	background:#efefef;
 }
 .holder .info-circle.bg-white{
-	background:rgba(255, 255, 255, 0.8);	
+	background:rgba(255, 255, 255, 0.8);
 }
 .holder .info-circle .info-circle-inner{
 	margin-top:33px;
@@ -618,7 +618,7 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
 /* hide back of pane during swap */
 .front, .back {
 	backface-visibility: hidden;
-
+	-webkit-backface-visibility: hidden;
 	position: absolute;
 	top: 0;
 	left: 0;
