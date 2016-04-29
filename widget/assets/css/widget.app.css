@@ -634,7 +634,40 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
 /* back, initially hidden pane */
 .back {
 	transform: rotateY(180deg);
+
+  transform: rotateY(180deg);
+  position: fixed;
+  /* display: none; */
+  position: fixed;
+  /* bottom: 1rem; */
+  /* right: 1rem; */
+  /* width: 3.2rem; */
+  height: 3.2rem;
+  line-height: 3.2rem;
+  font-size: 1.4rem;
+  color: #fff;
+  background-color: rgba(0,0,0,0.3);
+  text-decoration: none;
+  border-radius: 3.2rem;
+  text-align: center;
+  cursor: pointer;
 }
 .showBack {
-	transform: rotateY(180deg);
+	transform: rotateY(180deg);width:100%
+}
+.hidden-list{
+  //overflow: hidden;
+}
+
+.showBack > .listView.front{
+  //overflow-y: hidden !important;
+}
+
+.listView.back{
+  overflow-y: visible !important;
+}
+
+
+.showBack > .listView.back{
+  overflow-y: visible !important;
 }
