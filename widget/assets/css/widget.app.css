@@ -660,7 +660,7 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
 }
 
 .showBack > .listView.front{
-  //overflow-y: hidden !important;
+  overflow-y: hidden !important;
 }
 
 .listView.back{
