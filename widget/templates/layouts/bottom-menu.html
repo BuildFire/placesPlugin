@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="col-xs-6 pull-left text-center transition-third titleBarTextAndIconsBackground">
-        <a onclick="$('#flipper').toggleClass('showBack')" ng-click="WidgetSections.currentView = (WidgetSections.currentView == 'map') ? 'list' : 'map';"
+        <a onclick="if($('.insideFlipper').length){$('.insideFlipper').toggleClass('showBack');}else{$('#flipper').toggleClass('showBack');}" ng-click="WidgetSections.currentView = (WidgetSections.currentView == 'map') ? 'list' : 'map';"
            class="titleBarTextAndIconsTheme">
             {{WidgetSections.currentView == 'map' ? 'List' : 'Map'}}
         </a>

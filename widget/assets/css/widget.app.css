@@ -628,7 +628,7 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
 .front {
 	z-index: 2;
 	/* for firefox 31 */
-	/*transform: rotateY(0deg);*/
+	transform: rotateY(0deg);
 }
 
 /* back, initially hidden pane */
@@ -655,9 +655,11 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
 .showBack {
 	transform: rotateY(180deg);width:100%
 }
+/*
 .hidden-list{
   //overflow: hidden;
 }
+*/
 
 .showBack > .listView.front{
   overflow-y: hidden !important;
