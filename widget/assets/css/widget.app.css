@@ -120,7 +120,7 @@
 }
 .holder .bottom .extra-links a.view-type{
 	top:-95px;
-
+	
 	top:-45px;
 	left:inherit;
 	right:10px;
@@ -146,6 +146,7 @@
 	padding:10px 0;
 	opacity:0.85;
 	z-index:0 !important;
+	transform:translate3d(0,0,0);
 }
 .holder .info-bar{
 	background:rgba(0,0,0,0.8);
@@ -162,7 +163,7 @@
 	background:#efefef;
 }
 .holder .info-circle.bg-white{
-	background:rgba(255, 255, 255, 0.8);
+	background:rgba(255, 255, 255, 0.8);	
 }
 .holder .info-circle .info-circle-inner{
 	margin-top:33px;
@@ -594,6 +595,20 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
 .layout3 .list-layout .list-item-copy{
 	padding:6px 10px 5px;
 }
+
+/* Dynamic Links Modal */
+.modal{
+	height:100%;
+}
+.modal .modal-dialog{
+	position:relative;
+	top:50%;
+	transform:translateY(-50%) !important;
+	margin:0 15px !important;
+
+	max-height:89%;
+	overflow:auto;
+}}
 
 
 /* flip animation */

@@ -1,19 +1,19 @@
 <div ng-class="WidgetSections.showMenu ? 'active' : ''" class="bottom fixed-bottom clearfix transition-third">
     <div>
         <div class="extra-links">
-            <a ng-click="WidgetSections.refreshLocation()" class="my-location titleBarTextAndIconsBackground" style="opacity: 1 !important;">
-                <span class="icon icon-aim titleBarTextAndIconsTheme"></span>
+            <a ng-click="WidgetSections.refreshLocation()" class="my-location titleBarBackgroundTheme" style="opacity: 1 !important;">
+                <span class="icon icon-aim titleBarTextAndIcons"></span>
             </a>
         </div>
     </div>
-    <div class="col-xs-6 pull-left text-center transition-third titleBarTextAndIconsBackground">
+    <div class="col-xs-6 pull-left text-center transition-third titleBarBackgroundTheme">
         <a onclick="if($('.insideFlipper').length){$('.insideFlipper').toggleClass('showBack');}else{$('#flipper').toggleClass('showBack');}" ng-click="WidgetSections.currentView = (WidgetSections.currentView == 'map') ? 'list' : 'map';"
-           class="titleBarTextAndIconsTheme">
+           class="titleBarTextAndIcons">
             {{WidgetSections.currentView == 'map' ? 'List' : 'Map'}}
         </a>
     </div>
-    <div class="col-xs-6 pull-left text-center transition-third titleBarTextAndIconsBackground">
-        <a ng-click="WidgetSections.showMenu = !WidgetSections.showMenu" class="titleBarTextAndIconsTheme">Filter</a>
+    <div class="col-xs-6 pull-left text-center transition-third titleBarBackgroundTheme">
+        <a ng-click="WidgetSections.showMenu = !WidgetSections.showMenu" class="titleBarTextAndIcons">Filter</a>
     </div>
     <div class="col-xs-12 pull-left hidden-content">
         <div class="tabs clearfix">
@@ -32,12 +32,12 @@
             <div ng-class="WidgetSections.menuTab == 'Category' ? 'active' : ''" class="category-tab tab">
                 <a id="allItemsOption"
                    ng-show="WidgetSections.placesInfo.data.content.showAllItems"
-                   ng-class="(WidgetSections.selectedSections.length == 0 && WidgetSections.showSections == false) ? 'titleBarBackgroundTheme whiteTheme' : ''"
+                   ng-class="(WidgetSections.selectedSections.length == 0 && WidgetSections.showSections == false) ? 'titleBarBackgroundTheme titleBarTextAndIcons' : ''"
                    ng-click="WidgetSections.resetSectionFilter()" class="list-item section-filter">All Locations</a>
                 <a ng-click="WidgetSections.toggleSectionSelection($index)"
                    ng-repeat="item in WidgetSections.sections | unique : 'id'"
                    class="list-item section-filter"
-                   ng-class="WidgetSections.selectedSections.indexOf(item.id) > -1 ? 'titleBarBackgroundTheme whiteTheme':''"
+                   ng-class="WidgetSections.selectedSections.indexOf(item.id) > -1 ? 'titleBarBackgroundTheme titleBarTextAndIcons':''"
                    section-id="{{item.id}}">{{item.data.secTitle}}</a>
             </div>
             <div ng-class="WidgetSections.menuTab == 'Sorting' ? 'active' : ''" class="sorting-tab tab padded">
@@ -66,13 +66,13 @@
                         <div ng-click="WidgetSections.sortOnClosest = false"
                              class="col-xs-6 padding-zero text-center"
                              ng-class="WidgetSections.sortOnClosest ? '' : 'titleBarBackgroundTheme'">
-                            <a ng-class="WidgetSections.sortOnClosest ? '' : 'whiteTheme'">Default</a>
+                            <a ng-class="WidgetSections.sortOnClosest ? '' : 'titleBarTextAndIcons'">Default</a>
                         </div>
                         <div ng-hide="WidgetSections.locationData.currentCoordinates == null"
                              ng-class="!WidgetSections.sortOnClosest ? '' : 'titleBarBackgroundTheme'"
                              ng-class="WidgetSections.sortOnClosest ? '' : 'active'"
                              ng-click="WidgetSections.sortOnClosest = true" class="col-xs-6 padding-zero text-center">
-                            <a ng-class="WidgetSections.sortOnClosest ? 'whiteTheme' : ''">Closest to Me</a>
+                            <a ng-class="WidgetSections.sortOnClosest ? 'titleBarTextAndIcons' : ''">Closest to Me</a>
                         </div>
                         <div ng-show="WidgetSections.locationData.currentCoordinates == null"
                              class="col-xs-6 padding-zero text-center">
