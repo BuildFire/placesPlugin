@@ -159,7 +159,7 @@
 
                 /*declare the device width heights*/
                 $rootScope.deviceHeight = window.innerHeight;
-                $rootScope.deviceWidth = window.innerWidth;
+                $rootScope.deviceWidth = window.innerWidth || 320;
 
                 /*initialize the device width heights*/
                 var initDeviceSize = function (callback) {
