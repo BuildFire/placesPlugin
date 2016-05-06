@@ -43,7 +43,7 @@
                             map = new google.maps.Map(elem[0], {
                                 streetViewControl: false,
                                 mapTypeControl: false,
-                                zoom: 5,
+                                zoom: 8,
                                 center: {lat: mapCenterLat, lng: mapCenterLng},
                                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                                 zoomControlOptions: {

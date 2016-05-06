@@ -319,7 +319,8 @@
                         }
                         else if (ContentItem.currentAddress && ContentItem.currentAddress.split(',').length) {
                             console.log('Location found---------------------', ContentItem.currentAddress.split(',').length, ContentItem.currentAddress.split(','));
-                            var geocoder = new google.maps.Geocoder();
+                            ContentItem.setCoordinates();
+                            /*var geocoder = new google.maps.Geocoder();
                             geocoder.geocode({
                                 "latLng": {
                                     "lat": parseInt(ContentItem.currentAddress.split(',')[0]),
@@ -338,7 +339,7 @@
                                  'Error else parts of google');
                                  error();
                                  }
-                            });
+                            });*/
                         }
                         else {
                             error();
