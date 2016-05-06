@@ -5,8 +5,8 @@
     'use strict';
     angular
         .module('placesContent')
-        .controller('ContentItemCtrl', ['$scope', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout', 'EVENTS', 'PATHS', 'Messaging', 'item', 'placesInfo', 'DEFAULT_DATA','$rootScope',
-            function ($scope, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout, EVENTS, PATHS, Messaging, item, placesInfo, DEFAULT_DATA,$rootScope) {
+        .controller('ContentItemCtrl', ['$scope', 'Buildfire', 'DB', 'COLLECTIONS', '$routeParams', 'Location', 'Utils', '$timeout', 'EVENTS', 'PATHS', 'Messaging', 'item', 'placesInfo', 'DEFAULT_DATA', '$rootScope',
+            function ($scope, Buildfire, DB, COLLECTIONS, $routeParams, Location, Utils, $timeout, EVENTS, PATHS, Messaging, item, placesInfo, DEFAULT_DATA, $rootScope) {
 
                 //Hide the INT header part.
                 Buildfire.appearance.setHeaderVisibility(false);
@@ -73,8 +73,8 @@
                     skin: 'lightgray',
                     trusted: true,
                     theme: 'modern',
-                    plugin_preview_width : "500",
-                    plugin_preview_height : "500"
+                    plugin_preview_width: "500",
+                    plugin_preview_height: "500"
                 };
                 // create a new instance of the buildfire action Items
                 ContentItem.linkEditor = new Buildfire.components.actionItems.sortableList("#actionItems");
@@ -148,7 +148,7 @@
                             //console.log('Error while updating data---', err);
                         });
                     }
-                    else if(!isNewItemInserted){
+                    else if (!isNewItemInserted) {
                         isNewItemInserted = true;
                         _item.data.rank = (placeInfoData.data.content.rankOfLastItemItems || 0) + 10;
                         _item.data.dateCreated = new Date();
@@ -184,7 +184,7 @@
                     if (updating)
                         return;
                     if (tmrDelayForItem) {
-                       $timeout.cancel(tmrDelayForItem);
+                        $timeout.cancel(tmrDelayForItem);
                     }
                     ContentItem.isItemValid = isValidItem(ContentItem.item.data);
                     if (_item && !isUnChanged(_item) && ContentItem.isItemValid) {
@@ -242,9 +242,10 @@
                     if (!$scope.$$phase)$scope.$digest();
                 };
                 ContentItem.setCoordinates = function () {
-                    var latlng='';
-                    console.log('ng-enter---------------------called------------------',ContentItem.currentAddress);
+                    var latlng = '';
+                    console.log('ng-enter---------------------called------------------', ContentItem.currentAddress);
                     function successCallback(resp) {
+                        console.error('Successfully validated coordinates-----------', resp);
                         if (resp) {
                             ContentItem.item.data.address = {
                                 lng: ContentItem.currentAddress.split(",")[1].trim(),
@@ -258,13 +259,15 @@
                     }
 
                     function errorCallback(err) {
+                        console.error('Error while validating coordinates------------', err);
                         ContentItem.validCoordinatesFailure = true;
                         $timeout(function () {
                             ContentItem.validCoordinatesFailure = false;
                         }, 5000);
                     }
-                    if(ContentItem.currentAddress){
-                        latlng=ContentItem.currentAddress.split(',')[1]+","+ContentItem.currentAddress.split(',')[0]
+
+                    if (ContentItem.currentAddress) {
+                        latlng = ContentItem.currentAddress.split(',')[1] + "," + ContentItem.currentAddress.split(',')[0]
                     }
 
                     Utils.validLongLats(latlng).then(successCallback, errorCallback);
@@ -283,17 +286,19 @@
                 ContentItem.validCopyAddressFailure = false;
                 ContentItem.locationAutocompletePaste = function () {
                     function error() {
+                        console.error('ERROOR emethpdd called');
                         ContentItem.validCopyAddressFailure = true;
                         $timeout(function () {
                             ContentItem.validCopyAddressFailure = false;
                         }, 5000);
 
                     }
+
                     $timeout(function () {
-                        console.log('val>>>',$("#googleMapAutocomplete").val());
-                        console.log('.pac-container .pac-item',$(".pac-container .pac-item").length);
+                        console.log('val>>>', $("#googleMapAutocomplete").val());
+                        console.log('.pac-container .pac-item', $(".pac-container .pac-item").length);
                         if ($(".pac-container .pac-item").length) {
-                            var firstResult = $(".pac-container .pac-item:first").find('.pac-matched').map(function(){
+                            var firstResult = $(".pac-container .pac-item:first").find('.pac-matched').map(function () {
                                 return $(this).text();
                             }).get().join(); // + ', ' + $(".pac-container .pac-item:first").find('span:last').text();
                             console.log('firstResult', firstResult);
@@ -306,8 +311,33 @@
                                     $("#googleMapAutocomplete").blur();
                                 }
                                 else {
+                                    console.error('' +
+                                        'Error else parts of google');
                                     error();
                                 }
+                            });
+                        }
+                        else if (ContentItem.currentAddress && ContentItem.currentAddress.split(',').length) {
+                            console.log('Location found---------------------', ContentItem.currentAddress.split(',').length, ContentItem.currentAddress.split(','));
+                            var geocoder = new google.maps.Geocoder();
+                            geocoder.geocode({
+                                "latLng": {
+                                    "lat": parseInt(ContentItem.currentAddress.split(',')[0]),
+                                    "lng": parseInt(ContentItem.currentAddress.split(',')[1])
+                                }
+                            }, function (results, status) {
+                                console.log('Got Address based on coordinates--------------------', results, status);
+                                if (status == google.maps.GeocoderStatus.OK) {
+                                 var lat = results[0].geometry.location.lat(),
+                                 lng = results[0].geometry.location.lng();
+                                 ContentItem.setLocation({location: ContentItem.currentAddress, coordinates: [lng, lat]});
+                                 $("#googleMapAutocomplete").blur();
+                                 }
+                                 else {
+                                 console.error('' +
+                                 'Error else parts of google');
+                                 error();
+                                 }
                             });
                         }
                         else {
@@ -324,18 +354,18 @@
                 }
 
 
-                if($rootScope.dontPropagate == true)
+                if ($rootScope.dontPropagate == true)
                     $rootScope.dontPropagate = false;
                 else
-                Messaging.sendMessageToWidget({
-                    name: EVENTS.ROUTE_CHANGE,
-                    message: {
-                        path: PATHS.ITEM,
-                        //id: ContentItem.item ? ContentItem.item.id : "",
-                        id: $routeParams.itemId,
-                        secId: $routeParams.sectionId
-                    }
-                });
+                    Messaging.sendMessageToWidget({
+                        name: EVENTS.ROUTE_CHANGE,
+                        message: {
+                            path: PATHS.ITEM,
+                            //id: ContentItem.item ? ContentItem.item.id : "",
+                            id: $routeParams.itemId,
+                            secId: $routeParams.sectionId
+                        }
+                    });
 
                 $scope.$watch(function () {
                     return ContentItem.item;
