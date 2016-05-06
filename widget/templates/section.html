@@ -1,6 +1,20 @@
 <div class="height-hundred-pc" back-img="{{WidgetSections.secListBGImage}}" ng-controller="WidgetSectionsItemsCtrl as WidgetSections">
 <div class="scrollable">
-    <div ng-switch="WidgetSections.currentView">
+    <div class="flip-container">
+        <div class="insideFlipper" id="flipper">
+            <div  class="listView" ng-class="WidgetSections.placesInfo.data.settings.defaultView == 'list' ? 'front' : 'back'">
+                <div class=""
+                     ng-include="'templates/layouts/' + WidgetSections.placesInfo.data.design.secListLayout+ '.html'">
+                </div>
+            </div>
+            <div ng-class="WidgetSections.placesInfo.data.settings.defaultView == 'list' ? 'back' : 'front'">
+                <div
+                        ng-include="'templates/layouts/' + WidgetSections.placesInfo.data.design.mapLayout+ '.html'">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div ng-switch="WidgetSections.currentView">
         <div ng-switch-when="list">
             <div ng-if="WidgetSections.placesInfo.data.design.secListLayout"
                  ng-include="'templates/layouts/' + WidgetSections.placesInfo.data.design.secListLayout+ '.html'">
@@ -11,7 +25,7 @@
                  ng-include="'templates/layouts/' + WidgetSections.placesInfo.data.design.mapLayout+ '.html'">
             </div>
         </div>
-    </div>
+    </div>-->
 </div>
 <div ng-if="WidgetSections.showBtmMenu" class="holder padding-zero">
     <div ng-include="'templates/layouts/bottom-menu.html'"></div>

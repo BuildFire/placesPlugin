@@ -21,7 +21,8 @@
         </div>
         <div class="location-map">
             <div class="map-holder"
-                 ng-class="{'fix-map-layout2-top':WidgetSections.selectedItem && WidgetSections.selectedItem.data.images.length}">
+                 data-ng-attr-style="{{ WidgetSections.selectedItem && WidgetSections.selectedItem.data.images.length && 'top: ' + (9 * deviceWidth / 16) + 'px !important' || '' }}"
+                 ng-class="{'fix-map-layout2-top':WidgetSections.selectedItem && WidgetSections.selectedItem.data.images.length == 0,'fix-map-layout2-top-with-carousel':WidgetSections.selectedItem && WidgetSections.selectedItem.data.images.length}">
                 <div google-map class="google-map-fix" location-data="WidgetSections.locationData"
                      marker-callback="WidgetSections.selectedMarker" filter="distanceSlider"
                      filterUnapplied="WidgetSections.filterUnapplied"></div>

@@ -148,9 +148,22 @@
                     editor.onOrderChange = function (item, oldIndex, newIndex) {
                         $timeout(function(){
                             scope.$apply(function () {
-                                var temp = scope.images[oldIndex];
-                                scope.images[oldIndex] = scope.images[newIndex];
-                                scope.images[newIndex] = temp;
+                              var items = scope.images;
+
+                              var tmp = items[oldIndex];
+
+                              if (oldIndex < newIndex) {
+                                for (var i = oldIndex + 1; i <= newIndex; i++) {
+                                  items[i - 1] = items[i];
+                                }
+                              } else {
+                                for (var i = oldIndex - 1; i >= newIndex; i--) {
+                                  items[i + 1] = items[i];
+                                }
+                              }
+                              items[newIndex] = tmp;
+
+                              scope.images = items;
                             });
                         },0);
                     };
