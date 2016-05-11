@@ -128,8 +128,7 @@
                     }
                     , searchOptionsItems = {
                         filter: {"$json.itemTitle": {"$regex": '/*'}},
-                        skip: _skipItems,
-                        limit: _limit + 1 // the plus one is to check if there are any more
+                        skip: _skipItems
                     }
                     , _placesInfoData = {
                         data: {
@@ -517,10 +516,14 @@
                     if (WidgetSections.selectedSections.length) {
                         // filter applied
                         itemFilter = {'$json.sections': {'$in': WidgetSections.selectedSections}};
+                        searchOptionsItems.limit = _limit + 1;
                     }
                     else {
                         // all items selected
                         itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
+                        if(searchOptionsItems.limit){
+                            delete searchOptionsItems.limit;
+                        }
                     }
                     searchOptionsItems.filter = itemFilter;
                     refreshItems();
