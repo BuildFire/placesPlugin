@@ -420,7 +420,8 @@
                          });*/
                     }
                     else {
-                        element.attr("style", 'background-color:white');
+                       // element.attr("style", 'background-color:white');
+                        element.addClass('backgroundColorTheme');
                         element.css({
                             'background-size': 'cover !important'
                         });
