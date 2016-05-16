@@ -150,7 +150,21 @@
                                     }
                                 }
                             }
-                            markerCluster = new MarkerClusterer(map, placeLocationMarkers);
+
+                            var clusterStyles = [
+                                {
+                                    textColor: 'white',
+                                    url: 'http://cdn2.pjtv.com/static/v20160513a/images/startup-directory/search-startups/m1.png',
+                                    height: 53,
+                                    width: 53
+                                }
+                            ];
+                            var mcOptions = {
+                                gridSize: 53,
+                                styles: clusterStyles,
+                                maxZoom: 15
+                            };
+                            markerCluster = new MarkerClusterer(map, placeLocationMarkers,mcOptions);
 
 
                             map.addListener('click', function () {
