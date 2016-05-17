@@ -120,7 +120,7 @@
 }
 .holder .bottom .extra-links a.view-type{
 	top:-95px;
-	
+
 	top:-45px;
 	left:inherit;
 	right:10px;
@@ -163,7 +163,7 @@
 	background:#efefef;
 }
 .holder .info-circle.bg-white{
-	background:rgba(255, 255, 255, 0.8);	
+	background:rgba(255, 255, 255, 0.8);
 }
 .holder .info-circle .info-circle-inner{
 	margin-top:33px;
@@ -608,13 +608,15 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
 
 	max-height:89%;
 	overflow:auto;
-}}
+}
 
 
 /* flip animation */
 /* entire container, keeps perspective */
 .flip-container {
 	perspective: 1000;
+  -webkit-perspective: 1000;
+  -moz-perspective: 1000;
 }
 
 .flip-container, .front, .back {
@@ -626,7 +628,10 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
 #flipper {
 	transition: 0.6s;
 	transform-style: preserve-3d;
-
+  -webkit-transform-style: preserve-3d;
+  -webkit-transition: 0.6s;
+  -moz-transition: 0.6s;
+  -o-transition: 0.6s;
 	position: relative;
 }
 
@@ -634,6 +639,7 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
 .front, .back {
 	backface-visibility: hidden;
 	-webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -644,16 +650,22 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
 	z-index: 2;
 	/* for firefox 31 */
 	transform: rotateY(0deg);
+  -webkit-transform: rotateY(0deg);
+  -moz-transform: rotateY(0deg);
+  -o-transform: rotateY(0deg);
+  -ms-transform: rotateY(0deg);
 }
 
 /* back, initially hidden pane */
 .back {
 	transform: rotateY(180deg);
 
-  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
+  -o-transform: rotateY(180deg);
+  -ms-transform: rotateY(180deg);
   position: fixed;
   /* display: none; */
-  position: fixed;
   /* bottom: 1rem; */
   /* right: 1rem; */
   /* width: 3.2rem; */
@@ -668,7 +680,12 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
   cursor: pointer;
 }
 .showBack {
-	transform: rotateY(180deg);width:100%
+	transform: rotateY(180deg);
+	-webkit-transform: rotateY(180deg);
+	-o-transform: rotateY(180deg);
+	-moz-transform: rotateY(180deg);
+	-ms-transform: rotateY(180deg);
+  width:100%
 }
 /*
 .hidden-list{
