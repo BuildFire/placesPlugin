@@ -642,7 +642,7 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
     -webkit-backface-visibility: hidden;
     -moz-backface-visibility: hidden;
     /*-webkit-transform-style: preserve-3d;*/
-    -webkit-transition: all .5s ease-in-out;
+    /*-webkit-transition: all .5s ease-in-out;*/
     position: absolute;
 }
 
@@ -660,7 +660,6 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
 /* back, initially hidden pane */
 .back {
     transform: rotateY(180deg);
-
     -webkit-transform: rotateY(180deg);
     -moz-transform: rotateY(180deg);
     -o-transform: rotateY(180deg);
@@ -694,6 +693,7 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
 */
 .showBack > .listView.front{
     overflow-y: hidden !important;
+    width: 100%;
 }
 
 .listView.back{
