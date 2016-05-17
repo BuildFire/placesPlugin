@@ -639,7 +639,6 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
 .front, .back {
     backface-visibility: hidden;
     width: 100%;
-    min-height: 100%;
     -webkit-backface-visibility: hidden;
     -moz-backface-visibility: hidden;
     /*-webkit-transform-style: preserve-3d;*/
@@ -666,6 +665,7 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
     -moz-transform: rotateY(180deg);
     -o-transform: rotateY(180deg);
     -ms-transform: rotateY(180deg);
+    position: fixed;
     /* display: none; */
     /* bottom: 1rem; */
     /* right: 1rem; */
