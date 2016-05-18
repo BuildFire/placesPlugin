@@ -692,8 +692,7 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
 }
 */
 .showBack > .listView.front{
-    overflow-y: hidden !important;
-    width: 100%;
+    position: fixed;
 }
 
 .listView.back{
