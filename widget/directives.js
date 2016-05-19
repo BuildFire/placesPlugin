@@ -43,7 +43,7 @@
                             map = new google.maps.Map(elem[0], {
                                 streetViewControl: false,
                                 mapTypeControl: false,
-                                zoom: 5,
+                                zoom: 8,
                                 center: {lat: mapCenterLat, lng: mapCenterLng},
                                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                                 zoomControlOptions: {
@@ -150,7 +150,21 @@
                                     }
                                 }
                             }
-                            markerCluster = new MarkerClusterer(map, placeLocationMarkers);
+
+                            var clusterStyles = [
+                                {
+                                    textColor: 'white',
+                                    url: 'http://cdn2.pjtv.com/static/v20160513a/images/startup-directory/search-startups/m1.png',
+                                    height: 53,
+                                    width: 53
+                                }
+                            ];
+                            var mcOptions = {
+                                gridSize: 53,
+                                styles: clusterStyles,
+                                maxZoom: 15
+                            };
+                            markerCluster = new MarkerClusterer(map, placeLocationMarkers,mcOptions);
 
 
                             map.addListener('click', function () {
@@ -420,7 +434,8 @@
                          });*/
                     }
                     else {
-                        element.attr("style", 'background-color:white');
+                       // element.attr("style", 'background-color:white');
+                        element.addClass('backgroundColorTheme');
                         element.css({
                             'background-size': 'cover !important'
                         });
