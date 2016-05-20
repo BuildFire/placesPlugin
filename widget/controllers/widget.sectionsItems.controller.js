@@ -143,7 +143,7 @@
                         }
                         else if(searchOptionsItems && searchOptionsItems.limit) {
                             result.pop();
-                            searchOptionsItems.skip = searchOptions.skip + _limit;
+//                            searchOptionsItems.skip = searchOptions.skip + _limit;
                             WidgetSections.noMoreItems = false;
                             _skipItems = result.length;
                         }
@@ -157,6 +157,8 @@
 
                         var items = WidgetSections.locationData.items ? WidgetSections.locationData.items.concat(result) : result;
                         WidgetSections.locationData.items = $filter('unique')(items, 'id');
+                        _skipItems = WidgetSections.locationData && WidgetSections.locationData.items && WidgetSections.locationData.items.length;
+                        searchOptionsItems.skip = _skipItems;
                     }, function fail() {
                         WidgetSections.isBusyItems = false;
                         console.error('error in item fetch');
@@ -640,13 +642,15 @@
                         }
                         else if(searchOptions && searchOptions.limit) {
                             result.pop();
-                            searchOptions.skip = searchOptions.skip + _limit;
+//                            searchOptions.skip = searchOptions.skip + _limit;
                             WidgetSections.noMoreSections = false;
                             _skip = result.length;
                         }
 
                         var sections = WidgetSections.sections ? WidgetSections.sections.concat(result) : result;
                         WidgetSections.sections = $filter('unique')(sections, 'id');
+                        _skip = WidgetSections.sections && WidgetSections.sections.length;
+                        searchOptions.skip = _skip;
                         WidgetSections.isBusy = false;
                     }, function fail() {
                         WidgetSections.isBusy = false;
