@@ -40,7 +40,7 @@
                 console.log('>>>>vs<<<<', vs);
 
 
-                WidgetSections.selectedSections = [];
+//                WidgetSections.selectedSections = [];
                 WidgetSections.showBtmMenu = true;
 
 
@@ -78,11 +78,11 @@
                  * loadMoreItems method loads the sections in list page.
                  */
                 WidgetSections.loadMoreItems = function () {
-                    console.log('items load called');
                     if (WidgetSections.noMoreItems || WidgetSections.isBusyItems) {
                         console.log('but no more items');
                         return;
                     }
+                    console.log('items load called');
                     updateGetOptionsItems();
                     WidgetSections.isBusyItems = true;
                     Items.find(searchOptionsItems).then(function success(result) {
@@ -91,10 +91,11 @@
                             //alert('full');
                             WidgetSections.noMoreItems = true;
                         }
-                        else {
+                        else if(searchOptionsItems && searchOptionsItems.limit) {
                             result.pop();
                             searchOptionsItems.skip = searchOptions.skip + _limit;
                             WidgetSections.noMoreItems = false;
+                            _skipItems = result.length;
                         }
 
                         if (result.length) {
@@ -128,7 +129,8 @@
                     }
                     , searchOptionsItems = {
                         filter: {"$json.itemTitle": {"$regex": '/*'}},
-                        skip: _skipItems
+                        skip: _skipItems,
+                        limit: _limit + 1
                     }
                     , _placesInfoData = {
                         data: {
@@ -391,12 +393,12 @@
                                 break;
                         }
                     }
-                    loadAllItemsOfSections();
+//                    loadAllItemsOfSections();
                 }
 
                 (function () {
                     PlaceInfo.get().then(function (data) {
-                        if (data.id)
+                        if (data && data.id)
                             WidgetSections.placesInfo = data;
                         else
                             WidgetSections.placesInfo = _placesInfoData;
@@ -513,12 +515,12 @@
                     console.log('filter changed fired');
                     var itemFilter;
                     WidgetSections.selectedItem = null;
-                    if (WidgetSections.selectedSections.length) {
+                    if (WidgetSections.selectedSections && WidgetSections.selectedSections.length) {
                         // filter applied
                         itemFilter = {'$json.sections': {'$in': WidgetSections.selectedSections}};
                         searchOptionsItems.limit = _limit + 1;
                     }
-                    else {
+                    else if (WidgetSections.selectedSections) {
                         // all items selected
                         itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
                         if(searchOptionsItems.limit){
@@ -609,13 +611,15 @@
                         if (result.length <= _limit) {// to indicate there are more
                             WidgetSections.noMoreSections = true;
                         }
-                        else {
+                        else if(searchOptions && searchOptions.limit) {
                             result.pop();
                             searchOptions.skip = searchOptions.skip + _limit;
                             WidgetSections.noMoreSections = false;
+                            _skip = result.length;
                         }
 
-                        WidgetSections.sections = WidgetSections.sections ? WidgetSections.sections.concat(result) : result;
+                        var sections = WidgetSections.sections ? WidgetSections.sections.concat(result) : result;
+                        WidgetSections.sections = $filter('unique')(sections, 'id');
                         WidgetSections.isBusy = false;
                     }, function fail() {
                         WidgetSections.isBusy = false;
@@ -626,10 +630,10 @@
                 WidgetSections.toggleSectionSelection = function (ind) {
                     WidgetSections.showSections = false;
                     var id = WidgetSections.sections[ind].id;
-                    if (WidgetSections.selectedSections.indexOf(id) < 0) {
+                    if (WidgetSections.selectedSections && WidgetSections.selectedSections.indexOf(id) < 0) {
                         WidgetSections.selectedSections.push(id);
                     }
-                    else {
+                    else if (WidgetSections.selectedSections) {
                         WidgetSections.selectedSections.splice(WidgetSections.selectedSections.indexOf(id), 1);
                         if (!WidgetSections.showSections && WidgetSections.selectedSections.length == 0) {
                             WidgetSections.showSections = true;
@@ -638,7 +642,7 @@
                 };
 
                 WidgetSections.resetSectionFilter = function () {
-                    if (!WidgetSections.showSections && WidgetSections.selectedSections.length == 0) {
+                    if (!WidgetSections.showSections && WidgetSections.selectedSections && WidgetSections.selectedSections.length == 0) {
                         WidgetSections.showSections = true;
                         return;
                     }
