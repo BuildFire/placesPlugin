@@ -1,8 +1,8 @@
-<div style="padding-bottom: 50px" class="item-list1"
+<div style="margin-bottom: 50px; height: calc(100% - 50px);" class="item-list1"
      infinite-scroll-distance="1"
      data-infinite-container=".infinite-scroll-parent"
      infinite-scroll="WidgetSections.loadMoreItems()"
-     infinite-scroll-disabled="WidgetSections.noMore">
+     infinite-scroll-disabled="WidgetSections.noMore" >
     <div class="plugin-banner has-info-bar clearfix"
          ng-repeat="item in WidgetSections.locationData.items | orderBy: WidgetSections.itemsOrder | filter:WidgetSections.sortFilter">
         <a ng-click="WidgetSections.showItemDetails(WidgetSections.selectedSection,item.id)">

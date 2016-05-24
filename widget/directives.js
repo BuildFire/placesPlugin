@@ -150,7 +150,21 @@
                                     }
                                 }
                             }
-                            markerCluster = new MarkerClusterer(map, placeLocationMarkers);
+
+                            var clusterStyles = [
+                                {
+                                    textColor: 'white',
+                                    url: 'http://app.buildfire.com/app/media/google_marker_blue_icon2.png',
+                                    height: 53,
+                                    width: 53
+                                }
+                            ];
+                            var mcOptions = {
+                                gridSize: 53,
+                                styles: clusterStyles,
+                                maxZoom: 15
+                            };
+                            markerCluster = new MarkerClusterer(map, placeLocationMarkers,mcOptions);
 
 
                             map.addListener('click', function () {

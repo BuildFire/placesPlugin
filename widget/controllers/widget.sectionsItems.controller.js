@@ -6,12 +6,54 @@
                 var WidgetSections = this;
                 WidgetSections.removeShowSectionsArea = true;
                 var vs = ViewStack.getCurrentView();
+
+                var _skip = 0,
+                    _skipItems = 0,
+                    view = null,
+                    mapview = null,
+                    currentLayout = '',
+                    _limit = 10,
+                    searchOptions = {
+                        //filter: {"$json.secTitle": {"$regex": '/*'}},
+                        skip: _skip,
+                        limit: _limit + 1 // the plus one is to check if there are any more
+                    }
+                    , searchOptionsItems = {
+                        filter: {"$json.itemTitle": {"$regex": '/*'}},
+                        limit: _limit + 1,
+                        skip: _skipItems
+                    }
+                    , _placesInfoData = {
+                        data: {
+                            content: {
+                                images: [],
+                                descriptionHTML: '<p>&nbsp;<br></p>',
+                                description: '<p>&nbsp;<br></p>',
+                                sortBy: Orders.ordersMap.Manually,
+                                rankOfLastItem: '',
+                                sortByItems: OrdersItems.ordersMap.Newest,
+                                showAllItems: 'true',
+                                allItemImage: ''
+                            },
+                            design: {
+                                secListLayout: "sec-list-1-1",
+                                mapLayout: "map-1",
+                                itemListLayout: "item-list-1",
+                                itemDetailsLayout: "item-details-1",
+                                secListBGImage: ""
+                            },
+                            settings: {
+                                defaultView: "list",
+                                showDistanceIn: "mi"
+                            }
+                        }
+                    };
                 WidgetSections.selectedSection = vs.sectionId;
                 if (vs.sectionId) {
                     if (vs.sectionId != 'allitems')
                         WidgetSections.selectedSections = [vs.sectionId];
-                    else
-                        WidgetSections.selectedSections = [];
+                    /*else
+                        WidgetSections.selectedSections = [];*/
 
                     $timeout(function () {
                         WidgetSections.showBtmMenu = true;
@@ -88,6 +130,7 @@
                         console.log('but no more items');
                         return;
                     }
+                    console.log('loadMoreItems-------------------------called');
 
                     updateGetOptionsItems();
 
@@ -98,10 +141,11 @@
                             //alert('full');
                             WidgetSections.noMoreItems = true;
                         }
-                        else {
+                        else if(searchOptionsItems && searchOptionsItems.limit) {
                             result.pop();
-                            searchOptionsItems.skip = searchOptions.skip + _limit;
+//                            searchOptionsItems.skip = searchOptions.skip + _limit;
                             WidgetSections.noMoreItems = false;
+                            _skipItems = result.length;
                         }
 
                         if (result.length) {
@@ -113,6 +157,8 @@
 
                         var items = WidgetSections.locationData.items ? WidgetSections.locationData.items.concat(result) : result;
                         WidgetSections.locationData.items = $filter('unique')(items, 'id');
+                        _skipItems = WidgetSections.locationData && WidgetSections.locationData.items && WidgetSections.locationData.items.length;
+                        searchOptionsItems.skip = _skipItems;
                     }, function fail() {
                         WidgetSections.isBusyItems = false;
                         console.error('error in item fetch');
@@ -132,6 +178,7 @@
                     }
                     , searchOptionsItems = {
                         filter: {"$json.itemTitle": {"$regex": '/*'}},
+                        limit: _limit + 1,
                         skip: _skipItems
                     }
                     , _placesInfoData = {
@@ -384,7 +431,7 @@
                                 break;
                         }
                     }
-                    WidgetSections.loadMoreItems();
+//                    WidgetSections.loadMoreItems();
                 }
 
                 (function () {
@@ -497,12 +544,12 @@
                     console.log('filter changed fired');
                     var itemFilter;
                     WidgetSections.selectedItem = null;
-                    if (WidgetSections.selectedSections.length) {
+                    if (WidgetSections.selectedSections && WidgetSections.selectedSections.length) {
                         // filter applied
                         itemFilter = {'$json.sections': {'$in': WidgetSections.selectedSections}};
                         searchOptionsItems.limit = _limit + 1;
                     }
-                    else {
+                    else if(WidgetSections.selectedSections) {
                         // all items selected
                         itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
                         if(searchOptionsItems.limit){
@@ -593,13 +640,17 @@
                         if (result.length <= _limit) {// to indicate there are more
                             WidgetSections.noMoreSections = true;
                         }
-                        else {
+                        else if(searchOptions && searchOptions.limit) {
                             result.pop();
-                            searchOptions.skip = searchOptions.skip + _limit;
+//                            searchOptions.skip = searchOptions.skip + _limit;
                             WidgetSections.noMoreSections = false;
+                            _skip = result.length;
                         }
 
-                        WidgetSections.sections = WidgetSections.sections ? WidgetSections.sections.concat(result) : result;
+                        var sections = WidgetSections.sections ? WidgetSections.sections.concat(result) : result;
+                        WidgetSections.sections = $filter('unique')(sections, 'id');
+                        _skip = WidgetSections.sections && WidgetSections.sections.length;
+                        searchOptions.skip = _skip;
                         WidgetSections.isBusy = false;
                     }, function fail() {
                         WidgetSections.isBusy = false;
@@ -610,10 +661,10 @@
                 WidgetSections.toggleSectionSelection = function (ind) {
                     WidgetSections.showSections = false;
                     var id = WidgetSections.sections[ind].id;
-                    if (WidgetSections.selectedSections.indexOf(id) < 0) {
+                    if (WidgetSections.selectedSections && WidgetSections.selectedSections.indexOf(id) < 0) {
                         WidgetSections.selectedSections.push(id);
                     }
-                    else {
+                    else if (WidgetSections.selectedSections) {
                         WidgetSections.selectedSections.splice(WidgetSections.selectedSections.indexOf(id), 1);
                         if (!WidgetSections.showSections && WidgetSections.selectedSections.length == 0) {
                             //WidgetSections.showSections = true;
@@ -622,7 +673,7 @@
                 };
 
                 WidgetSections.resetSectionFilter = function () {
-                    if (!WidgetSections.showSections && WidgetSections.selectedSections.length == 0) {
+                    if (!WidgetSections.showSections && WidgetSections.selectedSections && WidgetSections.selectedSections.length == 0) {
                         return;
                     }
                     WidgetSections.showSections = false;
