@@ -154,7 +154,7 @@
                             var clusterStyles = [
                                 {
                                     textColor: 'white',
-                                    url: 'http://cdn2.pjtv.com/static/v20160513a/images/startup-directory/search-startups/m1.png',
+                                    url: 'http://app.buildfire.com/app/media/google_marker_blue_icon2.png',
                                     height: 53,
                                     width: 53
                                 }
