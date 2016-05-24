@@ -12,7 +12,7 @@
         </div>
         <div class="padding-top-zero">
             <div ng-show="WidgetSections.showSections">
-                <div style="padding-bottom: 50px; height: 400px;" infinite-scroll="WidgetSections.loadMoreSections()"
+                <div style="padding-bottom: 50px; height: calc(100% - 50px);" infinite-scroll="WidgetSections.loadMoreSections()"
                      infinite-scroll-distance="1"
                      data-infinite-container=".scrollable"
                      infinite-scroll-disabled="WidgetSections.noMoreSections">
