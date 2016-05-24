@@ -691,6 +691,7 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
   //overflow: hidden;
 }
 */
+
 .showBack > .listView.front{
     position: fixed;
 }
@@ -702,4 +703,9 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
 
 .showBack > .listView.back{
     overflow-y: visible !important;
+}  overflow-y: visible !important;
+}
+
+.primaryBackgroundTheme{
+	background:#09a3ee;
 }
