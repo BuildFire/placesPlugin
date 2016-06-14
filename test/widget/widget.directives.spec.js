@@ -1,30 +1,3 @@
-describe('Unit: Default Image Directive', function () {
-
-    var $rootScope, $scope, $compile, el, $body = $('body'), simpleHtml = '<img ng-src="" default-image="" />';
-
-
-    beforeEach(function () {
-        module('placesWidget');
-
-        inject(function ($injector) {
-            $rootScope = $injector.get('$rootScope');
-            $scope = $rootScope.$new();
-            //$scope.images = [];
-            $compile = $injector.get('$compile');
-            el = $compile(angular.element(simpleHtml))($scope);
-        });
-
-        $body.append(el);
-        $rootScope.$apply();
-
-    });
-
-
-    it('should contain have a default image', function () {
-        expect(el.attr('src')).toBeTruthy();
-    });
-
-});
 xdescribe('Unit: buildFireCarousel Directive', function () {
 
     var $rootScope, $scope, $compile, el, simpleHtml = '<div id="carousel" build-fire-carousel="" ></divid>';
