@@ -5,6 +5,7 @@
             function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $timeout, OrdersItems, $filter, ViewStack) {
                 var WidgetSections = this;
                 WidgetSections.removeShowSectionsArea = true;
+                WidgetSections.selectedSections = [];
                 var vs = ViewStack.getCurrentView();
 
                 var _skip = 0,

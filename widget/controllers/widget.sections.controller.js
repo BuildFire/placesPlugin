@@ -9,7 +9,7 @@
                 WidgetSections.menuTab = 'Category';
                 WidgetSections.filterUnapplied = true;
                 //WidgetSections.mainViewBtmMenu = true;
-                //WidgetSections.selectedSections = [];
+                WidgetSections.selectedSections = [];
 
                 WidgetSections.onSliderChange = function () {
                     WidgetSections.filterUnapplied = false; // this tells us that the slider has been set by the user
