@@ -508,6 +508,7 @@
 
                 function refreshSections() {
                     WidgetSections.sections = [];
+                    searchOptions.skip=0;
                     WidgetSections.noMoreSections = false;
                     WidgetSections.loadMoreSections();
                     if (!$scope.$$phase)$scope.$digest();
@@ -617,7 +618,7 @@
                             result.pop();
 //                            searchOptions.skip = searchOptions.skip + _limit;
                             WidgetSections.noMoreSections = false;
-                            _skip = result.length;
+                           // _skip = result.length;
                         }
 
                         var sections = WidgetSections.sections ? WidgetSections.sections.concat(result) : result;
