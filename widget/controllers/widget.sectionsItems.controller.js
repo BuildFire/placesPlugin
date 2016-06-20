@@ -5,6 +5,7 @@
             function ($scope, $window, DB, COLLECTIONS, $rootScope, Buildfire, AppConfig, Messaging, EVENTS, PATHS, Location, Orders, DEFAULT_VIEWS, GeoDistance, $timeout, OrdersItems, $filter, ViewStack) {
                 var WidgetSections = this;
                 WidgetSections.removeShowSectionsArea = true;
+                WidgetSections.selectedSections = [];
                 var vs = ViewStack.getCurrentView();
 
                 var _skip = 0,
@@ -684,9 +685,9 @@
 
                 WidgetSections.openInMap = function () {
                     if (buildfire.context.device && buildfire.context.device.platform == 'ios')
-                        window.open("maps://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lng + "," + WidgetSections.selectedItem.data.address.lat);
+                        window.open("maps://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lat + "," + WidgetSections.selectedItem.data.address.lng);
                     else
-                        window.open("http://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lng + "," + WidgetSections.selectedItem.data.address.lat);
+                        window.open("http://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lat + "," + WidgetSections.selectedItem.data.address.lng);
 
                 };
 

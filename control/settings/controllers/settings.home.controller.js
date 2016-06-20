@@ -14,7 +14,7 @@
                 SettingsHome._lastSaved = angular.copy(SettingsHome.placeInfo);
             }
             else {
-                SettingsHome.placeInfo = {data: angular.copy(DEFAULT_DATA.PLACE_INFO)};
+                SettingsHome.placeInfo = angular.copy(DEFAULT_DATA.PLACE_INFO);
                 SettingsHome._lastSaved = angular.copy(SettingsHome.placeInfo);
             }
 
