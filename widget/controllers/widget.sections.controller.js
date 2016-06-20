@@ -359,6 +359,8 @@
 
                 WidgetSections.applyOnUpdateWatcher();
 
+                Buildfire.datastore.onRefresh( WidgetSections.applyOnUpdateWatcher);
+
                 $scope.distanceSlider = {
                     min: 0,
                     max: 300,
