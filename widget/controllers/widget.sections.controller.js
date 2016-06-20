@@ -400,7 +400,7 @@
 //                    loadAllItemsOfSections();
                 }
 
-                (function () {
+                function initPlaces() {
                     PlaceInfo.get().then(function (data) {
                         if (data && data.id)
                             WidgetSections.placesInfo = data;
@@ -411,6 +411,9 @@
                         WidgetSections.placesInfo = _placesInfoData;
                         initPage();
                     });
+                }
+                (function () {
+                    initPlaces();
                 })();
 
 
