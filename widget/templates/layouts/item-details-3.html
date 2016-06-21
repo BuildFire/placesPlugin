@@ -38,9 +38,9 @@
                          data-ng-repeat="image in WidgetItem.item.data.images">
                         <a href="{{image.url}}" data-ng-if="image.url"
                            target="{{image.openIn}}"><img
-                                load-image="16x9" data-final-src="{{image.iconUrl | cropImage : 140 : 100}}"></a>
+                                load-image="16x9" data-final-src="{{ image.iconUrl }}" crop-width="140" crop-height="100" crop-type="crop"></a>
                         <img data-ng-if="!image.url" load-image="16x9"
-                             data-final-src="{{image.iconUrl | cropImage : 140 : 100}}">
+                             data-final-src="{{ image.iconUrl }}" crop-width="140" crop-height="100" crop-type="crop">
                     </div>
                 </div>
             </div>
