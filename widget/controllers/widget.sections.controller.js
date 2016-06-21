@@ -359,7 +359,9 @@
 
                 WidgetSections.applyOnUpdateWatcher();
 
-                Buildfire.datastore.onRefresh( WidgetSections.applyOnUpdateWatcher);
+                Buildfire.datastore.onRefresh(function(){
+                    Location.goToHome();
+                });
 
                 $scope.distanceSlider = {
                     min: 0,
@@ -675,10 +677,6 @@
                 };
 
 
-                /*document.addEventListener("deviceready", );
-                 $scope.$on('$viewContentLoaded', function () {
-                 getGeoLocation()
-                 });*/
                 $scope.$watch(function () {
                     return WidgetSections.locationData.items;
                 }, getItemsDistance);
