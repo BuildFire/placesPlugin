@@ -12,13 +12,13 @@
                 Buildfire.history.get('pluginBreadcrumbsOnly', function (err, result) {
                     if(result && result.length) {
                         result.forEach(function(breadCrumb) {
-                            if(breadCrumb.label == 'SectionItems') {
+                            if(breadCrumb.label == 'Section') {
                                 breadCrumbFlag = false;
                             }
                         });
                     }
                     if(breadCrumbFlag) {
-                        Buildfire.history.push('SectionItems', { elementToShow: 'SectionItems' });
+                        Buildfire.history.push('Section', { elementToShow: 'Section' });
                     }
                 });
                 var _skip = 0,
