@@ -7,7 +7,20 @@
                 WidgetSections.removeShowSectionsArea = true;
                 WidgetSections.selectedSections = [];
                 var vs = ViewStack.getCurrentView();
+                var breadCrumbFlag = true;
 
+                Buildfire.history.get('pluginBreadcrumbsOnly', function (err, result) {
+                    if(result && result.length) {
+                        result.forEach(function(breadCrumb) {
+                            if(breadCrumb.label == 'Section') {
+                                breadCrumbFlag = false;
+                            }
+                        });
+                    }
+                    if(breadCrumbFlag) {
+                        Buildfire.history.push('Section', { elementToShow: 'Section' });
+                    }
+                });
                 var _skip = 0,
                     _skipItems = 0,
                     view = null,

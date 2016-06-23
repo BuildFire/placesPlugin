@@ -58,6 +58,20 @@
              else {*/
             /*  WidgetItem.placeInfo = _infoData;*/
             //}
+            var breadCrumbFlag = true;
+
+            Buildfire.history.get('pluginBreadcrumbsOnly', function (err, result) {
+                if(result && result.length) {
+                    result.forEach(function(breadCrumb) {
+                        if(breadCrumb.label == 'Item') {
+                            breadCrumbFlag = false;
+                        }
+                    });
+                }
+                if(breadCrumbFlag) {
+                    Buildfire.history.push('Item', { elementToShow: 'Item' });
+                }
+            });
 
             var vs = ViewStack.getCurrentView();
 

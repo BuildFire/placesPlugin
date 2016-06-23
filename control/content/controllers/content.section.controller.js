@@ -185,6 +185,7 @@
                  * done will close the single item view
                  */
                 ContentSection.done = function () {
+                    Buildfire.history.pop();
                     Location.goToHome();
                 };
 

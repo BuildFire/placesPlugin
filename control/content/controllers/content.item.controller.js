@@ -214,6 +214,7 @@
                  * done will close the single item view
                  */
                 ContentItem.done = function () {
+                    Buildfire.history.pop();
                     if ($routeParams.sectionId != 'allitems') {
                         Location.go('#/items/' + $routeParams.sectionId);
                     }

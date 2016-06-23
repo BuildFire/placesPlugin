@@ -68,13 +68,20 @@
                 }
 
             });
-
+/*
             buildfire.navigation.onBackButtonClick = function () {
                 if (ViewStack.hasViews()) {
                     ViewStack.pop({propagate: true});
                 } else {
                     buildfire.navigation._goBackOne();
                 }
-            };
+            };*/
+        }])
+        .run(['ViewStack', function (ViewStack) {
+            buildfire.history.onPop(function(err,data){
+                if (ViewStack.hasViews()) {
+                    ViewStack.pop({propagate: true});
+                }
+            });
         }]);
 })(window.angular, window.buildfire);

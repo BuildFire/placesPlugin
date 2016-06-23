@@ -301,6 +301,7 @@
                 };
 
                 ContentItems.done = function () {
+                    Buildfire.history.pop();
                     Location.goToHome();
                 };
 
