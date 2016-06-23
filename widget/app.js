@@ -80,7 +80,7 @@
         .run(['ViewStack', function (ViewStack) {
             buildfire.history.onPop(function(err,data){
                 if (ViewStack.hasViews()) {
-                    ViewStack.pop();
+                    ViewStack.pop({propagate: true});
                 }
             });
         }]);

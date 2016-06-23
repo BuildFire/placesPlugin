@@ -30,20 +30,6 @@
                     , _skip = 0
                     , _limit = 10
                     , _maxLimit = 19;
-                var breadCrumbFlag = true;
-
-                Buildfire.history.get('pluginBreadcrumbsOnly', function (err, result) {
-                    if(result && result.length) {
-                        result.forEach(function(breadCrumb) {
-                            if(breadCrumb.label == 'SectionItems') {
-                                breadCrumbFlag = false;
-                            }
-                        });
-                    }
-                    if(breadCrumbFlag) {
-                        Buildfire.history.push('SectionItems', { elementToShow: 'SectionItems' });
-                    }
-                });
 
                 if (sectionInfo != 'allitems')
                     ContentItems.sectionInfo = sectionInfo;
