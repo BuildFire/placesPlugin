@@ -324,21 +324,6 @@
         .run(['Location', 'Messaging', 'EVENTS', 'PATHS', '$rootScope', 'Buildfire', function (Location, Messaging, EVENTS, PATHS, $rootScope, Buildfire) {
             // Handler to receive message from widget
             Messaging.onReceivedMessage = function (event) {
-
-                function sectionURL(url, secId) {
-                    url = url + "items";
-                    if (secId != 'allitems') {
-                        url = url + "/" + secId;
-                    }
-                    else if (secId == 'allitems') {
-                        url = '#/allitems';
-                    }
-                    else {
-                        Location.goToHome();
-                    }
-                    Location.go(url);
-                }
-
                 console.log('Event rcv-----on Control Side------------------------?????????????????????????????????---------------********************* in Control Panal side----', event);
                 if (event) {
                     switch (event.name) {
@@ -359,28 +344,29 @@
                                     else if (secId) {
                                         url = url + "/" + secId;
                                     }
-                                    Location.go(url);
+
                                     break;
                                 case PATHS.HOME:
                                     url = url + "home";
-                                    Location.go(url);
                                     break;
                                 case PATHS.SECTION:
-                                    Buildfire.history.get({pluginBreadcrumbsOnly: true}, function (e, h) {
-                                        if (e)
-                                            sectionURL(url, secId);
-                                        else {
-                                            if (h && h.length > 1 && h[h.length - 2])
-                                                Buildfire.history.pop();
-                                            else
-                                                sectionURL(url, secId);
-                                        }
-                                    });
+                                    url = url + "items";
+                                    if (secId != 'allitems') {
+                                        url = url + "/" + secId;
+                                    }
+                                    else if (secId == 'allitems') {
+                                        url = '#/allitems';
+                                    }
+                                    else {
+                                        Location.goToHome();
+                                    }
                                     break;
                                 default :
-                                    Location.go(url);
+
                                     break;
                             }
+                            //if (url)
+                            Location.go(url);
                             break;
                     }
                 }

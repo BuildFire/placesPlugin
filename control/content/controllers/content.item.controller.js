@@ -15,6 +15,23 @@
                 //Scroll current view to top when page loaded.
                 Buildfire.navigation.scrollTop();
 
+                var breadCrumbFlag = true;
+                /**
+                 * Breadcrumbs  related implementation
+                 */
+                Buildfire.history.get('pluginBreadcrumbsOnly', function (err, result) {
+                    if(result && result.length) {
+                        result.forEach(function(breadCrumb) {
+                            if(breadCrumb.label == 'Item') {
+                                breadCrumbFlag = false;
+                            }
+                        });
+                    }
+                    if(breadCrumbFlag) {
+                        Buildfire.history.push('Item', { elementToShow: 'Item' });
+                    }
+                });
+
                 var tmrDelayForItem = null
                     , Items = new DB(COLLECTIONS.Items)
                     , PlaceInfo = new DB(COLLECTIONS.PlaceInfo)
@@ -214,6 +231,7 @@
                  * done will close the single item view
                  */
                 ContentItem.done = function () {
+                    Buildfire.history.pop();
                     if ($routeParams.sectionId != 'allitems') {
                         Location.go('#/items/' + $routeParams.sectionId);
                     }

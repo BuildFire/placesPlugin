@@ -11,7 +11,20 @@
                 Buildfire.appearance.setHeaderVisibility(false);
 
                 var isNewSectionInserted = false;
+                var breadCrumbFlag = true;
 
+                Buildfire.history.get('pluginBreadcrumbsOnly', function (err, result) {
+                    if(result && result.length) {
+                        result.forEach(function(breadCrumb) {
+                            if(breadCrumb.label == 'Section') {
+                                breadCrumbFlag = false;
+                            }
+                        });
+                    }
+                    if(breadCrumbFlag) {
+                        Buildfire.history.push('Section', { elementToShow: 'Section' });
+                    }
+                });
                 //Scroll current view to top when page loaded.
                 Buildfire.navigation.scrollTop();
                 /**
@@ -185,6 +198,7 @@
                  * done will close the single item view
                  */
                 ContentSection.done = function () {
+                    Buildfire.history.pop();
                     Location.goToHome();
                 };
 
