@@ -69,10 +69,10 @@
 
                 WidgetSections.showDescription = function () {
                     console.log('Description------------------------', WidgetSections.placesInfo, WidgetSections.placesInfo.data.content.descriptionHTML);
-                    if (WidgetSections.placesInfo.data.content.descriptionHTML == '<p>&nbsp;<br></p>' || WidgetSections.placesInfo.data.content.descriptionHTML == '<p><br data-mce-bogus="1"></p>' || WidgetSections.placesInfo.data.content.descriptionHTML == "")
-                        return false;
-                    else
+                    if (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.content && WidgetSections.placesInfo.data.content.descriptionHTML != '<p>&nbsp;<br></p>' && WidgetSections.placesInfo.data.content.descriptionHTML != '<p><br data-mce-bogus="1"></p>' && WidgetSections.placesInfo.data.content.descriptionHTML != "")
                         return true;
+                    else
+                        return false;
                 };
                 /**
                  * loadMoreItems method loads the sections in list page.
@@ -101,17 +101,15 @@
                         if (result.length) {
                             result.forEach(function (_item) {
                                 _item.data.distance = 0; // default distance value
-                                _item.data.distanceText = (WidgetSections.locationData.currentCoordinates) ? 'Fetching..' : 'NA';
+                                _item.data.distanceText = (WidgetSections.locationData && WidgetSections.locationData.currentCoordinates) ? 'Fetching..' : 'NA';
                             });
                         }
 
                         console.log('result', result);
-                        console.log('WidgetSections.locationData.items BEFORE', WidgetSections.locationData.items);
-                        var items = WidgetSections.locationData.items ? WidgetSections.locationData.items.concat(result) : result;
+                        var items = WidgetSections.locationData && WidgetSections.locationData.items ? WidgetSections.locationData.items.concat(result) : result;
                         WidgetSections.locationData.items = $filter('unique')(items, 'id');
                         _skipItems = WidgetSections.locationData && WidgetSections.locationData.items && WidgetSections.locationData.items.length;
                         searchOptionsItems.skip = _skipItems;
-                        console.log('WidgetSections.locationData.items AFTER', WidgetSections.locationData.items);
                     }, function fail() {
                         WidgetSections.isBusyItems = false;
                         console.error('error in item fetch');
@@ -140,9 +138,9 @@
                                 images: [],
                                 descriptionHTML: '<p>&nbsp;<br></p>',
                                 description: '<p>&nbsp;<br></p>',
-                                sortBy: Orders.ordersMap.Manually,
+                                sortBy: Orders.ordersMap && Orders.ordersMap.Manually,
                                 rankOfLastItem: '',
-                                sortByItems: OrdersItems.ordersMap.Newest,
+                                sortByItems: OrdersItems.ordersMap && OrdersItems.ordersMap.Newest,
                                 showAllItems: 'true',
                                 allItemImage: ''
                             },
@@ -262,7 +260,7 @@
                     console.log('akh', WidgetSections.placesInfo);
                     if (currentLayout == '' || currentLayout == null || currentLayout.indexOf('list') != -1) {
 
-                        if (WidgetSections.placesInfo && WidgetSections.placesInfo.data.content.images.length) {
+                        if (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.content && WidgetSections.placesInfo.data.content.images && WidgetSections.placesInfo.data.content.images.length) {
                             loadItems(WidgetSections.placesInfo.data.content.images);
                         } else {
                             loadItems([]);
@@ -270,7 +268,7 @@
                     } else {
 
 
-                        if (WidgetSections.selectedItem && WidgetSections.selectedItem.data.images.length) {
+                        if (WidgetSections.selectedItem && WidgetSections.selectedItem.data && WidgetSections.selectedItem.data.images && WidgetSections.selectedItem.data.images.length) {
                             loadMapCarouselItems(WidgetSections.selectedItem.data.images);
                         } else {
                             loadMapCarouselItems([]);
@@ -298,7 +296,7 @@
                                         $window.location.reload();
 
                                     var sortByItemsChange = false;
-                                    if (event.data.content.sortByItems != WidgetSections.placesInfo.data.content.sortByItems)
+                                    if (WidgetSections.placesInfo.data.content && event.data.content && event.data.content.sortByItems != WidgetSections.placesInfo.data.content.sortByItems)
                                         sortByItemsChange = true;
                                 }
                                 WidgetSections.placesInfo = event;
@@ -308,7 +306,7 @@
 
                                 WidgetSections.selectedItem = null;
                                 WidgetSections.selectedItemDistance = null;
-                                WidgetSections.currentView = WidgetSections.placesInfo.data.settings.defaultView;
+                                WidgetSections.currentView = WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings && WidgetSections.placesInfo.data.settings.defaultView;
                                 if (!$scope.$$phase)$scope.$digest();
                                 refreshSections();
 
@@ -383,15 +381,14 @@
                             floor: 0
                         };
                     }
-                    console.log('lakshay', WidgetSections.placesInfo);
                     WidgetSections.currentView = (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings) ? WidgetSections.placesInfo.data.settings.defaultView : 'list';
                     if (WidgetSections.currentView) {
                         switch (WidgetSections.currentView) {
                             case DEFAULT_VIEWS.LIST:
-                                currentLayout = WidgetSections.placesInfo.data.design.secListLayout;
+                                currentLayout = WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.design && WidgetSections.placesInfo.data.design.secListLayout;
                                 break;
                             case DEFAULT_VIEWS.MAP:
-                                currentLayout = WidgetSections.placesInfo.data.design.mapLayout;
+                                currentLayout = WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.design && WidgetSections.placesInfo.data.design.mapLayout;
                                 break;
                         }
                     }
@@ -486,7 +483,7 @@
 
                 function getItemsDistance(_items) {
                     console.log('WidgetSections.locationData.items', _items);
-                    if (WidgetSections.locationData.currentCoordinates == null) {
+                    if (WidgetSections.locationData && WidgetSections.locationData.currentCoordinates == null) {
                         return;
                     }
                     if (_items && _items.length) {
