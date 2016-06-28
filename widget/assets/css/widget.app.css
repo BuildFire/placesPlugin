@@ -677,7 +677,7 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
     text-decoration: none;
     border-radius: 3.2rem;
     text-align: center;
-    cursor: pointer;
+    /*cursor: pointer;*/
 }
 .showBack {
     transform: rotateY(180deg);
