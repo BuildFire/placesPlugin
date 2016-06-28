@@ -669,8 +669,8 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
     /* bottom: 1rem; */
     /* right: 1rem; */
     /* width: 3.2rem; */
-    height: 3.2rem;
-    line-height: 3.2rem;
+    /*height: 3.2rem;*/
+    /*line-height: 3.2rem;*/
     font-size: 1.4rem;
     color: #fff;
     background-color: rgba(0,0,0,0.3);
