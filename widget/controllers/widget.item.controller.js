@@ -13,9 +13,9 @@
                             images: [],
                             descriptionHTML: '<p>&nbsp;<br></p>',
                             description: '<p>&nbsp;<br></p>',
-                            sortBy: Orders.ordersMap.Manually,
+                            sortBy: Orders.ordersMap && Orders.ordersMap.Manually,
                             rankOfLastItem: '',
-                            sortByItems: OrdersItems.ordersMap.Newest,
+                            sortByItems: OrdersItems.ordersMap && OrdersItems.ordersMap.Newest,
                             showAllItems: 'true',
                             allItemImage: ''
                         },
@@ -101,7 +101,7 @@
 
 
             function initItem() {
-                if (WidgetItem.item.data) {
+                if (WidgetItem.item && WidgetItem.item.data) {
                     if (WidgetItem.item.data.images) {
                         $timeout(function () {
                             initCarousel(WidgetItem.item.data.images);
@@ -250,10 +250,10 @@
 
             // Show Body Content when it is not blank
             WidgetItem.showBodyContent = function () {
-                if ((WidgetItem.item && WidgetItem.item.data) && (WidgetItem.item.data.bodyContent == '<p>&nbsp;<br></p>' || WidgetItem.item.data.bodyContent == '<p><br data-mce-bogus="1"></p>' || WidgetItem.item.data.bodyContent == ''))
-                    return false;
-                else
+                if (WidgetItem.item && WidgetItem.item.data && WidgetItem.item.data.bodyContent != '<p>&nbsp;<br></p>' && WidgetItem.item.data.bodyContent != '<p><br data-mce-bogus="1"></p>' && WidgetItem.item.data.bodyContent != '')
                     return true;
+                else
+                    return false;
             };
 
 
