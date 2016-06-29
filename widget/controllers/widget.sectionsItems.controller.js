@@ -67,7 +67,7 @@
                     if (vs.sectionId != 'allitems')
                         WidgetSections.selectedSections = [vs.sectionId];
                     /*else
-                        WidgetSections.selectedSections = [];*/
+                     WidgetSections.selectedSections = [];*/
 
                     $timeout(function () {
                         WidgetSections.showBtmMenu = true;
@@ -514,16 +514,25 @@
                 /// load items
                 function loadMapCarouselItems(carouselItems) {
                     $timeout(function () {
-                        if (!mapview || angular.element("#mapCarousel").hasClass('plugin-slider') == false) {
+                        if(angular.element('#mapCarousel1').length) {
+
+                        } else if (angular.element("#mapCarousel").length) {
+                            angular.element("#mapCarousel").attr('id', 'mapCarousel1');
+                        }
+                        if (angular.element("#mapCarousel").length && (!mapview || angular.element("#mapCarousel").hasClass('plugin-slider') == false)) {
                             mapview = new Buildfire.components.carousel.view("#mapCarousel", []);  ///create new instance of buildfire carousel viewer
+                            mapview.loadItems(carouselItems);
+                        }
+                        if (angular.element("#mapCarousel1").length && (!mapview || angular.element("#mapCarousel1").hasClass('plugin-slider') == false)) {
+                            mapview = new Buildfire.components.carousel.view("#mapCarousel1", []);
+                            mapview.loadItems(carouselItems);
                         }
 
                         // create an instance and pass it the items if you don't have items yet just pass []
-                        if (mapview)
-                            mapview.loadItems(carouselItems);
+                        /*if (mapview) {
+                         mapview.loadItems(carouselItems);
+                         }*/
                     }, 1500);
-
-
                 }
 
                 function getItemsDistance(_items) {

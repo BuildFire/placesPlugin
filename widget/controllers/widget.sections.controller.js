@@ -463,22 +463,22 @@
                     else {
                         view = new Buildfire.components.carousel.view("#carousel", carouselItems);
                     }
-
                 }
 
                 /// load items
                 function loadMapCarouselItems(carouselItems) {
                     $timeout(function () {
-                        if (!mapview || angular.element("#mapCarousel").hasClass('plugin-slider') == false) {
-                            mapview = new Buildfire.components.carousel.view("#mapCarousel", []);  ///create new instance of buildfire carousel viewer
+                        if(angular.element('#mapCarousel1').length) {
+                            mapview = null;
+                            angular.element("#mapCarousel1").replaceWith('<div id="mapCarousel" map-build-fire-carousel="" class="plugin-slider"></div>');
                         }
 
-                        // create an instance and pass it the items if you don't have items yet just pass []
-                        if (mapview)
+                        if (angular.element("#mapCarousel").length && (!mapview || angular.element("#mapCarousel").hasClass('plugin-slider') == false)) {
+                            mapview = new Buildfire.components.carousel.view("#mapCarousel", []);  ///create new instance of buildfire carousel viewer
                             mapview.loadItems(carouselItems);
-                    }, 1500);
-
-
+                        }
+                        // create an instance and pass it the items if you don't have items yet just pass []
+                    }, 150);
                 }
 
                 function getItemsDistance(_items) {
@@ -615,7 +615,7 @@
                             result.pop();
 //                            searchOptions.skip = searchOptions.skip + _limit;
                             WidgetSections.noMoreSections = false;
-                           // _skip = result.length;
+                            // _skip = result.length;
                         }
 
                         var sections = WidgetSections.sections ? WidgetSections.sections.concat(result) : result;
