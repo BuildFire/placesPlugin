@@ -676,7 +676,7 @@ html[browser="Firefox"] .layout3 .list-layout .list-item-media .list-media-holde
     background-color: rgba(0,0,0,0.3);
     text-decoration: none;
     border-radius: 3.2rem;
-    text-align: center;
+    /*text-align: center;*/
     /*cursor: pointer;*/
 }
 .showBack {
