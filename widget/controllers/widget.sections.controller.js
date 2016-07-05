@@ -82,7 +82,7 @@
                         console.log('but no more items');
                         return;
                     }
-                    console.log('items load called');
+                    console.log('items load called', mapview);
                     updateGetOptionsItems();
                     WidgetSections.isBusyItems = true;
                     Items.find(searchOptionsItems).then(function success(result) {
