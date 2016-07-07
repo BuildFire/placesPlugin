@@ -189,7 +189,7 @@
                 }
             }
         })
-        .directive("loadImage", ['Buildfire', function (Buildfire) {
+        .directive("loadImage", function () {
             return {
                 restrict: 'A',
                 link: function (scope, element, attrs) {
@@ -197,7 +197,7 @@
 
                     var _img = attrs.finalSrc;
                     if (attrs.cropType == 'resize') {
-                        Buildfire.imageLib.local.resizeImage(_img, {
+                        buildfire.imageLib.local.resizeImage(_img, {
                             width: attrs.cropWidth,
                             height: attrs.cropHeight
                         }, function (err, imgUrl) {
@@ -205,7 +205,7 @@
                             replaceImg(_img);
                         });
                     } else {
-                        Buildfire.imageLib.local.cropImage(_img, {
+                        buildfire.imageLib.local.cropImage(_img, {
                             width: attrs.cropWidth,
                             height: attrs.cropHeight
                         }, function (err, imgUrl) {
@@ -224,7 +224,7 @@
                     }
                 }
             };
-        }])
+        })
         .directive('backImg', ["$rootScope", function ($rootScope) {
             return function (scope, element, attrs) {
                 attrs.$observe('backImg', function (value) {
