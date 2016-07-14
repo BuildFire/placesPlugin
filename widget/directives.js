@@ -490,7 +490,7 @@
                 });
             };
         }])*/
-        .directive("loadImage", [function () {
+       /* .directive("loadImage", [function () {
             return {
                 restrict: 'A',
                 //scope: {finalSrc:'=finalSrc'},
@@ -518,5 +518,5 @@
                     });
                 }
             };
-        }]);
+        }]);*/
 })(window.angular, window.buildfire, window);
