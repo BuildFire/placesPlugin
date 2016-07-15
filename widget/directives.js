@@ -236,7 +236,7 @@
                         }, function (err, imgUrl) {
                             if (imgUrl) {
                                 img = imgUrl;
-                                element.attr("style", 'background:url(' + img + ') !important');
+                                element.attr("style", 'background:url(' + img + ') !important;background-size: cover !important;');
                             } else {
                                 img = '';
                                 element.attr("style", 'background-color:white');
@@ -490,7 +490,7 @@
                 });
             };
         }])*/
-        .directive("loadImage", [function () {
+       /* .directive("loadImage", [function () {
             return {
                 restrict: 'A',
                 //scope: {finalSrc:'=finalSrc'},
@@ -518,5 +518,5 @@
                     });
                 }
             };
-        }]);
+        }]);*/
 })(window.angular, window.buildfire, window);
