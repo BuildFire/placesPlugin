@@ -231,8 +231,8 @@
                     var img = '';
                     if (value) {
                         buildfire.imageLib.local.cropImage(value, {
-                            width: window.innerWidth,
-                            height: window.innerHeight
+                            width: screen.width,
+                            height: screen.height
                         }, function (err, imgUrl) {
                             if (imgUrl) {
                                 img = imgUrl;
