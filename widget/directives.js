@@ -236,7 +236,7 @@
                         }, function (err, imgUrl) {
                             if (imgUrl) {
                                 img = imgUrl;
-                                element.attr("style", 'background:url(' + img + ') !important');
+                                element.attr("style", 'background:url(' + img + ') !important; background-attachment:scroll;);
                             } else {
                                 img = '';
                                 element.attr("style", 'background-color:white');
