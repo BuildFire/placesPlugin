@@ -144,13 +144,17 @@
                         console.log('but no more items');
                         return;
                     }
-                    console.log('loadMoreItems-------------------------called');
+                    console.log('loadMoreItems-------------------------called', mapview);
 
                     updateGetOptionsItems();
-
+                    if(WidgetSections.currentView == 'map') {
+                        searchOptionsItems.limit = 50;
+                        _limit = 49;
+                    }
                     WidgetSections.isBusyItems = true;
                     Items.find(searchOptionsItems).then(function success(result) {
                         WidgetSections.isBusyItems = false;
+                        searchOptionsItems.limit = 11;
                         if (result.length <= _limit) {// to indicate there are more
                             //alert('full');
                             WidgetSections.noMoreItems = true;
@@ -161,6 +165,7 @@
                             WidgetSections.noMoreItems = false;
                             _skipItems = result.length;
                         }
+                        _limit = 10;
 
                         if (result.length) {
                             result.forEach(function (_item) {
@@ -173,6 +178,8 @@
                         WidgetSections.locationData.items = $filter('unique')(items, 'id');
                         _skipItems = WidgetSections.locationData && WidgetSections.locationData.items && WidgetSections.locationData.items.length;
                         searchOptionsItems.skip = _skipItems;
+                        if(WidgetSections.currentView == 'map' && !WidgetSections.noMoreItems)
+                            WidgetSections.loadMoreItems();
                     }, function fail() {
                         WidgetSections.isBusyItems = false;
                         console.error('error in item fetch');
@@ -575,9 +582,9 @@
                     else if(WidgetSections.selectedSections) {
                         // all items selected
                         itemFilter = {"$json.itemTitle": {"$regex": '/*'}};
-                        if(searchOptionsItems.limit){
+                        /*if(searchOptionsItems.limit){
                             delete searchOptionsItems.limit;
-                        }
+                        }*/
                     }
                     searchOptionsItems.filter = itemFilter;
                     refreshItems();
@@ -714,6 +721,9 @@
                 };
 
                 WidgetSections.refreshLocation = function () {
+                    if(WidgetSections.currentView == 'map') {
+                        WidgetSections.loadMoreItems();
+                    }
                     getGeoLocation();
                 };
 

@@ -15,6 +15,11 @@ describe('Unit : Controller - WidgetSectionsCtrl', function () {
         },
         datastore: {
             onUpdate: function () {
+            },
+            onRefresh: function () {
+                return{
+                    clear:function(){}
+                }
             }
         }
     };
@@ -299,6 +304,11 @@ describe('Unit : Controller - WidgetSectionsCtrl Null Case', function () {
         },
         datastore: {
             onUpdate: function () {
+            },
+            onRefresh: function () {
+                return{
+                    clear:function(){}
+                }
             }
         }
     };

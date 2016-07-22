@@ -82,7 +82,7 @@
                         console.log('but no more items');
                         return;
                     }
-                    console.log('items load called');
+                    console.log('items load called', mapview);
                     updateGetOptionsItems();
                     WidgetSections.isBusyItems = true;
                     Items.find(searchOptionsItems).then(function success(result) {
@@ -357,6 +357,10 @@
 
                 WidgetSections.applyOnUpdateWatcher();
 
+                Buildfire.datastore.onRefresh(function(){
+                    Location.goToHome();
+                });
+
                 $scope.distanceSlider = {
                     min: 0,
                     max: 300,
@@ -395,7 +399,7 @@
 //                    loadAllItemsOfSections();
                 }
 
-                (function () {
+                function initPlaces() {
                     PlaceInfo.get().then(function (data) {
                         if (data && data.id)
                             WidgetSections.placesInfo = data;
@@ -406,6 +410,9 @@
                         WidgetSections.placesInfo = _placesInfoData;
                         initPage();
                     });
+                }
+                (function () {
+                    initPlaces();
                 })();
 
 
@@ -667,10 +674,6 @@
                 };
 
 
-                /*document.addEventListener("deviceready", );
-                 $scope.$on('$viewContentLoaded', function () {
-                 getGeoLocation()
-                 });*/
                 $scope.$watch(function () {
                     return WidgetSections.locationData.items;
                 }, getItemsDistance);
