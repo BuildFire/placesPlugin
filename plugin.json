@@ -19,7 +19,7 @@
   },
   "widget": {
   },
-  "features": ["GEO"],
+  "features": [{"name": "Geo"}],
   "languages": [
     "en"
   ]
