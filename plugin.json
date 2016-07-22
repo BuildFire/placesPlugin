@@ -5,6 +5,7 @@
   "supportEmail": "support@buildfire.com",
   "supportSite":"http://support.appdocumentation.com/knowledge-base/places-plugin-tutorial/",
   "pluginIcon": "icon.png",
+  "offlineModeEnabled": true,
   "control": {
     "content": {
       "enabled": true

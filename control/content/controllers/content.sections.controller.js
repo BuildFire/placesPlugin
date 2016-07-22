@@ -360,10 +360,46 @@
                                     item.rank = rankItem;
                                 });
                                 console.log('adding items', secTitle, items);
-                                Items.insert(items).then(function (items_added) {
-                                    console.log('items_added', items_added);
+                                var splitElements = [], element;
+                                if(items.length > 50){
+                                    splitElements = splitItems(items, 50);
+                                }else{
+                                    splitElements = items;
+                                }
+                                angular.forEach(splitElements, function (element) {
+                                    console.log('Element in For EACH-------------------------',element, element && element.length);
+                                    Items.insert(element).then(function (items_added) {
+                                        console.log('items_added', items_added);
+                                    });
+
                                 });
-                            };
+                            }
+                          function splitItems(elements, delimiter) {
+                              var elements_length = elements.length;
+
+                              if (elements_length > delimiter) {
+                                  var myItems = [], // parent array for each sub array
+                                    first = 0, // used to capture the first element in each sub array
+                                    index = 0; // used to capture the index for each sub array
+
+                                  for (var i = 0; i < elements_length; ++i) {
+                                      if (i % delimiter === 0) {
+                                          // Capture the first element of each sub array from the original array, when i is a modulus factor of the delimiter.
+                                          first = i;
+                                      } else if (delimiter - (i % delimiter) === 1) {
+                                          // Build each sub array, from the original array, sliced every time the i one minus the modulus factor of the delimiter.
+                                          index = (i + 1) / delimiter - 1;
+                                          myItems[index] = elements.slice(first, i + 1);
+                                      }
+                                      else if(i + 1 === elements_length){
+                                          // Build the last sub array which contain delimiter number or less elements
+                                          myItems[index + 1] = elements.slice(first, i + 1);
+                                      }
+                                  }
+                                  // Returned is an array of arrays
+                                   return myItems;
+                              }
+                          }
 
                             var addItem = function (row, sec) {
 
