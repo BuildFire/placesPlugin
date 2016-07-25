@@ -267,6 +267,11 @@
                         }
                     } else {
 
+                        if (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.content && WidgetSections.placesInfo.data.content.images && WidgetSections.placesInfo.data.content.images.length) {
+                            loadItems(WidgetSections.placesInfo.data.content.images);
+                        } else {
+                            loadItems([]);
+                        }
 
                         if (WidgetSections.selectedItem && WidgetSections.selectedItem.data && WidgetSections.selectedItem.data.images && WidgetSections.selectedItem.data.images.length) {
                             loadMapCarouselItems(WidgetSections.selectedItem.data.images);
@@ -482,8 +487,9 @@
 
                         if (angular.element("#mapCarousel").length && (!mapview || angular.element("#mapCarousel").hasClass('plugin-slider') == false)) {
                             mapview = new Buildfire.components.carousel.view("#mapCarousel", []);  ///create new instance of buildfire carousel viewer
-                            mapview.loadItems(carouselItems);
                         }
+                        if(angular.element("#mapCarousel").length)
+                            mapview.loadItems(carouselItems);
                         // create an instance and pass it the items if you don't have items yet just pass []
                     }, 150);
                 }

@@ -528,17 +528,12 @@
                         }
                         if (angular.element("#mapCarousel").length && (!mapview || angular.element("#mapCarousel").hasClass('plugin-slider') == false)) {
                             mapview = new Buildfire.components.carousel.view("#mapCarousel", []);  ///create new instance of buildfire carousel viewer
-                            mapview.loadItems(carouselItems);
                         }
                         if (angular.element("#mapCarousel1").length && (!mapview || angular.element("#mapCarousel1").hasClass('plugin-slider') == false)) {
                             mapview = new Buildfire.components.carousel.view("#mapCarousel1", []);
-                            mapview.loadItems(carouselItems);
                         }
-
-                        // create an instance and pass it the items if you don't have items yet just pass []
-                        /*if (mapview) {
-                         mapview.loadItems(carouselItems);
-                         }*/
+                        if (angular.element("#mapCarousel1").length || angular.element("#mapCarousel").length)
+                            mapview.loadItems(carouselItems);
                     }, 1500);
                 }
 
