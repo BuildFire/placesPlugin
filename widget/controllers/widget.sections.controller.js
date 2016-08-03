@@ -588,7 +588,10 @@
                     }
                     var sortFilterCond;
                     try {
-                        sortFilterCond = (Number(item.data.distanceText.split(' ')[0]) >= $scope.distanceSlider.min && Number(item.data.distanceText.split(' ')[0]) <= $scope.distanceSlider.max);
+                        if ($scope.distanceSlider.max > 300)
+                            sortFilterCond = (Number(item.data.distanceText.split(' ')[0].replace(/,/g,'')) >= $scope.distanceSlider.min);
+                        else
+                            sortFilterCond = (Number(item.data.distanceText.split(' ')[0]) >= $scope.distanceSlider.min && Number(item.data.distanceText.split(' ')[0]) <= $scope.distanceSlider.max);
                     }
                     catch (e) {
                         sortFilterCond = true;
