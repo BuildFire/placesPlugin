@@ -586,9 +586,13 @@
                     if (WidgetSections.filterUnapplied || WidgetSections.locationData.currentCoordinates == null || !item.data.distanceText || item.data.distanceText == 'Fetching..' || item.data.distanceText == 'NA') {
                         return true;
                     }
-                    var sortFilterCond;
+                    var sortFilterCond, distanceUnit;
                     try {
-                        sortFilterCond = (Number(item.data.distanceText.split(' ')[0]) >= $scope.distanceSlider.min && Number(item.data.distanceText.split(' ')[0]) <= $scope.distanceSlider.max);
+                        distanceUnit = item.data && item.data.distanceText && item.data.distanceText.split(' ')[1];
+                        if ((distanceUnit == 'km' && $scope.distanceSlider.max > 483) || (distanceUnit == 'mi' && $scope.distanceSlider.max > 300))
+                                sortFilterCond = (Number(item.data.distanceText.split(' ')[0].replace(/,/g,'')) >= $scope.distanceSlider.min);
+                            else
+                                sortFilterCond = (Number(item.data.distanceText.split(' ')[0]) >= $scope.distanceSlider.min && Number(item.data.distanceText.split(' ')[0]) <= $scope.distanceSlider.max);
                     }
                     catch (e) {
                         sortFilterCond = true;
