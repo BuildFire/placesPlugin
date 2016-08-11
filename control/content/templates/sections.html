@@ -77,7 +77,7 @@
                 <input ng-model="search" type="text" class="form-control" placeholder="Search Section Name">
             </div>
             <div class="col-md-4 pull-right padding-zero">
-                <a ng-click="ContentSections.searchListSection(search)" class="btn btn-primary pull-right stretch">Search</a>
+                <a ng-click="ContentSections.searchListSection(search)"  ng-disabled="ContentSections.searching" class="btn btn-primary pull-right stretch"> {{!ContentSections.searching  && 'Search'   || 'Searching...'}} </a>
             </div>
         </div>
     </div>
