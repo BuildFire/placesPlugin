@@ -66,6 +66,7 @@
                 ContentSections.isBusy = false;
                 ContentSections.sections = [];
                 ContentSections.sortOptions = Orders.options;
+                ContentSections.searching=false;
 
                 ContentSections.deepLinkUrl = function (url) {
                     buildfire.navigation.scrollTop();
@@ -1027,7 +1028,7 @@
                 /**
                  * ContentSections.getMore is used to load the items
                  */
-                ContentSections.getMore = function () {
+                ContentSections.getMore = function (str) {
                     //if (ContentSections.isBusy && !ContentSections.noMore) {
                     if (ContentSections.isBusy || ContentSections.noMore) {
                         return;
@@ -1046,6 +1047,7 @@
                         }
                         ContentSections.sections = ContentSections.sections ? ContentSections.sections.concat(result) : result;
                         ContentSections.isBusy = false;
+                        ContentSections.searching=false;
                     }, function fail() {
                         ContentSections.isBusy = false;
                     });
@@ -1055,6 +1057,7 @@
                  * @param value to be search.
                  */
                 ContentSections.searchListSection = function (value) {
+                    ContentSections.searching=true;
                     if (value) {
                         ContentSections.showSearchResults = true;
                     }

@@ -608,7 +608,8 @@
                     }
                     WidgetSections.selectedItem = WidgetSections.locationData.items[itemIndex];
 
-                    GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, [WidgetSections.selectedItem], '').then(function (result) {
+                    var distanceIn = (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings && WidgetSections.placesInfo.data.settings.showDistanceIn) || 'mi';
+                    GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, [WidgetSections.selectedItem], distanceIn).then(function (result) {
                         console.log('Distance---------------------', result);
                         if (result.rows.length && result.rows[0].elements.length && result.rows[0].elements[0].distance && result.rows[0].elements[0].distance.text) {
                             WidgetSections.selectedItemDistance = result.rows[0].elements[0].distance.text;
