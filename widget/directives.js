@@ -278,7 +278,7 @@
                                 streetViewControl: false,
                                 mapTypeControl: false,
                                 zoom: 14,
-                                center: {lat: mapCenterLat, lng: mapCenterLng},
+                                center: {lat: parseFloat(mapCenterLat), lng: parseFloat(mapCenterLng)},
                                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                                 zoomControlOptions: {
                                     position: google.maps.ControlPosition.RIGHT_TOP
@@ -327,8 +327,8 @@
 
                                 var marker = new google.maps.Marker({
                                     position: {
-                                        lat: scope.locationData.currentCoordinates[1],
-                                        lng: scope.locationData.currentCoordinates[0]
+                                        lat: parseFloat(scope.locationData.currentCoordinates[1]),
+                                        lng: parseFloat(scope.locationData.currentCoordinates[0])
                                     },
                                     map: map,
                                     icon: placeLocationIcon,
