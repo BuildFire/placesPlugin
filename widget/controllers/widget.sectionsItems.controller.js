@@ -71,6 +71,7 @@
 
                     $timeout(function () {
                         WidgetSections.showBtmMenu = true;
+                        WidgetSections.locatorBtn = true;
                     }, 1000);
                 }
 

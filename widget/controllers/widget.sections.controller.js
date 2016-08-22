@@ -42,6 +42,7 @@
 
 //                WidgetSections.selectedSections = [];
                 WidgetSections.showBtmMenu = true;
+                WidgetSections.locatorBtn = false;
 
 
                 WidgetSections.placesInfo = null;
@@ -770,7 +771,7 @@
                             WidgetSections.placesInfo = data;
                         else
                             WidgetSections.placesInfo = _placesInfoData;
-                        currentLayout = WidgetSections.currentView = (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings) ? WidgetSections.placesInfo.data.settings.defaultView : 'list';
+                        currentLayout = WidgetSections.currentView = WidgetSections.currentView ? WidgetSections.currentView : (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings) ? WidgetSections.placesInfo.data.settings.defaultView : 'list';
                         console.log('WidgetSections.placesInfo>>>>',WidgetSections.placesInfo);
                         if (!view) {
                             $("#carousel").parent().html("<div id='carousel'></div>");
