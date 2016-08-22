@@ -1,7 +1,7 @@
 <div ng-class="WidgetSections.showMenu ? 'active' : ''" class="bottom fixed-bottom clearfix transition-third">
     <div>
         <div class="extra-links">
-            <a ng-click="WidgetSections.refreshLocation()" class="my-location primaryBackgroundTheme" style="opacity: 1 !important;">
+            <a ng-click="WidgetSections.refreshLocation()" class="my-location primaryBackgroundTheme" ng-if="WidgetSections.currentView == 'map'" style="opacity: 1 !important;">
                 <span class="icon icon-aim whiteTheme"></span>
             </a>
         </div>
