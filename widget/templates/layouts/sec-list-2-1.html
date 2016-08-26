@@ -20,7 +20,7 @@
                         <div class="plugin-banner clearfix border-bottom-grey">
                             <div class="plugin-slide text-center"
                                  >
-                                <img ng-if="WidgetSections.placesInfo.data.content.allItemImage" load-image="16x9" data-final-src="{{WidgetSections.placesInfo.data.content.allItemImage | cropImage:WidgetSections.deviceWidth:192}}">
+                                <img ng-if="WidgetSections.placesInfo.data.content.allItemImage" load-image="16x9" crop-width="{{deviceWidth}}" crop-height="192" crop-type="crop" data-final-src="{{WidgetSections.placesInfo.data.content.allItemImage}}">
                                 <img ng-if="!WidgetSections.placesInfo.data.content.allItemImage" src="../../../styles/media/holder-16x9.png">
                             </div>
                         </div>
