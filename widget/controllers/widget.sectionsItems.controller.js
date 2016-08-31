@@ -28,7 +28,7 @@
                     view = null,
                     mapview = null,
                     currentLayout = '',
-                    _limit = 10,
+                    _limit = 49,
                     searchOptions = {
                         //filter: {"$json.secTitle": {"$regex": '/*'}},
                         skip: _skip,
@@ -157,7 +157,7 @@
                     WidgetSections.isBusyItems = true;
                     Items.find(searchOptionsItems).then(function success(result) {
                         WidgetSections.isBusyItems = false;
-                        searchOptionsItems.limit = 11;
+                        searchOptionsItems.limit = 50;
                         if (result.length <= _limit) {// to indicate there are more
                             //alert('full');
                             WidgetSections.noMoreItems = true;
@@ -168,7 +168,7 @@
                             WidgetSections.noMoreItems = false;
                             _skipItems = result.length;
                         }
-                        _limit = 10;
+                        _limit = 49;
 
                         if (result.length) {
                             result.forEach(function (_item) {
@@ -194,7 +194,7 @@
                     view = null,
                     mapview = null,
                     currentLayout = '',
-                    _limit = 10,
+                    _limit = 49,
                     searchOptions = {
                         //filter: {"$json.secTitle": {"$regex": '/*'}},
                         skip: _skip,
