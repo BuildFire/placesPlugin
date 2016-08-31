@@ -746,7 +746,7 @@
                                         break;
                                     case PATHS.HOME:
                                         ViewStack.popAllViews();
-                                        //applyOnUpdateWatcher();
+                                        WidgetSections.applyOnUpdateWatcher();
                                         break;
                                     case PATHS.SECTION:
                                         ViewStack.push({
