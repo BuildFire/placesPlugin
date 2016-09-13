@@ -6,7 +6,6 @@
             'placesEnums',
             'placesWidgetServices',
             'placesWidgetFilters',
-            'ngAnimate',
             'ui.bootstrap',
             'infinite-scroll',
             'rzModule'

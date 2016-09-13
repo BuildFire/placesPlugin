@@ -625,6 +625,11 @@
                     updateGetOptions();
                     WidgetSections.isBusy = true;
                     Sections.find(searchOptions).then(function success(result) {
+                        if (result.length ===0) {
+                            //WidgetSections.placesInfo.data.content.showAllItems = false;
+                            WidgetSections.showItems("allitems");
+                            return;
+                        }
                         if (WidgetSections.noMoreSections)
                             return;
                         if (result.length <= _limit) {// to indicate there are more
