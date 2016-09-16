@@ -122,7 +122,7 @@
                     view = null,
                     mapview = null,
                     currentLayout = '',
-                    _limit = 10,
+                    _limit = 30,
                     searchOptions = {
                         //filter: {"$json.secTitle": {"$regex": '/*'}},
                         skip: _skip,

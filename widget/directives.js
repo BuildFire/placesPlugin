@@ -231,30 +231,14 @@
         .directive('backImg', ["$rootScope", function ($rootScope) {
             return function (scope, element, attrs) {
                 attrs.$observe('backImg', function (value) {
-                    var img = '';
                     if (value) {
                         buildfire.imageLib.local.cropImage(value, {
                             width: window.innerWidth,
                             height: window.innerHeight
                         }, function (err, imgUrl) {
                             if (imgUrl) {
-                                img = imgUrl;
-                                element.attr("style", 'background:url(' + img + ') !important;background-size: cover !important;');
-                            } else {
-                                img = '';
-                                element.attr("style", 'background-color:white');
+                                element.attr("style", 'background:url(' + imgUrl + ') !important;background-size: cover !important;');
                             }
-                            element.css({
-                                'background-size': 'cover'
-                            });
-                        });
-                        // img = $filter("cropImage")(value, $rootScope.deviceWidth, $rootScope.deviceHeight, true);
-                    }
-                    else {
-                        img = "";
-                        element.attr("style", 'background-color:white');
-                        element.css({
-                            'background-size': 'cover'
                         });
                     }
                 });
