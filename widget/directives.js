@@ -35,6 +35,7 @@
                     var newClustererMap = '';
                     elem.css('min-height', '596px').css('width', '100%');
                     scope.$watch('locationData', function (newValue, oldValue) {
+
                         if (newValue) {
                             var mapCenterLng = (scope.locationData && scope.locationData.currentCoordinates && scope.locationData.currentCoordinates.length && scope.locationData.currentCoordinates[0]) ? scope.locationData.currentCoordinates[0] : -87.7679;
                             var mapCenterLat = (scope.locationData && scope.locationData.currentCoordinates && scope.locationData.currentCoordinates.length && scope.locationData.currentCoordinates[1]) ? scope.locationData.currentCoordinates[1] : 41.8718;
@@ -158,6 +159,19 @@
                                 maxZoom: 15
                             };
                             markerCluster = new MarkerClusterer(map, placeLocationMarkers,mcOptions);
+
+                            var getMapBounds = function(markers){
+                                var bounds = new google.maps.LatLngBounds();
+
+                                for (var i = 0; i < markers.length; i++) {
+                                    bounds.extend(markers[i].getPosition());
+                                }
+
+                                return bounds;
+                            };
+
+                            var bounds = getMapBounds(placeLocationMarkers);
+                            map.fitBounds(bounds);
 
 
                             map.addListener('click', function () {
