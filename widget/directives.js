@@ -95,8 +95,9 @@
                                 type: 'poly'
                             };
 
+                            var currentLocationMarker;
                             if (scope.locationData && scope.locationData.currentCoordinates && scope.locationData.currentCoordinates.length) {
-                                var currentLocationMarker = new google.maps.Marker({
+                                currentLocationMarker = new google.maps.Marker({
                                     position: {
                                         lat: scope.locationData.currentCoordinates[1],
                                         lng: scope.locationData.currentCoordinates[0]
@@ -160,8 +161,12 @@
                             };
                             markerCluster = new MarkerClusterer(map, placeLocationMarkers,mcOptions);
 
-                            var getMapBounds = function(markers){
+                            var getMapBounds = function(markers, currentLocation){
                                 var bounds = new google.maps.LatLngBounds();
+
+                                if(currentLocation){
+                                    markers.push(currentLocation);
+                                }
 
                                 for (var i = 0; i < markers.length; i++) {
                                     bounds.extend(markers[i].getPosition());
@@ -170,7 +175,7 @@
                                 return bounds;
                             };
 
-                            var bounds = getMapBounds(placeLocationMarkers);
+                            var bounds = getMapBounds(placeLocationMarkers, currentLocationMarker);
                             map.fitBounds(bounds);
 
 
