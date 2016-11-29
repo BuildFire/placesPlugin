@@ -77,9 +77,15 @@
             };*/
         }])
         .run(['ViewStack', function (ViewStack) {
-            buildfire.history.onPop(function(err,data){
-                if (ViewStack.hasViews()) {
-                    ViewStack.pop({propagate: true});
+            buildfire.history.onPop(function(breadcrumb){
+                if (breadcrumb &&  breadcrumb.source != 'plugin') {
+                    while(ViewStack.hasViews()) {
+                        ViewStack.pop({propagate: true});
+                    }
+                } else {
+                     if (ViewStack.hasViews()) {
+                        ViewStack.pop({propagate: true});
+                     }
                 }
             });
         }]);

@@ -15,11 +15,12 @@
                     WidgetSections.filterUnapplied = false; // this tells us that the slider has been set by the user
                 };
 
-                WidgetSections.showItems = function (id) {
+                WidgetSections.showItems = function (id, isAutoNavigation) {
                     WidgetSections.mainViewBtmMenu = false;
                     ViewStack.push({
                         template: "section",
                         sectionId: id,
+						isAutoNavigation: isAutoNavigation,
                         currentView: WidgetSections.currentView
                     });
                 };
@@ -635,7 +636,7 @@
                     Sections.find(searchOptions).then(function success(result) {
                         if (result.length ===0) {
                             //WidgetSections.placesInfo.data.content.showAllItems = false;
-                            WidgetSections.showItems("allitems");
+                            WidgetSections.showItems("allitems", true);
                             return;
                         }
                         if (WidgetSections.noMoreSections)
