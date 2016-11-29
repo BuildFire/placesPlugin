@@ -20,7 +20,7 @@
                     ViewStack.push({
                         template: "section",
                         sectionId: id,
-						isAutoNavigation: isAutoNavigation,
+                        isAutoNavigation: isAutoNavigation,
                         currentView: WidgetSections.currentView
                     });
                 };
