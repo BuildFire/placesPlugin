@@ -19,7 +19,7 @@
                             }
                         });
                     }
-                    if(breadCrumbFlag) {
+                    if(breadCrumbFlag && !vs.isAutoNavigation) {
                         Buildfire.history.push('Section', { elementToShow: 'Section' });
                     }
                 });
