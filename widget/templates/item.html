@@ -7,7 +7,7 @@
     function openInMap(lat, lng) {
         window.buildfire.getContext(function(err,context){
             if(context && context.device && context.device.platform=='ios')
-                window.buildfire.navigation.openWindow('maps://maps.google.com/maps?daddr='  + lat + ',' + lng,'_system');
+                window.buildfire.navigation.openWindow('maps://maps.apple.com?q='  + lat + ',' + lng,'_system');
             else
                 window.buildfire.navigation.openWindow('http://maps.google.com/maps?daddr=' + lat + ',' + lng,'_system');
         });
