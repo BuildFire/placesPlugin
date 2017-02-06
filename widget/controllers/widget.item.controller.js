@@ -242,7 +242,7 @@
 
             WidgetItem.openMap = function () {
                 if (WidgetItem.item && WidgetItem.item.data && WidgetItem.item.data.address)
-                    if (WidgetItem.device && WidgetItem.device.platform == 'ios')
+                    if (WidgetItem.device && WidgetItem.device.platform.toLowerCase() == 'ios')
                         Buildfire.navigation.openWindow('maps://maps.apple.com?q=' + WidgetItem.item.data.address.lat + ',' + WidgetItem.item.data.address.lng);
                     else
                         Buildfire.navigation.openWindow('http://maps.google.com/maps?daddr=' + WidgetItem.item.data.address.lat + ',' + WidgetItem.item.data.address.lng);
