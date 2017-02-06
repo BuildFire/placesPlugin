@@ -689,7 +689,7 @@
 
                 WidgetSections.openInMap = function () {
                     console.log('openInMap-------------------------method called------------', WidgetSections.selectedItem);
-                    if (buildfire.context.device && buildfire.context.device.platform == 'ios')
+                    if (buildfire.context.device && buildfire.context.device.platform.toLowerCase() == 'ios')
                         Buildfire.navigation.openWindow("maps://maps.apple.com?q=" + WidgetSections.selectedItem.data.address.lat + "," + WidgetSections.selectedItem.data.address.lng, '_system');
                     else
                         Buildfire.navigation.openWindow("http://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lat + "," + WidgetSections.selectedItem.data.address.lng, '_system');

@@ -721,7 +721,7 @@
                 };
 
                 WidgetSections.openInMap = function () {
-                    if (buildfire.context.device && buildfire.context.device.platform == 'ios')
+                    if (buildfire.context.device && buildfire.context.device.platform.toLowerCase() == 'ios')
                         window.open("maps://maps.apple.com?q=" + WidgetSections.selectedItem.data.address.lat + "," + WidgetSections.selectedItem.data.address.lng);
                     else
                         window.open("http://maps.google.com/maps?daddr=" + WidgetSections.selectedItem.data.address.lat + "," + WidgetSections.selectedItem.data.address.lng);
