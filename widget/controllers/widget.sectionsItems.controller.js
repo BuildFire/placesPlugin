@@ -701,6 +701,7 @@
                     var id = WidgetSections.sections[ind].id;
                     if (WidgetSections.selectedSections && WidgetSections.selectedSections.indexOf(id) < 0) {
                         WidgetSections.selectedSections.push(id);
+                        WidgetSections.selectedSection = id;
                     }
                     else if (WidgetSections.selectedSections) {
                         WidgetSections.selectedSections.splice(WidgetSections.selectedSections.indexOf(id), 1);
