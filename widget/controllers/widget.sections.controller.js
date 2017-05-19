@@ -511,18 +511,32 @@
                     }
                     if (_items && _items.length) {
                         var distanceIn = (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings && WidgetSections.placesInfo.data.settings.showDistanceIn) || 'mi';
-                        GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, _items, distanceIn).then(function (result) {
-                            console.log('distance result', result);
-                            for (var _ind = 0; _ind < WidgetSections.locationData.items.length; _ind++) {
-                                if (_items && _items[_ind]) {
-                                    _items[_ind].data.distanceText = (result.rows[0].elements[_ind].status != 'OK') ? 'NA' : result.rows[0].elements[_ind].distance.text;
-                                    _items[_ind].data.distance = (result.rows[0].elements[_ind].status != 'OK') ? -1 : result.rows[0].elements[_ind].distance.value;
-                                }
-                            }
 
-                        }, function (err) {
-                            console.error('distance err', err);
-                        });
+                        var getDistance = function (items) {
+                            GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, items, distanceIn).then(function (result) {
+                                console.log('distance result', result);
+                                for (var _ind = 0; _ind < WidgetSections.locationData.items.length; _ind++) {
+                                    if (items && items[_ind]) {
+                                        items[_ind].data.distanceText = (result.rows[0].elements[_ind].status != 'OK') ? 'NA' : result.rows[0].elements[_ind].distance.text;
+                                        items[_ind].data.distance = (result.rows[0].elements[_ind].status != 'OK') ? -1 : result.rows[0].elements[_ind].distance.value;
+                                    }
+                                }
+
+                            }, function (err) {
+                                console.error('distance err', err);
+                            });
+                        };
+
+                        var items = [];
+                        for (var i = 0; i < _items.length; i++) {
+                            items.push(_items[i]);
+                            if (items.length >= 5) {
+                                getDistance(items);
+                                items = [];
+                            }
+                        }
+                        if (items.length > 0)
+                            getDistance(items);
                     }
                 }
 
