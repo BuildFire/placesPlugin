@@ -19,6 +19,16 @@
   },
   "widget": {
   },
+  "devDependencies": {
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-csso": "^3.0.0",
+    "gulp-html-replace": "^1.6.2",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-strip-comments": "^2.5.1",
+    "gulp-uglify": "^3.0.0"
+  },
   "features": [{"name": "Geo"}],
   "languages": [
     "en"
