@@ -205,7 +205,9 @@
                                 WidgetItem.item = event;
                                 if (event.data.address && event.data.address.lng && event.data.address.lat) {
                                     WidgetItem.itemData.currentCoordinates = [event.data.address.lng, event.data.address.lat];
-                                    calDistance(WidgetItem.locationData.currentCoordinates, [event], WidgetItem.placeInfo.data.settings.showDistanceIn);
+                                    if(WidgetItem.locationData && WidgetItem.placeInfo){
+                                        calDistance(WidgetItem.locationData.currentCoordinates, [event], WidgetItem.placeInfo.data.settings.showDistanceIn);
+                                    }
                                 }
                                 if (event.data.images)
                                     initCarousel(event.data.images);

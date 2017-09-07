@@ -612,8 +612,10 @@
                         return item.data.distance;
                     else {
                         var order = OrdersItems.getOrder(WidgetSections.placesInfo.data.content.sortByItems || OrdersItems.ordersMap.Default);
-                        if (order.order == 1)
-                            return item.data[order.key];
+                        if (order.order == 1){
+                            var rankProperty = order.key;
+                            return (item.data && item.data.hasOwnProperty(rankProperty)) ? item.data[rankProperty] : 999;
+                        }
                         else
                             return item.data['-' + order.key];
                     }
@@ -807,7 +809,8 @@
                             if (item.id == event.id) {
                                 isNewItem = false;
                                 WidgetSections.locationData.items[index].data = event.data;
-                                if (!$scope.$$phase)$scope.$digest();
+                                if (!$scope.$$phase)
+                                    $scope.$digest();
                                 return true;
                             }
                         });

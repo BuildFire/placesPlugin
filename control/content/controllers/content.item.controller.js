@@ -140,6 +140,7 @@
 
                 function insertAndUpdate(_item) {
                     updating = true;
+
                     if (_item.id) {
                         Items.update(_item.id, _item.data).then(function (data) {
                             updating = false;
@@ -230,6 +231,7 @@
                     };
                     ContentItem.currentAddress = data.location;
                     ContentItem.currentCoordinates = data.coordinates;
+
                     if (!$scope.$$phase)$scope.$digest();
                 };
                 ContentItem.setDraggedLocation = function (data) {
@@ -246,14 +248,23 @@
                     var latlng = '';
                     console.log('ng-enter---------------------called------------------', ContentItem.currentAddress);
                     function successCallback(resp) {
-                        console.error('Successfully validated coordinates-----------', resp);
+                        console.log('Successfully validated coordinates-----------', resp);
                         if (resp) {
+
+
+                            var lat = parseFloat(ContentItem.currentAddress.split(",")[0].trim()),
+                                lng = parseFloat(ContentItem.currentAddress.split(",")[1].trim());
+
                             ContentItem.item.data.address = {
-                                lng: ContentItem.currentAddress.split(",")[1].trim(),
-                                lat: ContentItem.currentAddress.split(",")[0].trim(),
+                                lng: lng,
+                                lat: lat,
                                 aName: ContentItem.currentAddress
                             };
-                            ContentItem.currentCoordinates = [ContentItem.currentAddress.split(",")[1].trim(), ContentItem.currentAddress.split(",")[0].trim()];
+
+                            ContentItem.currentAddress = ContentItem.currentAddress;
+                            ContentItem.currentCoordinates = [lng, lat];
+
+                            if (!$scope.$$phase)$scope.$digest();
                         } else {
                             //errorCallback();
                         }
@@ -286,6 +297,7 @@
 
                 ContentItem.validCopyAddressFailure = false;
                 ContentItem.locationAutocompletePaste = function () {
+
                     function error() {
                         console.error('ERROOR emethpdd called');
                         ContentItem.validCopyAddressFailure = true;

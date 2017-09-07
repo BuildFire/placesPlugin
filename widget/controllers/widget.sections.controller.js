@@ -574,11 +574,16 @@
                         return item.data.distance;
                     else {
                         var order = OrdersItems.getOrder(WidgetSections.placesInfo.data.content.sortByItems || OrdersItems.ordersMap.Default);
-                        if (order.order == 1)
-                            return item.data[order.key];
+                        if (order.order == 1){
+                            var rankProperty = order.key;
+                            return (item.data && item.data.hasOwnProperty(rankProperty)) ? item.data[rankProperty] : 999;
+                        }
+
                         else
                             return item.data['-' + order.key];
                     }
+
+
                 };
 
                 /* Onclick event of items on the map view*/
