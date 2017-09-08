@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var runSequence = require('run-sequence');
 var del = require('del');
 var minHTML = require('gulp-htmlmin');
 var minifyCSS = require('gulp-csso');
@@ -9,6 +10,8 @@ var uglify = require('gulp-uglify');
 
 const destinationFolder= releaseFolder();
 
+var buildTasksToRun=['clean','html','resources'];
+
 function releaseFolder() {
     var arr = __dirname.split("/");
     var fldr = arr.pop();
@@ -17,7 +20,6 @@ function releaseFolder() {
 }
 
 console.log(">> Building to " , destinationFolder);
-
 
 gulp.task('clean',function(){
     return del([destinationFolder],{force: true});
@@ -37,7 +39,6 @@ gulp.task('html', function(){
             ,bundleCSSFiles:"styles.min.css?v=" + (new Date().getTime())
         }))
 
-
         /// then strip the html from any comments
         .pipe(minHTML({removeComments:true,collapseWhitespace:true}))
 
@@ -50,7 +51,6 @@ gulp.task('resources', function(){
         .pipe(gulp.dest(destinationFolder ));
 });
 
-
 var cssTasks=[
     {name:"widgetCSS",src:"widget/**/*.css",dest:"/widget"}
     ,{name:"controlContentCSS",src:"control/content/**/*.css",dest:"/control/content"}
@@ -58,57 +58,130 @@ var cssTasks=[
     ,{name:"controlSettingsCSS",src:"control/settings/**/*.css",dest:"/control/settings"}
 ];
 
-cssTasks.forEach(function(task){
-    /*
-     Define a task called 'css' the recursively loops through
-     the widget and control folders, processes each CSS file and puts
-     a processes copy in the 'build' folder
-     note if the order matters you can import each css separately in the array
+var cssTaskNames = [cssTasks[0].name, cssTasks[1].name, cssTasks[2].name, cssTasks[3].name];
 
-     */
-    gulp.task(task.name, function(){
-        return gulp.src(task.src,{base: '.'})
+gulp.task(cssTasks[0].name, function(){
+    return gulp.src(cssTasks[0].src, {base: '.'})
 
-        /// minify the CSS contents
-            .pipe(minifyCSS())
+    /// minify the CSS contents
+        .pipe(minifyCSS())
 
-            ///merge
-            .pipe(concat('styles.min.css'))
+        ///merge
+        .pipe(concat('styles.min.css'))
 
-            /// write result to the 'build' folder
-            .pipe(gulp.dest(destinationFolder + task.dest))
-    });
+        /// write result to the 'build' folder
+        .pipe(gulp.dest(destinationFolder + cssTasks[0].dest))
 });
 
-var jsTasks=[
+gulp.task(cssTasks[1].name, function(){
+    return gulp.src(cssTasks[1].src, {base: '.'})
+
+    /// minify the CSS contents
+        .pipe(minifyCSS())
+
+        ///merge
+        .pipe(concat('styles.min.css'))
+
+        /// write result to the 'build' folder
+        .pipe(gulp.dest(destinationFolder + cssTasks[1].dest))
+});
+
+gulp.task(cssTasks[2].name, function(){
+    return gulp.src(cssTasks[2].src, {base: '.'})
+
+    /// minify the CSS contents
+        .pipe(minifyCSS())
+
+        ///merge
+        .pipe(concat('styles.min.css'))
+
+        /// write result to the 'build' folder
+        .pipe(gulp.dest(destinationFolder + cssTasks[2].dest))
+});
+
+gulp.task(cssTasks[3].name, function(){
+    return gulp.src(cssTasks[3].src, {base: '.'})
+
+    /// minify the CSS contents
+        .pipe(minifyCSS())
+
+        ///merge
+        .pipe(concat('styles.min.css'))
+
+        /// write result to the 'build' folder
+        .pipe(gulp.dest(destinationFolder + cssTasks[3].dest))
+});
+
+var jsTasks =[
     {name:"widgetJS",src:"widget/**/*.js",dest:"/widget"}
     ,{name:"controlContentJS",src:"control/content/**/*.js",dest:"/control/content"}
     ,{name:"controlDesignJS",src:"control/design/**/*.js",dest:"/control/design"}
     ,{name:"controlSettingsJS",src:"control/settings/**/*.js",dest:"/control/settings"}
 ];
 
-jsTasks.forEach(function(task){
-    gulp.task(task.name, function() {
-        return gulp.src(task.src,{base: '.'})
+var jsTasksNames = [jsTasks[0].name, jsTasks[1].name, jsTasks[2].name, jsTasks[3].name];
 
-        /// obfuscate and minify the JS files
-            .pipe(uglify())
+gulp.task(jsTasks[0].name, function() {
+    return gulp.src(jsTasks[0].src, {base: '.'})
 
-            /// merge all the JS files together. If the
-            /// order matters you can pass each file to the function
-            /// in an array in the order you like
-            .pipe(concat('scripts.min.js'))
+    /// obfuscate and minify the JS files
+        .pipe(uglify())
 
-            ///output here
-            .pipe(gulp.dest(destinationFolder + task.dest));
+        /// merge all the JS files together. If the
+        /// order matters you can pass each file to the function
+        /// in an array in the order you like
+        .pipe(concat('scripts.min.js'))
 
-    });
-
+        ///output here
+        .pipe(gulp.dest(destinationFolder + jsTasks[0].dest));
 });
 
-var buildTasksToRun=['clean','html','resources'];
+gulp.task(jsTasks[1].name, function() {
+    return gulp.src(jsTasks[1].src, {base: '.'})
 
-cssTasks.forEach(function(task){  buildTasksToRun.push(task.name)});
-jsTasks.forEach(function(task){  buildTasksToRun.push(task.name)});
+    /// obfuscate and minify the JS files
+        .pipe(uglify())
 
-gulp.task('build', buildTasksToRun);
+        /// merge all the JS files together. If the
+        /// order matters you can pass each file to the function
+        /// in an array in the order you like
+        .pipe(concat('scripts.min.js'))
+
+        ///output here
+        .pipe(gulp.dest(destinationFolder + jsTasks[1].dest));
+});
+
+gulp.task(jsTasks[2].name, function() {
+    return gulp.src(jsTasks[2].src, {base: '.'})
+
+    /// obfuscate and minify the JS files
+        .pipe(uglify())
+
+        /// merge all the JS files together. If the
+        /// order matters you can pass each file to the function
+        /// in an array in the order you like
+        .pipe(concat('scripts.min.js'))
+
+        ///output here
+        .pipe(gulp.dest(destinationFolder + jsTasks[2].dest));
+});
+
+gulp.task(jsTasks[3].name, function() {
+    return gulp.src(jsTasks[3].src, {base: '.'})
+
+    /// obfuscate and minify the JS files
+        .pipe(uglify())
+
+        /// merge all the JS files together. If the
+        /// order matters you can pass each file to the function
+        /// in an array in the order you like
+        .pipe(concat('scripts.min.js'))
+
+        ///output here
+        .pipe(gulp.dest(destinationFolder + jsTasks[3].dest));
+});
+
+
+gulp.task('build', function(callback){
+    runSequence('clean', 'html', 'resources', jsTasksNames, cssTaskNames, callback);
+});
