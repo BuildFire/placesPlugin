@@ -10,8 +10,6 @@ var uglify = require('gulp-uglify');
 
 const destinationFolder= releaseFolder();
 
-var buildTasksToRun=['clean','html','resources'];
-
 function releaseFolder() {
     var arr = __dirname.split("/");
     var fldr = arr.pop();
