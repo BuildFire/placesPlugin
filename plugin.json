@@ -19,6 +19,7 @@
   },
   "widget": {
   },
+
   "devDependencies": {
     "del": "^3.0.0",
     "gulp": "^3.9.1",
@@ -29,7 +30,7 @@
     "gulp-strip-comments": "^2.5.1",
     "gulp-uglify": "^3.0.0"
   },
-  "features": [{"name": "Geo"}],
+  "features": [{"name": "Geo"}, {"name": "androidGeoPermissions"}],
   "languages": [
     "en"
   ]

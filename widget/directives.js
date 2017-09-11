@@ -196,8 +196,10 @@
                         }
                         var newClustererMarkers = [];
                         for (var i = 0; i < placeLocationMarkers.length; i++) {
-                            placeLocationMarkers[i].setVisible((Number(placeLocationMarkers[i].dist.split(' ')[0]) >= scope.filter.min && Number(placeLocationMarkers[i].dist.split(' ')[0]) <= scope.filter.max));
-                            newClustererMarkers.push(placeLocationMarkers[i]);
+                            if(placeLocationMarkers[i].dist){
+                                placeLocationMarkers[i].setVisible((Number(placeLocationMarkers[i].dist.split(' ')[0]) >= scope.filter.min && Number(placeLocationMarkers[i].dist.split(' ')[0]) <= scope.filter.max));
+                                newClustererMarkers.push(placeLocationMarkers[i]);
+                            }
                         }
                         markerCluster.clearMarkers();
                         markerCluster.addMarkers(newClustererMarkers, true);
