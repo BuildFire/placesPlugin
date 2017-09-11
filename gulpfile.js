@@ -49,6 +49,12 @@ gulp.task('resources', function(){
         .pipe(gulp.dest(destinationFolder ));
 });
 
+//Manually copy file that has minification bug
+gulp.task('manualJS', function(){
+    return gulp.src(['widget/assets/js/slider.js'],{base: '.'})
+        .pipe(gulp.dest(destinationFolder));
+});
+
 var cssTasks=[
     {name:"widgetCSS",src:"widget/**/*.css",dest:"/widget"}
     ,{name:"controlContentCSS",src:"control/content/**/*.css",dest:"/control/content"}
@@ -76,7 +82,7 @@ gulp.task('css', function(){
 });
 
 var jsTasks =[
-     {name:"widgetJS",src:"widget/**/*.js",dest:"/widget"}
+     {name:"widgetJS",src:["widget/**/*.js", "!widget/assets/js/slider.js"],dest:"/widget"}
     ,{name:"controlContentJS",src:"control/content/**/*.js",dest:"/control/content"}
     ,{name:"controlDesignJS",src:"control/design/**/*.js",dest:"/control/design"}
     ,{name:"controlSettingsJS",src:"control/settings/**/*.js",dest:"/control/settings"}
@@ -104,5 +110,5 @@ gulp.task('js', function(){
 });
 
 gulp.task('build', function(callback){
-    runSequence('clean', 'html', 'resources', ['js', 'css'], callback);
+    runSequence('clean', 'html', 'resources', ['js', 'css', 'manualJS'], callback);
 });
