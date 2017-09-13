@@ -3,7 +3,7 @@
   "pluginName": "Places",
   "pluginDescription": "The Places plugin allows you to include a list and GPS map directory of categorized entries with pictures, contact information, instant directions, and even embed images and videos",
   "supportEmail": "support@buildfire.com",
-  "supportSite":"http://support.appdocumentation.com/knowledge-base/places-plugin-tutorial/",
+  "supportSite":"http://learn.appdocumentation.com/plugin-tutorials/places-plugin-tutorial",
   "pluginIcon": "icon.png",
   "offlineModeEnabled": true,
   "control": {
