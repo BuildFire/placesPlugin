@@ -306,12 +306,12 @@
                             function getCustomMarkerIcon(_imageUrl) {
                                 return {
                                     url: _imageUrl,
-                                    // This marker is 20 pixels wide by 32 pixels high.
+                                    // This marker is 20 pixels wide by 20 pixels high.
                                     scaledSize: new google.maps.Size(20, 20),
                                     // The origin for this image is (0, 0).
                                     origin: new google.maps.Point(0, 0),
-                                    // The anchor for this image is the base of the flagpole at (0, 32).
-                                    anchor: new google.maps.Point(0, 32)
+                                    // The anchor for this image is at the center of the circle
+                                    anchor: new google.maps.Point(10, 10)
                                 }
                             }
 

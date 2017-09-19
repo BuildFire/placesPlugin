@@ -19,7 +19,7 @@
   },
   "widget": {
   },
-  "features": [{"name": "Geo"}, {"name": "androidGeoPermissions"}],
+  "features": [{"name": "Geo"}],
   "languages": [
     "en"
   ]
