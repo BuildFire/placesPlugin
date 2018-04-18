@@ -7,7 +7,7 @@
             <div class="plugin-copy clearfix">
                 <div class="col-xs-8 text-left pull-left">
                     <p class="margin-bottom-zero ellipsis">{{WidgetItem.item.data.itemTitle}}</p>
-
+                    
                     <p class="margin-bottom-zero ellipsis">{{WidgetItem.item.data.summary}}</p>
                 </div>
                 <div class="col-xs-4 text-right pull-right padding-left-zero" ng-if="WidgetItem.distance">
@@ -19,12 +19,23 @@
         <div class="plugin-banner has-info-bar clearfix">
             <div style="width:100% !important;" class="plugin-slide map-holder">
                 <p style="width:100% !important;" details-google-map show-window="true" location-data="WidgetItem.itemData"
-                   class="details-2-google-map-fix">Map
-                    goes in here</p>
+                class="details-2-google-map-fix">Map
+                goes in here</p>
             </div>
-            <div class="info-bar titleBarBackgroundTheme padding-left-fifteen padding-right-fifteen text-center" ng-if="WidgetItem.item.data.addressTitle || WidgetItem.item.data.address.aName">
+            <div class="info-bar titleBarBackgroundTheme padding-left-fifteen padding-right-fifteen text-center" ng-if="WidgetItem.item.data.addressTitle && WidgetItem.item.data.address.aName">
                 <p class="margin-bottom-zero ellipsis details-2-font titleBarTextAndIcons">
-                    {{WidgetItem.item.data.addressTitle+" "+WidgetItem.item.data.address.aName}}</p>
+                    {{WidgetItem.item.data.addressTitle}}
+                </p>
+            </div>
+            <div class="info-bar titleBarBackgroundTheme padding-left-fifteen padding-right-fifteen text-center" ng-if="WidgetItem.item.data.address.aName && !WidgetItem.item.data.addressTitle">
+                <p class="margin-bottom-zero ellipsis details-2-font titleBarTextAndIcons">
+                    {{WidgetItem.item.data.address.aName}}
+                </p>
+            </div>
+            <div class="info-bar titleBarBackgroundTheme padding-left-fifteen padding-right-fifteen text-center" ng-if="!WidgetItem.item.data.address.aName && WidgetItem.item.data.addressTitle">
+                <p class="margin-bottom-zero ellipsis details-2-font titleBarTextAndIcons">
+                    {{WidgetItem.item.data.addressTitle}}
+                </p>
             </div>
         </div>
         <div class="padded text-center" ng-if="(WidgetItem.showBodyContent() || WidgetItem.item.data.links.length)">
