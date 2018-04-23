@@ -2,57 +2,64 @@
     <div class="places-plugin">
         <div class="media-center-banner plugin-banner clearfix border-bottom-grey">
             <div
-                    class="plugin-slider has-info-bar has-info-bar-double text-center">
-                <div class="plugin-slide show-map" style="height: 180px;width:100% !important;">
-                    <span style="width:100% !important;" details-google-map="" location-data="WidgetItem.itemData"
-                          show-window="true"
-                          class="details-3-google-map-fix">Google Maps Here</span>
-                </div>
+            class="plugin-slider has-info-bar has-info-bar-double text-center">
+            <div class="plugin-slide show-map" style="height: 180px;width:100% !important;">
+                <span style="width:100% !important;" details-google-map="" location-data="WidgetItem.itemData"
+                show-window="true"
+                class="details-3-google-map-fix">Google Maps Here</span>
             </div>
-            <div class="info-bar titleBarBackgroundTheme details-3-info-bar-fix">
-                <div class="col-xs-8 text-left pull-left" style="position:relative; top:-5px;">
-                    <p class="margin-bottom-zero ellipsis titleBarTextAndIcons">
-                        {{WidgetItem.item.data.itemTitle}}</p>
-
+        </div>
+        <div class="info-bar titleBarBackgroundTheme details-3-info-bar-fix">
+            <div class="col-xs-8 text-left pull-left" style="position:relative; top:-5px;">
+                <p class="margin-bottom-zero ellipsis titleBarTextAndIcons">
+                    {{WidgetItem.item.data.itemTitle}}</p>
+                    
                     <p class="margin-bottom-zero ellipsis titleBarTextAndIcons">
                         {{WidgetItem.item.data.summary}}</p>
-                </div>
-                <div class="col-xs-4 text-right pull-right padding-left-zero" ng-if="WidgetItem.distance">
-                    <span class="icon icon-map-marker icon-sm titleBarTextAndIcons"></span>
-                    <span class="miles titleBarTextAndIcons">{{WidgetItem.distance}}</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="padding-top-twenty padding-bottom-ten text-center">
-        <div class="plugin-thumbnail-slider clearfix">
-            <p ng-if="WidgetItem.item.data.address.aName" class="padding-left-fifteen padding-right-fifteen margin-bottom-zero"><a ng-click="WidgetItem.openMap()" href="javaScript:void(0);">{{WidgetItem.item.data.address.aName}}</a>
-            </p>
-        </div>
-        <div class="padded padding-top-ten text-center">
-            <div class="plugin-banner clearfix">
-                <div class="plugin-slider text-center" style="max-height: 70px!important;overflow: hidden"
-                     ng-show="WidgetItem.item.data.images && WidgetItem.item.data.images.length"
-                     image-carousel="{{WidgetItem.item.data.images.length}}">
-                    <div class="plugin-slide item"
-                         data-ng-repeat="image in WidgetItem.item.data.images">
-                        <a href="{{image.url}}" data-ng-if="image.url"
-                           target="{{image.openIn}}"><img
-                                load-image="16x9" data-final-src="{{ image.iconUrl }}" crop-width="140" crop-height="100" crop-type="crop"></a>
-                        <img data-ng-if="!image.url" load-image="16x9"
-                             data-final-src="{{ image.iconUrl }}" crop-width="140" crop-height="100" crop-type="crop">
+                    </div>
+                    <div class="col-xs-4 text-right pull-right padding-left-zero" ng-if="WidgetItem.distance">
+                        <span class="icon icon-map-marker icon-sm titleBarTextAndIcons"></span>
+                        <span class="miles titleBarTextAndIcons">{{WidgetItem.distance}}</span>
                     </div>
                 </div>
             </div>
-            <div class="margin-top-ten" ng-if="WidgetItem.item.data.links.length">
-                <a class="text-primary" ng-click="WidgetItem.openLinks(WidgetItem.item.data.links)">Contact info</a>
+        </div>
+        <div class="padding-top-twenty padding-bottom-ten text-center">
+            <div class="plugin-thumbnail-slider clearfix">
+                <p ng-if="WidgetItem.item.data.addressTitle && WidgetItem.item.data.address.aName" class="padding-left-fifteen padding-right-fifteen margin-bottom-zero"><a ng-click="WidgetItem.openMap()" href="javaScript:void(0);">
+                    {{WidgetItem.item.data.addressTitle}}</a>
+                </p>
+                <p ng-if="WidgetItem.item.data.address.aName && !WidgetItem.item.data.addressTitle" class="padding-left-fifteen padding-right-fifteen margin-bottom-zero"><a ng-click="WidgetItem.openMap()" href="javaScript:void(0);">
+                    {{WidgetItem.item.data.address.aName}}</a>
+                </p>
+                <p ng-if="!WidgetItem.item.data.address.aName && WidgetItem.item.data.addressTitle" class="padding-left-fifteen padding-right-fifteen margin-bottom-zero"><a ng-click="WidgetItem.openMap()" href="javaScript:void(0);">
+                    {{WidgetItem.item.data.addressTitle}}</a>
+                </p>
+            </div>
+            <div class="padded padding-top-ten text-center">
+                <div class="plugin-banner clearfix">
+                    <div class="plugin-slider text-center" style="max-height: 70px!important;overflow: hidden"
+                    ng-show="WidgetItem.item.data.images && WidgetItem.item.data.images.length"
+                    image-carousel="{{WidgetItem.item.data.images.length}}">
+                    <div class="plugin-slide item"
+                    data-ng-repeat="image in WidgetItem.item.data.images">
+                    <a href="{{image.url}}" data-ng-if="image.url"
+                    target="{{image.openIn}}"><img
+                    load-image="16x9" data-final-src="{{ image.iconUrl }}" crop-width="140" crop-height="100" crop-type="crop"></a>
+                    <img data-ng-if="!image.url" load-image="16x9"
+                    data-final-src="{{ image.iconUrl }}" crop-width="140" crop-height="100" crop-type="crop">
+                </div>
             </div>
         </div>
-        <div class="padding-left-fifteen padding-right-fifteen" ng-if="WidgetItem.showBodyContent()">
-            <hr class="small margin-zero">
-        </div>
-        <div class="padded padding-top-ten">
-            <p id="description" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml"></p>
+        <div class="margin-top-ten" ng-if="WidgetItem.item.data.links.length">
+            <a class="text-primary" ng-click="WidgetItem.openLinks(WidgetItem.item.data.links)">Contact info</a>
         </div>
     </div>
+    <div class="padding-left-fifteen padding-right-fifteen" ng-if="WidgetItem.showBodyContent()">
+        <hr class="small margin-zero">
+    </div>
+    <div class="padded padding-top-ten">
+        <p id="description" ng-bind-html="WidgetItem.item.data.bodyContent | safeHtml"></p>
+    </div>
+</div>
 </div>
