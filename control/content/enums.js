@@ -32,7 +32,7 @@
             HOME: "HOME"
         })
         .constant('GOOGLE_KEYS', {
-            API_KEY: 'AIzaSyC4Dw4EzKeyVBXWBsbO9-UgyEARL6WLrlU'
+            API_KEY: 'AIzaSyCgcHZhcDGGxa60VwD5hLPExCTva0zQ3_A'
         })
         .constant('DEFAULT_DATA', {
             PLACE_INFO: {
