@@ -83,6 +83,9 @@
                     else {
                         WidgetItem.placeInfo = _infoData;
                     }
+                /*    if (WidgetItem.locationData && WidgetItem.locationData.currentCoordinates && WidgetItem.placeInfo && WidgetItem.placeInfo.data && WidgetItem.placeInfo.data.settings)
+                        calDistance(WidgetItem.locationData.currentCoordinates, [WidgetItem.item], WidgetItem.placeInfo.data.settings.showDistanceIn);
+*/
                 }, function (err) {
                     WidgetItem.placeInfo = _infoData;
                 });
@@ -205,9 +208,10 @@
                                 WidgetItem.item = event;
                                 if (event.data.address && event.data.address.lng && event.data.address.lat) {
                                     WidgetItem.itemData.currentCoordinates = [event.data.address.lng, event.data.address.lat];
-                                    if(WidgetItem.locationData && WidgetItem.placeInfo){
+                                   /** if(WidgetItem.locationData && WidgetItem.placeInfo){
+
                                         calDistance(WidgetItem.locationData.currentCoordinates, [event], WidgetItem.placeInfo.data.settings.showDistanceIn);
-                                    }
+                                    }*/
                                 }
                                 if (event.data.images)
                                     initCarousel(event.data.images);
@@ -217,9 +221,9 @@
                     }
                     else if (event.tag == 'placeInfo' && event.data) {
 
-                        if (event.data.settings)
+                       /* if (event.data.settings)
                             calDistance(WidgetItem.locationData.currentCoordinates, [WidgetItem.item], event.data.settings.showDistanceIn);
-                        WidgetItem.placeInfo = event;
+                    */    WidgetItem.placeInfo = event;
 
                         $timeout(function () {
                             initCarousel(WidgetItem.item.data.images);
@@ -270,15 +274,11 @@
                 }
             }
 
-            function calDistance(origin, destination, distanceUnit) {
-                GeoDistance.getDistance(origin, destination, distanceUnit).then(function (data) {
-                        if (data && data.rows[0] && data.rows[0].elements[0] && data.rows[0].elements[0].distance) {
-                            WidgetItem.distance = data.rows[0].elements[0].distance.text;
-                        }
-                    },
-                    function (err) {
-                        console.error('error while calculating distance---------------------', err);
-                    });
+            function calDistance(origin, destination, distanceUnit) { 
+                var distances =GeoDistance.getDistance(origin, destination, distanceUnit);
+                     WidgetItem.distance = (distances && distances.length>0?distances[0].distance:"NA");
+
+
             }
 
             var offCallMeFn = $rootScope.$on(EVENTS.ROUTE_CHANGE_1, function (e, data) {

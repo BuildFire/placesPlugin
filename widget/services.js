@@ -172,53 +172,31 @@
                 }
             };
         }])
-        .factory('GeoDistance', ['$q', '$http', function ($q, $http) {
+        .factory('GeoDistance', [ function () {
             var _getDistance = function (origin, items, distanceUnit) {
-                var deferred = $q.defer();
-                var originMap;
-                if (origin && origin.length)
-                    originMap = {lat: origin[1], lng: origin[0]};
-                else {
-                    originMap = {lat: 121.88, lng: 37.33};
-                }
-                var destinationsMap = [];
 
-                if (!origin || !Array.isArray(origin)) {
-                    deferred.reject({
-                        code: 'NOT_ARRAY',
-                        message: 'origin is not an Array'
-                    });
-                }
-                if (!items || !Array.isArray(items) || !items.length) {
-                    deferred.reject({
-                        code: 'NOT_ARRAY',
-                        message: 'destinations is not an Array'
-                    });
+                var originMap,destinationsMap = [];
+                if (origin && origin.length)
+                    originMap = {latitude: origin[1], longitude: origin[0]};
+                else {
+                    originMap = {latitude: 121.88, longitude: 37.33};
                 }
 
                 items.forEach(function (_dest) {
                     if (_dest && _dest.data && _dest.data.address && _dest.data.address.lat && _dest.data.address.lng)
-                        destinationsMap.push({lat: _dest.data.address.lat, lng: _dest.data.address.lng});
+                        destinationsMap.push({latitude: _dest.data.address.lat, longitude: _dest.data.address.lng});
                     else
-                        destinationsMap.push({lat: 0, lng: 0});
+                        destinationsMap.push({latitude: 0, longitude: 0});
+                });
+                var options ={
+                    unitSystem:(distanceUnit == 'km'?"metric":"imperial")
+                };
+                var destinations = destinationsMap.map(function (destination) {
+                     destination.distance =buildfire.geo.calculateDistance(originMap,destination,options);
+                     return destination;
                 });
 
-                var service = new google.maps.DistanceMatrixService;
-                service.getDistanceMatrix({
-                    origins: [originMap],
-                    destinations: destinationsMap,
-                    travelMode: google.maps.TravelMode.DRIVING,
-                    unitSystem: distanceUnit == 'km' ? google.maps.UnitSystem.METRIC : google.maps.UnitSystem.IMPERIAL,
-                    avoidHighways: false,
-                    avoidTolls: false
-                }, function (response, status) {
-                    if (status !== google.maps.DistanceMatrixStatus.OK) {
-                        deferred.reject(status);
-                    } else {
-                        deferred.resolve(response);
-                    }
-                });
-                return deferred.promise;
+                return destinations;
             };
             return {
                 getDistance: _getDistance
