@@ -551,18 +551,18 @@
                         return;
                     }
                     if (_items && _items.length) {
-                        var getDistance = function (items) {
-                            GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, items, WidgetSections.placesInfo.data.settings.showDistanceIn).then(function (result) {
-                                console.log('distance result', result);
+                        var getDistance = function (items) { 
+                            var distances =  GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, items, WidgetSections.placesInfo.data.settings.showDistanceIn)
+                            if (distances && distances.length > 0) {
+
+                                console.log('distance result', distances);
                                 for (var _ind = 0; _ind < WidgetSections.locationData.items.length; _ind++) {
                                     if (items && items[_ind]) {
-                                        items[_ind].data.distanceText = (result.rows[0].elements[_ind].status != 'OK') ? 'NA' : result.rows[0].elements[_ind].distance.text;
-                                        items[_ind].data.distance = (result.rows[0].elements[_ind].status != 'OK') ? -1 : result.rows[0].elements[_ind].distance.value;
+                                        items[_ind].data.distanceText = distances[_ind].distance?distances[_ind].distance:"NA";
+                                        items[_ind].data.distance = distances[_ind].distance?distances[_ind].distance:"NA";
                                     }
                                 }
-                            }, function (err) {
-                                console.error('distance err', err);
-                            });
+                            }
                         };
 
                         var items = [];
@@ -631,16 +631,10 @@
                     WidgetSections.selectedItem = WidgetSections.locationData.items[itemIndex];
 
                     var distanceIn = (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings && WidgetSections.placesInfo.data.settings.showDistanceIn) || 'mi';
-                    GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, [WidgetSections.selectedItem], distanceIn).then(function (result) {
-                        console.log('Distance---------------------', result);
-                        if (result.rows.length && result.rows[0].elements.length && result.rows[0].elements[0].distance && result.rows[0].elements[0].distance.text) {
-                            WidgetSections.selectedItemDistance = result.rows[0].elements[0].distance.text;
-                        } else {
-                            WidgetSections.selectedItemDistance = null;
-                        }
-                    }, function (err) {
-                        WidgetSections.selectedItemDistance = null;
-                    });
+                   var distances= GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, [WidgetSections.selectedItem], distanceIn);
+                        console.log('Distance---------------------', distances);
+                        WidgetSections.selectedItemDistance = distances.distance?distances.distance:"NA";
+                    
                     initMapCarousel();
                 };
 
