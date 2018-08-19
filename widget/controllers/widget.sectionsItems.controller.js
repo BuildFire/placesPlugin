@@ -558,8 +558,11 @@
                                 console.log('distance result', distances);
                                 for (var _ind = 0; _ind < WidgetSections.locationData.items.length; _ind++) {
                                     if (items && items[_ind]) {
-                                        items[_ind].data.distanceText = distances[_ind].distance?distances[_ind].distance:"NA";
-                                        items[_ind].data.distance = distances[_ind].distance?distances[_ind].distance:"NA";
+                                         
+                                        items[_ind].data.distanceText = distances[_ind].distance?distances[_ind].distance.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
+                                            +" "+WidgetSections.placesInfo.data.settings.showDistanceIn:"NA";
+                                        items[_ind].data.distance = distances[_ind].distance?distances[_ind].distance.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
+                                            +" "+WidgetSections.placesInfo.data.settings.showDistanceIn:"NA";
                                     }
                                 }
                             }
