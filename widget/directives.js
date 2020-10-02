@@ -197,7 +197,7 @@
                         var newClustererMarkers = [];
                         for (var i = 0; i < placeLocationMarkers.length; i++) {
                             if(placeLocationMarkers[i].dist){
-                                placeLocationMarkers[i].setVisible((Number(placeLocationMarkers[i].dist.split(' ')[0]) >= scope.filter.min && Number(placeLocationMarkers[i].dist.split(' ')[0]) <= scope.filter.max));
+                                placeLocationMarkers[i].setVisible(((Number(placeLocationMarkers[i].dist.split(' ')[0].replace(',','')) >= scope.filter.min ) && (Number(placeLocationMarkers[i].dist.split(' ')[0].replace(',','')) <= scope.filter.max || scope.filter.max>=scope.filter.ceil)));
                                 newClustererMarkers.push(placeLocationMarkers[i]);
                             }
                         }
