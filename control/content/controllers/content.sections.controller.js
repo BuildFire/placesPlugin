@@ -223,71 +223,88 @@
                         }
 
                         console.log('allSections', allSections);
-
-                        Items.find({filter: {"$json.itemTitle": {"$regex": '/*'}}}).then(function (items) {
-                            console.log('Items in epxort--------------------------', items);
-
-                            if (items.length == 0) {
-
-                                Object.keys(allSections).forEach(function (key, index) {
-                                    json.push(allSections[key]);
-                                });
-                            }
-                            else {
-
-                                for (var _ind = 0; _ind < items.length; _ind++) {
-                                    items[_ind].data.address = items[_ind].data.address.aName;
-                                    if (items[_ind].data.sections.length > 1) {
-                                        for (var _i = 0; _i < items[_ind].data.sections.length; _i++) {
-                                            allSections[items[_ind].data.sections[_i]].done = true;
-                                            items[_ind].data.secTitle = allSections[items[_ind].data.sections[_i]].secTitle;
-                                            items[_ind].data.secSummary = allSections[items[_ind].data.sections[_i]].secSummary;
-                                            items[_ind].data.mainImage = allSections[items[_ind].data.sections[_i]].mainImage;
-                                            items[_ind].data.itemListBGImage = allSections[items[_ind].data.sections[_i]].itemListBGImage;
-
-                                            json.push(items[_ind].data);
-                                        }
-
-                                    }
-                                    else {
-                                        if (allSections[items[_ind].data.sections[0]]) {
-                                            allSections[items[_ind].data.sections[0]].done = true;
-                                            items[_ind].data.secTitle = allSections[items[_ind].data.sections[0]].secTitle;
-                                            items[_ind].data.secSummary = allSections[items[_ind].data.sections[0]].secSummary;
-                                            items[_ind].data.mainImage = allSections[items[_ind].data.sections[0]].mainImage;
-                                            items[_ind].data.itemListBGImage = allSections[items[_ind].data.sections[0]].itemListBGImage;
-                                        }
-                                        else
-                                            items[_ind].data.secTitle = 'Default Section';
-                                        json.push(items[_ind].data);
-                                    }
-
-                                }
-
-                                Object.keys(allSections).forEach(function (key, index) {
-                                    if (allSections[key].done != true)
-                                        json.push(allSections[key]);
-                                });
-
-
-                            }
-                            console.log('Json in export csv-----------------', json);
-                            var csv = $csv.jsonToCsv(angular.toJson(json), {
-                                header: header
-                            });
-                            console.log('Csv---------------------------------------------------------', csv);
-                            if (csv) {
-                                $csv.download(csv, "Export.csv");
-                            }
-                            else {
-                                $csv.download([], "Export.csv");
-                            }
-                        }, function () {
-                        });
+                        getAllItems(0,json,allSections);
 
                     }, function (error) {
                         throw (error);
                     });
+                }
+                function getAllItems(setSkip,json,allSections){
+                    Items.find({filter: {"$json.itemTitle": {"$regex": '/*'}},skip:setSkip,limit:50}).then(function (items) {
+                        console.log('Items in epxort--------------------------', items);
+                        
+                        if (items.length == 0 && setSkip==0) {
+
+                            Object.keys(allSections).forEach(function (key, index) {
+                                json.push(allSections[key]);
+                            });
+                        }
+                        else if(items.length != 0){
+                            for (var _ind = 0; _ind < items.length; _ind++) {
+                                items[_ind].data.address = items[_ind].data.address.aName;
+                                if (items[_ind].data.sections.length > 1) {
+                                    for (var _i = 0; _i < items[_ind].data.sections.length; _i++) {
+                                        allSections[items[_ind].data.sections[_i]].done = true;
+                                        items[_ind].data.secTitle = allSections[items[_ind].data.sections[_i]].secTitle;
+                                        items[_ind].data.secSummary = allSections[items[_ind].data.sections[_i]].secSummary;
+                                        items[_ind].data.mainImage = allSections[items[_ind].data.sections[_i]].mainImage;
+                                        items[_ind].data.itemListBGImage = allSections[items[_ind].data.sections[_i]].itemListBGImage;
+
+                                        json.push(items[_ind].data);
+                                    }
+
+                                }
+                                else { 
+                                    if (allSections[items[_ind].data.sections[0]]) {
+                                        allSections[items[_ind].data.sections[0]].done = true;
+                                        items[_ind].data.secTitle = allSections[items[_ind].data.sections[0]].secTitle;
+                                        items[_ind].data.secSummary = allSections[items[_ind].data.sections[0]].secSummary;
+                                        items[_ind].data.mainImage = allSections[items[_ind].data.sections[0]].mainImage;
+                                        items[_ind].data.itemListBGImage = allSections[items[_ind].data.sections[0]].itemListBGImage;
+                                    }
+                                    else
+                                        items[_ind].data.secTitle = 'Default Section';
+                                    json.push(items[_ind].data);
+                                }
+
+                            }
+                        }
+
+                        if(items.length!=50){
+                            Object.keys(allSections).forEach(function (key, index) {
+                                if (allSections[key].done != true){
+                                    json.push(allSections[key]);
+                                }
+                                if(index==(Object.keys(allSections).length-1))
+                                    exportJSONasCSV(json);
+                            }); 
+                        }
+                        else {
+                            if(setSkip==200)
+                                buildfire.dialog.alert({
+                                    message: "It seems like you have a lot of items, please be patient this could take some time."
+                                })
+                            getAllItems((setSkip+50),json,allSections);}
+
+                    }, function () {});
+                }
+                function exportJSONasCSV(json){
+/*                     json=json.sort(function(a,b){
+                        if(a.secTitle < b.secTitle) { return -1; }
+                        if(a.secTitle > b.secTitle) { return 1; }
+                        return 0;
+                    }); */
+                    console.log('Json in export csv-----------------', json);
+                    var csv = $csv.jsonToCsv(angular.toJson(json), {
+                        header: header
+                    });
+                    console.log('Csv---------------------------------------------------------', csv);
+                    if (csv) {
+                        $csv.download(csv, "Export.csv");
+                    }
+                    else {
+                        $csv.download([], "Export.csv");
+                    }
                 }
 
                 /* Buildfire.deeplink.createLink('section:7');
