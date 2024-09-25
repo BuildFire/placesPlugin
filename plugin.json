@@ -19,6 +19,9 @@
   },
   "widget": {
   },
+  "usesApiKeys": [
+    { "name": "googleMapKey" }
+  ],
   "features": [{"name": "Geo"}],
   "languages": [
     "en"

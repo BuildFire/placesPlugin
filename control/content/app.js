@@ -321,7 +321,57 @@
 
             $httpProvider.interceptors.push(interceptor);
         }])
-        .run(['Location', 'Messaging', 'EVENTS', 'PATHS', '$rootScope', 'Buildfire', function (Location, Messaging, EVENTS, PATHS, $rootScope, Buildfire) {
+      .service('ScriptLoaderService', ['$q', function ($q) {
+          this.loadScript = function () {
+              const {apiKeys} = buildfire.getContext();
+              const {googleMapKey} = apiKeys;
+
+              const url = `https://maps.googleapis.com/maps/api/js?libraries=places&sensor=true&key=${googleMapKey}`;
+
+              const deferred = $q.defer();
+
+              // Check if the script is already in the document
+              const existingScript = document.getElementById('googleMapsScript');
+              if (existingScript) {
+                  // If the script is already in the document, remove it
+                  existingScript.parentNode.removeChild(existingScript);
+              }
+
+              const script = document.createElement('script');
+              script.type = 'text/javascript';
+              script.src = url;
+              script.id = 'googleMapsScript';
+
+              script.onload = function () {
+                  console.info(`Successfully loaded script: ${url}`);
+                  deferred.resolve();
+              };
+
+              script.onerror = function () {
+                  console.error(`Failed to load script: ${url}`);
+                  deferred.reject('Failed to load script.');
+              };
+              window.gm_authFailure = () => {
+                  buildfire.dialog.alert({
+                      title: 'Error',
+                      message: 'Failed to load Google Maps API.',
+                  });
+                  deferred.resolve('Failed to load script.');
+              };
+
+              document.head.appendChild(script);
+              return deferred.promise;
+          };
+      }])
+        .run(['Location', 'Messaging', 'EVENTS', 'PATHS', '$rootScope', 'Buildfire','ScriptLoaderService', function (Location, Messaging, EVENTS, PATHS, $rootScope, Buildfire,ScriptLoaderService) {
+                ScriptLoaderService.loadScript()
+                  .then(() => {
+                      console.info("Successfully loaded Google's Maps SDK.");
+                  })
+                  .catch((error) => {
+                      console.error("Failed to load Google Maps SDK.",error);
+                  });
+
             // Handler to receive message from widget
             Messaging.onReceivedMessage = function (event) {
                 console.log('Event rcv-----on Control Side------------------------?????????????????????????????????---------------********************* in Control Panal side----', event);

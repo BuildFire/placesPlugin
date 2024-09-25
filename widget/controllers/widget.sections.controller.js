@@ -70,7 +70,6 @@
                 WidgetSections.noMoreItems = false;
 
                 WidgetSections.showDescription = function () {
-                    console.log('Description------------------------', WidgetSections.placesInfo, WidgetSections.placesInfo.data.content.descriptionHTML);
                     if (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.content && WidgetSections.placesInfo.data.content.descriptionHTML != '<p>&nbsp;<br></p>' && WidgetSections.placesInfo.data.content.descriptionHTML != '<p><br data-mce-bogus="1"></p>' && WidgetSections.placesInfo.data.content.descriptionHTML != "")
                         return true;
                     else
@@ -512,7 +511,7 @@
                     if (_items && _items.length) {
                         var distanceIn = (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings && WidgetSections.placesInfo.data.settings.showDistanceIn) || 'mi';
 
-                        var getDistance = function (items) { 
+                        var getDistance = function (items) {
                             var destinations = GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, items, distanceIn);
 
                             if (destinations && destinations.length > 0) {
@@ -596,7 +595,7 @@
                     WidgetSections.selectedItem = WidgetSections.locationData.items[itemIndex];
                     initCarousel(WidgetSections.placesInfo.data.settings.defaultView);
 
-                    var distanceIn = (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings && WidgetSections.placesInfo.data.settings.showDistanceIn) || 'mi';                   
+                    var distanceIn = (WidgetSections.placesInfo && WidgetSections.placesInfo.data && WidgetSections.placesInfo.data.settings && WidgetSections.placesInfo.data.settings.showDistanceIn) || 'mi';
                     var distances =GeoDistance.getDistance(WidgetSections.locationData.currentCoordinates, [WidgetSections.selectedItem], distanceIn);
 
                     console.log('Distance---------------------', distances);

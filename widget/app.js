@@ -1,5 +1,7 @@
 (function (angular, buildfire) {
     'use strict';
+    window.authFailureFired = false;
+
     //created mediaCenterWidget module
     angular
         .module('placesWidget', [
@@ -58,7 +60,64 @@
             $httpProvider.interceptors.push(interceptor);
 
         }])
-        .run(['Location', 'Messaging', 'EVENTS', 'PATHS', '$location', '$rootScope', 'ViewStack', function (Location, Messaging, EVENTS, PATHS, $location, $rootScope, ViewStack) {
+      .service('ScriptLoaderService', ['$q', function ($q) {
+          this.loadScript = function () {
+              const {apiKeys} = buildfire.getContext();
+              const {googleMapKey} = apiKeys;
+
+              const url = `https://maps.googleapis.com/maps/api/js?libraries=places&sensor=true&key=${googleMapKey}`;
+
+              const deferred = $q.defer();
+
+              // Check if the script is already in the document
+              const existingScript = document.getElementById('googleMapsScript');
+              if (existingScript) {
+                  // If the script is already in the document, remove it
+                  existingScript.parentNode.removeChild(existingScript);
+              }
+
+              const script = document.createElement('script');
+              script.type = 'text/javascript';
+              script.src = url;
+              script.id = 'googleMapsScript';
+
+              script.onload = function () {
+                  console.info(`Successfully loaded script: ${url}`);
+                  deferred.resolve();
+              };
+
+              script.onerror = function () {
+                  console.error(`Failed to load script: ${url}`);
+                  deferred.reject('Failed to load script.');
+              };
+              window.gm_authFailure = () => {
+                  if (window.authFailureFired) return;
+                  buildfire.dialog.alert({
+                      title: 'Error',
+                      message: 'Failed to load Google Maps API.1',
+                  });
+                  window.authFailureFired = true;
+                  deferred.reject('Failed to load script.');
+              };
+
+              document.head.appendChild(script);
+              return deferred.promise;
+          };
+      }])
+
+      .run(['Location', 'Messaging', 'EVENTS', 'PATHS', '$location', '$rootScope', 'ViewStack', 'ScriptLoaderService', function (Location, Messaging, EVENTS, PATHS, $location, $rootScope, ViewStack,ScriptLoaderService) {
+
+               ScriptLoaderService.loadScript()
+                .then(() => {
+                    console.info("Successfully loaded Google's Maps SDK.");
+                })
+                .catch(() => {
+                    buildfire.dialog.alert({
+                        title: 'Error',
+                        message: 'Failed to load Google Maps API.2',
+                    });
+                });
+
 
             buildfire.deeplink.getData(function (data) {
                 if (data) {
