@@ -35,176 +35,179 @@
                   var newClustererMap = '';
                   elem.css('min-height', '596px').css('width', '100%');
                   scope.$watch('locationData', function (newValue, oldValue) {
+                      angular.module('placesWidget').googleMapsReady.promise.then(function () {
+                          if (newValue) {
+                              var mapCenterLng = (scope.locationData && scope.locationData.currentCoordinates && scope.locationData.currentCoordinates.length && scope.locationData.currentCoordinates[0]) ? scope.locationData.currentCoordinates[0] : -87.7679;
+                              var mapCenterLat = (scope.locationData && scope.locationData.currentCoordinates && scope.locationData.currentCoordinates.length && scope.locationData.currentCoordinates[1]) ? scope.locationData.currentCoordinates[1] : 41.8718;
 
-                      if (newValue) {
-                          var mapCenterLng = (scope.locationData && scope.locationData.currentCoordinates && scope.locationData.currentCoordinates.length && scope.locationData.currentCoordinates[0]) ? scope.locationData.currentCoordinates[0] : -87.7679;
-                          var mapCenterLat = (scope.locationData && scope.locationData.currentCoordinates && scope.locationData.currentCoordinates.length && scope.locationData.currentCoordinates[1]) ? scope.locationData.currentCoordinates[1] : 41.8718;
+                              // Create the map.
+                              map = new google.maps.Map(elem[0], {
+                                  streetViewControl: false,
+                                  mapTypeControl: false,
+                                  zoom: 8,
+                                  center: {lat: mapCenterLat, lng: mapCenterLng},
+                                  mapTypeId: google.maps.MapTypeId.ROADMAP,
+                                  zoomControlOptions: {
+                                      position: google.maps.ControlPosition.RIGHT_TOP
+                                  }
+                              });
 
-                          // Create the map.
-                          map = new google.maps.Map(elem[0], {
-                              streetViewControl: false,
-                              mapTypeControl: false,
-                              zoom: 8,
-                              center: {lat: mapCenterLat, lng: mapCenterLng},
-                              mapTypeId: google.maps.MapTypeId.ROADMAP,
-                              zoomControlOptions: {
-                                  position: google.maps.ControlPosition.RIGHT_TOP
+                              var styleOptions = {
+                                  name: "Report Error Hide Style"
+                              };
+                              var MAP_STYLE = [
+                                  {
+                                      stylers: [
+                                          {visibility: "on"}
+                                      ]
+                                  }];
+                              var mapType = new google.maps.StyledMapType(MAP_STYLE, styleOptions);
+                              map.mapTypes.set("Report Error Hide Style", mapType);
+                              map.setMapTypeId("Report Error Hide Style");
+
+                              function getCustomMarkerIcon(_imageUrl) {
+                                  return {
+                                      url: _imageUrl,
+                                      // This marker is 20 pixels wide by 20 pixels high.
+                                      scaledSize: new google.maps.Size(20, 20),
+                                      // The origin for this image is (0, 0).
+                                      origin: new google.maps.Point(0, 0),
+                                      // The anchor for this image is at the center of the circle
+                                      anchor: new google.maps.Point(10, 10)
+                                  }
                               }
-                          });
 
-                          var styleOptions = {
-                              name: "Report Error Hide Style"
-                          };
-                          var MAP_STYLE = [
-                              {
-                                  stylers: [
-                                      {visibility: "on"}
-                                  ]
-                              }];
-                          var mapType = new google.maps.StyledMapType(MAP_STYLE, styleOptions);
-                          map.mapTypes.set("Report Error Hide Style", mapType);
-                          map.setMapTypeId("Report Error Hide Style");
+                              var selectedLocation = null;
 
-                          function getCustomMarkerIcon(_imageUrl) {
-                              return {
-                                  url: _imageUrl,
-                                  // This marker is 20 pixels wide by 20 pixels high.
-                                  scaledSize: new google.maps.Size(20, 20),
-                                  // The origin for this image is (0, 0).
-                                  origin: new google.maps.Point(0, 0),
-                                  // The anchor for this image is at the center of the circle
-                                  anchor: new google.maps.Point(10, 10)
+                              var currentLocationIconImageUrl ='https://app.buildfire.com/app/media/google_marker_blue_icon.png';
+                              var placeLocationIconImageUrl = 'https://app.buildfire.com/app/media/google_marker_red_icon.png';
+                              var selectedLocationIconImageUrl = 'https://app.buildfire.com/app/media/google_marker_green_icon.png';
+
+                              var currentLocationIcon = getCustomMarkerIcon(currentLocationIconImageUrl);
+                              var placeLocationIcon = getCustomMarkerIcon(placeLocationIconImageUrl);
+                              var selectedLocationIcon = getCustomMarkerIcon(selectedLocationIconImageUrl);
+
+                              // Shapes define the clickable region of the icon. The type defines an HTML
+                              // <area> element 'poly' which traces out a polygon as a series of X,Y points.
+                              // The final coordinate closes the poly by connecting to the first coordinate.
+                              var shape = {
+                                  coords: [1, 1, 1, 20, 18, 20, 18, 1],
+                                  type: 'poly'
+                              };
+
+                              var currentLocationMarker;
+                              if (scope.locationData && scope.locationData.currentCoordinates && scope.locationData.currentCoordinates.length) {
+                                  currentLocationMarker = new google.maps.Marker({
+                                      position: {
+                                          lat: scope.locationData.currentCoordinates[1],
+                                          lng: scope.locationData.currentCoordinates[0]
+                                      },
+                                      map: map,
+                                      icon: currentLocationIcon,
+                                      shape: shape,
+                                      optimized: false
+                                  });
                               }
-                          }
 
-                          var selectedLocation = null;
+                              placeLocationMarkers = [];
+                              if (scope.locationData && scope.locationData.items && scope.locationData.items.length) {
+                                  for (var _index = 0; _index < scope.locationData.items.length; _index++) {
 
-                          var currentLocationIconImageUrl ='https://app.buildfire.com/app/media/google_marker_blue_icon.png';
-                          var placeLocationIconImageUrl = 'https://app.buildfire.com/app/media/google_marker_red_icon.png';
-                          var selectedLocationIconImageUrl = 'https://app.buildfire.com/app/media/google_marker_green_icon.png';
+                                      var _place = scope.locationData.items[_index]
+                                        , marker = '';
 
-                          var currentLocationIcon = getCustomMarkerIcon(currentLocationIconImageUrl);
-                          var placeLocationIcon = getCustomMarkerIcon(placeLocationIconImageUrl);
-                          var selectedLocationIcon = getCustomMarkerIcon(selectedLocationIconImageUrl);
+                                      if (_index == 0) { // this is to center the map on the first item
+                                          map.setCenter(new google.maps.LatLng(_place.data.address.lat, _place.data.address.lng));
+                                      }
 
-                          // Shapes define the clickable region of the icon. The type defines an HTML
-                          // <area> element 'poly' which traces out a polygon as a series of X,Y points.
-                          // The final coordinate closes the poly by connecting to the first coordinate.
-                          var shape = {
-                              coords: [1, 1, 1, 20, 18, 20, 18, 1],
-                              type: 'poly'
-                          };
+                                      if (_place.data && _place.data.address && _place.data.address.lat && _place.data.address.lng) {
+                                          marker = new google.maps.Marker({
+                                              position: {lat: _place.data.address.lat, lng: _place.data.address.lng},
+                                              map: map,
+                                              icon: placeLocationIcon,
+                                              shape: shape,
+                                              title: _place.data.itemTitle,
+                                              zIndex: _index,
+                                              optimized: false,
+                                              dist: _place.data.distanceText
+                                          });
+                                          marker.addListener('click', function () {
+                                              var _this = this;
+                                              if (selectedLocation) {
+                                                  selectedLocation.setIcon(placeLocationIcon);
+                                              }
 
-                          var currentLocationMarker;
-                          if (scope.locationData && scope.locationData.currentCoordinates && scope.locationData.currentCoordinates.length) {
-                              currentLocationMarker = new google.maps.Marker({
-                                  position: {
-                                      lat: scope.locationData.currentCoordinates[1],
-                                      lng: scope.locationData.currentCoordinates[0]
-                                  },
-                                  map: map,
-                                  icon: currentLocationIcon,
-                                  shape: shape,
-                                  optimized: false
+                                              _this.setIcon(selectedLocationIcon);
+                                              selectedLocation = _this;
+                                              scope.markerCallback(_this.zIndex);
+                                          });
+                                          placeLocationMarkers.push(marker);
+                                      }
+                                  }
+                              }
+
+                              var clusterStyles = [
+                                  {
+                                      textColor: 'white',
+                                      url: 'https://app.buildfire.com/app/media/google_marker_blue_icon2.png',
+                                      height: 53,
+                                      width: 53
+                                  }
+                              ];
+                              var mcOptions = {
+                                  gridSize: 53,
+                                  styles: clusterStyles,
+                                  maxZoom: 15
+                              };
+                              markerCluster = new MarkerClusterer(map, placeLocationMarkers,mcOptions);
+
+                              var getMapBounds = function(markers, currentLocation){
+                                  var bounds = new google.maps.LatLngBounds();
+
+                                  if(currentLocation){
+                                      markers.push(currentLocation);
+                                  }
+
+                                  for (var i = 0; i < markers.length; i++) {
+                                      bounds.extend(markers[i].getPosition());
+                                  }
+
+                                  return bounds;
+                              };
+
+                              var bounds = getMapBounds(placeLocationMarkers, currentLocationMarker);
+                              map.fitBounds(bounds);
+
+
+                              map.addListener('click', function () {
+                                  if (selectedLocation) {
+                                      scope.markerCallback(null);
+                                      selectedLocation.setIcon(placeLocationIcon);
+                                  }
                               });
                           }
-
-                          placeLocationMarkers = [];
-                          if (scope.locationData && scope.locationData.items && scope.locationData.items.length) {
-                              for (var _index = 0; _index < scope.locationData.items.length; _index++) {
-
-                                  var _place = scope.locationData.items[_index]
-                                    , marker = '';
-
-                                  if (_index == 0) { // this is to center the map on the first item
-                                      map.setCenter(new google.maps.LatLng(_place.data.address.lat, _place.data.address.lng));
-                                  }
-
-                                  if (_place.data && _place.data.address && _place.data.address.lat && _place.data.address.lng) {
-                                      marker = new google.maps.Marker({
-                                          position: {lat: _place.data.address.lat, lng: _place.data.address.lng},
-                                          map: map,
-                                          icon: placeLocationIcon,
-                                          shape: shape,
-                                          title: _place.data.itemTitle,
-                                          zIndex: _index,
-                                          optimized: false,
-                                          dist: _place.data.distanceText
-                                      });
-                                      marker.addListener('click', function () {
-                                          var _this = this;
-                                          if (selectedLocation) {
-                                              selectedLocation.setIcon(placeLocationIcon);
-                                          }
-
-                                          _this.setIcon(selectedLocationIcon);
-                                          selectedLocation = _this;
-                                          scope.markerCallback(_this.zIndex);
-                                      });
-                                      placeLocationMarkers.push(marker);
-                                  }
-                              }
-                          }
-
-                          var clusterStyles = [
-                              {
-                                  textColor: 'white',
-                                  url: 'https://app.buildfire.com/app/media/google_marker_blue_icon2.png',
-                                  height: 53,
-                                  width: 53
-                              }
-                          ];
-                          var mcOptions = {
-                              gridSize: 53,
-                              styles: clusterStyles,
-                              maxZoom: 15
-                          };
-                          markerCluster = new MarkerClusterer(map, placeLocationMarkers,mcOptions);
-
-                          var getMapBounds = function(markers, currentLocation){
-                              var bounds = new google.maps.LatLngBounds();
-
-                              if(currentLocation){
-                                  markers.push(currentLocation);
-                              }
-
-                              for (var i = 0; i < markers.length; i++) {
-                                  bounds.extend(markers[i].getPosition());
-                              }
-
-                              return bounds;
-                          };
-
-                          var bounds = getMapBounds(placeLocationMarkers, currentLocationMarker);
-                          map.fitBounds(bounds);
-
-
-                          map.addListener('click', function () {
-                              if (selectedLocation) {
-                                  scope.markerCallback(null);
-                                  selectedLocation.setIcon(placeLocationIcon);
-                              }
-                          });
-                      }
+                      })
                   }, true);
 
                   //scope.firstTimeFilter = true;
                   scope.$watch('filter', function () {
-                      if (scope.filterUnapplied) {
-                          //scope.firstTimeFilter = false;
-                          return;
-                      }
-                      var newClustererMarkers = [];
-                      for (var i = 0; i < placeLocationMarkers.length; i++) {
-                          if(placeLocationMarkers[i].dist){
-                              placeLocationMarkers[i].setVisible(((Number(placeLocationMarkers[i].dist.split(' ')[0].replace(',','')) >= scope.filter.min ) && (Number(placeLocationMarkers[i].dist.split(' ')[0].replace(',','')) <= scope.filter.max || scope.filter.max>=scope.filter.ceil)));
-                              newClustererMarkers.push(placeLocationMarkers[i]);
-                          }
-                      }
-                      markerCluster.clearMarkers();
-                      markerCluster.addMarkers(newClustererMarkers, true);
-                      markerCluster.setIgnoreHidden(true);
-                      markerCluster.repaint();
+                    angular.module('placesWidget').googleMapsReady.promise.then(function () {
+                        if (scope.filterUnapplied) {
+                            //scope.firstTimeFilter = false;
+                            return;
+                        }
+                        var newClustererMarkers = [];
+                        for (var i = 0; i < placeLocationMarkers.length; i++) {
+                            if(placeLocationMarkers[i].dist){
+                                placeLocationMarkers[i].setVisible(((Number(placeLocationMarkers[i].dist.split(' ')[0].replace(',','')) >= scope.filter.min ) && (Number(placeLocationMarkers[i].dist.split(' ')[0].replace(',','')) <= scope.filter.max || scope.filter.max>=scope.filter.ceil)));
+                                newClustererMarkers.push(placeLocationMarkers[i]);
+                            }
+                        }
+                        markerCluster.clearMarkers();
+                        markerCluster.addMarkers(newClustererMarkers, true);
+                        markerCluster.setIgnoreHidden(true);
+                        markerCluster.repaint();
+                    })
                   }, true);
               }
           }

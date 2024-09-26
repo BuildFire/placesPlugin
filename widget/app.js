@@ -60,7 +60,7 @@
             $httpProvider.interceptors.push(interceptor);
 
         }])
-      .service('ScriptLoaderService', ['$q', function ($q) {
+        .service('ScriptLoaderService', ['$q', function ($q) {
           this.loadScript = function () {
               const {apiKeys} = buildfire.getContext();
               const {googleMapKey} = apiKeys;
@@ -94,7 +94,7 @@
                   if (window.authFailureFired) return;
                   buildfire.dialog.alert({
                       title: 'Error',
-                      message: 'Failed to load Google Maps API.1',
+                      message: 'Failed to load Google Maps API.',
                   });
                   window.authFailureFired = true;
                   deferred.reject('Failed to load script.');
@@ -104,19 +104,20 @@
               return deferred.promise;
           };
       }])
+        .run(['Location', 'Messaging', 'EVENTS', 'PATHS', '$location', '$rootScope', 'ViewStack', 'ScriptLoaderService','$q', function (Location, Messaging, EVENTS, PATHS, $location, $rootScope, ViewStack,ScriptLoaderService,$q) {
 
-      .run(['Location', 'Messaging', 'EVENTS', 'PATHS', '$location', '$rootScope', 'ViewStack', 'ScriptLoaderService', function (Location, Messaging, EVENTS, PATHS, $location, $rootScope, ViewStack,ScriptLoaderService) {
+            // Create a global promise for Google Maps loading
+            angular.module('placesWidget').googleMapsReady = $q.defer();
 
-               ScriptLoaderService.loadScript()
-                .then(() => {
-                    console.info("Successfully loaded Google's Maps SDK.");
-                })
-                .catch(() => {
-                    buildfire.dialog.alert({
-                        title: 'Error',
-                        message: 'Failed to load Google Maps API.2',
-                    });
-                });
+            ScriptLoaderService.loadScript()
+              .then(function () {
+                  // Resolve the global promise when the script is loaded
+                  angular.module('placesWidget').googleMapsReady.resolve();
+              })
+              .catch(function (err) {
+                  console.error('Google Maps failed to load:', err);
+                  angular.module('placesWidget').googleMapsReady.reject(err);
+              });
 
 
             buildfire.deeplink.getData(function (data) {
