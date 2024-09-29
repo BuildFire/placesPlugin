@@ -1,5 +1,7 @@
 (function (angular, buildfire) {
     'use strict';
+    window.authFailureFired = false;
+
     //created mediaCenterWidget module
     angular
         .module('placesWidget', [
@@ -58,7 +60,64 @@
             $httpProvider.interceptors.push(interceptor);
 
         }])
-        .run(['Location', 'Messaging', 'EVENTS', 'PATHS', '$location', '$rootScope', 'ViewStack', function (Location, Messaging, EVENTS, PATHS, $location, $rootScope, ViewStack) {
+        .service('ScriptLoaderService', ['$q', function ($q) {
+          this.loadScript = function () {
+              const {apiKeys} = buildfire.getContext();
+              const {googleMapKey} = apiKeys;
+
+              const url = `https://maps.googleapis.com/maps/api/js?libraries=places&sensor=true&key=${googleMapKey}`;
+
+              const deferred = $q.defer();
+
+              // Check if the script is already in the document
+              const existingScript = document.getElementById('googleMapsScript');
+              if (existingScript) {
+                  return deferred.resolve();
+              }
+
+              const script = document.createElement('script');
+              script.type = 'text/javascript';
+              script.src = url;
+              script.id = 'googleMapsScript';
+
+              script.onload = function () {
+                  console.info(`Successfully loaded script: ${url}`);
+                  deferred.resolve();
+              };
+
+              script.onerror = function () {
+                  console.error(`Failed to load script: ${url}`);
+                  deferred.reject('Failed to load script.');
+              };
+              window.gm_authFailure = () => {
+                  if (window.authFailureFired) return;
+                  buildfire.dialog.alert({
+                      title: 'Error',
+                      message: 'Failed to load Google Maps API.',
+                  });
+                  window.authFailureFired = true;
+                  deferred.reject('Failed to load script.');
+              };
+
+              document.head.appendChild(script);
+              return deferred.promise;
+          };
+      }])
+        .run(['Location', 'Messaging', 'EVENTS', 'PATHS', '$location', '$rootScope', 'ViewStack', 'ScriptLoaderService','$q', function (Location, Messaging, EVENTS, PATHS, $location, $rootScope, ViewStack,ScriptLoaderService,$q) {
+
+            // Create a global promise for Google Maps loading
+            angular.module('placesWidget').googleMapsReady = $q.defer();
+
+            ScriptLoaderService.loadScript()
+              .then(function () {
+                  // Resolve the global promise when the script is loaded
+                  angular.module('placesWidget').googleMapsReady.resolve();
+              })
+              .catch(function (err) {
+                  console.error('Google Maps failed to load:', err);
+                  angular.module('placesWidget').googleMapsReady.reject(err);
+              });
+
 
             buildfire.deeplink.getData(function (data) {
                 if (data) {

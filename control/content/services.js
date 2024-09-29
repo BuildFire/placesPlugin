@@ -269,7 +269,7 @@
                 }
             };
         }])
-        .factory("Utils", ['$http', 'GOOGLE_KEYS', '$q', function ($http, GOOGLE_KEYS, $q) {
+        .factory("Utils", ['$http', '$q', function ($http, GOOGLE_KEYS, $q) {
             function inRange(min, number, max) {
                 return ( !isNaN(number) && (number >= min) && (number <= max) );
             }
@@ -282,7 +282,9 @@
                         , valid = (inRange(-90, latitude, 90) && inRange(-180, longitude, 180));
 
                     if (valid) {
-                        $http.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude + "," + longitude + "&key=" + GOOGLE_KEYS.API_KEY)
+                        const { apiKeys } = buildfire.getContext();
+                        const { googleMapKey } = apiKeys;
+                        $http.get("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude + "," + longitude + "&key=" + googleMapKey)
                             .then(function (response) {
                                 // this callback will be called asynchronously
                                 // when the response is available
@@ -306,7 +308,9 @@
                     var deferred = $q.defer();
 
                     if (address) {
-                        $http.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + GOOGLE_KEYS.API_KEY)
+                        const { apiKeys } = buildfire.getContext();
+                        const { googleMapKey } = apiKeys;
+                        $http.get("https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + googleMapKey)
                             .then(function (response) {
                                 // this callback will be called asynchronously
                                 // when the response is available

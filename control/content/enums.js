@@ -31,9 +31,6 @@
             SECTION: "section",
             HOME: "HOME"
         })
-        .constant('GOOGLE_KEYS', {
-            API_KEY: 'AIzaSyCgcHZhcDGGxa60VwD5hLPExCTva0zQ3_A'
-        })
         .constant('DEFAULT_DATA', {
             PLACE_INFO: {
                 data: {
