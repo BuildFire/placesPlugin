@@ -72,8 +72,7 @@
               // Check if the script is already in the document
               const existingScript = document.getElementById('googleMapsScript');
               if (existingScript) {
-                  // If the script is already in the document, remove it
-                  existingScript.parentNode.removeChild(existingScript);
+                  return deferred.resolve();
               }
 
               const script = document.createElement('script');
